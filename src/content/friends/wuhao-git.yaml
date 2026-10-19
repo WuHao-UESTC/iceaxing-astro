@@ -1,6 +1,6 @@
 friendId: wuhao-git
 name: WuHao-UESTC
 url: https://github.com/WuHao-UESTC
-description: 用于验证友链 Schema 的占位条目，迁移阶段替换为真实数据。
+description: 站猪的github链接
 order: 100
 active: true
