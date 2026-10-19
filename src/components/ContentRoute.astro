@@ -229,7 +229,10 @@ if (special === 'articles') {
     index.projects.filter((entry) => entry.data.category === category.data.categoryId),
   );
   const articles = publicArticles.filter(
-    (entry) => entry.data.category === category.data.categoryId,
+    (entry) =>
+      entry.data.category === category.data.categoryId ||
+      (category.data.tags.includes('daily-ramblings') &&
+        entry.data.tags.includes('daily-ramblings')),
   );
   listing = {
     title,

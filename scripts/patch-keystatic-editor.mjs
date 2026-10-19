@@ -29,7 +29,7 @@ const replaceOnce = (source, search, replacement, label) => {
   if (source.indexOf(search, firstIndex + search.length) !== -1) {
     throw new Error(`Found more than one ${label} patch point in the Keystatic bundle.`);
   }
-  return source.replace(search, replacement);
+  return source.replace(search, () => replacement);
 };
 
 for (const bundleName of bundleNames) {
@@ -43,19 +43,20 @@ for (const bundleName of bundleNames) {
     source = source.replace(LEGACY_PATCH_MARKER, PATCH_MARKER);
     source = replaceOnce(
       source,
-      'pattern: /^\\$\\$([^$\\n]+)\\$\\$$/',
-      'pattern: /^\\$\\$\\s*(\\S(?:.*\\S)?)\\s*\\$\\$$/',
+      String.raw`pattern: /^\$\$([^$\n]+)\$\$/`,
+      String.raw`pattern: /^\$\$\s*(\S(?:.*\S)?)\s*\$\$/`,
       'legacy block math input rule',
     );
     source = replaceOnce(
       source,
-      'pattern: /(?:^|[^\\\\$])\\$(?!\\$)([^$\\n]+)\\$$/',
-      'pattern: /(?:^|[^\\\\$])\\$(?!\\$)\\s*(\\S(?:[^$\\n]*?\\S)?)\\s*\\$$/',
+      String.raw`pattern: /(?:^|[^\\$])\$(?!\$)([^$\n]+)\$/`,
+      String.raw`pattern: /(?:^|[^\\$])\$(?!\$)\s*(\S(?:[^$\n]*?\S)?)\s*\$/`,
       'legacy inline math input rule',
     );
     source = source.replace(
       'handler: (state, [, expression], _start, end) => {\n        const start = end - expression.length - 2;',
-      "handler: (state, match, matchStart, end) => {\n        const expression = match[1];\n        const start = matchStart + match[0].indexOf('$');",
+      () =>
+        "handler: (state, match, matchStart, end) => {\n        const expression = match[1];\n        const start = matchStart + match[0].indexOf('$');",
     );
     source = source.replaceAll(
       'value: { ...defaultProps.value, expression }',

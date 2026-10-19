@@ -973,7 +973,7 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
-.journey-life-map > div {
+.journey-life-map > [data-scroll-list] {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: 0.65rem;
@@ -1095,6 +1095,65 @@
   padding-block: 0.8rem;
   border-bottom: 1px solid var(--line);
   text-decoration: none;
+}
+
+.journey-ramblings .journey-rambling-note {
+  position: relative;
+  display: block;
+  padding: 0.65rem 0 0.9rem 1.05rem;
+  border-left: 1px solid var(--line);
+}
+
+.journey-ramblings .journey-rambling-note::before {
+  position: absolute;
+  top: 0.9rem;
+  left: -0.22rem;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: var(--scene-accent);
+  box-shadow: 0 0 0 0.22rem color-mix(in srgb, var(--scene-accent) 15%, transparent);
+  content: '';
+}
+
+.journey-rambling-index {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  color: var(--muted);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+}
+
+.journey-rambling-index i {
+  color: var(--scene-accent);
+  font-style: normal;
+}
+
+.journey-ramblings .journey-rambling-note h4 {
+  margin-top: 0.3rem;
+  font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+  line-height: 1.45;
+}
+
+.journey-ramblings .journey-rambling-note:first-child h4 {
+  font-size: clamp(1.55rem, 2.8vw, 2.35rem);
+}
+
+.journey-ramblings .journey-rambling-note p {
+  max-width: 42rem;
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+.journey-rambling-note time {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--muted);
+  font-size: 0.58rem;
 }
 
 .journey-notes a > span,

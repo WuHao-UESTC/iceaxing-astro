@@ -32,17 +32,29 @@ const { labels, notes, entries, ramblingsHref } = Astro.props;
         </h3>
         <ScrollControls target="ramblings-list" label={labels.fieldNotes} />
       </div>
-      <div id="ramblings-list" class="journey-notes" data-scroll-list tabindex="0">
+      <div
+        id="ramblings-list"
+        class="journey-notes journey-ramblings"
+        data-scroll-list
+        tabindex="0"
+      >
         {notes.length ? (
           notes.map((card, index) => (
-            <a href={card.href} data-reveal data-step={String(2 + index)}>
-              <span>0{index + 1}</span>
-              <div>
-                <small>{card.meta}</small>
-                <h4>{card.title}</h4>
-                <p>{card.description}</p>
-              </div>
-              <i aria-hidden="true">↗</i>
+            <a
+              href={card.href}
+              class="journey-rambling-note"
+              data-reveal
+              data-step={String(2 + index)}
+            >
+              <span class="journey-rambling-index">
+                <span>
+                  {labels.fieldNotes} / {String(index + 1).padStart(2, '0')}
+                </span>
+                <i aria-hidden="true">↗</i>
+              </span>
+              <h4>{card.title}</h4>
+              {card.description && <p>{card.description}</p>}
+              {card.meta && <time>{card.meta}</time>}
             </a>
           ))
         ) : (

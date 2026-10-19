@@ -15,9 +15,10 @@ export function initHomeJourney() {
 
   const scrollLists = [...home.querySelectorAll<HTMLElement>('[data-scroll-list]')];
   const updateScrollList = (list: HTMLElement) => {
-    const controls = home.querySelector<HTMLElement>(
-      `[data-scroll-controls]:has([data-scroll-target="${CSS.escape(list.id)}"])`,
+    const controlButton = home.querySelector<HTMLButtonElement>(
+      `[data-scroll-target="${CSS.escape(list.id)}"]`,
     );
+    const controls = controlButton?.closest<HTMLElement>('[data-scroll-controls]');
     const overflowing = list.scrollHeight > list.clientHeight + 2;
     if (controls) controls.hidden = !overflowing;
     controls?.querySelectorAll<HTMLButtonElement>('[data-scroll-direction]').forEach((button) => {

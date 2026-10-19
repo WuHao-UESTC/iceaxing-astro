@@ -44,7 +44,7 @@ const labels: HomeLabels =
           '在阅读、远行与寻常日子里，收集世界的细节。',
           '记下偶然的念头，也留住一路相遇的人。',
         ],
-        projects: '仍在推进',
+        projects: '项目进展',
         completed: '已经抵达',
         latest: '最近，过得怎样',
         fieldNotes: '碎碎念',
@@ -67,7 +67,7 @@ const labels: HomeLabels =
             'Kleine Entdeckungen beim Lesen, Reisen und im Alltag.',
             'Gedanken und Begegnungen unterwegs.',
           ],
-          projects: 'Laufende Projekte',
+          projects: 'Projekte',
           completed: 'Abgeschlossen',
           latest: 'In letzter Zeit',
           fieldNotes: 'Lose Gedanken',
@@ -89,7 +89,7 @@ const labels: HomeLabels =
             'Small discoveries in books, journeys, and ordinary days.',
             'Passing thoughts and people met along the way.',
           ],
-          projects: 'In progress',
+          projects: 'Projects',
           completed: 'Finished',
           latest: 'Lately in life',
           fieldNotes: 'Ramblings',
@@ -198,9 +198,19 @@ const ramblingsCategory = index.categories.find(
 const ramblingCards = articleCards.filter((card) => {
   const article = articles.find((entry) => entry.data.contentId === card.id);
   if (!article || !ramblingsCategory) return false;
+  if (article.data.tags.includes('daily-ramblings')) return true;
   if (article.data.category === ramblingsCategory.data.categoryId) return true;
+  const directCategory = index.categories.find(
+    (entry) => entry.data.categoryId === article.data.category,
+  );
+  if (directCategory?.data.tags.includes('daily-ramblings')) return true;
   const project = index.projects.find((entry) => entry.data.projectId === article.data.project);
-  return project?.data.category === ramblingsCategory.data.categoryId;
+  if (project?.data.category === ramblingsCategory.data.categoryId) return true;
+  return index.categories.some(
+    (entry) =>
+      entry.data.categoryId === project?.data.category &&
+      entry.data.tags.includes('daily-ramblings'),
+  );
 });
 const ramblingsHref = ramblingsCategory
   ? (routeFor(ramblingsCategory.data.categoryId, locale, 'category') ??
@@ -226,11 +236,7 @@ const ramblingsHref = ramblingsCategory
     aria-labelledby="technical-ridge-title"
   >
     <ChapterLandscape scene="ridge" />
-    <TechnicalRidge
-      {labels}
-      categories={skillCategoryCards}
-      projects={projectCards.filter((card) => card.meta !== 'COMPLETED')}
-    />
+    <TechnicalRidge {labels} categories={skillCategoryCards} projects={projectCards} />
   </section>
   <section
     id="snowfield-traverse"
