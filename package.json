@@ -13,7 +13,7 @@
     "preview": "astro preview",
     "check": "npm run content:validate && astro check",
     "content:validate": "tsx scripts/validate-content.ts",
-    "search:index": "pagefind --site dist/client --output-path dist/client/pagefind",
+    "search:index": "pagefind --site dist/client --output-path dist/client/pagefind && tsx scripts/sync-search-index.ts",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
