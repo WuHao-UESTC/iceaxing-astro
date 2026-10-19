@@ -7,10 +7,16 @@ export interface Messages {
   };
   nav: {
     home: string;
+    technology: string;
+    life: string;
     articles: string;
     projects: string;
     tools: string;
     about: string;
+    profile: string;
+    friends: string;
+    menu: string;
+    primary: string;
     search: string;
   };
   home: {
@@ -40,10 +46,16 @@ const messages: Record<Locale, Messages> = {
     },
     nav: {
       home: '首页',
+      technology: '技术栈',
+      life: '生活日常',
       articles: '文章',
       projects: '项目',
       tools: '工具',
       about: '关于',
+      profile: '个人档案',
+      friends: '友链',
+      menu: '打开导航菜单',
+      primary: '主导航',
       search: '搜索',
     },
     home: {
@@ -68,10 +80,16 @@ const messages: Record<Locale, Messages> = {
     },
     nav: {
       home: 'Home',
+      technology: 'Technology',
+      life: 'Daily life',
       articles: 'Articles',
       projects: 'Projects',
       tools: 'Tools',
       about: 'About',
+      profile: 'Profile',
+      friends: 'Friends',
+      menu: 'Open navigation menu',
+      primary: 'Primary navigation',
       search: 'Search',
     },
     home: {
@@ -96,10 +114,16 @@ const messages: Record<Locale, Messages> = {
     },
     nav: {
       home: 'Start',
+      technology: 'Technik',
+      life: 'Alltag',
       articles: 'Artikel',
       projects: 'Projekte',
       tools: 'Werkzeuge',
       about: 'Über',
+      profile: 'Profil',
+      friends: 'Freunde',
+      menu: 'Navigationsmenü öffnen',
+      primary: 'Hauptnavigation',
       search: 'Suchen',
     },
     home: {

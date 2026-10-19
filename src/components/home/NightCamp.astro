@@ -1,4 +1,5 @@
 ---
+import ChapterMarker from './ChapterMarker.astro';
 import type { HomeCard, HomeLabels } from './types';
 
 interface Props {
@@ -10,43 +11,48 @@ interface Props {
 const { labels, notes, entries } = Astro.props;
 ---
 
-<div class="journey-panel-inner">
+<div class="journey-panel-inner journey-night-inner">
+  <ChapterMarker number="04" altitude="6200m" label="NIGHT CAMP" />
   <header class="journey-chapter-heading" data-reveal data-step="1">
-    <span>04</span>
-    <div>
-      <small>6200m</small>
-      <h2 id="night-camp-title" tabindex="-1">
-        {labels.chapters[3]}
-      </h2>
-      <p>{labels.chapterIntros[2]}</p>
-    </div>
+    <p class="journey-eyebrow">MOMENTS / PEOPLE / PLACES</p>
+    <h2 id="night-camp-title" tabindex="-1">
+      {labels.chapters[3]}
+    </h2>
+    <p>{labels.chapterIntros[2]}</p>
   </header>
+
   <div class="journey-camp-grid">
     <section aria-labelledby="field-notes-title">
-      <p class="journey-eyebrow">FIELD NOTES</p>
-      <h3 id="field-notes-title">{labels.fieldNotes}</h3>
+      <div class="journey-section-label">
+        <span>01</span>
+        <h3 id="field-notes-title">{labels.fieldNotes}</h3>
+      </div>
       <div class="journey-notes">
         {notes.map((card, index) => (
           <a href={card.href} data-reveal data-step={String(2 + index)}>
-            <small>
-              {card.meta} / 0{index + 1}
-            </small>
-            <h4>{card.title}</h4>
-            <p>{card.description}</p>
-            <i>↗</i>
+            <span>0{index + 1}</span>
+            <div>
+              <small>{card.meta}</small>
+              <h4>{card.title}</h4>
+              <p>{card.description}</p>
+            </div>
+            <i aria-hidden="true">↗</i>
           </a>
         ))}
       </div>
     </section>
+
     <aside class="journey-directory" aria-labelledby="camp-directory-title">
-      <p class="journey-eyebrow">PEOPLE & PLACES</p>
-      <h3 id="camp-directory-title">{labels.directory}</h3>
+      <div class="journey-section-label">
+        <span>02</span>
+        <h3 id="camp-directory-title">{labels.directory}</h3>
+      </div>
       <div>
         {entries.map((card, index) => (
           <a href={card.href} data-reveal data-step={String(3 + index)}>
             <span>0{index + 1}</span>
             <strong>{card.title}</strong>
-            <i>→</i>
+            <i aria-hidden="true">↗</i>
           </a>
         ))}
       </div>

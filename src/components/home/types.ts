@@ -9,7 +9,7 @@ export interface HomeCard {
 }
 
 export interface HomeLabels {
-  heroTitle: [string, string];
+  heroTitle: string;
   intro: string;
   read: string;
   meet: string;

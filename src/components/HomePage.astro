@@ -36,12 +36,12 @@ const logs = newestFirst(
 const labels: HomeLabels =
   locale === 'zh'
     ? {
-        heroTitle: ['向上，', '也向内。'],
+        heroTitle: 'ICEAXING',
         intro: settings?.descriptions.zh ?? messages.home.introduction,
         read: '阅读精选',
         meet: '认识我',
         featured: '精选文章',
-        chapters: ['山脚营地', '技术栈', '生活日常', '沿途随记'],
+        chapters: ['封面', '技术栈', '生活日常', '沿途随记'],
         chapterIntros: [
           '从原理出发，把想法一步步做成现实。',
           '在阅读、远行与寻常日子里，收集世界的细节。',
@@ -58,12 +58,12 @@ const labels: HomeLabels =
       }
     : locale === 'de'
       ? {
-          heroTitle: ['Hinauf.', 'Und zu mir.'],
+          heroTitle: 'ICEAXING',
           intro: settings?.descriptions.de ?? messages.home.introduction,
           read: 'Notizen lesen',
           meet: 'Über mich',
           featured: 'Ausgewählte Notizen',
-          chapters: ['Basislager', 'Technik', 'Alltag', 'Unterwegs'],
+          chapters: ['Start', 'Technik', 'Alltag', 'Unterwegs'],
           chapterIntros: [
             'Von den Grundlagen zu Ideen, die Wirklichkeit werden.',
             'Kleine Entdeckungen beim Lesen, Reisen und im Alltag.',
@@ -79,12 +79,12 @@ const labels: HomeLabels =
           route: 'Höhenroute',
         }
       : {
-          heroTitle: ['Upward,', 'and inward.'],
+          heroTitle: 'ICEAXING',
           intro: settings?.descriptions.en ?? messages.home.introduction,
           read: 'Read the notes',
           meet: 'About me',
           featured: 'Selected notes',
-          chapters: ['Base Camp', 'Technology', 'Everyday Life', 'Along the Way'],
+          chapters: ['Cover', 'Technology', 'Everyday Life', 'Along the Way'],
           chapterIntros: [
             'From first principles to ideas made real.',
             'Small discoveries in books, journeys, and ordinary days.',
@@ -172,7 +172,7 @@ const motto = mottoEntry
   : undefined;
 const featuredCards = articleCards
   .filter((card) => articles.find((entry) => entry.data.contentId === card.id)?.data.featured)
-  .slice(0, 4);
+  .slice(0, 2);
 ---
 
 <main id="main-content" class="snowline-home" data-journey data-pagefind-body tabindex="-1">
@@ -182,7 +182,7 @@ const featuredCards = articleCards
     <SnowlineHero
       {labels}
       {motto}
-      featured={featuredCards.length ? featuredCards : articleCards.slice(0, 4)}
+      featured={featuredCards.length ? featuredCards : articleCards.slice(0, 2)}
       profileHref={localizedPath(locale, '/profile')}
     />
   </section>

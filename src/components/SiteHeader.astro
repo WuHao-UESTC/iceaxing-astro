@@ -10,13 +10,22 @@ interface Props {
 
 const { locale, alternatePaths } = Astro.props;
 const messages = getMessages(locale);
+const homeHref = localizedPath(locale);
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const navItems = [
-  { label: messages.nav.home, path: '/' },
-  { label: messages.nav.articles, path: '/articles' },
-  { label: messages.nav.projects, path: '/projects' },
-  { label: messages.nav.tools, path: '/tools' },
-  { label: messages.nav.about, path: '/about' },
-];
+  { label: messages.nav.home, href: homeHref },
+  { label: messages.nav.technology, href: `${homeHref}#technical-ridge` },
+  { label: messages.nav.life, href: `${homeHref}#snowfield-traverse` },
+  { label: messages.nav.articles, href: localizedPath(locale, '/articles') },
+  { label: messages.nav.projects, href: localizedPath(locale, '/projects') },
+  { label: messages.nav.tools, href: localizedPath(locale, '/tools') },
+  { label: messages.nav.about, href: localizedPath(locale, '/about') },
+  { label: messages.nav.profile, href: localizedPath(locale, '/profile') },
+  { label: messages.nav.friends, href: localizedPath(locale, '/friends') },
+].map((item) => {
+  const hrefPath = (item.href.split('#')[0] ?? item.href).replace(/\/+$/, '') || '/';
+  return { ...item, current: !item.href.includes('#') && currentPath === hrefPath };
+});
 ---
 
 <header class="site-header" data-pagefind-ignore>
@@ -29,11 +38,13 @@ const navItems = [
       iceaxing<span aria-hidden="true">.</span>
     </a>
 
-    <nav aria-label="Primary navigation">
+    <nav class="desktop-navigation" aria-label={messages.nav.primary}>
       <ul class="nav-list">
         {navItems.map((item) => (
           <li>
-            <a href={localizedPath(locale, item.path)}>{item.label}</a>
+            <a href={item.href} aria-current={item.current ? 'page' : undefined}>
+              {item.label}
+            </a>
           </li>
         ))}
       </ul>
@@ -43,7 +54,7 @@ const navItems = [
       <button class="search-open" type="button" data-search-open aria-label={messages.nav.search}>
         <span aria-hidden="true">⌕</span>
       </button>
-      <details class="language-menu">
+      <details class="language-menu" data-header-details>
         <summary aria-label={messages.common.language}>{locale.toUpperCase()}</summary>
         <div class="language-options">
           <a
@@ -70,6 +81,43 @@ const navItems = [
         </div>
       </details>
       <ThemeToggle label={messages.common.switchTheme} />
+      <details class="site-menu" data-site-menu data-header-details>
+        <summary aria-label={messages.nav.menu} title={messages.nav.menu}>
+          <span aria-hidden="true" />
+        </summary>
+        <nav aria-label={messages.nav.primary}>
+          <ul class="site-menu-list">
+            {navItems.map((item, index) => (
+              <li>
+                <a href={item.href} aria-current={item.current ? 'page' : undefined}>
+                  <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </details>
     </div>
   </div>
 </header>
+
+<script>
+  const headerDetails = [...document.querySelectorAll<HTMLDetailsElement>('[data-header-details]')];
+  const siteMenu = document.querySelector<HTMLDetailsElement>('[data-site-menu]');
+
+  headerDetails.forEach((details) => {
+    details.addEventListener('toggle', () => {
+      if (!details.open) return;
+      headerDetails.forEach((other) => {
+        if (other !== details) other.open = false;
+      });
+    });
+  });
+
+  siteMenu?.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    siteMenu.open = false;
+    siteMenu.querySelector<HTMLElement>('summary')?.focus();
+  });
+</script>

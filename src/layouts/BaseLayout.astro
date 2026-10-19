@@ -17,6 +17,7 @@ interface Props {
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
   pagefindType?: string;
   pagefindCategory?: string;
+  fullViewport?: boolean;
 }
 
 const {
@@ -31,6 +32,7 @@ const {
   jsonLd,
   pagefindType = 'page',
   pagefindCategory,
+  fullViewport = false,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 const socialImage = new URL(image, Astro.site ?? Astro.url.origin);
@@ -93,13 +95,13 @@ const socialImage = new URL(image, Astro.site ?? Astro.url.origin);
       })();
     </script>
   </head>
-  <body>
+  <body class:list={{ 'full-viewport-page': fullViewport }}>
     <a class="skip-link" href="#main-content">
       Skip to content
     </a>
     <SiteHeader locale={locale} {alternatePaths} />
     <slot />
-    <SiteFooter locale={locale} />
+    {!fullViewport && <SiteFooter locale={locale} />}
     <SearchDialog {locale} />
   </body>
 </html>

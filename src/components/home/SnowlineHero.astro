@@ -1,4 +1,5 @@
 ---
+import ChapterMarker from './ChapterMarker.astro';
 import type { HomeCard, HomeLabels } from './types';
 
 interface Props {
@@ -9,61 +10,88 @@ interface Props {
 }
 
 const { labels, motto, featured, profileHref } = Astro.props;
+const routes = [
+  { number: '02', label: labels.chapters[1], href: '#technical-ridge', id: 'technical-ridge' },
+  {
+    number: '03',
+    label: labels.chapters[2],
+    href: '#snowfield-traverse',
+    id: 'snowfield-traverse',
+  },
+  { number: '04', label: labels.chapters[3], href: '#night-camp', id: 'night-camp' },
+];
 ---
 
 <div class="journey-panel-inner journey-hero-inner">
-  <div class="journey-hero-copy">
-    <p class="journey-eyebrow" data-reveal data-step="1">
-      ICEAXING / ABOVE THE SNOWLINE
-    </p>
-    <h1 id="base-camp-title" tabindex="-1" data-reveal data-step="1">
-      {labels.heroTitle[0]}
-      <br />
-      <span>{labels.heroTitle[1]}</span>
-    </h1>
-    <p class="journey-intro" data-reveal data-step="2">
-      {labels.intro}
-    </p>
-    {motto && (
-      <figure class="journey-motto" data-reveal data-step="2">
-        <blockquote>{motto.text}</blockquote>
-        {motto.source && <figcaption>— {motto.source}</figcaption>}
-      </figure>
-    )}
-    <div class="journey-actions" data-reveal data-step="3">
-      <a class="journey-button" href="#selected-notes">
-        {labels.read}
-        <span>↗</span>
-      </a>
-      <a class="journey-text-link" href={profileHref}>
+  <ChapterMarker number="01" altitude="3200m" label="BASE CAMP" />
+
+  <div class="journey-hero-stage">
+    <div class="journey-hero-copy">
+      <p class="journey-eyebrow" data-reveal data-step="1">
+        PERSONAL FIELD NOTES / ABOVE THE SNOWLINE
+      </p>
+      <h1 id="base-camp-title" tabindex="-1" data-reveal data-step="1">
+        {labels.heroTitle}
+      </h1>
+      <p class="journey-intro" data-reveal data-step="2">
+        {labels.intro}
+      </p>
+      {motto && (
+        <figure class="journey-motto" data-reveal data-step="2">
+          <blockquote>{motto.text}</blockquote>
+          {motto.source && <figcaption>— {motto.source}</figcaption>}
+        </figure>
+      )}
+      <a class="journey-profile-link" href={profileHref} data-reveal data-step="3">
         {labels.meet}
-        <span>→</span>
+        <span aria-hidden="true">↗</span>
       </a>
+
+      <section
+        id="selected-notes"
+        class="journey-featured"
+        aria-labelledby="selected-notes-title"
+        tabindex="-1"
+      >
+        <header>
+          <div>
+            <p class="journey-eyebrow">SELECTED NOTES</p>
+            <h2 id="selected-notes-title">{labels.featured}</h2>
+          </div>
+          <a href="#technical-ridge">
+            {labels.next}
+            <span aria-hidden="true">↓</span>
+          </a>
+        </header>
+        <div class="journey-featured-track">
+          {featured.map((card, index) => (
+            <a
+              class="journey-featured-card"
+              href={card.href}
+              data-reveal
+              data-step={String(4 + index)}
+            >
+              <span>0{index + 1}</span>
+              <div>
+                <small>{card.meta}</small>
+                <strong>{card.title}</strong>
+              </div>
+              <i aria-hidden="true">↗</i>
+            </a>
+          ))}
+        </div>
+      </section>
     </div>
   </div>
 
-  <section
-    id="selected-notes"
-    class="journey-featured"
-    aria-labelledby="selected-notes-title"
-    tabindex="-1"
-  >
-    <header>
-      <p class="journey-eyebrow">SELECTED NOTES</p>
-      <h2 id="selected-notes-title">{labels.featured}</h2>
-    </header>
-    <div class="journey-featured-track">
-      {featured.map((card, index) => (
-        <a class="journey-featured-card" href={card.href} data-reveal data-step={String(4 + index)}>
-          <span>0{index + 1}</span>
-          <div>
-            <small>{card.meta}</small>
-            <strong>{card.title}</strong>
-            <p>{card.description}</p>
-          </div>
-          <i aria-hidden="true">↗</i>
-        </a>
-      ))}
-    </div>
-  </section>
+  <nav class="journey-ridge-routes" aria-label={labels.route} data-reveal data-step="3">
+    {routes.map((route, index) => (
+      <a href={route.href} data-hero-route={route.id} style={`--route-index:${index}`}>
+        <i aria-hidden="true" />
+        <span>{route.number}</span>
+        <strong>{route.label}</strong>
+        <small aria-hidden="true">↗</small>
+      </a>
+    ))}
+  </nav>
 </div>

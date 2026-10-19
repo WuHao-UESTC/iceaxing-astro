@@ -1,0 +1,17 @@
+---
+interface Props {
+  number: '01' | '02' | '03' | '04';
+  altitude: string;
+  label: string;
+}
+
+const { number, altitude, label } = Astro.props;
+---
+
+<div class="journey-chapter-marker" aria-hidden="true" data-reveal data-step="1">
+  <span>{number}</span>
+  <div>
+    <strong>{altitude}</strong>
+    <small>{label}</small>
+  </div>
+</div>

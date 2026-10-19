@@ -7,10 +7,15 @@ export function initHomeJourney() {
     .map((id) => document.getElementById(id))
     .filter((panel): panel is HTMLElement => Boolean(panel));
   const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-journey-link]')];
+  const hero = document.querySelector<HTMLElement>('.snowline-hero');
+  const heroRoutes = [...document.querySelectorAll<HTMLAnchorElement>('[data-hero-route]')];
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const visited = new WeakSet<HTMLElement>();
   document.documentElement.classList.add('journey-enhanced');
 
   function activate(panel: HTMLElement, animate = true) {
+    const firstVisit = !visited.has(panel);
+    visited.add(panel);
     panels.forEach((item) => item.classList.toggle('is-active', item === panel));
     links.forEach((link) => {
       const active = link.dataset.journeyLink === panel.id;
@@ -19,16 +24,16 @@ export function initHomeJourney() {
       else link.removeAttribute('aria-current');
     });
     if (location.hash !== `#${panel.id}`) history.replaceState(history.state, '', `#${panel.id}`);
-    if (animate && !reducedMotion.matches) {
+    if (animate && firstVisit && !reducedMotion.matches) {
       panel.querySelectorAll<HTMLElement>('[data-reveal]').forEach((element) => {
         element.animate(
           [
-            { opacity: 0, transform: 'translateY(14px)', filter: 'blur(2px)' },
-            { opacity: 1, transform: 'translateY(0)', filter: 'blur(0)' },
+            { opacity: 0, transform: 'translateY(10px)' },
+            { opacity: 1, transform: 'translateY(0)' },
           ],
           {
-            duration: element.dataset.reveal === 'landscape' ? 700 : 420,
-            delay: Math.min(Number(element.dataset.step ?? 0) * 45, 260),
+            duration: element.dataset.reveal === 'landscape' ? 680 : 440,
+            delay: Math.min(Number(element.dataset.step ?? 0) * 55, 280),
             easing: 'cubic-bezier(.22,1,.36,1)',
           },
         );
@@ -71,6 +76,17 @@ export function initHomeJourney() {
     event.preventDefault();
     history.pushState(history.state, '', `#${hash}`);
     navigate(hash, true);
+  });
+
+  heroRoutes.forEach((link) => {
+    const highlight = () => {
+      hero?.setAttribute('data-route-highlight', link.dataset.heroRoute ?? '');
+    };
+    const clear = () => hero?.removeAttribute('data-route-highlight');
+    link.addEventListener('pointerenter', highlight);
+    link.addEventListener('pointerleave', clear);
+    link.addEventListener('focus', highlight);
+    link.addEventListener('blur', clear);
   });
   window.addEventListener('hashchange', () => navigate(location.hash.slice(1), true));
 
