@@ -2,6 +2,7 @@ import { collection, config, fields, singleton } from '@keystatic/core';
 import { createElement } from 'react';
 
 import { markdocComponents } from './src/content/markdoc-components';
+import { withMathPersistence } from './src/lib/keystatic-math';
 
 type Locale = 'zh' | 'en' | 'de';
 
@@ -105,25 +106,27 @@ const localeField = (locale: Locale) =>
     description: '由当前语言集合固定；如需另一语言，请在对应集合中创建。',
   });
 
-const body = fields.markdoc({
-  label: '正文',
-  extension: 'mdoc',
-  options: {
-    heading: [2, 3, 4, 5, 6],
-    table: true,
-    divider: true,
-    codeBlock: true,
-    image: {
-      directory: 'src/assets/content/body',
-      publicPath: '../../../../assets/content/body/',
-      schema: {
-        alt: fields.text({ label: '替代文本', validation: { isRequired: true } }),
-        title: fields.text({ label: '图片标题' }),
+const body = withMathPersistence(
+  fields.markdoc({
+    label: '正文',
+    extension: 'mdoc',
+    options: {
+      heading: [2, 3, 4, 5, 6],
+      table: true,
+      divider: true,
+      codeBlock: true,
+      image: {
+        directory: 'src/assets/content/body',
+        publicPath: '../../../../assets/content/body/',
+        schema: {
+          alt: fields.text({ label: '替代文本', validation: { isRequired: true } }),
+          title: fields.text({ label: '图片标题' }),
+        },
       },
     },
-  },
-  components: markdocComponents,
-});
+    components: markdocComponents,
+  }),
+);
 
 const commonContentFields = (locale: Locale) => ({
   contentId: stableId('稳定内容 ID'),

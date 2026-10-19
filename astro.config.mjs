@@ -1,4 +1,4 @@
-import markdoc from '@astrojs/markdoc';
+import markdoc from './src/lib/markdoc-math-integration.mjs';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';

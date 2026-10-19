@@ -1,33 +1,7 @@
-import { component, defineMarkdocConfig, Markdoc, nodes } from '@astrojs/markdoc/config';
+import { component, defineMarkdocConfig, nodes } from '@astrojs/markdoc/config';
 import shiki from '@astrojs/markdoc/shiki';
 
 const mathComponent = component('./src/components/markdoc/Math.astro');
-const inlineMathPattern = /(?<!\$)\$(?!\$)([^$\n]+?)(?<!\$)\$(?!\$)/g;
-
-function transformInlineMath(content, render) {
-  const output = [];
-  let cursor = 0;
-  for (const match of content.matchAll(inlineMathPattern)) {
-    const index = match.index ?? 0;
-    if (index > cursor) output.push(content.slice(cursor, index));
-    output.push(new Markdoc.Tag(render, { expression: match[1].trim(), inline: true }, []));
-    cursor = index + match[0].length;
-  }
-  if (cursor === 0) return content;
-  if (cursor < content.length) output.push(content.slice(cursor));
-  return output;
-}
-
-function plainParagraphContent(node) {
-  let content = '';
-  for (const child of node.children) {
-    if (child.type === 'text') content += child.attributes.content;
-    else if (child.type === 'softbreak') content += '\n';
-    else return null;
-  }
-  return content;
-}
-
 export default defineMarkdocConfig({
   extends: [
     shiki({
@@ -91,34 +65,6 @@ export default defineMarkdocConfig({
     },
   },
   nodes: {
-    paragraph: {
-      ...nodes.paragraph,
-      transform(node, config) {
-        const content = plainParagraphContent(node);
-        const match = content?.match(/^\s*\$\$([\s\S]+?)\$\$\s*$/);
-        if (match) {
-          return new Markdoc.Tag(
-            config.tags.math.render,
-            {
-              expression: match[1].trim(),
-              inline: false,
-            },
-            [],
-          );
-        }
-        return new Markdoc.Tag(
-          'p',
-          node.transformAttributes(config),
-          node.transformChildren(config),
-        );
-      },
-    },
-    text: {
-      ...nodes.text,
-      transform(node, config) {
-        return transformInlineMath(node.attributes.content, config.tags.inlineMath.render);
-      },
-    },
     image: {
       ...nodes.image,
       render: component('./src/components/markdoc/MarkdocImage.astro'),
