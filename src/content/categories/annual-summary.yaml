@@ -1,0 +1,13 @@
+categoryId: annual-summary
+slug: annual-summary
+group: life
+labels:
+  zh:
+    title: 年度总结
+  en:
+    title: Annual Summary
+  de:
+    title: Annual Summary
+tags: []
+order: 0
+createdAt: 2026-10-19T15:27:00.000Z
