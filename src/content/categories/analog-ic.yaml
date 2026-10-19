@@ -1,0 +1,17 @@
+categoryId: analog-ic
+slug: analog-ic
+group: skill
+labels:
+  zh:
+    title: Analog IC
+    description: |
+      模拟IC学习——学习笔记，心得，教程与小项目
+  en:
+    title: Analog IC
+  de:
+    title: Analog IC
+tags:
+  - 'EE '
+order: 0
+coverImage: ../../assets/content/covers/analog-ic/coverImage.png
+createdAt: 2026-10-19T15:21:00.000Z
