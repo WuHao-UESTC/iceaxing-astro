@@ -67,6 +67,7 @@ export const pageSchema = baseContentSchema
 export const categorySchema = z.object({
   categoryId: z.string().regex(stableKeyPattern),
   slug: z.string().regex(urlSlugPattern),
+  group: z.enum(['skill', 'life']),
   labels: localizedTextSchema,
   tags: z.array(z.string()).default([]),
   order: z.number().int().min(0).default(0),

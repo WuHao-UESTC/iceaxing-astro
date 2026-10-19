@@ -1,5 +1,6 @@
 categoryId: technology
 slug: technology
+group: skill
 labels:
   zh:
     title: 技术

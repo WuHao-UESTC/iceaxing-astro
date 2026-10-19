@@ -276,10 +276,19 @@ export default config({
       path: 'src/content/categories/*',
       slugField: 'categoryId',
       format: 'yaml',
-      columns: ['categoryId', 'slug', 'order'],
+      columns: ['categoryId', 'group', 'slug', 'order'],
       schema: {
         categoryId: stableId('稳定分类 ID'),
         slug: fields.text({ label: 'URL slug', validation: urlSlugValidation }),
+        group: fields.select({
+          label: '首页板块',
+          description: '决定分类入口展示在首页的“技术栈”或“生活日常”板块。',
+          options: [
+            { label: '技术栈', value: 'skill' },
+            { label: '生活日常', value: 'life' },
+          ],
+          defaultValue: 'skill',
+        }),
         labels: localizedText,
         tags,
         order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),

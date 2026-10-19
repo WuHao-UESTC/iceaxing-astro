@@ -108,13 +108,21 @@ const articleCards: HomeCard[] = articles.map((entry) => ({
   meta: formatDate(entry.data.publishedAt, locale),
   tags: entry.data.tags,
 }));
-const categoryCards: HomeCard[] = byOrder(index.categories).map((entry) => ({
-  id: entry.data.categoryId,
-  href: routeFor(entry.data.categoryId, locale, 'category') ?? '#',
-  title: localizedLabel(entry, locale).title,
-  description: localizedLabel(entry, locale).description,
-  tags: entry.data.tags,
-}));
+const categoryCards = Object.groupBy(
+  byOrder(index.categories).map((entry) => ({
+    group: entry.data.group,
+    card: {
+      id: entry.data.categoryId,
+      href: routeFor(entry.data.categoryId, locale, 'category') ?? '#',
+      title: localizedLabel(entry, locale).title,
+      description: localizedLabel(entry, locale).description,
+      tags: entry.data.tags,
+    } satisfies HomeCard,
+  })),
+  (entry) => entry.group,
+);
+const skillCategoryCards = categoryCards.skill?.map((entry) => entry.card) ?? [];
+const lifeCategoryCards = categoryCards.life?.map((entry) => entry.card) ?? [];
 const projectCards: HomeCard[] = byOrder(index.projects).map((entry) => ({
   id: entry.data.projectId,
   href: routeFor(entry.data.projectId, locale, 'project') ?? '#',
@@ -186,7 +194,7 @@ const featuredCards = articleCards
     <ChapterLandscape scene="ridge" />
     <TechnicalRidge
       {labels}
-      categories={categoryCards}
+      categories={skillCategoryCards}
       projects={projectCards.filter((card) => card.meta !== 'COMPLETED').slice(0, 3)}
     />
   </section>
@@ -196,7 +204,7 @@ const featuredCards = articleCards
     aria-labelledby="snowfield-traverse-title"
   >
     <ChapterLandscape scene="field" />
-    <SnowfieldTraverse {labels} categories={categoryCards} latest={articleCards.slice(0, 3)} />
+    <SnowfieldTraverse {labels} categories={lifeCategoryCards} latest={articleCards.slice(0, 3)} />
   </section>
   <section id="night-camp" class="snowline-panel snowline-night" aria-labelledby="night-camp-title">
     <ChapterLandscape scene="camp" />

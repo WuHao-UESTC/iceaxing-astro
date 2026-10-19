@@ -13,7 +13,7 @@
     {
       "contentId": "technology",
       "kind": "category",
-      "versionHash": "00a4c3628068feaaf8ee5545",
+      "versionHash": "31d77cd4e3528bf45fe7ccaf",
       "publishedAt": "2026-10-18T08:00:00.000Z",
       "titles": { "zh": "技术", "en": "Technology", "de": "Technik" },
       "urls": { "de": "/de/technology", "en": "/en/technology", "zh": "/technology" },
