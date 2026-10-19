@@ -56,6 +56,13 @@
     "sourceFile": "src/content/categories/annual-summaries.yaml"
   },
   {
+    "pathname": "/daily-ramblings",
+    "kind": "category",
+    "contentId": "daily-ramblings",
+    "locale": "zh",
+    "sourceFile": "src/content/categories/daily-ramblings.yaml"
+  },
+  {
     "pathname": "/de/about",
     "kind": "page",
     "contentId": "about-de",
@@ -110,6 +117,13 @@
     "contentId": "annual-summaries",
     "locale": "de",
     "sourceFile": "src/content/categories/annual-summaries.yaml"
+  },
+  {
+    "pathname": "/de/daily-ramblings",
+    "kind": "category",
+    "contentId": "daily-ramblings",
+    "locale": "de",
+    "sourceFile": "src/content/categories/daily-ramblings.yaml"
   },
   {
     "pathname": "/de/profile",
@@ -203,6 +217,13 @@
     "sourceFile": "src/content/categories/annual-summaries.yaml"
   },
   {
+    "pathname": "/en/daily-ramblings",
+    "kind": "category",
+    "contentId": "daily-ramblings",
+    "locale": "en",
+    "sourceFile": "src/content/categories/daily-ramblings.yaml"
+  },
+  {
     "pathname": "/en/profile",
     "kind": "page",
     "contentId": "profile-en",
@@ -257,6 +278,13 @@
     "contentId": "filter-design-in-digital-world-note",
     "locale": "zh",
     "sourceFile": "src/content/projects/filter-design-in-digital-world-note.yaml"
+  },
+  {
+    "pathname": "/uestc-note/filter-design-in-digital-world-note/basic-of-passive-filter-design",
+    "kind": "article",
+    "contentId": "basic-of-passive-filter-design",
+    "locale": "zh",
+    "sourceFile": "src/content/articles/zh/basic-of-passive-filter-design/index.mdoc"
   },
   {
     "pathname": "/uestc-note/liuenke-semiconductance-note",

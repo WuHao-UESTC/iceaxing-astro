@@ -2,7 +2,8 @@ import { readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const PATCH_MARKER = 'iceaxing-keystatic-editor-patch:v1';
+const PATCH_MARKER = 'iceaxing-keystatic-editor-patch:v2';
+const LEGACY_PATCH_MARKER = 'iceaxing-keystatic-editor-patch:v1';
 const SUPPORTED_VERSION = '0.6.9';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const packageRoot = path.join(root, 'node_modules', '@keystatic', 'core');
@@ -35,6 +36,32 @@ for (const bundleName of bundleNames) {
   const bundlePath = path.join(distDirectory, bundleName);
   let source = await readFile(bundlePath, 'utf8');
   if (source.includes(PATCH_MARKER)) {
+    patchedBundles += 1;
+    continue;
+  }
+  if (source.includes(LEGACY_PATCH_MARKER)) {
+    source = source.replace(LEGACY_PATCH_MARKER, PATCH_MARKER);
+    source = replaceOnce(
+      source,
+      'pattern: /^\\$\\$([^$\\n]+)\\$\\$$/',
+      'pattern: /^\\$\\$\\s*(\\S(?:.*\\S)?)\\s*\\$\\$$/',
+      'legacy block math input rule',
+    );
+    source = replaceOnce(
+      source,
+      'pattern: /(?:^|[^\\\\$])\\$(?!\\$)([^$\\n]+)\\$$/',
+      'pattern: /(?:^|[^\\\\$])\\$(?!\\$)\\s*(\\S(?:[^$\\n]*?\\S)?)\\s*\\$$/',
+      'legacy inline math input rule',
+    );
+    source = source.replace(
+      'handler: (state, [, expression], _start, end) => {\n        const start = end - expression.length - 2;',
+      "handler: (state, match, matchStart, end) => {\n        const expression = match[1];\n        const start = matchStart + match[0].indexOf('$');",
+    );
+    source = source.replaceAll(
+      'value: { ...defaultProps.value, expression }',
+      'value: { ...defaultProps.value, expression: expression.trim() }',
+    );
+    await writeFile(bundlePath, source);
     patchedBundles += 1;
     continue;
   }
@@ -172,7 +199,7 @@ const Toolbar = /*#__PURE__*/memo(function Toolbar(props) {`,
     `  for (const [markName, shortcuts] of simpleMarkShortcuts) {`,
     `  if (nodes.math) {
     rules.push({
-      pattern: /^\\$\\$([^$\\n]+)\\$\\$$/,
+      pattern: /^\\$\\$\\s*(\\S(?:.*\\S)?)\\s*\\$\\$$/,
       handler: (state, [, expression], start, end) => {
         const $start = state.doc.resolve(start);
         if (!$start.node(-1).canReplaceWith($start.index(-1), $start.indexAfter(-1), nodes.math)) return null;
@@ -180,7 +207,7 @@ const Toolbar = /*#__PURE__*/memo(function Toolbar(props) {`,
         const attrs = {
           props: {
             ...defaultProps,
-            value: { ...defaultProps.value, expression }
+            value: { ...defaultProps.value, expression: expression.trim() }
           }
         };
         return state.tr.delete(start, end).replaceSelectionWith(nodes.math.createAndFill(attrs));
@@ -189,14 +216,15 @@ const Toolbar = /*#__PURE__*/memo(function Toolbar(props) {`,
   }
   if (nodes.inlineMath) {
     rules.push({
-      pattern: /(?:^|[^\\\\$])\\$(?!\\$)([^$\\n]+)\\$$/,
-      handler: (state, [, expression], _start, end) => {
-        const start = end - expression.length - 2;
+      pattern: /(?:^|[^\\\\$])\\$(?!\\$)\\s*(\\S(?:[^$\\n]*?\\S)?)\\s*\\$$/,
+      handler: (state, match, matchStart, end) => {
+        const expression = match[1];
+        const start = matchStart + match[0].indexOf('$');
         const defaultProps = nodes.inlineMath.defaultAttrs.props;
         const attrs = {
           props: {
             ...defaultProps,
-            value: { ...defaultProps.value, expression }
+            value: { ...defaultProps.value, expression: expression.trim() }
           }
         };
         return state.tr.replaceWith(start, end, nodes.inlineMath.create(attrs));

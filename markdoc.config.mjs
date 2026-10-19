@@ -1,5 +1,32 @@
-import { component, defineMarkdocConfig, nodes } from '@astrojs/markdoc/config';
+import { component, defineMarkdocConfig, Markdoc, nodes } from '@astrojs/markdoc/config';
 import shiki from '@astrojs/markdoc/shiki';
+
+const mathComponent = component('./src/components/markdoc/Math.astro');
+const inlineMathPattern = /(?<!\$)\$(?!\$)([^$\n]+?)(?<!\$)\$(?!\$)/g;
+
+function transformInlineMath(content) {
+  const output = [];
+  let cursor = 0;
+  for (const match of content.matchAll(inlineMathPattern)) {
+    const index = match.index ?? 0;
+    if (index > cursor) output.push(content.slice(cursor, index));
+    output.push(new Markdoc.Tag(mathComponent, { expression: match[1].trim(), inline: true }, []));
+    cursor = index + match[0].length;
+  }
+  if (cursor === 0) return content;
+  if (cursor < content.length) output.push(content.slice(cursor));
+  return output;
+}
+
+function plainParagraphContent(node) {
+  let content = '';
+  for (const child of node.children) {
+    if (child.type === 'text') content += child.attributes.content;
+    else if (child.type === 'softbreak') content += '\n';
+    else return null;
+  }
+  return content;
+}
 
 export default defineMarkdocConfig({
   extends: [
@@ -29,12 +56,12 @@ export default defineMarkdocConfig({
     },
     column: { render: component('./src/components/markdoc/Column.astro') },
     math: {
-      render: component('./src/components/markdoc/Math.astro'),
+      render: mathComponent,
       selfClosing: true,
       attributes: { expression: { type: String, required: true } },
     },
     inlineMath: {
-      render: component('./src/components/markdoc/Math.astro'),
+      render: mathComponent,
       selfClosing: true,
       attributes: {
         expression: { type: String, required: true },
@@ -64,6 +91,27 @@ export default defineMarkdocConfig({
     },
   },
   nodes: {
+    paragraph: {
+      ...nodes.paragraph,
+      transform(node, config) {
+        const content = plainParagraphContent(node);
+        const match = content?.match(/^\s*\$\$([\s\S]+?)\$\$\s*$/);
+        if (match) {
+          return new Markdoc.Tag(mathComponent, { expression: match[1].trim(), inline: false }, []);
+        }
+        return new Markdoc.Tag(
+          'p',
+          node.transformAttributes(config),
+          node.transformChildren(config),
+        );
+      },
+    },
+    text: {
+      ...nodes.text,
+      transform(node) {
+        return transformInlineMath(node.attributes.content);
+      },
+    },
     image: {
       ...nodes.image,
       render: component('./src/components/markdoc/MarkdocImage.astro'),

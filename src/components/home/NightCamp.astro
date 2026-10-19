@@ -1,14 +1,16 @@
 ---
 import ChapterMarker from './ChapterMarker.astro';
+import ScrollControls from './ScrollControls.astro';
 import type { HomeCard, HomeLabels } from './types';
 
 interface Props {
   labels: HomeLabels;
   notes: HomeCard[];
   entries: HomeCard[];
+  ramblingsHref: string;
 }
 
-const { labels, notes, entries } = Astro.props;
+const { labels, notes, entries, ramblingsHref } = Astro.props;
 ---
 
 <div class="journey-panel-inner journey-night-inner">
@@ -25,20 +27,27 @@ const { labels, notes, entries } = Astro.props;
     <section aria-labelledby="field-notes-title">
       <div class="journey-section-label">
         <span>01</span>
-        <h3 id="field-notes-title">{labels.fieldNotes}</h3>
+        <h3 id="field-notes-title">
+          <a href={ramblingsHref}>{labels.fieldNotes} ↗</a>
+        </h3>
+        <ScrollControls target="ramblings-list" label={labels.fieldNotes} />
       </div>
-      <div class="journey-notes">
-        {notes.map((card, index) => (
-          <a href={card.href} data-reveal data-step={String(2 + index)}>
-            <span>0{index + 1}</span>
-            <div>
-              <small>{card.meta}</small>
-              <h4>{card.title}</h4>
-              <p>{card.description}</p>
-            </div>
-            <i aria-hidden="true">↗</i>
-          </a>
-        ))}
+      <div id="ramblings-list" class="journey-notes" data-scroll-list tabindex="0">
+        {notes.length ? (
+          notes.map((card, index) => (
+            <a href={card.href} data-reveal data-step={String(2 + index)}>
+              <span>0{index + 1}</span>
+              <div>
+                <small>{card.meta}</small>
+                <h4>{card.title}</h4>
+                <p>{card.description}</p>
+              </div>
+              <i aria-hidden="true">↗</i>
+            </a>
+          ))
+        ) : (
+          <p class="journey-empty-note">{labels.emptyRamblings}</p>
+        )}
       </div>
     </section>
 
@@ -46,8 +55,9 @@ const { labels, notes, entries } = Astro.props;
       <div class="journey-section-label">
         <span>02</span>
         <h3 id="camp-directory-title">{labels.directory}</h3>
+        <ScrollControls target="camp-directory-list" label={labels.directory} />
       </div>
-      <div>
+      <div id="camp-directory-list" data-scroll-list tabindex="0">
         {entries.map((card, index) => (
           <a href={card.href} data-reveal data-step={String(3 + index)}>
             <span>0{index + 1}</span>

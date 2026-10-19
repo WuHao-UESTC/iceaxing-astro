@@ -1,0 +1,19 @@
+categoryId: daily-ramblings
+slug: daily-ramblings
+group: life
+labels:
+  zh:
+    title: 碎碎念
+    description: 记下偶然闪过的念头、日常片段与路上的所见所想。
+  en:
+    title: Ramblings
+    description: Passing thoughts, daily fragments, and observations along the way.
+  de:
+    title: Gedanken
+    description: Flüchtige Gedanken, Alltagsmomente und Beobachtungen unterwegs.
+tags:
+  - daily-ramblings
+featured: true
+order: 90
+icon: note
+createdAt: 2026-10-19T00:00:00.000Z

@@ -1,5 +1,6 @@
 ---
 import ChapterMarker from './ChapterMarker.astro';
+import ScrollControls from './ScrollControls.astro';
 import type { HomeCard, HomeLabels } from './types';
 
 interface Props {
@@ -26,8 +27,15 @@ const { labels, categories, projects } = Astro.props;
       <div class="journey-section-label">
         <span>01</span>
         <h3 id="technical-categories-title">STACK INDEX</h3>
+        <ScrollControls target="technical-category-list" label="STACK INDEX" />
       </div>
-      <nav class="journey-category-route" aria-label={labels.chapters[1]}>
+      <nav
+        id="technical-category-list"
+        class="journey-category-route"
+        aria-label={labels.chapters[1]}
+        data-scroll-list
+        tabindex="0"
+      >
         {categories.map((card, index) => (
           <a href={card.href} data-reveal data-step={String(2 + index)}>
             <span>0{index + 1}</span>
@@ -45,8 +53,9 @@ const { labels, categories, projects } = Astro.props;
       <div class="journey-section-label">
         <span>02</span>
         <h3 id="journey-projects-title">{labels.projects}</h3>
+        <ScrollControls target="technical-project-list" label={labels.projects} />
       </div>
-      <div>
+      <div id="technical-project-list" data-scroll-list tabindex="0">
         {projects.map((card, index) => (
           <a
             href={card.href}

@@ -20,6 +20,7 @@ export interface HomeLabels {
   completed: string;
   latest: string;
   fieldNotes: string;
+  emptyRamblings: string;
   directory: string;
   next: string;
   back: string;

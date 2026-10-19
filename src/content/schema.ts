@@ -70,6 +70,7 @@ export const categorySchema = z.object({
   group: z.enum(['skill', 'life']),
   labels: localizedTextSchema,
   tags: z.array(z.string()).default([]),
+  featured: z.boolean().default(false),
   order: z.number().int().min(0).default(0),
   icon: z.string().default(''),
   createdAt: dateTimeSchema,
@@ -83,6 +84,7 @@ export const projectSchema = z.object({
   status: z.enum(['planned', 'active', 'completed', 'archived']),
   progress: z.number().int().min(0).max(100),
   tags: z.array(z.string()).default([]),
+  featured: z.boolean().default(false),
   order: z.number().int().min(0).default(0),
   createdAt: dateTimeSchema,
 });
@@ -93,6 +95,7 @@ export const seriesSchema = z.object({
   project: z.string().regex(stableKeyPattern),
   labels: localizedTextSchema,
   tags: z.array(z.string()).default([]),
+  featured: z.boolean().default(false),
   order: z.number().int().min(0).default(0),
   createdAt: dateTimeSchema,
 });

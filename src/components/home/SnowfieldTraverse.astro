@@ -1,5 +1,6 @@
 ---
 import ChapterMarker from './ChapterMarker.astro';
+import ScrollControls from './ScrollControls.astro';
 import type { HomeCard, HomeLabels } from './types';
 
 interface Props {
@@ -24,9 +25,13 @@ const { labels, categories, latest } = Astro.props;
   <div class:list={['journey-life-content', { 'has-no-categories': categories.length === 0 }]}>
     {categories.length > 0 && (
       <nav class="journey-life-map" aria-label={labels.chapters[2]}>
-        <p class="journey-eyebrow">FIELD INDEX</p>
-        <div>
-          {categories.slice(0, 4).map((card, index) => (
+        <div class="journey-section-label">
+          <span>01</span>
+          <p class="journey-eyebrow">FIELD INDEX</p>
+          <ScrollControls target="life-category-list" label="FIELD INDEX" />
+        </div>
+        <div id="life-category-list" data-scroll-list tabindex="0">
+          {categories.map((card, index) => (
             <a href={card.href} data-reveal data-step={String(2 + index)}>
               <span>0{index + 1}</span>
               <h3>{card.title}</h3>
@@ -42,8 +47,9 @@ const { labels, categories, latest } = Astro.props;
       <div class="journey-section-label">
         <span>{categories.length > 0 ? '02' : '01'}</span>
         <h3 id="journey-latest-title">{labels.latest}</h3>
+        <ScrollControls target="life-latest-list" label={labels.latest} />
       </div>
-      <div>
+      <div id="life-latest-list" data-scroll-list tabindex="0">
         {latest.map((card, index) => (
           <a href={card.href} data-reveal data-step={String(3 + index)}>
             <span>0{index + 1}</span>

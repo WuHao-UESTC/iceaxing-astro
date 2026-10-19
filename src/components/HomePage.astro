@@ -30,9 +30,6 @@ const settings = index.settings[0]?.data;
 const articles = newestFirst(
   index.articles.filter((entry) => entry.data.locale === locale && isPublicContent(entry.data)),
 );
-const logs = newestFirst(
-  index.logs.filter((entry) => entry.data.locale === locale && isPublicContent(entry.data)),
-);
 const labels: HomeLabels =
   locale === 'zh'
     ? {
@@ -50,7 +47,8 @@ const labels: HomeLabels =
         projects: '仍在推进',
         completed: '已经抵达',
         latest: '最近，过得怎样',
-        fieldNotes: '营地手记',
+        fieldNotes: '碎碎念',
+        emptyRamblings: '还没有碎碎念，先去路上走走。',
         directory: '此间与同行',
         next: '继续向上',
         back: '回到山脚',
@@ -72,7 +70,8 @@ const labels: HomeLabels =
           projects: 'Laufende Projekte',
           completed: 'Abgeschlossen',
           latest: 'In letzter Zeit',
-          fieldNotes: 'Feldnotizen',
+          fieldNotes: 'Lose Gedanken',
+          emptyRamblings: 'Noch keine losen Gedanken.',
           directory: 'Menschen & Wege',
           next: 'Weiter aufsteigen',
           back: 'Zum Basislager',
@@ -93,7 +92,8 @@ const labels: HomeLabels =
           projects: 'In progress',
           completed: 'Finished',
           latest: 'Lately in life',
-          fieldNotes: 'Field notes',
+          fieldNotes: 'Ramblings',
+          emptyRamblings: 'No ramblings yet.',
           directory: 'People & places',
           next: 'Continue the ascent',
           back: 'Back to base camp',
@@ -131,12 +131,12 @@ const projectCards: HomeCard[] = byOrder(index.projects).map((entry) => ({
   meta: entry.data.status.toUpperCase(),
   progress: entry.data.progress,
 }));
-const noteCards: HomeCard[] = logs.map((entry) => ({
-  id: entry.data.contentId,
-  href: routeFor(entry.data.contentId, locale, 'log') ?? '#',
-  title: entry.data.title,
-  description: entry.data.excerpt,
-  meta: formatDate(entry.data.logDate, locale),
+const collectionCards: HomeCard[] = byOrder(index.series).map((entry) => ({
+  id: entry.data.collectionId,
+  href: routeFor(entry.data.collectionId, locale, 'collection') ?? '#',
+  title: localizedLabel(entry, locale).title,
+  description: localizedLabel(entry, locale).description,
+  tags: entry.data.tags,
 }));
 const entries: HomeCard[] = [
   {
@@ -170,9 +170,42 @@ const mottoEntry = byOrder(
 const motto = mottoEntry
   ? { text: mottoEntry.data.text, source: mottoEntry.data.source }
   : undefined;
-const featuredCards = articleCards
-  .filter((card) => articles.find((entry) => entry.data.contentId === card.id)?.data.featured)
-  .slice(0, 2);
+const featuredCards = articleCards.filter(
+  (card) => articles.find((entry) => entry.data.contentId === card.id)?.data.featured,
+);
+const featuredDestinations = [
+  ...(categoryCards.skill
+    ?.map((entry) => entry.card)
+    .filter(
+      (card) => index.categories.find((entry) => entry.data.categoryId === card.id)?.data.featured,
+    ) ?? []),
+  ...(categoryCards.life
+    ?.map((entry) => entry.card)
+    .filter(
+      (card) => index.categories.find((entry) => entry.data.categoryId === card.id)?.data.featured,
+    ) ?? []),
+  ...projectCards.filter(
+    (card) => index.projects.find((entry) => entry.data.projectId === card.id)?.data.featured,
+  ),
+  ...collectionCards.filter(
+    (card) => index.series.find((entry) => entry.data.collectionId === card.id)?.data.featured,
+  ),
+];
+const ramblingsCategory = index.categories.find(
+  (entry) =>
+    entry.data.categoryId === 'daily-ramblings' || entry.data.tags.includes('daily-ramblings'),
+);
+const ramblingCards = articleCards.filter((card) => {
+  const article = articles.find((entry) => entry.data.contentId === card.id);
+  if (!article || !ramblingsCategory) return false;
+  if (article.data.category === ramblingsCategory.data.categoryId) return true;
+  const project = index.projects.find((entry) => entry.data.projectId === article.data.project);
+  return project?.data.category === ramblingsCategory.data.categoryId;
+});
+const ramblingsHref = ramblingsCategory
+  ? (routeFor(ramblingsCategory.data.categoryId, locale, 'category') ??
+    localizedPath(locale, '/daily-ramblings'))
+  : localizedPath(locale, '/daily-ramblings');
 ---
 
 <main id="main-content" class="snowline-home" data-journey data-pagefind-body tabindex="-1">
@@ -183,6 +216,7 @@ const featuredCards = articleCards
       {labels}
       {motto}
       featured={featuredCards.length ? featuredCards : articleCards.slice(0, 2)}
+      destinations={featuredDestinations}
       profileHref={localizedPath(locale, '/profile')}
     />
   </section>
@@ -195,7 +229,7 @@ const featuredCards = articleCards
     <TechnicalRidge
       {labels}
       categories={skillCategoryCards}
-      projects={projectCards.filter((card) => card.meta !== 'COMPLETED').slice(0, 3)}
+      projects={projectCards.filter((card) => card.meta !== 'COMPLETED')}
     />
   </section>
   <section
@@ -204,11 +238,11 @@ const featuredCards = articleCards
     aria-labelledby="snowfield-traverse-title"
   >
     <ChapterLandscape scene="field" />
-    <SnowfieldTraverse {labels} categories={lifeCategoryCards} latest={articleCards.slice(0, 3)} />
+    <SnowfieldTraverse {labels} categories={lifeCategoryCards} latest={articleCards} />
   </section>
   <section id="night-camp" class="snowline-panel snowline-night" aria-labelledby="night-camp-title">
     <ChapterLandscape scene="camp" />
-    <NightCamp {labels} notes={noteCards.slice(0, 3)} {entries} />
+    <NightCamp {labels} notes={ramblingCards} {entries} {ramblingsHref} />
   </section>
 </main>
 

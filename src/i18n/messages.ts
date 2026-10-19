@@ -9,6 +9,7 @@ export interface Messages {
     home: string;
     technology: string;
     life: string;
+    ramblings: string;
     articles: string;
     projects: string;
     tools: string;
@@ -48,6 +49,7 @@ const messages: Record<Locale, Messages> = {
       home: '首页',
       technology: '技术栈',
       life: '生活日常',
+      ramblings: '碎碎念',
       articles: '文章',
       projects: '项目',
       tools: '工具',
@@ -82,6 +84,7 @@ const messages: Record<Locale, Messages> = {
       home: 'Home',
       technology: 'Technology',
       life: 'Daily life',
+      ramblings: 'Ramblings',
       articles: 'Articles',
       projects: 'Projects',
       tools: 'Tools',
@@ -116,6 +119,7 @@ const messages: Record<Locale, Messages> = {
       home: 'Start',
       technology: 'Technik',
       life: 'Alltag',
+      ramblings: 'Gedanken',
       articles: 'Artikel',
       projects: 'Projekte',
       tools: 'Werkzeuge',

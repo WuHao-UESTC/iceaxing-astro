@@ -415,7 +415,7 @@
 
 .journey-section-label {
   display: grid;
-  grid-template-columns: 1.8rem minmax(0, 1fr);
+  grid-template-columns: 1.8rem minmax(0, 1fr) auto;
   align-items: baseline;
   gap: 0.65rem;
   padding-bottom: 0.65rem;
@@ -434,6 +434,45 @@
   font-weight: 760;
   letter-spacing: 0.13em;
   text-transform: uppercase;
+}
+
+.journey-section-label h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.journey-scroll-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.journey-scroll-controls[hidden] {
+  display: none;
+}
+
+.journey-scroll-controls button {
+  display: grid;
+  width: 1.55rem;
+  height: 1.55rem;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--scene-accent);
+  background: color-mix(in srgb, var(--page) 78%, transparent);
+  cursor: pointer;
+}
+
+.journey-scroll-controls button:disabled {
+  cursor: default;
+  opacity: 0.28;
+}
+
+[data-scroll-list] {
+  overscroll-behavior-y: contain;
+  scrollbar-color: color-mix(in srgb, var(--scene-accent) 48%, transparent) transparent;
+  scrollbar-width: thin;
 }
 
 /* Cover */
@@ -457,6 +496,99 @@
   width: min(100%, 38rem);
   max-width: 38rem;
   container-type: inline-size;
+}
+
+.journey-featured-destinations {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+}
+
+.journey-featured-destinations a {
+  position: absolute;
+  display: inline-grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: 13rem;
+  padding: 0.48rem 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--scene-accent) 52%, var(--line));
+  border-radius: 999px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--page) 80%, transparent);
+  box-shadow: 0 0.75rem 2rem color-mix(in srgb, var(--page) 44%, transparent);
+  font-size: 0.72rem;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  pointer-events: auto;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.journey-featured-destinations a:nth-child(1) {
+  top: 16%;
+  left: 57%;
+}
+.journey-featured-destinations a:nth-child(2) {
+  top: 31%;
+  left: 73%;
+}
+.journey-featured-destinations a:nth-child(3) {
+  top: 45%;
+  left: 51%;
+}
+.journey-featured-destinations a:nth-child(4) {
+  top: 54%;
+  left: 79%;
+}
+.journey-featured-destinations a:nth-child(5) {
+  top: 65%;
+  left: 62%;
+}
+.journey-featured-destinations a:nth-child(6) {
+  top: 73%;
+  left: 84%;
+}
+.journey-featured-destinations a:nth-child(7) {
+  top: 24%;
+  left: 65%;
+}
+.journey-featured-destinations a:nth-child(8) {
+  top: 40%;
+  left: 84%;
+}
+.journey-featured-destinations a:nth-child(n + 9) {
+  top: 61%;
+  left: 72%;
+}
+
+.journey-featured-destinations a:hover,
+.journey-featured-destinations a:focus-visible {
+  border-color: var(--scene-accent);
+  background: color-mix(in srgb, var(--page) 92%, var(--scene-accent) 8%);
+  transform: translateY(-2px);
+}
+
+.journey-featured-destinations span {
+  color: var(--scene-accent);
+  font-size: 0.55rem;
+  font-weight: 780;
+}
+
+.journey-featured-destinations strong {
+  overflow: hidden;
+  font-family: var(--font-reading);
+  font-weight: 620;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.journey-featured-destinations i {
+  color: var(--scene-accent);
+  font-style: normal;
 }
 
 .journey-hero-copy h1 {
@@ -673,6 +805,8 @@
   display: grid;
   grid-template-columns: 1fr;
   border-top: 1px solid var(--line);
+  max-height: 8.5rem;
+  overflow-y: auto;
 }
 
 .journey-featured-card {
@@ -725,6 +859,8 @@
 .journey-category-route,
 .journey-projects > div {
   display: grid;
+  max-height: 15rem;
+  overflow-y: auto;
 }
 
 .journey-category-route a {
@@ -842,6 +978,8 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: 0.65rem;
   border-top: 1px solid var(--line);
+  max-height: 15.5rem;
+  overflow-y: auto;
 }
 
 .journey-life-map a {
@@ -883,6 +1021,8 @@
 
 .journey-latest > div {
   display: grid;
+  max-height: 15rem;
+  overflow-y: auto;
 }
 
 .journey-latest a {
@@ -937,6 +1077,15 @@
 .journey-notes,
 .journey-directory > div {
   display: grid;
+  max-height: 17rem;
+  overflow-y: auto;
+}
+
+.journey-empty-note {
+  margin: 0;
+  padding: 1.25rem 0;
+  color: var(--muted);
+  font-family: var(--font-reading);
 }
 
 .journey-notes a {
@@ -1237,6 +1386,21 @@
     min-height: 0;
     align-items: stretch;
     padding-top: 0;
+  }
+
+  .journey-featured-destinations {
+    position: static;
+    display: flex;
+    width: 100%;
+    gap: 0.55rem;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+  }
+
+  .journey-featured-destinations a,
+  .journey-featured-destinations a:nth-child(n) {
+    position: static;
+    min-width: max-content;
   }
 
   .journey-hero-copy h1 {

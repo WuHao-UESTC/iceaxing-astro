@@ -337,6 +337,7 @@ export default config({
         }),
         labels: localizedText,
         tags,
+        featured: fields.checkbox({ label: '首页精选', defaultValue: false }),
         order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
         icon: fields.text({ label: '图标键' }),
         coverImage: coverImage('../../assets/content/covers/'),
@@ -381,6 +382,7 @@ export default config({
           validation: { min: 0, max: 100, isRequired: true },
         }),
         tags,
+        featured: fields.checkbox({ label: '首页精选', defaultValue: false }),
         order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
         coverImage: coverImage('../../assets/content/covers/'),
         createdAt: fields.datetime({
@@ -409,6 +411,7 @@ export default config({
         ),
         labels: localizedText,
         tags,
+        featured: fields.checkbox({ label: '首页精选', defaultValue: false }),
         order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
         coverImage: coverImage('../../assets/content/covers/'),
         createdAt: fields.datetime({

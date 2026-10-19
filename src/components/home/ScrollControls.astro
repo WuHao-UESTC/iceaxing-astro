@@ -1,0 +1,27 @@
+---
+interface Props {
+  target: string;
+  label: string;
+}
+
+const { target, label } = Astro.props;
+---
+
+<div class="journey-scroll-controls" data-scroll-controls hidden>
+  <button
+    type="button"
+    data-scroll-target={target}
+    data-scroll-direction="up"
+    aria-label={`${label}：向上滚动`}
+  >
+    ↑
+  </button>
+  <button
+    type="button"
+    data-scroll-target={target}
+    data-scroll-direction="down"
+    aria-label={`${label}：向下滚动`}
+  >
+    ↓
+  </button>
+</div>

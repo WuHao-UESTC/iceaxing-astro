@@ -13,6 +13,39 @@ export function initHomeJourney() {
   const visited = new WeakSet<HTMLElement>();
   document.documentElement.classList.add('journey-enhanced');
 
+  const scrollLists = [...home.querySelectorAll<HTMLElement>('[data-scroll-list]')];
+  const updateScrollList = (list: HTMLElement) => {
+    const controls = home.querySelector<HTMLElement>(
+      `[data-scroll-controls]:has([data-scroll-target="${CSS.escape(list.id)}"])`,
+    );
+    const overflowing = list.scrollHeight > list.clientHeight + 2;
+    if (controls) controls.hidden = !overflowing;
+    controls?.querySelectorAll<HTMLButtonElement>('[data-scroll-direction]').forEach((button) => {
+      const atStart = list.scrollTop <= 1;
+      const atEnd = list.scrollTop + list.clientHeight >= list.scrollHeight - 1;
+      button.disabled = button.dataset.scrollDirection === 'up' ? atStart : atEnd;
+    });
+  };
+
+  scrollLists.forEach((list) => {
+    if (!list.id) return;
+    updateScrollList(list);
+    list.addEventListener('scroll', () => updateScrollList(list), { passive: true });
+    new ResizeObserver(() => updateScrollList(list)).observe(list);
+  });
+
+  home.querySelectorAll<HTMLButtonElement>('[data-scroll-target]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const list = document.getElementById(button.dataset.scrollTarget ?? '');
+      if (!list) return;
+      const direction = button.dataset.scrollDirection === 'up' ? -1 : 1;
+      list.scrollBy({
+        top: direction * Math.max(80, list.clientHeight * 0.72),
+        behavior: reducedMotion.matches ? 'auto' : 'smooth',
+      });
+    });
+  });
+
   function activate(panel: HTMLElement, animate = true) {
     const firstVisit = !visited.has(panel);
     visited.add(panel);

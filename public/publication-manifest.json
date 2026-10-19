@@ -2,6 +2,17 @@
   "version": 1,
   "entries": [
     {
+      "contentId": "basic-of-passive-filter-design",
+      "kind": "article",
+      "versionHash": "903f455ace1bff999f4aad45",
+      "publishedAt": "2026-10-19T17:01:00.000Z",
+      "titles": { "zh": "无源滤波器设计" },
+      "urls": {
+        "zh": "/uestc-note/filter-design-in-digital-world-note/basic-of-passive-filter-design"
+      },
+      "subscriptionKeys": ["category:uestc-note", "project:filter-design-in-digital-world-note"]
+    },
+    {
       "contentId": "analog-ic",
       "kind": "category",
       "versionHash": "9a75ed190615cda269492e6b",
@@ -22,6 +33,19 @@
         "en": "/en/annual-summaries"
       },
       "subscriptionKeys": ["category:annual-summaries"]
+    },
+    {
+      "contentId": "daily-ramblings",
+      "kind": "category",
+      "versionHash": "7ef00d250d142b517d2415fc",
+      "publishedAt": "2026-10-19T00:00:00.000Z",
+      "titles": { "zh": "碎碎念", "en": "Ramblings", "de": "Gedanken" },
+      "urls": {
+        "zh": "/daily-ramblings",
+        "de": "/de/daily-ramblings",
+        "en": "/en/daily-ramblings"
+      },
+      "subscriptionKeys": ["category:daily-ramblings"]
     },
     {
       "contentId": "uestc-note",

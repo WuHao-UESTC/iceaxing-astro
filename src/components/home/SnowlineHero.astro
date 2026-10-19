@@ -1,15 +1,17 @@
 ---
 import ChapterMarker from './ChapterMarker.astro';
+import ScrollControls from './ScrollControls.astro';
 import type { HomeCard, HomeLabels } from './types';
 
 interface Props {
   labels: HomeLabels;
   motto?: { text: string; source: string };
   featured: HomeCard[];
+  destinations: HomeCard[];
   profileHref: string;
 }
 
-const { labels, motto, featured, profileHref } = Astro.props;
+const { labels, motto, featured, destinations, profileHref } = Astro.props;
 const routes = [
   { number: '02', label: labels.chapters[1], href: '#technical-ridge', id: 'technical-ridge' },
   {
@@ -62,8 +64,9 @@ const routes = [
             {labels.next}
             <span aria-hidden="true">↓</span>
           </a>
+          <ScrollControls target="hero-featured-list" label={labels.featured} />
         </header>
-        <div class="journey-featured-track">
+        <div id="hero-featured-list" class="journey-featured-track" data-scroll-list tabindex="0">
           {featured.map((card, index) => (
             <a
               class="journey-featured-card"
@@ -83,6 +86,23 @@ const routes = [
       </section>
     </div>
   </div>
+
+  {destinations.length > 0 && (
+    <nav class="journey-featured-destinations" aria-label={labels.featured}>
+      {destinations.map((card, index) => (
+        <a
+          href={card.href}
+          style={`--destination-index:${index}`}
+          data-reveal
+          data-step={String(2 + index)}
+        >
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <strong>{card.title}</strong>
+          <i aria-hidden="true">↗</i>
+        </a>
+      ))}
+    </nav>
+  )}
 
   <nav class="journey-ridge-routes" aria-label={labels.route} data-reveal data-step="3">
     {routes.map((route, index) => (
