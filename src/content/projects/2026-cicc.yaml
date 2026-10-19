@@ -14,5 +14,6 @@ status: completed
 progress: 100
 tags:
   - competition
+featured: true
 order: 0
 createdAt: 2026-10-19T15:48:00.000Z

@@ -20,6 +20,7 @@ import {
 import { localizedPath, type Locale } from '../i18n/config';
 import ArticlePage from './content/ArticlePage.astro';
 import ContentPage from './content/ContentPage.astro';
+import ProfilePage from './content/ProfilePage.astro';
 import FriendsPage from './content/FriendsPage.astro';
 import ListingPage from './content/ListingPage.astro';
 
@@ -49,6 +50,12 @@ let articleEntry: ArticleEntry | LogEntry | undefined;
 let pageEntry: PageEntry | undefined;
 let Content: RenderResult['Content'] | undefined;
 let headings: Array<{ depth: number; slug: string; text: string }> = [];
+let readingScene: 'ridge' | 'field' | 'camp' = 'ridge';
+let readingBreadcrumbs: Array<{ title: string; href: string }> = [];
+let readingNeighbors: {
+  previous?: { title: string; href: string };
+  next?: { title: string; href: string };
+} = {};
 let listing:
   | {
       title: string;
@@ -61,9 +68,14 @@ let listing:
         eyebrow?: string;
         meta?: string;
         tags?: string[];
+        kind?: 'project' | 'collection' | 'article';
       }>;
     }
   | undefined;
+let listingScene: 'cover' | 'ridge' | 'field' | 'camp' = 'cover';
+let listingParent: { title: string; href: string } | undefined;
+let listingProgress: number | undefined;
+let listingStatus: string | undefined;
 let showFriends = false;
 let pagefindType = route?.kind ?? 'page';
 let pagefindCategory: string | undefined;
@@ -103,6 +115,7 @@ if (special === 'articles') {
     })),
   };
 } else if (special === 'projects') {
+  listingScene = 'ridge';
   pagefindType = 'page';
   title = locale === 'zh' ? '项目' : locale === 'de' ? 'Projekte' : 'Projects';
   description =
@@ -113,6 +126,7 @@ if (special === 'articles') {
     title,
     description,
     cards: byOrder(index.projects).map((entry) => ({
+      kind: 'project',
       href: routeFor(entry.data.projectId, locale, 'project') ?? '#',
       title: localizedLabel(entry, locale).title,
       description: localizedLabel(entry, locale).description,
@@ -121,6 +135,7 @@ if (special === 'articles') {
     })),
   };
 } else if (special === 'log-index') {
+  listingScene = 'camp';
   pagefindType = 'page';
   title = locale === 'zh' ? '日志' : 'Log';
   description =
@@ -182,8 +197,60 @@ if (special === 'articles') {
   if (!articleEntry) throw new Error(`Missing content entry: ${route.contentId}`);
   if (route.kind === 'article') {
     const article = articleEntry as ArticleEntry;
-    const project = index.projects.find((entry) => entry.data.projectId === article.data.project);
-    pagefindCategory = article.data.category ?? project?.data.category;
+    const collection = index.series.find(
+      (entry) => entry.data.collectionId === article.data.collection,
+    );
+    const project = index.projects.find(
+      (entry) => entry.data.projectId === (article.data.project ?? collection?.data.project),
+    );
+    const category = index.categories.find(
+      (entry) => entry.data.categoryId === (article.data.category ?? project?.data.category),
+    );
+    pagefindCategory = category?.data.categoryId;
+    readingScene = category?.data.tags.includes('daily-ramblings')
+      ? 'camp'
+      : category?.data.group === 'life'
+        ? 'field'
+        : 'ridge';
+    const parents = [
+      category && { entry: category, id: category.data.categoryId, kind: 'category' as const },
+      project && { entry: project, id: project.data.projectId, kind: 'project' as const },
+      collection && {
+        entry: collection,
+        id: collection.data.collectionId,
+        kind: 'collection' as const,
+      },
+    ];
+    readingBreadcrumbs = parents.flatMap((parent) => {
+      if (!parent) return [];
+      const href = routeFor(parent.id, locale, parent.kind);
+      return href ? [{ title: localizedLabel(parent.entry, locale).title, href }] : [];
+    });
+    const siblings = byOrder(
+      publicArticles.filter((entry) => {
+        if (article.data.collection) return entry.data.collection === article.data.collection;
+        if (project) return entry.data.project === project.data.projectId;
+        if (category) return entry.data.category === category.data.categoryId;
+        return false;
+      }),
+    );
+    const currentIndex = siblings.findIndex(
+      (entry) => entry.data.contentId === article.data.contentId,
+    );
+    const neighbor = (entry: ArticleEntry | undefined) => {
+      const href = entry && routeFor(entry.data.contentId, locale, 'article');
+      return entry && href ? { title: entry.data.title, href } : undefined;
+    };
+    if (currentIndex >= 0)
+      readingNeighbors = {
+        previous: neighbor(siblings[currentIndex - 1]),
+        next: neighbor(siblings[currentIndex + 1]),
+      };
+  } else {
+    readingScene = 'camp';
+    readingBreadcrumbs = [
+      { title: locale === 'zh' ? '日志' : 'Log', href: localizedPath(locale, '/log') },
+    ];
   }
   const rendered = await render(articleEntry);
   Content = rendered.Content;
@@ -210,6 +277,7 @@ if (special === 'articles') {
   if (!pageEntry) throw new Error(`Missing page entry: ${route.contentId}`);
   const rendered = await render(pageEntry);
   Content = rendered.Content;
+  headings = rendered.headings;
   title = pageEntry.data.seo.title || pageEntry.data.title;
   description = pageEntry.data.seo.description || pageEntry.data.excerpt;
   alternatePaths = contentAlternates(pageEntry.data.translationKey, 'page', index.pages);
@@ -218,6 +286,11 @@ if (special === 'articles') {
   if (!category) throw new Error(`Missing category: ${route.contentId}`);
   pagefindCategory = category.data.categoryId;
   const label = localizedLabel(category, locale);
+  listingScene = category.data.tags.includes('daily-ramblings')
+    ? 'camp'
+    : category.data.group === 'life'
+      ? 'field'
+      : 'ridge';
   title = label.title;
   description = label.description;
   alternatePaths = Object.fromEntries(
@@ -240,6 +313,7 @@ if (special === 'articles') {
     eyebrow: 'ICEAXING / CATEGORY',
     cards: [
       ...projects.map((entry) => ({
+        kind: 'project' as const,
         href: routeFor(entry.data.projectId, locale, 'project') ?? '#',
         title: localizedLabel(entry, locale).title,
         description: localizedLabel(entry, locale).description,
@@ -247,6 +321,7 @@ if (special === 'articles') {
         tags: entry.data.tags,
       })),
       ...articles.map((entry) => ({
+        kind: 'article' as const,
         href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
         title: entry.data.title,
         description: entry.data.excerpt,
@@ -257,10 +332,26 @@ if (special === 'articles') {
     ],
   };
 } else if (route?.kind === 'project') {
+  listingScene = 'ridge';
   const project = index.projects.find((entry) => entry.data.projectId === route.contentId);
   if (!project) throw new Error(`Missing project: ${route.contentId}`);
   pagefindCategory = project.data.category;
   const label = localizedLabel(project, locale);
+  const category = index.categories.find(
+    (entry) => entry.data.categoryId === project.data.category,
+  );
+  listingScene = category?.data.tags.includes('daily-ramblings')
+    ? 'camp'
+    : category?.data.group === 'life'
+      ? 'field'
+      : 'ridge';
+  listingProgress = project.data.progress;
+  listingStatus = project.data.status;
+  if (category)
+    listingParent = {
+      title: localizedLabel(category, locale).title,
+      href: routeFor(category.data.categoryId, locale, 'category') ?? localizedPath(locale),
+    };
   title = label.title;
   description = label.description;
   alternatePaths = Object.fromEntries(
@@ -278,6 +369,7 @@ if (special === 'articles') {
     eyebrow: `ICEAXING / PROJECT · ${project.data.progress}%`,
     cards: [
       ...collections.map((entry) => ({
+        kind: 'collection' as const,
         href: routeFor(entry.data.collectionId, locale, 'collection') ?? '#',
         title: localizedLabel(entry, locale).title,
         description: localizedLabel(entry, locale).description,
@@ -285,6 +377,7 @@ if (special === 'articles') {
         tags: entry.data.tags,
       })),
       ...articles.map((entry) => ({
+        kind: 'article' as const,
         href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
         title: entry.data.title,
         description: entry.data.excerpt,
@@ -295,12 +388,27 @@ if (special === 'articles') {
     ],
   };
 } else if (route?.kind === 'collection') {
+  listingScene = 'field';
   const collection = index.series.find((entry) => entry.data.collectionId === route.contentId);
   if (!collection) throw new Error(`Missing collection: ${route.contentId}`);
   pagefindCategory = index.projects.find(
     (entry) => entry.data.projectId === collection.data.project,
   )?.data.category;
   const label = localizedLabel(collection, locale);
+  const project = index.projects.find((entry) => entry.data.projectId === collection.data.project);
+  const category = index.categories.find(
+    (entry) => entry.data.categoryId === project?.data.category,
+  );
+  listingScene = category?.data.tags.includes('daily-ramblings')
+    ? 'camp'
+    : category?.data.group === 'life'
+      ? 'field'
+      : 'ridge';
+  if (project)
+    listingParent = {
+      title: localizedLabel(project, locale).title,
+      href: routeFor(project.data.projectId, locale, 'project') ?? localizedPath(locale),
+    };
   title = label.title;
   description = label.description;
   alternatePaths = Object.fromEntries(
@@ -312,15 +420,15 @@ if (special === 'articles') {
     title,
     description,
     eyebrow: 'ICEAXING / COLLECTION',
-    cards: publicArticles
-      .filter((entry) => entry.data.collection === collection.data.collectionId)
-      .map((entry) => ({
-        href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
-        title: entry.data.title,
-        description: entry.data.excerpt,
-        meta: formatDate(entry.data.publishedAt, locale),
-        tags: entry.data.tags,
-      })),
+    cards: byOrder(
+      publicArticles.filter((entry) => entry.data.collection === collection.data.collectionId),
+    ).map((entry) => ({
+      href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
+      title: entry.data.title,
+      description: entry.data.excerpt,
+      meta: formatDate(entry.data.publishedAt, locale),
+      tags: entry.data.tags,
+    })),
   };
 }
 
@@ -361,12 +469,38 @@ const structuredData = jsonLd ? [jsonLd, breadcrumbLd] : breadcrumbLd;
       {headings}
       {Content}
       kind={route?.kind === 'log' ? 'log' : 'article'}
+      scene={readingScene}
+      breadcrumbs={readingBreadcrumbs}
+      neighbors={readingNeighbors}
     />
   ) : pageEntry && Content ? (
-    <ContentPage entry={pageEntry} {Content} />
+    pageEntry.data.pageKind === 'profile' ? (
+      <ProfilePage
+        entry={pageEntry}
+        {Content}
+        {headings}
+        {locale}
+        authorName={index.settings[0]?.data.authorName ?? 'iceaxing'}
+      />
+    ) : (
+      <ContentPage entry={pageEntry} {Content} {headings} {locale} />
+    )
   ) : showFriends ? (
     <FriendsPage {locale} friends={byOrder(index.friends.filter((entry) => entry.data.active))} />
   ) : listing ? (
-    <ListingPage {...listing} {emptyLabel} />
+    <ListingPage
+      {...listing}
+      {locale}
+      scene={listingScene}
+      kind={
+        route?.kind === 'category' || route?.kind === 'project' || route?.kind === 'collection'
+          ? route.kind
+          : 'index'
+      }
+      parent={listingParent}
+      progress={listingProgress}
+      status={listingStatus}
+      {emptyLabel}
+    />
   ) : null}
 </BaseLayout>

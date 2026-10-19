@@ -1,23 +1,97 @@
 ---
 import type { RenderResult } from 'astro:content';
-
 import type { PageEntry } from '../../lib/content';
-
+import { localizedPath, type Locale } from '../../i18n/config';
+import TableOfContents from './TableOfContents.astro';
+import '../../styles/reading.css';
+import '../../styles/people.css';
 interface Props {
   entry: PageEntry;
   Content: RenderResult['Content'];
+  headings: Array<{ depth: number; slug: string; text: string }>;
+  locale: Locale;
 }
-
-const { entry, Content } = Astro.props;
+const { entry, Content, headings, locale } = Astro.props;
+const labels =
+  locale === 'zh'
+    ? {
+        home: '首页',
+        contents: '本页目录',
+        guide: '从这里继续',
+        articles: '阅读文章',
+        projects: '浏览项目',
+        profile: '认识作者',
+        top: '回到开篇',
+      }
+    : locale === 'de'
+      ? {
+          home: 'Start',
+          contents: 'Auf dieser Seite',
+          guide: 'Weitergehen',
+          articles: 'Artikel lesen',
+          projects: 'Projekte ansehen',
+          profile: 'Über den Autor',
+          top: 'Nach oben',
+        }
+      : {
+          home: 'Home',
+          contents: 'On this page',
+          guide: 'Continue exploring',
+          articles: 'Read the notes',
+          projects: 'Explore projects',
+          profile: 'Meet the author',
+          top: 'Back to top',
+        };
 ---
 
-<main id="main-content" class="content-page" data-pagefind-body>
-  <header class="content-page-header">
-    <p class="content-kicker">ICEAXING / {entry.data.pageKind.toUpperCase()}</p>
+<main
+  id="main-content"
+  class="people-page reading-page about-page shell"
+  data-reader
+  data-pagefind-body
+>
+  <nav class="people-breadcrumb" aria-label={labels.contents} data-pagefind-ignore>
+    <a href={localizedPath(locale)}>{labels.home}</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{entry.data.title}</span>
+  </nav>
+  <header class="about-heading" id="reader-top">
+    <p class="people-kicker">ICEAXING / {entry.data.pageKind === 'about' ? 'COLOPHON' : 'NOTES'}</p>
     <h1 data-pagefind-meta="title">{entry.data.title}</h1>
     {entry.data.excerpt && <p data-pagefind-meta="description">{entry.data.excerpt}</p>}
+    <span class="about-mark" aria-hidden="true">
+      i.
+    </span>
   </header>
-  <div class="prose content-page-body">
-    <Content />
+  <div class="people-layout">
+    <div class="reader-body prose people-body" data-reader-body>
+      <Content />
+      <footer class="people-end" data-pagefind-ignore>
+        <span aria-hidden="true">✳</span>
+        <a href="#reader-top">{labels.top} ↑</a>
+      </footer>
+    </div>
+    <aside class="reader-aside people-aside" data-pagefind-ignore>
+      <TableOfContents {headings} label={labels.contents} />
+      <nav class="about-guide" aria-label={labels.guide}>
+        <strong>{labels.guide}</strong>
+        <a href={localizedPath(locale, '/articles')}>
+          {labels.articles}
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a href={localizedPath(locale, '/projects')}>
+          {labels.projects}
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a href={localizedPath(locale, '/profile')}>
+          {labels.profile}
+          <span aria-hidden="true">↗</span>
+        </a>
+      </nav>
+    </aside>
   </div>
 </main>
+<script>
+  import { initArticleReader } from '../../scripts/article-reader';
+  initArticleReader();
+</script>

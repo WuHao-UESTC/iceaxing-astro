@@ -26,7 +26,6 @@ const { labels, notes, entries, ramblingsHref } = Astro.props;
   <div class="journey-camp-grid">
     <section aria-labelledby="field-notes-title">
       <div class="journey-section-label">
-        <span>01</span>
         <h3 id="field-notes-title">
           <a href={ramblingsHref}>{labels.fieldNotes} ↗</a>
         </h3>
@@ -65,7 +64,6 @@ const { labels, notes, entries, ramblingsHref } = Astro.props;
 
     <aside class="journey-directory" aria-labelledby="camp-directory-title">
       <div class="journey-section-label">
-        <span>02</span>
         <h3 id="camp-directory-title">{labels.directory}</h3>
         <ScrollControls target="camp-directory-list" label={labels.directory} />
       </div>

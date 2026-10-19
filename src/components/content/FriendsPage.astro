@@ -1,40 +1,186 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-
-import type { Locale } from '../../i18n/config';
-
+import { localizedPath, type Locale } from '../../i18n/config';
+import '../../styles/people.css';
 interface Props {
   locale: Locale;
   friends: CollectionEntry<'friends'>[];
 }
-
 const { locale, friends } = Astro.props;
-const title = locale === 'zh' ? '同行者' : locale === 'de' ? 'Weggefährten' : 'Fellow travellers';
-const intro =
+const siteAddress = (href: string) => {
+  const url = new URL(href);
+  return (
+    url.hostname.replace(/^www\./, '') +
+    (url.pathname === '/' ? '' : url.pathname.replace(/\/$/, ''))
+  );
+};
+const labels =
   locale === 'zh'
-    ? '一些值得持续拜访的站点与朋友。'
+    ? {
+        home: '首页',
+        title: '同行者',
+        intro: '循着一阶阶足迹，遇见值得停留的站点与朋友。',
+        owner: '站长',
+        language: '语言',
+        since: '相识于',
+        visit: '前往拜访',
+        related: '相关链接',
+        empty: '沿途的相遇，还在慢慢收集。',
+        count: '处同行站点',
+      }
     : locale === 'de'
-      ? 'Websites und Menschen, die einen weiteren Besuch wert sind.'
-      : 'Sites and people worth returning to.';
+      ? {
+          home: 'Start',
+          title: 'Weggefährten',
+          intro: 'Schritt für Schritt zu Menschen und Websites, bei denen man gerne verweilt.',
+          owner: 'Autor',
+          language: 'Sprache',
+          since: 'Seit',
+          visit: 'Besuchen',
+          related: 'Weitere Links',
+          empty: 'Begegnungen werden noch gesammelt.',
+          count: 'Weggefährten',
+        }
+      : {
+          home: 'Home',
+          title: 'Fellow travellers',
+          intro: 'Step by step, discover people and places worth stopping for.',
+          owner: 'Author',
+          language: 'Language',
+          since: 'Met in',
+          visit: 'Visit the site',
+          related: 'Related links',
+          empty: 'Still collecting encounters along the way.',
+          count: 'fellow sites',
+        };
+const flights = Array.from({ length: Math.ceil(friends.length / 3) }, (_, index) =>
+  friends.slice(index * 3, index * 3 + 3),
+);
 ---
 
-<main id="main-content" class="listing-page shell" data-pagefind-body>
-  <header class="listing-header">
-    <p class="content-kicker">ICEAXING / LINKS</p>
-    <h1>{title}</h1>
-    <p>{intro}</p>
+<main id="main-content" class="people-page friends-page shell" data-pagefind-body>
+  <nav class="people-breadcrumb" aria-label={labels.title} data-pagefind-ignore>
+    <a href={localizedPath(locale)}>{labels.home}</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{labels.title}</span>
+  </nav>
+  <header class="friends-heading">
+    <div>
+      <p class="people-kicker">PEOPLE / PLACES / CONNECTIONS</p>
+      <h1 data-pagefind-meta="title">{labels.title}</h1>
+      <p>{labels.intro}</p>
+    </div>
+    <span class="friends-count">
+      <strong>{String(friends.length).padStart(2, '0')}</strong>
+      {labels.count}
+    </span>
   </header>
-  <div class="friends-grid">
-    {friends.map((friend) => (
-      <a class="friend-card" href={friend.data.url} rel="friend external">
-        <span aria-hidden="true">{friend.data.name.slice(0, 1).toUpperCase()}</span>
-        <div>
-          <h2>{friend.data.name}</h2>
-          {friend.data.description && <p>{friend.data.description}</p>}
-          <small>{new URL(friend.data.url).hostname}</small>
-        </div>
-        <i aria-hidden="true">↗</i>
-      </a>
+  <div class="friends-ascent">
+    {flights.map((flight, flightIndex) => (
+      <ol class="friends-steps" role="list" start={flightIndex * 3 + 1}>
+        {flight.map((friend, step) => (
+          <li class="friend-step" style={`--step:${step}`}>
+            <article class="friend-stop-card">
+              <div class="friend-stop-top">
+                <span class="friend-stop-number">
+                  {String(flightIndex * 3 + step + 1).padStart(2, '0')} /
+                </span>
+                <span class="friend-domain">{siteAddress(friend.data.url)}</span>
+              </div>
+              <div class="friend-identity">
+                <span class="friend-avatar" aria-hidden="true">
+                  <span>{friend.data.name.slice(0, 1).toUpperCase()}</span>
+                  {friend.data.avatar && (
+                    <img
+                      src={friend.data.avatar}
+                      alt=""
+                      width="48"
+                      height="48"
+                      loading="lazy"
+                      decoding="async"
+                      referrerpolicy="no-referrer"
+                      data-person-avatar
+                    />
+                  )}
+                </span>
+                <h2>
+                  <a
+                    href={friend.data.url}
+                    rel="friend external noopener noreferrer"
+                    target="_blank"
+                  >
+                    {friend.data.name}
+                  </a>
+                </h2>
+              </div>
+              {friend.data.description && (
+                <p class="friend-description">{friend.data.description}</p>
+              )}
+              {(friend.data.tags ?? []).length > 0 && (
+                <ul class="friend-topics" aria-label={labels.related}>
+                  {(friend.data.tags ?? []).map((tag) => (
+                    <li>#{tag}</li>
+                  ))}
+                </ul>
+              )}
+              {(friend.data.owner || friend.data.language || friend.data.since) && (
+                <dl class="friend-facts">
+                  {friend.data.owner && (
+                    <div>
+                      <dt>{labels.owner}</dt>
+                      <dd>{friend.data.owner}</dd>
+                    </div>
+                  )}
+                  {friend.data.language && (
+                    <div>
+                      <dt>{labels.language}</dt>
+                      <dd>{friend.data.language}</dd>
+                    </div>
+                  )}
+                  {friend.data.since && (
+                    <div>
+                      <dt>{labels.since}</dt>
+                      <dd>{friend.data.since}</dd>
+                    </div>
+                  )}
+                </dl>
+              )}
+              {(friend.data.links ?? []).length > 0 && (
+                <nav class="friend-related" aria-label={labels.related}>
+                  {(friend.data.links ?? []).map((link) => (
+                    <a href={link.url} target="_blank" rel="external noopener noreferrer">
+                      {link.label} ↗
+                    </a>
+                  ))}
+                </nav>
+              )}
+              <a
+                class="friend-visit"
+                href={friend.data.url}
+                rel="friend external noopener noreferrer"
+                target="_blank"
+              >
+                <span>{labels.visit}</span>
+                <i aria-hidden="true">↗</i>
+              </a>
+            </article>
+          </li>
+        ))}
+        {Array.from({ length: 3 - flight.length }, (_, index) => (
+          <li
+            class="friend-step friend-step-empty"
+            aria-hidden="true"
+            style={`--step:${flight.length + index}`}
+          >
+            <span></span>
+          </li>
+        ))}
+      </ol>
     ))}
+    {!friends.length && <p class="friends-empty">{labels.empty}</p>}
   </div>
 </main>
+<script>
+  import { initPeopleImages } from '../../scripts/people-images';
+  initPeopleImages();
+</script>

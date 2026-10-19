@@ -1,0 +1,16 @@
+projectId: test
+slug: test
+category: reading
+labels:
+  zh:
+    title: 测试
+  en:
+    title: test
+  de:
+    title: test
+status: planned
+progress: 0
+tags: []
+featured: false
+order: 0
+createdAt: 2026-10-19T23:27:00.000Z

@@ -1,0 +1,177 @@
+---
+import type { RenderResult } from 'astro:content';
+import type { PageEntry } from '../../lib/content';
+import { localizedPath, type Locale } from '../../i18n/config';
+import TableOfContents from './TableOfContents.astro';
+import '../../styles/reading.css';
+import '../../styles/people.css';
+
+interface Props {
+  entry: PageEntry;
+  Content: RenderResult['Content'];
+  headings: Array<{ depth: number; slug: string; text: string }>;
+  locale: Locale;
+  authorName: string;
+}
+const { entry, Content, headings, locale, authorName } = Astro.props;
+const profile = entry.data.profile;
+const name = profile?.displayName || authorName;
+const experience = profile?.experience ?? [];
+const links = profile?.links ?? [];
+const hasContacts = Boolean(profile?.email || profile?.qq || links.length);
+const labels =
+  locale === 'zh'
+    ? {
+        home: '首页',
+        contents: '本页目录',
+        experience: '经历',
+        contact: '联系方式',
+        email: '邮箱',
+        about: '关于这座站点',
+        top: '回到开篇',
+      }
+    : locale === 'de'
+      ? {
+          home: 'Start',
+          contents: 'Auf dieser Seite',
+          experience: 'Stationen',
+          contact: 'Kontakt',
+          email: 'E-Mail',
+          about: 'Über diese Website',
+          top: 'Nach oben',
+        }
+      : {
+          home: 'Home',
+          contents: 'On this page',
+          experience: 'Experience',
+          contact: 'Get in touch',
+          email: 'Email',
+          about: 'About this site',
+          top: 'Back to top',
+        };
+const outline = [
+  ...headings,
+  ...(experience.length ? [{ depth: 2, slug: 'profile-experience', text: labels.experience }] : []),
+  ...(hasContacts ? [{ depth: 2, slug: 'profile-contact', text: labels.contact }] : []),
+];
+---
+
+<main
+  id="main-content"
+  class="people-page reading-page profile-page shell"
+  data-reader
+  data-pagefind-body
+>
+  <nav class="people-breadcrumb" aria-label={labels.contents} data-pagefind-ignore>
+    <a href={localizedPath(locale)}>{labels.home}</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{name}</span>
+  </nav>
+  <header class="profile-identity" id="reader-top">
+    <div class="profile-avatar">
+      <span aria-hidden="true">{name.slice(0, 2).toUpperCase()}</span>
+      <img
+        src={profile?.avatar || '/favicon.svg'}
+        width="112"
+        height="112"
+        alt={name}
+        decoding="async"
+        data-person-avatar
+      />
+    </div>
+    <div class="profile-intro">
+      <p class="people-kicker">ICEAXING / FIELD NOTES</p>
+      <h1 data-pagefind-meta="title">{name}</h1>
+      {(profile?.headline || entry.data.excerpt) && (
+        <p class="profile-headline" data-pagefind-meta="description">
+          {profile?.headline || entry.data.excerpt}
+        </p>
+      )}
+      {profile?.location && (
+        <span class="profile-location">
+          <i aria-hidden="true">⌖</i>
+          {profile.location}
+        </span>
+      )}
+    </div>
+    <a class="profile-site-link" href={localizedPath(locale, '/about')}>
+      {labels.about}
+      <span aria-hidden="true">↗</span>
+    </a>
+  </header>
+  <div class="people-layout">
+    <div class="reader-body prose people-body" data-reader-body>
+      <Content />
+      {experience.length > 0 && (
+        <section class="profile-experience" aria-labelledby="profile-experience">
+          <h2 id="profile-experience">{labels.experience}</h2>
+          <ol class="profile-timeline">
+            {experience.map((item) => (
+              <li>
+                {item.period && <span class="profile-period">{item.period}</span>}
+                <div>
+                  <h3>{item.title}</h3>
+                  {item.organization && <p class="profile-organization">{item.organization}</p>}
+                  {item.description && (
+                    <p class="profile-experience-description">{item.description}</p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+      {hasContacts && (
+        <section class="profile-contact" aria-labelledby="profile-contact">
+          <h2 id="profile-contact">{labels.contact}</h2>
+          <dl class="profile-contact-grid">
+            {profile?.email && (
+              <div>
+                <dt>{labels.email}</dt>
+                <dd>
+                  <a href={`mailto:${profile.email}`}>
+                    {profile.email}
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                </dd>
+              </div>
+            )}
+            {profile?.qq && (
+              <div>
+                <dt>QQ</dt>
+                <dd>{profile.qq}</dd>
+              </div>
+            )}
+            {links.map((link) => (
+              <div>
+                <dt>{link.label}</dt>
+                <dd>
+                  <a href={link.url} rel="me external noopener noreferrer" target="_blank">
+                    {new URL(link.url).hostname +
+                      (new URL(link.url).pathname === '/'
+                        ? ''
+                        : new URL(link.url).pathname.replace(/\/$/, ''))}
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
+      <footer class="people-end" data-pagefind-ignore>
+        <span aria-hidden="true">✳</span>
+        <a href="#reader-top">{labels.top} ↑</a>
+      </footer>
+    </div>
+    <aside class="reader-aside people-aside" data-pagefind-ignore>
+      <TableOfContents headings={outline} label={labels.contents} />
+    </aside>
+  </div>
+</main>
+<script>
+  import { initArticleReader } from '../../scripts/article-reader';
+  import { initPeopleImages } from '../../scripts/people-images';
+  initArticleReader();
+  initPeopleImages();
+</script>

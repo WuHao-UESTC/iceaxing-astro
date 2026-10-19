@@ -25,7 +25,6 @@ const { labels, categories, projects } = Astro.props;
   <div class="journey-technical-grid">
     <section class="journey-route-ledger" aria-labelledby="technical-categories-title">
       <div class="journey-section-label">
-        <span>01</span>
         <h3 id="technical-categories-title">STACK INDEX</h3>
         <ScrollControls target="technical-category-list" label="STACK INDEX" />
       </div>
@@ -51,7 +50,6 @@ const { labels, categories, projects } = Astro.props;
 
     <section class="journey-projects" aria-labelledby="journey-projects-title">
       <div class="journey-section-label">
-        <span>02</span>
         <h3 id="journey-projects-title">{labels.projects}</h3>
         <ScrollControls target="technical-project-list" label={labels.projects} />
       </div>

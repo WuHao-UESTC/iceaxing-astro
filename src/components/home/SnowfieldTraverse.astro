@@ -26,14 +26,21 @@ const { labels, categories, latest } = Astro.props;
     {categories.length > 0 && (
       <nav class="journey-life-map" aria-label={labels.chapters[2]}>
         <div class="journey-section-label">
-          <span>01</span>
           <p class="journey-eyebrow">FIELD INDEX</p>
-          <ScrollControls target="life-category-list" label="FIELD INDEX" />
+          <div class="journey-scroll-controls journey-horizontal-controls" data-scroll-controls hidden>
+            <button type="button" data-scroll-target="life-category-list" data-scroll-direction="left" aria-label="FIELD INDEX: previous categories">←</button>
+            <button type="button" data-scroll-target="life-category-list" data-scroll-direction="right" aria-label="FIELD INDEX: next categories">→</button>
+          </div>
         </div>
-        <div id="life-category-list" data-scroll-list tabindex="0">
+        <div
+          id="life-category-list"
+          class="journey-life-sign-list"
+          data-scroll-list
+          data-scroll-axis="x"
+          tabindex="0"
+        >
           {categories.map((card, index) => (
             <a href={card.href} data-reveal data-step={String(2 + index)}>
-              <span>0{index + 1}</span>
               <h3>{card.title}</h3>
               <small>{card.description}</small>
               <i aria-hidden="true">↗</i>
@@ -43,13 +50,14 @@ const { labels, categories, latest } = Astro.props;
       </nav>
     )}
 
-    <section class="journey-latest" aria-labelledby="journey-latest-title">
-      <div class="journey-section-label">
-        <span>{categories.length > 0 ? '02' : '01'}</span>
-        <h3 id="journey-latest-title">{labels.latest}</h3>
-        <ScrollControls target="life-latest-list" label={labels.latest} />
-      </div>
-      <div id="life-latest-list" data-scroll-list tabindex="0">
+  </div>
+
+  <section class="journey-latest" aria-labelledby="journey-latest-title">
+    <div class="journey-section-label">
+      <h3 id="journey-latest-title">{labels.latest}</h3>
+      <ScrollControls target="life-latest-list" label={labels.latest} />
+    </div>
+    <div id="life-latest-list" data-scroll-list tabindex="0">
         {latest.map((card, index) => (
           <a href={card.href} data-reveal data-step={String(3 + index)}>
             <span>0{index + 1}</span>
@@ -60,7 +68,6 @@ const { labels, categories, latest } = Astro.props;
             <i aria-hidden="true">↗</i>
           </a>
         ))}
-      </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </div>

@@ -4,7 +4,7 @@
     {
       "contentId": "basic-of-passive-filter-design",
       "kind": "article",
-      "versionHash": "903f455ace1bff999f4aad45",
+      "versionHash": "70f7f8ba43217b62c6fcc104",
       "publishedAt": "2026-10-19T17:01:00.000Z",
       "titles": { "zh": "无源滤波器设计" },
       "urls": {
@@ -48,6 +48,15 @@
       "subscriptionKeys": ["category:daily-ramblings"]
     },
     {
+      "contentId": "reading",
+      "kind": "category",
+      "versionHash": "809f47b7c23ed3244d1c5799",
+      "publishedAt": "2026-10-19T23:23:00.000Z",
+      "titles": { "zh": "阅读", "en": "Reading", "de": "Reading" },
+      "urls": { "de": "/de/reading", "en": "/en/reading", "zh": "/reading" },
+      "subscriptionKeys": ["category:reading"]
+    },
+    {
       "contentId": "uestc-note",
       "kind": "category",
       "versionHash": "2dad9bcb3613a0ec9b89d573",
@@ -59,7 +68,7 @@
     {
       "contentId": "2026-cicc",
       "kind": "project",
-      "versionHash": "3ec466466b70ee807186af71",
+      "versionHash": "225d870ed391a18d3eecfd61",
       "publishedAt": "2026-10-19T15:48:00.000Z",
       "titles": { "zh": "2026年集创赛作品合集", "en": "2026 CICC", "de": "2026 CICC" },
       "urls": {
@@ -72,7 +81,7 @@
     {
       "contentId": "filter-design-in-digital-world-note",
       "kind": "project",
-      "versionHash": "a702a76ced1d7a5c3b44cb1f",
+      "versionHash": "c01149cd7144a146ba1042db",
       "publishedAt": "2026-10-19T16:59:00.000Z",
       "titles": {
         "zh": "数字时代的滤波器设计-课程笔记",
@@ -89,7 +98,7 @@
     {
       "contentId": "liuenke-semiconductance-note",
       "kind": "project",
-      "versionHash": "09a6591a060834b4bc1e4fb8",
+      "versionHash": "f3fffb6a21ab745c3c73ac27",
       "publishedAt": "2026-10-19T16:04:00.000Z",
       "titles": {
         "zh": "刘恩科-半导体物理学笔记",
@@ -106,7 +115,7 @@
     {
       "contentId": "oppenheim-signal-and-system-note",
       "kind": "project",
-      "versionHash": "950b478fec079445950121b0",
+      "versionHash": "0ae3bff7fcdedfe53431f502",
       "publishedAt": "2026-10-19T16:49:00.000Z",
       "titles": {
         "zh": "奥本海姆-信号与系统笔记",
@@ -123,7 +132,7 @@
     {
       "contentId": "rabaey-digital-ic-note",
       "kind": "project",
-      "versionHash": "1053eca1e306fbdf99505c22",
+      "versionHash": "29449d9a8b429c501ca5d837",
       "publishedAt": "2026-10-19T15:57:00.000Z",
       "titles": {
         "zh": "Rabaey-数字集成电路设计学习笔记",
@@ -140,7 +149,7 @@
     {
       "contentId": "razavi-cmos-analog-note",
       "kind": "project",
-      "versionHash": "0b2d7141773a8b5d1e74b962",
+      "versionHash": "a5da29053a740215668118c1",
       "publishedAt": "2026-10-19T15:52:00.000Z",
       "titles": {
         "zh": "拉扎维-模拟CMOS集成电路设计学习笔记",
@@ -157,7 +166,7 @@
     {
       "contentId": "razavi-rf-microelectronics-note",
       "kind": "project",
-      "versionHash": "9908bca8cd16cdae8d29bdf2",
+      "versionHash": "2c883b12e09d62c5297f333c",
       "publishedAt": "2026-10-19T16:54:00.000Z",
       "titles": {
         "zh": "拉扎维-射频微电子笔记",
@@ -172,9 +181,18 @@
       "subscriptionKeys": ["category:analog-ic", "project:razavi-rf-microelectronics-note"]
     },
     {
+      "contentId": "test",
+      "kind": "project",
+      "versionHash": "2af1cda5e9a442f0b0cb1d9a",
+      "publishedAt": "2026-10-19T23:27:00.000Z",
+      "titles": { "zh": "测试", "en": "test", "de": "test" },
+      "urls": { "de": "/de/reading/test", "en": "/en/reading/test", "zh": "/reading/test" },
+      "subscriptionKeys": ["category:reading", "project:test"]
+    },
+    {
       "contentId": "two-stage-ota",
       "kind": "project",
-      "versionHash": "c45a802cc0667f4fe15492b7",
+      "versionHash": "e0cb8a04c829d181c679491d",
       "publishedAt": "2026-10-19T15:44:00.000Z",
       "titles": {
         "zh": "二级运放搭建全流程",

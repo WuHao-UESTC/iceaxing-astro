@@ -13,5 +13,6 @@ labels:
 status: active
 progress: 100
 tags: []
+featured: false
 order: 0
 createdAt: 2026-10-19T15:52:00.000Z

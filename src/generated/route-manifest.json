@@ -133,6 +133,20 @@
     "sourceFile": "src/content/pages/de/profile-de/index.mdoc"
   },
   {
+    "pathname": "/de/reading",
+    "kind": "category",
+    "contentId": "reading",
+    "locale": "de",
+    "sourceFile": "src/content/categories/reading.yaml"
+  },
+  {
+    "pathname": "/de/reading/test",
+    "kind": "project",
+    "contentId": "test",
+    "locale": "de",
+    "sourceFile": "src/content/projects/test.yaml"
+  },
+  {
     "pathname": "/de/uestc-note",
     "kind": "category",
     "contentId": "uestc-note",
@@ -231,6 +245,20 @@
     "sourceFile": "src/content/pages/en/profile-en/index.mdoc"
   },
   {
+    "pathname": "/en/reading",
+    "kind": "category",
+    "contentId": "reading",
+    "locale": "en",
+    "sourceFile": "src/content/categories/reading.yaml"
+  },
+  {
+    "pathname": "/en/reading/test",
+    "kind": "project",
+    "contentId": "test",
+    "locale": "en",
+    "sourceFile": "src/content/projects/test.yaml"
+  },
+  {
     "pathname": "/en/uestc-note",
     "kind": "category",
     "contentId": "uestc-note",
@@ -264,6 +292,20 @@
     "contentId": "profile-zh",
     "locale": "zh",
     "sourceFile": "src/content/pages/zh/profile-zh/index.mdoc"
+  },
+  {
+    "pathname": "/reading",
+    "kind": "category",
+    "contentId": "reading",
+    "locale": "zh",
+    "sourceFile": "src/content/categories/reading.yaml"
+  },
+  {
+    "pathname": "/reading/test",
+    "kind": "project",
+    "contentId": "test",
+    "locale": "zh",
+    "sourceFile": "src/content/projects/test.yaml"
   },
   {
     "pathname": "/uestc-note",

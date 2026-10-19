@@ -1,4 +1,7 @@
 ---
+import { localizedPath, type Locale } from '../../i18n/config';
+import '../../styles/listing.css';
+
 interface Card {
   href: string;
   title: string;
@@ -6,51 +9,221 @@ interface Card {
   eyebrow?: string;
   meta?: string;
   tags?: string[];
+  kind?: 'project' | 'collection' | 'article';
 }
-
 interface Props {
   title: string;
   description?: string;
   eyebrow?: string;
   cards: Card[];
   emptyLabel: string;
+  scene?: 'cover' | 'ridge' | 'field' | 'camp';
+  kind?: 'category' | 'project' | 'collection' | 'index';
+  locale: Locale;
+  parent?: { title: string; href: string };
+  progress?: number;
+  status?: string;
 }
 
-const { title, description, eyebrow = 'ICEAXING / FIELD INDEX', cards, emptyLabel } = Astro.props;
+const {
+  title,
+  description,
+  cards,
+  emptyLabel,
+  scene = 'ridge',
+  kind = 'index',
+  locale,
+  parent,
+  progress,
+  status,
+} = Astro.props;
+const labels =
+  locale === 'zh'
+    ? {
+        home: '首页',
+        category: '主题索引',
+        project: '项目手册',
+        collection: '阅读目录',
+        index: '内容索引',
+        projectGroup: '项目',
+        collectionGroup: '合集',
+        articleGroup: '文章',
+        entryGroup: '条目',
+        contents: '本页目录',
+        progress: '项目进度',
+        start: '从第一篇读起',
+        overview: '概览',
+        active: '进行中',
+        completed: '已完成',
+        paused: '已暂停',
+        planned: '计划中',
+        archived: '已归档',
+      }
+    : locale === 'de'
+      ? {
+          home: 'Start',
+          category: 'Themenindex',
+          project: 'Projekthandbuch',
+          collection: 'Lesereihe',
+          index: 'Inhalte',
+          projectGroup: 'Projekte',
+          collectionGroup: 'Sammlungen',
+          articleGroup: 'Artikel',
+          entryGroup: 'Einträge',
+          contents: 'Inhalt',
+          progress: 'Fortschritt',
+          start: 'Mit dem ersten Artikel beginnen',
+          overview: 'Überblick',
+          active: 'In Arbeit',
+          completed: 'Abgeschlossen',
+          paused: 'Pausiert',
+          planned: 'Geplant',
+          archived: 'Archiviert',
+        }
+      : {
+          home: 'Home',
+          category: 'Subject index',
+          project: 'Project notebook',
+          collection: 'Reading sequence',
+          index: 'Content index',
+          projectGroup: 'Projects',
+          collectionGroup: 'Collections',
+          articleGroup: 'Articles',
+          entryGroup: 'Entries',
+          contents: 'On this page',
+          progress: 'Project progress',
+          start: 'Start with the first article',
+          overview: 'Overview',
+          active: 'In progress',
+          completed: 'Completed',
+          paused: 'Paused',
+          planned: 'Planned',
+          archived: 'Archived',
+        };
+const groups = (['project', 'collection', 'article', 'entry'] as const)
+  .map((type) => ({
+    type,
+    title: labels[`${type}Group`],
+    cards: cards.filter(
+      (card) => (card.kind ?? (kind === 'collection' ? 'article' : 'entry')) === type,
+    ),
+  }))
+  .filter((group) => group.cards.length > 0);
+const statusLabel = status
+  ? ({
+      active: labels.active,
+      completed: labels.completed,
+      paused: labels.paused,
+      planned: labels.planned,
+      archived: labels.archived,
+    }[status] ?? status)
+  : undefined;
 ---
 
-<main id="main-content" class="listing-page shell" data-pagefind-body>
-  <header class="listing-header">
-    <p class="content-kicker">{eyebrow}</p>
-    <h1 data-pagefind-meta="title">{title}</h1>
-    {description && <p>{description}</p>}
-  </header>
-  {cards.length ? (
-    <div class="listing-grid">
-      {cards.map((card, index) => (
-        <article class="listing-card">
-          <a href={card.href}>
-            <span class="listing-index">{String(index + 1).padStart(2, '0')}</span>
-            {card.eyebrow && <span class="listing-card-eyebrow">{card.eyebrow}</span>}
-            <h2>{card.title}</h2>
-            {card.description && <p>{card.description}</p>}
-            {card.tags && card.tags.length > 0 && (
-              <span class="listing-tags">
-                {card.tags
-                  .slice(0, 4)
-                  .map((tag) => `#${tag}`)
-                  .join(' · ')}
-              </span>
-            )}
-            {card.meta && <span class="listing-meta">{card.meta}</span>}
-            <span class="listing-arrow" aria-hidden="true">
-              ↗
-            </span>
-          </a>
-        </article>
-      ))}
+<main
+  id="main-content"
+  class={`archive-page archive-${kind} archive-tone-${scene} shell`}
+  data-pagefind-body
+>
+  <nav class="archive-breadcrumb" aria-label={labels.overview}>
+    <a href={localizedPath(locale)}>{labels.home}</a>
+    {parent && (
+      <>
+        <span aria-hidden="true">/</span>
+        <a href={parent.href}>{parent.title}</a>
+      </>
+    )}
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{title}</span>
+  </nav>
+  <header class="archive-heading">
+    <div>
+      <p class="archive-kicker">{labels[kind]}</p>
+      <h1 data-pagefind-meta="title">{title}</h1>
+      {description && <p class="archive-description">{description}</p>}
     </div>
-  ) : (
-    <p class="listing-empty">{emptyLabel}</p>
-  )}
+    <div class="archive-stamp" aria-hidden="true">
+      <span>{kind.toUpperCase()}</span>
+      <strong>{String(cards.length).padStart(2, '0')}</strong>
+      <span>ICEAXING / INDEX</span>
+    </div>
+  </header>
+  <div class="archive-layout">
+    <aside class="archive-rail">
+      {kind === 'project' && progress !== undefined && (
+        <div class="archive-project-state">
+          <div>
+            <span>{labels.progress}</span>
+            <strong>{progress}%</strong>
+          </div>
+          <progress value={progress} max="100" aria-label={labels.progress}>
+            {progress}%
+          </progress>
+          {statusLabel && <small>{statusLabel}</small>}
+        </div>
+      )}
+      <nav aria-label={labels.contents}>
+        <p class="archive-rail-title">{labels.contents}</p>
+        {groups.map((group) => (
+          <a href={`#archive-${group.type}`}>
+            <span>{group.title}</span>
+            <span>{group.cards.length}</span>
+          </a>
+        ))}
+      </nav>
+      {kind === 'collection' && cards[0] && (
+        <a class="archive-start" href={cards[0].href}>
+          {labels.start}
+          <span aria-hidden="true">↗</span>
+        </a>
+      )}
+    </aside>
+    <div class="archive-sections">
+      {groups.length ? (
+        groups.map((group) => (
+          <section
+            class={`archive-group archive-group-${group.type}`}
+            aria-labelledby={`archive-${group.type}`}
+          >
+            <header class="archive-group-heading">
+              <h2 id={`archive-${group.type}`}>{group.title}</h2>
+              <span>{String(group.cards.length).padStart(2, '0')}</span>
+            </header>
+            <ol class="archive-entries">
+              {group.cards.map((card, index) => (
+                <li>
+                  <a class="archive-entry" href={card.href}>
+                    <span class="archive-number" aria-hidden="true">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <div class="archive-entry-copy">
+                      {card.eyebrow && group.type !== 'article' && (
+                        <small class="archive-entry-state">{card.eyebrow}</small>
+                      )}
+                      <h3>{card.title}</h3>
+                      {card.description && <p>{card.description}</p>}
+                      {card.tags?.length ? (
+                        <span class="archive-tags">
+                          {card.tags
+                            .slice(0, 4)
+                            .map((tag) => `#${tag}`)
+                            .join(' · ')}
+                        </span>
+                      ) : null}
+                    </div>
+                    <span class="archive-entry-end">
+                      {card.meta && <span>{card.meta}</span>}
+                      <i aria-hidden="true">↗</i>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))
+      ) : (
+        <p class="archive-empty">{emptyLabel}</p>
+      )}
+    </div>
+  </div>
 </main>

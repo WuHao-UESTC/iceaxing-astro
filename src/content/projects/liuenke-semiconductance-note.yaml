@@ -12,5 +12,6 @@ labels:
 status: active
 progress: 0
 tags: []
+featured: false
 order: 0
 createdAt: 2026-10-19T16:04:00.000Z

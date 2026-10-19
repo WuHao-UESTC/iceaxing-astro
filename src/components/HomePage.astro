@@ -122,7 +122,10 @@ const categoryCards = Object.groupBy(
   (entry) => entry.group,
 );
 const skillCategoryCards = categoryCards.skill?.map((entry) => entry.card) ?? [];
-const lifeCategoryCards = categoryCards.life?.map((entry) => entry.card) ?? [];
+const lifeCategoryCards =
+  categoryCards.life
+    ?.filter((entry) => !index.categories.find((category) => category.data.categoryId === entry.card.id)?.data.tags.includes('daily-ramblings'))
+    .map((entry) => entry.card) ?? [];
 const projectCards: HomeCard[] = byOrder(index.projects).map((entry) => ({
   id: entry.data.projectId,
   href: routeFor(entry.data.projectId, locale, 'project') ?? '#',
@@ -191,6 +194,17 @@ const featuredDestinations = [
     (card) => index.series.find((entry) => entry.data.collectionId === card.id)?.data.featured,
   ),
 ];
+const lifeArticles = articleCards.filter((card) => {
+  const article = articles.find((entry) => entry.data.contentId === card.id);
+  if (!article) return false;
+  if (article.data.category) {
+    const category = index.categories.find((entry) => entry.data.categoryId === article.data.category);
+    if (category) return category.data.group === 'life' && !category.data.tags.includes('daily-ramblings');
+  }
+  const project = index.projects.find((entry) => entry.data.projectId === article.data.project);
+  const category = index.categories.find((entry) => entry.data.categoryId === project?.data.category);
+  return category?.data.group === 'life' && !category.data.tags.includes('daily-ramblings');
+});
 const ramblingsCategory = index.categories.find(
   (entry) =>
     entry.data.categoryId === 'daily-ramblings' || entry.data.tags.includes('daily-ramblings'),
@@ -244,7 +258,7 @@ const ramblingsHref = ramblingsCategory
     aria-labelledby="snowfield-traverse-title"
   >
     <ChapterLandscape scene="field" />
-    <SnowfieldTraverse {labels} categories={lifeCategoryCards} latest={articleCards} />
+    <SnowfieldTraverse {labels} categories={lifeCategoryCards} latest={lifeArticles} />
   </section>
   <section id="night-camp" class="snowline-panel snowline-night" aria-labelledby="night-camp-title">
     <ChapterLandscape scene="camp" />

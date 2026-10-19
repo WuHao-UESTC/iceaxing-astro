@@ -1,0 +1,375 @@
+.archive-page {
+  --archive-blue: #176b8d;
+  --archive-gold: #7d5600;
+  --archive-coral: #a63f2f;
+  --archive-violet: #58458d;
+  --archive-accent: var(--archive-blue);
+  min-height: 75vh;
+  padding-block: 1.4rem 4rem;
+}
+
+:root[data-theme='dark'] .archive-page {
+  --archive-blue: #63c6e8;
+  --archive-gold: #f2be4a;
+  --archive-coral: #ff9279;
+  --archive-violet: #b6a2ef;
+}
+
+.archive-tone-field {
+  --archive-accent: var(--archive-gold);
+}
+.archive-tone-cover {
+  --archive-accent: var(--archive-coral);
+}
+.archive-tone-camp {
+  --archive-accent: var(--archive-violet);
+}
+.archive-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+.archive-breadcrumb a {
+  text-decoration: none;
+}
+.archive-breadcrumb [aria-current] {
+  overflow-wrap: anywhere;
+}
+.archive-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 7rem;
+  align-items: center;
+  gap: 2rem;
+  padding-block: 1.6rem 1.8rem;
+  border-bottom: 1px solid var(--line);
+}
+.archive-kicker {
+  margin: 0 0 0.35rem;
+  color: var(--archive-accent);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+}
+.archive-heading h1 {
+  margin: 0;
+  max-width: 38ch;
+  font-size: clamp(1.65rem, 2.7vw, 2.25rem);
+  line-height: 1.35;
+}
+.archive-description {
+  max-width: 76ch;
+  margin: 0.65rem 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.75;
+}
+.archive-stamp {
+  display: grid;
+  justify-items: center;
+  padding: 0.65rem 0.4rem;
+  color: var(--archive-accent);
+  border-block: 1px solid var(--archive-accent);
+  transform: rotate(-4deg);
+}
+.archive-stamp span {
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+}
+.archive-stamp strong {
+  font-family: var(--font-reading);
+  font-size: 2.6rem;
+  font-weight: 450;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
+.archive-layout {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+  padding-top: 1.5rem;
+}
+.archive-rail {
+  position: sticky;
+  top: 5rem;
+  font-size: 0.76rem;
+}
+.archive-rail-title {
+  margin: 0 0 0.65rem;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+.archive-rail nav a {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+}
+.archive-rail nav a span:last-child {
+  color: var(--archive-accent);
+  font-variant-numeric: tabular-nums;
+}
+.archive-project-state {
+  margin-bottom: 1.6rem;
+}
+.archive-project-state div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.archive-project-state strong {
+  color: var(--archive-accent);
+  font-size: 1rem;
+}
+.archive-project-state small {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--muted);
+}
+.archive-project-state progress {
+  display: block;
+  width: 100%;
+  height: 0.25rem;
+  margin-top: 0.6rem;
+  border: 0;
+  background: var(--line);
+  accent-color: var(--archive-accent);
+}
+.archive-project-state progress::-webkit-progress-bar {
+  background: var(--line);
+}
+.archive-project-state progress::-webkit-progress-value {
+  background: var(--archive-accent);
+}
+.archive-project-state progress::-moz-progress-bar {
+  background: var(--archive-accent);
+}
+.archive-start {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.4rem;
+  color: var(--archive-accent);
+  text-decoration: none;
+}
+.archive-sections {
+  min-width: 0;
+}
+.archive-group + .archive-group {
+  margin-top: 1.8rem;
+}
+.archive-group-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--line);
+}
+.archive-group-heading h2 {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  font-weight: 650;
+  scroll-margin-top: 5rem;
+}
+.archive-group-heading > span {
+  color: var(--muted);
+  font-size: 0.65rem;
+}
+.archive-entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.archive-entries li {
+  min-width: 0;
+}
+.archive-entry {
+  display: grid;
+  grid-template-columns: 1.8rem minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+.archive-number {
+  padding-top: 0.15rem;
+  color: var(--archive-accent);
+  font-size: 0.66rem;
+  font-variant-numeric: tabular-nums;
+}
+.archive-entry-copy {
+  min-width: 0;
+}
+.archive-entry h3 {
+  margin: 0;
+  font-family: var(--font-reading);
+  font-size: 1.08rem;
+  font-weight: 560;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.archive-entry p {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+.archive-tags {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.64rem;
+  line-height: 1.5;
+}
+.archive-entry-state {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--archive-accent);
+  font-size: 0.61rem;
+  letter-spacing: 0.06em;
+}
+.archive-entry-end {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-size: 0.65rem;
+  white-space: nowrap;
+}
+.archive-entry-end i {
+  color: var(--archive-accent);
+  font-size: 0.95rem;
+  font-style: normal;
+  transition: transform 160ms ease;
+}
+.archive-entry:hover h3 {
+  color: var(--archive-accent);
+}
+.archive-entry:hover i {
+  transform: translate(2px, -2px);
+}
+.archive-empty {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+/* Subject directories use compact tabs for projects. */
+.archive-category .archive-group-project .archive-entries {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1.6rem;
+}
+.archive-category .archive-group-project .archive-entry {
+  height: 100%;
+}
+
+/* Collections in a project resemble bound notebooks. */
+.archive-project .archive-group-collection .archive-entries {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding-top: 0.85rem;
+}
+.archive-project .archive-group-collection .archive-entry {
+  height: 100%;
+  padding: 0.85rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--archive-accent);
+  background: color-mix(in srgb, var(--surface) 65%, transparent);
+}
+
+/* Reading sequences follow a continuous chapter rail. */
+.archive-collection .archive-entries {
+  border-left: 1px solid color-mix(in srgb, var(--archive-accent) 40%, var(--line));
+}
+.archive-collection .archive-entry {
+  position: relative;
+  padding-left: 1rem;
+}
+.archive-collection .archive-entry::before {
+  position: absolute;
+  top: 1.35rem;
+  left: -0.2rem;
+  width: 0.35rem;
+  height: 0.35rem;
+  background: var(--archive-accent);
+  border-radius: 50%;
+  content: '';
+}
+
+@media (max-width: 56rem) {
+  .archive-layout {
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: 1.4rem;
+  }
+  .archive-category .archive-group-project .archive-entries,
+  .archive-project .archive-group-collection .archive-entries {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .archive-entry-end {
+    flex-direction: column;
+    align-items: end;
+    gap: 0.25rem;
+  }
+}
+@media (max-width: 40rem) {
+  .archive-page {
+    padding-top: 1rem;
+  }
+  .archive-heading {
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: 1.2rem;
+  }
+  .archive-stamp {
+    display: none;
+  }
+  .archive-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.2rem;
+    padding-top: 1rem;
+  }
+  .archive-rail {
+    position: static;
+  }
+  .archive-rail nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+  }
+  .archive-rail-title {
+    width: 100%;
+    margin-bottom: 0;
+  }
+  .archive-rail nav a {
+    gap: 0.75rem;
+  }
+  .archive-project-state {
+    max-width: 20rem;
+    margin-bottom: 1rem;
+  }
+  .archive-start {
+    margin-top: 0.75rem;
+    justify-content: start;
+  }
+  .archive-entry {
+    grid-template-columns: 1.4rem minmax(0, 1fr) auto;
+    gap: 0.5rem;
+  }
+  .archive-entry h3 {
+    font-size: 1rem;
+  }
+  .archive-entry-end > span {
+    max-width: 5.4rem;
+    white-space: normal;
+    text-align: right;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .archive-entry-end i {
+    transition: none;
+  }
+}

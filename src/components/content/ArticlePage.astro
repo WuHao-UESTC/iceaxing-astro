@@ -1,83 +1,243 @@
 ---
 import { Image } from 'astro:assets';
 import type { RenderResult } from 'astro:content';
-
 import type { ArticleEntry, LogEntry } from '../../lib/content';
 import { formatDate } from '../../lib/content';
-import type { Locale } from '../../i18n/config';
+import { localizedPath, type Locale } from '../../i18n/config';
 import GiscusComments from './GiscusComments.astro';
 import TableOfContents from './TableOfContents.astro';
+import '../../styles/reading.css';
 
-interface Heading {
-  depth: number;
-  slug: string;
-  text: string;
+interface Link {
+  title: string;
+  href: string;
 }
-
 interface Props {
   entry: ArticleEntry | LogEntry;
   locale: Locale;
-  headings: Heading[];
+  headings: Array<{ depth: number; slug: string; text: string }>;
   Content: RenderResult['Content'];
   kind: 'article' | 'log';
+  scene?: 'ridge' | 'field' | 'camp';
+  breadcrumbs?: Link[];
+  neighbors?: { previous?: Link; next?: Link };
 }
 
-const { entry, locale, headings, Content, kind } = Astro.props;
+const {
+  entry,
+  locale,
+  headings,
+  Content,
+  kind,
+  scene = 'ridge',
+  breadcrumbs = [],
+  neighbors = {},
+} = Astro.props;
 const labels =
   locale === 'zh'
-    ? { contents: '目录', published: '发布于', updated: '更新于', log: '日志' }
+    ? {
+        home: '首页',
+        contents: '文章目录',
+        published: '发布',
+        updated: '更新',
+        log: '沿途日志',
+        note: '阅读手记',
+        author: '作者',
+        progress: '阅读进度',
+        end: '读到这里',
+        back: '返回内容索引',
+        top: '回到文首',
+        previous: '上一篇',
+        next: '下一篇',
+        tags: '文章标签',
+        duration: '阅读',
+      }
     : locale === 'de'
-      ? { contents: 'Inhalt', published: 'Veröffentlicht', updated: 'Aktualisiert', log: 'Log' }
-      : { contents: 'Contents', published: 'Published', updated: 'Updated', log: 'Log' };
+      ? {
+          home: 'Start',
+          contents: 'In diesem Artikel',
+          published: 'Veröffentlicht',
+          updated: 'Aktualisiert',
+          log: 'Unterwegs',
+          note: 'Lesenotizen',
+          author: 'Autor',
+          progress: 'Lesefortschritt',
+          end: 'Ende der Notiz',
+          back: 'Zum Inhaltsverzeichnis',
+          top: 'Nach oben',
+          previous: 'Vorheriger Artikel',
+          next: 'Nächster Artikel',
+          tags: 'Schlagwörter',
+          duration: 'Lesezeit',
+        }
+      : {
+          home: 'Home',
+          contents: 'In this article',
+          published: 'Published',
+          updated: 'Updated',
+          log: 'On the way',
+          note: 'Reading notes',
+          author: 'Author',
+          progress: 'Reading progress',
+          end: 'End of the note',
+          back: 'Back to the index',
+          top: 'Back to top',
+          previous: 'Previous article',
+          next: 'Next article',
+          tags: 'Article tags',
+          duration: 'Reading',
+        };
+const text = (entry.body ?? '').replace(/{%[\s\S]*?%}/g, '').replace(/!\[[^\]]*\]\([^)]*\)/g, '');
+const cjkCount =
+  text.match(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu)?.length ?? 0;
+const wordCount =
+  text
+    .replace(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu, ' ')
+    .match(/[\p{L}\p{N}]+/gu)?.length ?? 0;
+const minutes = Math.max(1, Math.ceil(cjkCount / 350 + wordCount / 220));
+const readingTime =
+  locale === 'zh'
+    ? `约 ${minutes} 分钟`
+    : locale === 'de'
+      ? `Ca. ${minutes} Min.`
+      : `About ${minutes} min`;
+const parent = breadcrumbs.at(-1);
+const indexHref = parent?.href ?? localizedPath(locale, kind === 'log' ? '/log' : '/articles');
 ---
 
-<main id="main-content" class="article-shell" data-pagefind-body>
-  <article class="reading-article">
-    <header class="article-header">
-      <p class="content-kicker">{kind === 'log' ? labels.log : 'ICEAXING / NOTES'}</p>
-      <h1 data-pagefind-meta="title">{entry.data.title}</h1>
+<main
+  id="main-content"
+  class={`reading-page reading-tone-${scene} shell`}
+  data-reader
+  data-pagefind-body
+>
+  <div class="reader-progress-line" aria-hidden="true">
+    <span data-reader-line></span>
+  </div>
+  <nav class="reader-breadcrumb" aria-label={labels.back} data-pagefind-ignore>
+    <a href={localizedPath(locale)}>{labels.home}</a>
+    {breadcrumbs.map((link) => (
+      <>
+        <span aria-hidden="true">/</span>
+        <a href={link.href}>{link.title}</a>
+      </>
+    ))}
+  </nav>
+
+  <article class="reader-article" aria-labelledby="reader-title">
+    <header class="reader-header" id="reader-top">
+      <p class="reader-kicker">
+        <span>{kind === 'log' ? labels.log : labels.note}</span>
+        <span>{entry.data.publishedAt.getFullYear()} / ICEAXING</span>
+      </p>
+      <h1 id="reader-title" data-pagefind-meta="title">
+        {entry.data.title}
+      </h1>
       {entry.data.excerpt && (
-        <p class="article-deck" data-pagefind-meta="description">
+        <p class="reader-deck" data-pagefind-meta="description">
           {entry.data.excerpt}
         </p>
       )}
-      <div class="article-meta">
-        <span>{entry.data.authorName}</span>
-        <time datetime={entry.data.publishedAt.toISOString()}>
-          {labels.published} {formatDate(entry.data.publishedAt, locale)}
-        </time>
+      <dl class="reader-meta">
+        <div>
+          <dt>{labels.author}</dt>
+          <dd>{entry.data.authorName}</dd>
+        </div>
+        <div>
+          <dt>{labels.published}</dt>
+          <dd>
+            <time datetime={entry.data.publishedAt.toISOString()}>
+              {formatDate(entry.data.publishedAt, locale)}
+            </time>
+          </dd>
+        </div>
         {entry.data.updatedAt && (
-          <time datetime={entry.data.updatedAt.toISOString()}>
-            {labels.updated} {formatDate(entry.data.updatedAt, locale)}
-          </time>
+          <div>
+            <dt>{labels.updated}</dt>
+            <dd>
+              <time datetime={entry.data.updatedAt.toISOString()}>
+                {formatDate(entry.data.updatedAt, locale)}
+              </time>
+            </dd>
+          </div>
         )}
-      </div>
+        <div class="reader-time">
+          <dt>{labels.duration}</dt>
+          <dd>{readingTime}</dd>
+        </div>
+      </dl>
       {entry.data.tags.length > 0 && (
-        <ul class="tag-list" aria-label="Tags">
+        <ul class="reader-tags" aria-label={labels.tags}>
           {entry.data.tags.map((tag) => (
             <li data-pagefind-filter={`tag:${tag}`}>#{tag}</li>
           ))}
         </ul>
       )}
-      {entry.data.coverImage && (
-        <Image
-          class="article-cover"
-          src={entry.data.coverImage}
-          alt=""
-          widths={[720, 1080, 1440]}
-          sizes="(max-width: 900px) 100vw, 860px"
-        />
-      )}
     </header>
 
-    <div class="article-layout">
-      <div class="article-body prose">
-        <Content />
+    <div class="reader-layout">
+      <div class="reader-main">
+        {entry.data.coverImage && (
+          <Image
+            class="reader-cover"
+            src={entry.data.coverImage}
+            alt=""
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 900px) calc(100vw - 2rem), 720px"
+          />
+        )}
+        <div class="reader-body article-body prose" data-reader-body>
+          <Content />
+        </div>
+
+        <footer class="reader-end" data-pagefind-ignore>
+          <p class="reader-end-label">
+            <span aria-hidden="true">✳</span>
+            {labels.end}
+          </p>
+          {(neighbors.previous || neighbors.next) && (
+            <nav class="reader-neighbors" aria-label={labels.back}>
+              {neighbors.previous && (
+                <a href={neighbors.previous.href}>
+                  <small>← {labels.previous}</small>
+                  <strong>{neighbors.previous.title}</strong>
+                </a>
+              )}
+              {neighbors.next && (
+                <a href={neighbors.next.href} class="reader-next">
+                  <small>{labels.next} →</small>
+                  <strong>{neighbors.next.title}</strong>
+                </a>
+              )}
+            </nav>
+          )}
+          <div class="reader-end-links">
+            <a href={indexHref}>← {parent?.title ?? labels.back}</a>
+            <a href="#reader-top">{labels.top} ↑</a>
+          </div>
+        </footer>
+        <GiscusComments {locale} />
       </div>
-      <aside class="toc-rail">
-        <TableOfContents headings={headings} label={labels.contents} />
+
+      <aside class="reader-aside" data-pagefind-ignore>
+        <div class="reader-progress-info" data-reader-progress-info hidden>
+          <div>
+            <label for="reader-progress">{labels.progress}</label>
+            <output data-reader-percent aria-hidden="true">
+              0%
+            </output>
+          </div>
+          <progress id="reader-progress" data-reader-progress value="0" max="100">
+            0%
+          </progress>
+        </div>
+        <TableOfContents {headings} label={labels.contents} />
       </aside>
     </div>
   </article>
-  <GiscusComments {locale} />
 </main>
+
+<script>
+  import { initArticleReader } from '../../scripts/article-reader';
+  initArticleReader();
+</script>

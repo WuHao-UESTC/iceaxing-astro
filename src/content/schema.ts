@@ -62,6 +62,31 @@ export const pageSchema = baseContentSchema
   })
   .extend({
     pageKind: z.enum(['about', 'profile', 'custom']),
+    profile: z
+      .object({
+        displayName: z.string().default(''),
+        headline: z.string().default(''),
+        location: z.string().default(''),
+        avatar: z.string().default(''),
+        email: z.email().or(z.literal('')).default(''),
+        qq: z
+          .string()
+          .regex(/^\d{5,12}$/)
+          .or(z.literal(''))
+          .default(''),
+        experience: z
+          .array(
+            z.object({
+              period: z.string().default(''),
+              title: z.string().min(1),
+              organization: z.string().default(''),
+              description: z.string().default(''),
+            }),
+          )
+          .default([]),
+        links: z.array(z.object({ label: z.string().min(1), url: z.url() })).default([]),
+      })
+      .optional(),
   });
 
 export const categorySchema = z.object({
@@ -106,6 +131,11 @@ export const friendSchema = z.object({
   url: z.url(),
   avatar: z.url().or(z.string().startsWith('/')).optional(),
   description: z.string().default(''),
+  owner: z.string().default(''),
+  tags: z.array(z.string()).default([]),
+  language: z.string().default(''),
+  since: z.string().default(''),
+  links: z.array(z.object({ label: z.string().min(1), url: z.url() })).default([]),
   order: z.number().int().min(0).default(0),
   active: z.boolean().default(true),
 });

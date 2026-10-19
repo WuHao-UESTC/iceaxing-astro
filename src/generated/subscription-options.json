@@ -20,6 +20,12 @@
       "labels": { "zh": "碎碎念", "en": "Ramblings", "de": "Gedanken" }
     },
     {
+      "key": "category:reading",
+      "kind": "category",
+      "id": "reading",
+      "labels": { "zh": "阅读", "en": "Reading", "de": "Reading" }
+    },
+    {
       "key": "category:uestc-note",
       "kind": "category",
       "id": "uestc-note",
@@ -97,6 +103,13 @@
         "en": "Razavi- RF Microelectronics Note",
         "de": "Razavi- RF Microelectronics Note"
       }
+    },
+    {
+      "key": "project:test",
+      "kind": "project",
+      "id": "test",
+      "parentKey": "category:reading",
+      "labels": { "zh": "测试", "en": "test", "de": "test" }
     },
     {
       "key": "project:two-stage-ota",

@@ -1,0 +1,542 @@
+.reading-page {
+  --reader-blue: #176b8d;
+  --reader-gold: #7d5600;
+  --reader-violet: #58458d;
+  --reader-accent: var(--reader-blue);
+  min-height: 75vh;
+  padding-block: 1.4rem 4rem;
+}
+
+:root[data-theme='dark'] .reading-page {
+  --reader-blue: #63c6e8;
+  --reader-gold: #f2be4a;
+  --reader-violet: #b6a2ef;
+}
+
+.reading-tone-field {
+  --reader-accent: var(--reader-gold);
+}
+.reading-tone-camp {
+  --reader-accent: var(--reader-violet);
+}
+.reader-progress-line {
+  position: fixed;
+  z-index: 21;
+  top: 4rem;
+  left: 0;
+  right: 0;
+  height: 2px;
+  pointer-events: none;
+}
+.reader-progress-line span {
+  display: block;
+  width: var(--reader-progress, 0%);
+  height: 100%;
+  background: var(--reader-accent);
+}
+.reader-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.6rem;
+  color: var(--muted);
+  font-size: 0.73rem;
+  line-height: 1.7;
+}
+.reader-breadcrumb a {
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.reader-breadcrumb a:last-child {
+  color: var(--reader-accent);
+}
+.reader-article {
+  width: min(100%, 64rem);
+  margin: 1.6rem auto 0;
+}
+.reader-header {
+  max-width: 48rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 5.5rem;
+}
+.reader-kicker {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 0.65rem;
+  color: var(--reader-accent);
+  font-size: 0.65rem;
+  letter-spacing: 0.13em;
+}
+.reader-kicker span:last-child {
+  color: var(--muted);
+  font-size: 0.6rem;
+}
+.reader-header h1 {
+  margin: 0;
+  max-width: 34ch;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+}
+.reader-deck {
+  max-width: 70ch;
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+.reader-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+  margin: 1.1rem 0 0;
+  font-size: 0.69rem;
+}
+.reader-meta div {
+  display: flex;
+  gap: 0.45rem;
+}
+.reader-meta dt {
+  color: var(--muted);
+}
+.reader-meta dd {
+  margin: 0;
+}
+.reader-time {
+  color: var(--muted);
+}
+.reader-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--reader-accent);
+  font-size: 0.65rem;
+}
+.reader-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 13rem;
+  align-items: start;
+  gap: 3rem;
+  padding-top: 1.7rem;
+}
+.reader-main {
+  min-width: 0;
+}
+.reader-cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 26rem;
+  object-fit: contain;
+  margin: 0 0 1.8rem;
+  border: 1px solid var(--line);
+  border-radius: 0.2rem;
+  background: var(--surface-subtle);
+}
+.reader-aside {
+  position: sticky;
+  top: 5.5rem;
+  min-width: 0;
+  font-family: var(--font-ui);
+}
+.reader-progress-info {
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+  font-size: 0.66rem;
+}
+.reader-progress-info[hidden] {
+  display: none;
+}
+.reader-progress-info > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.reader-progress-info output {
+  color: var(--reader-accent);
+  font-variant-numeric: tabular-nums;
+}
+.reader-progress-info progress {
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 0.6rem;
+  border: 0;
+  background: var(--line);
+  accent-color: var(--reader-accent);
+}
+.reader-progress-info progress::-webkit-progress-bar {
+  background: var(--line);
+}
+.reader-progress-info progress::-webkit-progress-value {
+  background: var(--reader-accent);
+}
+.reader-progress-info progress::-moz-progress-bar {
+  background: var(--reader-accent);
+}
+.reader-toc summary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.73rem;
+  font-weight: 650;
+}
+.reader-toc summary::-webkit-details-marker {
+  display: none;
+}
+.reader-toc summary small {
+  color: var(--muted);
+  font-size: 0.61rem;
+  font-weight: 450;
+}
+.reader-toc summary i {
+  display: none;
+  margin-left: auto;
+  font-style: normal;
+}
+.reader-toc nav {
+  max-height: calc(100dvh - 13rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  padding-top: 0.6rem;
+}
+.reader-toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.reader-toc a {
+  display: block;
+  padding: 0.35rem 0.6rem;
+  border-left: 2px solid transparent;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.reader-toc li[data-depth='3'] a {
+  padding-left: 1.25rem;
+  font-size: 0.72rem;
+}
+.reader-toc li[data-depth='4'] a {
+  padding-left: 1.9rem;
+  font-size: 0.69rem;
+}
+.reader-toc a:hover {
+  color: var(--reader-accent);
+}
+.reader-toc a[aria-current='location'] {
+  border-left-color: var(--reader-accent);
+  color: var(--reader-accent);
+  background: color-mix(in srgb, var(--reader-accent) 6%, transparent);
+}
+
+.reading-page .reader-body {
+  --accent: var(--reader-accent);
+  --accent-strong: var(--reader-accent);
+  font-size: 1.03rem;
+  line-height: 1.92;
+  overflow-wrap: anywhere;
+}
+.reader-body.prose > :first-child,
+.reader-body.prose > article > :first-child {
+  margin-top: 0;
+}
+.reader-body.prose h1 {
+  max-width: none;
+  margin: 2rem 0 0.8rem;
+  font-size: 1.65rem;
+  line-height: 1.45;
+}
+.reader-body.prose h2 {
+  position: relative;
+  margin: 2.2rem 0 0.85rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 1.45rem;
+  line-height: 1.5;
+}
+.reader-body.prose h3 {
+  margin: 1.7rem 0 0.65rem;
+  font-size: 1.18rem;
+  line-height: 1.55;
+}
+.reader-body.prose h4 {
+  margin: 1.4rem 0 0.5rem;
+  font-size: 1.02rem;
+  font-weight: 650;
+}
+.reader-body :is(h1, h2, h3, h4, h5, h6) {
+  scroll-margin-top: 5.5rem;
+}
+.reader-body.prose :is(p, ul, ol, blockquote) {
+  margin-block: 0.95rem;
+}
+.reader-body.prose ul {
+  padding-left: 1.45rem;
+  list-style: disc;
+}
+.reader-body.prose ol {
+  padding-left: 1.45rem;
+  list-style: decimal;
+}
+.reader-body li {
+  padding-left: 0.15rem;
+  margin-block: 0.25rem;
+}
+.reader-body li::marker {
+  color: var(--reader-accent);
+}
+.reader-body a {
+  color: var(--reader-accent);
+  text-decoration-thickness: 1px;
+}
+.reader-body blockquote {
+  margin-inline: 0;
+  padding: 0.4rem 1rem;
+  border-left: 2px solid var(--reader-accent);
+  background: color-mix(in srgb, var(--reader-accent) 4%, transparent);
+}
+.reader-body blockquote > :first-child {
+  margin-top: 0.3rem;
+}
+.reader-body blockquote > :last-child {
+  margin-bottom: 0.3rem;
+}
+.reader-body.prose pre {
+  max-width: 100%;
+  margin-block: 1.2rem;
+  padding: 1rem 1.15rem;
+  border-radius: 0.25rem;
+  font-size: 0.82rem;
+  line-height: 1.8;
+  overflow-wrap: normal;
+  tab-size: 2;
+}
+.reader-body pre code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: inherit;
+}
+
+/* Override Shiki's inline wrap style only in the reading layout. */
+.reader-body.prose pre.astro-code {
+  white-space: pre !important;
+  overflow-wrap: normal !important;
+}
+.reader-body.prose :not(pre) > code {
+  border: 1px solid var(--line);
+  border-radius: 0.2rem;
+  background: var(--surface-subtle);
+  color: var(--reader-accent);
+  font-size: 0.85em;
+}
+.reader-body.prose table {
+  max-width: 100%;
+  margin-block: 1.3rem;
+  font-family: var(--font-ui);
+  font-size: 0.83rem;
+  line-height: 1.7;
+}
+.reader-body.prose :is(th, td) {
+  padding: 0.55rem 0.75rem;
+  border-color: var(--line);
+}
+.reader-body th {
+  background: var(--surface-subtle);
+  font-weight: 650;
+}
+.reader-body tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--surface-subtle) 45%, transparent);
+}
+.reader-body .content-figure {
+  margin: 1.5rem 0;
+}
+.reader-body.prose img {
+  display: block;
+  margin-inline: auto;
+  border: 1px solid var(--line);
+  border-radius: 0.2rem;
+}
+.reader-body figcaption {
+  text-align: center;
+}
+.reader-body .content-math {
+  max-width: 100%;
+  margin-block: 1rem;
+  padding: 0.7rem 0.9rem;
+  border-left: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface-subtle) 45%, transparent);
+  overflow-wrap: normal;
+}
+.reader-body .katex-display {
+  max-width: 100%;
+  margin-block: 0.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.reader-body :is(.content-callout, .content-toggle, .content-mindmap, .content-pdf) {
+  max-width: 100%;
+  margin: 1.2rem 0;
+  padding: 0.9rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+.reader-body :is(.content-callout, .content-toggle) > :last-child {
+  margin-bottom: 0;
+}
+.reader-body .content-columns {
+  align-items: start;
+  margin-block: 1.2rem;
+}
+.reader-body hr {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.reader-end {
+  margin-top: 2.6rem;
+  font-family: var(--font-ui);
+}
+.reader-end-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+}
+.reader-end-label > span {
+  color: var(--reader-accent);
+  font-size: 1rem;
+}
+.reader-neighbors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  padding-block: 1rem;
+  border-top: 1px solid var(--line);
+}
+.reader-neighbors a {
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  text-decoration: none;
+}
+.reader-neighbors small {
+  color: var(--muted);
+  font-size: 0.67rem;
+}
+.reader-neighbors strong {
+  color: var(--reader-accent);
+  font-size: 0.88rem;
+  font-weight: 550;
+  line-height: 1.7;
+}
+.reader-next {
+  grid-column: 2;
+  text-align: right;
+}
+.reader-end-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.72rem;
+}
+.reader-end-links a {
+  color: var(--muted);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.reader-end-links a:last-child {
+  flex-shrink: 0;
+}
+.reader-main .comments {
+  margin-top: 2.4rem;
+}
+
+@media (max-width: 56rem) {
+  .reader-header {
+    max-width: none;
+  }
+  .reader-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.3rem;
+    padding-top: 1.15rem;
+  }
+  .reader-aside {
+    position: static;
+    grid-row: 1;
+  }
+  .reader-progress-info {
+    margin-bottom: 0.9rem;
+  }
+  .reader-toc summary i {
+    display: block;
+  }
+  .reader-toc[open] summary i {
+    transform: rotate(180deg);
+  }
+  .reader-toc nav {
+    max-height: 15rem;
+  }
+}
+@media (max-width: 40rem) {
+  .reading-page {
+    padding-top: 1rem;
+  }
+  .reader-breadcrumb {
+    font-size: 0.68rem;
+  }
+  .reader-article {
+    margin-top: 1.2rem;
+  }
+  .reader-header h1 {
+    font-size: 1.7rem;
+  }
+  .reader-meta {
+    gap: 0.4rem 1rem;
+  }
+  .reader-kicker {
+    letter-spacing: 0.07em;
+  }
+  .reading-page .reader-body {
+    font-size: 1rem;
+  }
+  .reader-body.prose h2 {
+    font-size: 1.3rem;
+  }
+  .reader-body.prose h3 {
+    font-size: 1.12rem;
+  }
+  .reader-body.prose pre {
+    padding: 0.85rem;
+    font-size: 0.77rem;
+  }
+  .reader-end-links {
+    font-size: 0.68rem;
+    gap: 1rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reading-page {
+    scroll-behavior: auto;
+  }
+}

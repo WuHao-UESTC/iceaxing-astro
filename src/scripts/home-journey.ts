@@ -19,12 +19,17 @@ export function initHomeJourney() {
       `[data-scroll-target="${CSS.escape(list.id)}"]`,
     );
     const controls = controlButton?.closest<HTMLElement>('[data-scroll-controls]');
-    const overflowing = list.scrollHeight > list.clientHeight + 2;
+    const horizontal = list.dataset.scrollAxis === 'x';
+    const overflowing = horizontal
+      ? list.scrollWidth > list.clientWidth + 2
+      : list.scrollHeight > list.clientHeight + 2;
     if (controls) controls.hidden = !overflowing;
     controls?.querySelectorAll<HTMLButtonElement>('[data-scroll-direction]').forEach((button) => {
-      const atStart = list.scrollTop <= 1;
-      const atEnd = list.scrollTop + list.clientHeight >= list.scrollHeight - 1;
-      button.disabled = button.dataset.scrollDirection === 'up' ? atStart : atEnd;
+      const atStart = horizontal ? list.scrollLeft <= 1 : list.scrollTop <= 1;
+      const atEnd = horizontal
+        ? list.scrollLeft + list.clientWidth >= list.scrollWidth - 1
+        : list.scrollTop + list.clientHeight >= list.scrollHeight - 1;
+      button.disabled = ['up', 'left'].includes(button.dataset.scrollDirection ?? '') ? atStart : atEnd;
     });
   };
 
@@ -39,9 +44,11 @@ export function initHomeJourney() {
     button.addEventListener('click', () => {
       const list = document.getElementById(button.dataset.scrollTarget ?? '');
       if (!list) return;
-      const direction = button.dataset.scrollDirection === 'up' ? -1 : 1;
+      const horizontal = list.dataset.scrollAxis === 'x';
+      const direction = ['up', 'left'].includes(button.dataset.scrollDirection ?? '') ? -1 : 1;
       list.scrollBy({
-        top: direction * Math.max(80, list.clientHeight * 0.72),
+        left: horizontal ? direction * Math.max(160, list.clientWidth * 0.82) : 0,
+        top: horizontal ? 0 : direction * Math.max(80, list.clientHeight * 0.72),
         behavior: reducedMotion.matches ? 'auto' : 'smooth',
       });
     });
