@@ -1,5 +1,6 @@
 import { fields } from '@keystatic/core';
 import { block, inline, repeating, wrapper } from '@keystatic/core/content-components';
+import { createElement } from 'react';
 
 const requiredText = (label: string, description?: string) =>
   fields.text({
@@ -39,7 +40,19 @@ export const markdocComponents = {
     label: '分栏项',
     schema: {},
     forSpecificLocations: true,
-    ContentView: ({ children }) => children,
+    ContentView: ({ children }) =>
+      createElement(
+        'div',
+        {
+          style: {
+            minWidth: 0,
+            padding: '0.75rem',
+            border: '1px solid color-mix(in srgb, currentColor 18%, transparent)',
+            borderRadius: '0.5rem',
+          },
+        },
+        children,
+      ),
   }),
   columns: repeating({
     label: '分栏',
@@ -57,7 +70,21 @@ export const markdocComponents = {
     },
     children: 'column',
     validation: { children: { min: 2, max: 4 } },
-    ContentView: ({ children }) => children,
+    ContentView: ({ children }) =>
+      createElement(
+        'div',
+        {
+          style: {
+            display: 'grid',
+            gridAutoFlow: 'column',
+            gridAutoColumns: 'minmax(12rem, 1fr)',
+            gap: '0.75rem',
+            alignItems: 'start',
+            overflowX: 'auto',
+          },
+        },
+        children,
+      ),
   }),
   math: block({
     label: '块级公式',

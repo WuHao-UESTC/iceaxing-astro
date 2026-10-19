@@ -27,6 +27,17 @@
       "labels": { "zh": "2026年集创赛作品合集", "en": "2026 CICC", "de": "2026 CICC" }
     },
     {
+      "key": "project:filter-design-in-digital-world-note",
+      "kind": "project",
+      "id": "filter-design-in-digital-world-note",
+      "parentKey": "category:uestc-note",
+      "labels": {
+        "zh": "数字时代的滤波器设计-课程笔记",
+        "en": "Filter Design in Digital World Note",
+        "de": "Filter Design in Digital World Note"
+      }
+    },
+    {
       "key": "project:liuenke-semiconductance-note",
       "kind": "project",
       "id": "liuenke-semiconductance-note",
@@ -38,9 +49,20 @@
       }
     },
     {
-      "key": "project:rabaey-digital-ic",
+      "key": "project:oppenheim-signal-and-system-note",
       "kind": "project",
-      "id": "rabaey-digital-ic",
+      "id": "oppenheim-signal-and-system-note",
+      "parentKey": "category:uestc-note",
+      "labels": {
+        "zh": "奥本海姆-信号与系统笔记",
+        "en": "Oppenheim Signal & System Note",
+        "de": "Oppenheim Signal & System Note"
+      }
+    },
+    {
+      "key": "project:rabaey-digital-ic-note",
+      "kind": "project",
+      "id": "rabaey-digital-ic-note",
       "parentKey": "category:analog-ic",
       "labels": {
         "zh": "Rabaey-数字集成电路设计学习笔记",
@@ -49,14 +71,25 @@
       }
     },
     {
-      "key": "project:razavi-cmos-analog",
+      "key": "project:razavi-cmos-analog-note",
       "kind": "project",
-      "id": "razavi-cmos-analog",
+      "id": "razavi-cmos-analog-note",
       "parentKey": "category:analog-ic",
       "labels": {
         "zh": "拉扎维-模拟CMOS集成电路设计学习笔记",
         "en": "Razavi-Analog CMOS IC Note",
         "de": "Razavi-Analog CMOS IC Note"
+      }
+    },
+    {
+      "key": "project:razavi-rf-microelectronics-note",
+      "kind": "project",
+      "id": "razavi-rf-microelectronics-note",
+      "parentKey": "category:analog-ic",
+      "labels": {
+        "zh": "拉扎维-射频微电子笔记",
+        "en": "Razavi- RF Microelectronics Note",
+        "de": "Razavi- RF Microelectronics Note"
       }
     },
     {

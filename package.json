@@ -7,6 +7,7 @@
     "node": ">=22.22.0"
   },
   "scripts": {
+    "postinstall": "node scripts/patch-keystatic-editor.mjs",
     "dev": "astro dev",
     "build": "npm run check && astro build && npm run search:index",
     "build:only": "npm run content:validate && astro build && npm run search:index",
@@ -28,7 +29,7 @@
     "@astrojs/sitemap": "^3.7.4",
     "@astrojs/vercel": "^11.0.15",
     "@keystatic/astro": "^6.0.0",
-    "@keystatic/core": "^0.6.9",
+    "@keystatic/core": "0.6.9",
     "@tailwindcss/vite": "^4.3.3",
     "@upstash/redis": "^1.39.0",
     "astro": "^7.4.0",

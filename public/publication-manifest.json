@@ -46,6 +46,23 @@
       "subscriptionKeys": ["category:analog-ic", "project:2026-cicc"]
     },
     {
+      "contentId": "filter-design-in-digital-world-note",
+      "kind": "project",
+      "versionHash": "a702a76ced1d7a5c3b44cb1f",
+      "publishedAt": "2026-10-19T16:59:00.000Z",
+      "titles": {
+        "zh": "数字时代的滤波器设计-课程笔记",
+        "en": "Filter Design in Digital World Note",
+        "de": "Filter Design in Digital World Note"
+      },
+      "urls": {
+        "de": "/de/uestc-note/filter-design-in-digital-world-note",
+        "en": "/en/uestc-note/filter-design-in-digital-world-note",
+        "zh": "/uestc-note/filter-design-in-digital-world-note"
+      },
+      "subscriptionKeys": ["category:uestc-note", "project:filter-design-in-digital-world-note"]
+    },
+    {
       "contentId": "liuenke-semiconductance-note",
       "kind": "project",
       "versionHash": "09a6591a060834b4bc1e4fb8",
@@ -63,9 +80,26 @@
       "subscriptionKeys": ["category:uestc-note", "project:liuenke-semiconductance-note"]
     },
     {
-      "contentId": "rabaey-digital-ic",
+      "contentId": "oppenheim-signal-and-system-note",
       "kind": "project",
-      "versionHash": "3915c9e2cc4ab69b191c5a3e",
+      "versionHash": "950b478fec079445950121b0",
+      "publishedAt": "2026-10-19T16:49:00.000Z",
+      "titles": {
+        "zh": "奥本海姆-信号与系统笔记",
+        "en": "Oppenheim Signal & System Note",
+        "de": "Oppenheim Signal & System Note"
+      },
+      "urls": {
+        "de": "/de/uestc-note/oppenheim-signal-and-system-note",
+        "en": "/en/uestc-note/oppenheim-signal-and-system-note",
+        "zh": "/uestc-note/oppenheim-signal-and-system-note"
+      },
+      "subscriptionKeys": ["category:uestc-note", "project:oppenheim-signal-and-system-note"]
+    },
+    {
+      "contentId": "rabaey-digital-ic-note",
+      "kind": "project",
+      "versionHash": "1053eca1e306fbdf99505c22",
       "publishedAt": "2026-10-19T15:57:00.000Z",
       "titles": {
         "zh": "Rabaey-数字集成电路设计学习笔记",
@@ -73,16 +107,16 @@
         "de": "Rabaey-Digital IC Note"
       },
       "urls": {
-        "zh": "/analog-ic/rabaey-digital-ic",
-        "de": "/de/analog-ic/rabaey-digital-ic",
-        "en": "/en/analog-ic/rabaey-digital-ic"
+        "zh": "/analog-ic/rabaey-digital-ic-note",
+        "de": "/de/analog-ic/rabaey-digital-ic-note",
+        "en": "/en/analog-ic/rabaey-digital-ic-note"
       },
-      "subscriptionKeys": ["category:analog-ic", "project:rabaey-digital-ic"]
+      "subscriptionKeys": ["category:analog-ic", "project:rabaey-digital-ic-note"]
     },
     {
-      "contentId": "razavi-cmos-analog",
+      "contentId": "razavi-cmos-analog-note",
       "kind": "project",
-      "versionHash": "fa73b9980730cec3eee6420a",
+      "versionHash": "0b2d7141773a8b5d1e74b962",
       "publishedAt": "2026-10-19T15:52:00.000Z",
       "titles": {
         "zh": "拉扎维-模拟CMOS集成电路设计学习笔记",
@@ -90,11 +124,28 @@
         "de": "Razavi-Analog CMOS IC Note"
       },
       "urls": {
-        "zh": "/analog-ic/razavi-cmos-analog",
-        "de": "/de/analog-ic/razavi-cmos-analog",
-        "en": "/en/analog-ic/razavi-cmos-analog"
+        "zh": "/analog-ic/razavi-cmos-analog-note",
+        "de": "/de/analog-ic/razavi-cmos-analog-note",
+        "en": "/en/analog-ic/razavi-cmos-analog-note"
       },
-      "subscriptionKeys": ["category:analog-ic", "project:razavi-cmos-analog"]
+      "subscriptionKeys": ["category:analog-ic", "project:razavi-cmos-analog-note"]
+    },
+    {
+      "contentId": "razavi-rf-microelectronics-note",
+      "kind": "project",
+      "versionHash": "9908bca8cd16cdae8d29bdf2",
+      "publishedAt": "2026-10-19T16:54:00.000Z",
+      "titles": {
+        "zh": "拉扎维-射频微电子笔记",
+        "en": "Razavi- RF Microelectronics Note",
+        "de": "Razavi- RF Microelectronics Note"
+      },
+      "urls": {
+        "zh": "/analog-ic/razavi-rf-microelectronics-note",
+        "de": "/de/analog-ic/razavi-rf-microelectronics-note",
+        "en": "/en/analog-ic/razavi-rf-microelectronics-note"
+      },
+      "subscriptionKeys": ["category:analog-ic", "project:razavi-rf-microelectronics-note"]
     },
     {
       "contentId": "two-stage-ota",

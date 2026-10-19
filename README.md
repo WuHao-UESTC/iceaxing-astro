@@ -24,7 +24,9 @@ npm run build
 npm run preview
 ```
 
-开发服务器默认运行在 `http://localhost:4321`，本地 Keystatic 管理端位于 `http://localhost:4321/keystatic`。
+开发服务器默认运行在 `http://localhost:4321`。树形内容工作区位于 `http://localhost:4321/keystatic/workspace`，原生 Keystatic 总览仍位于 `http://localhost:4321/keystatic`。
+
+树形工作区按 `category → project → collection` 展示逻辑文件夹，文章按 `translationKey` 合并为一个节点。分类和项目允许直属文章；项目与合集可以通过修改父级关系移动。文件夹的级联删除会在确认后由服务端重新计算所有后代，本地模式删除精确仓库路径，GitHub 模式在当前分支生成单个删除提交。
 
 内容组件回归页位于 `http://localhost:4321/fixtures/markdoc`。该页面带 `noindex` 且从 sitemap 排除，只用于检查图片、代码、提示块、分栏、折叠、公式、表格、锚点、PDF 和 Mindmap。
 
@@ -56,6 +58,8 @@ PUBLIC_KEYSTATIC_GITHUB_REPO=your-repository
 ```
 
 GitHub OAuth/App 凭据属于部署阶段的私密环境变量，不得使用 `PUBLIC_` 前缀。
+
+Keystatic 编辑器增强由 `scripts/patch-keystatic-editor.mjs` 在 `postinstall` 阶段应用，包括表格尺寸选择和 `$…$` / `$$…$$` 公式输入规则。由于 Keystatic 暂无对应的公开扩展接口，`@keystatic/core` 固定为 `0.6.9`；升级前需要同步检查并更新补丁脚本。
 
 ## 搜索和工具
 

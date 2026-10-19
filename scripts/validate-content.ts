@@ -220,6 +220,25 @@ for (const entry of [...articles, ...logs, ...pages]) {
   else translationPairs.set(key, entry.sourceFile);
 }
 
+const articleTranslationParents = new Map<string, { parent: string; sourceFile: string }>();
+for (const article of articles) {
+  const translationKey = requiredString(article, 'translationKey');
+  const parent = [
+    String(article.data.category ?? ''),
+    String(article.data.project ?? ''),
+    String(article.data.collection ?? ''),
+  ].join(':');
+  const previous = articleTranslationParents.get(translationKey);
+  if (previous && previous.parent !== parent) {
+    issue(
+      article.sourceFile,
+      `翻译组“${translationKey}”必须与 ${previous.sourceFile} 位于同一分类、项目和合集`,
+    );
+  } else if (!previous) {
+    articleTranslationParents.set(translationKey, { parent, sourceFile: article.sourceFile });
+  }
+}
+
 for (const project of projects) {
   const category = requiredString(project, 'category');
   if (!categoryById.has(category)) issue(project.sourceFile, `引用了不存在的分类“${category}”`);

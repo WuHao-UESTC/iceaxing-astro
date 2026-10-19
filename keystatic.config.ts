@@ -1,8 +1,26 @@
 import { collection, config, fields, singleton } from '@keystatic/core';
+import { createElement } from 'react';
 
 import { markdocComponents } from './src/content/markdoc-components';
 
 type Locale = 'zh' | 'en' | 'de';
+
+const contextValue = (key: string) => {
+  if (typeof window === 'undefined') return null;
+  const value = new URLSearchParams(window.location.search).get(key);
+  return value && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value) ? value : null;
+};
+
+const relationshipWithContext = (
+  options: Parameters<typeof fields.relationship>[0],
+  contextKey: string,
+) => {
+  const field = fields.relationship(options);
+  return {
+    ...field,
+    defaultValue: () => contextValue(contextKey) ?? field.defaultValue(),
+  };
+};
 
 const stableKeyValidation = {
   isRequired: true,
@@ -112,6 +130,7 @@ const commonContentFields = (locale: Locale) => ({
   translationKey: fields.text({
     label: '翻译组 ID',
     description: '三种语言的同一内容必须使用相同值。',
+    defaultValue: () => contextValue('treeTranslationKey') ?? '',
     validation: stableKeyValidation,
   }),
   locale: localeField(locale),
@@ -162,21 +181,30 @@ const articleCollection = (locale: Locale) =>
     columns: ['title', 'status', 'publishedAt'],
     schema: {
       ...commonContentFields(locale),
-      category: fields.relationship({
-        label: '直属分类',
-        collection: 'categories',
-        description: '与“项目”二选一。',
-      }),
-      project: fields.relationship({
-        label: '所属项目',
-        collection: 'projects',
-        description: '与“直属分类”二选一。',
-      }),
-      collection: fields.relationship({
-        label: '所属合集',
-        collection: 'series',
-        description: '只有选择项目后才能使用；构建期会校验归属。',
-      }),
+      category: relationshipWithContext(
+        {
+          label: '直属分类',
+          collection: 'categories',
+          description: '与“项目”二选一。',
+        },
+        'treeCategory',
+      ),
+      project: relationshipWithContext(
+        {
+          label: '所属项目',
+          collection: 'projects',
+          description: '与“直属分类”二选一。',
+        },
+        'treeProject',
+      ),
+      collection: relationshipWithContext(
+        {
+          label: '所属合集',
+          collection: 'series',
+          description: '只有选择项目后才能使用；构建期会校验归属。',
+        },
+        'treeCollection',
+      ),
       body,
     },
   });
@@ -253,7 +281,25 @@ export default config({
     : { kind: 'local' },
   locale: 'zh-CN',
   ui: {
-    brand: { name: 'iceaxing 内容管理' },
+    brand: {
+      name: 'iceaxing 内容管理',
+      mark: () =>
+        createElement(
+          'a',
+          {
+            href: '/keystatic/workspace',
+            target: '_top',
+            title: '打开文件树工作区',
+            style: {
+              color: 'inherit',
+              fontSize: 18,
+              lineHeight: 1,
+              textDecoration: 'none',
+            },
+          },
+          '▦',
+        ),
+    },
     navigation: {
       文章: ['articlesZh', 'articlesEn', 'articlesDe'],
       日志与页面: ['logsZh', 'logsEn', 'logsDe', 'pagesZh', 'pagesEn', 'pagesDe'],
@@ -310,11 +356,14 @@ export default config({
       schema: {
         projectId: stableId('稳定项目 ID'),
         slug: fields.text({ label: 'URL slug', validation: urlSlugValidation }),
-        category: fields.relationship({
-          label: '所属分类',
-          collection: 'categories',
-          validation: { isRequired: true },
-        }),
+        category: relationshipWithContext(
+          {
+            label: '所属分类',
+            collection: 'categories',
+            validation: { isRequired: true },
+          },
+          'treeCategory',
+        ),
         labels: localizedText,
         status: fields.select({
           label: '状态',
@@ -350,11 +399,14 @@ export default config({
       schema: {
         collectionId: stableId('稳定合集 ID'),
         slug: fields.text({ label: 'URL slug', validation: urlSlugValidation }),
-        project: fields.relationship({
-          label: '所属项目',
-          collection: 'projects',
-          validation: { isRequired: true },
-        }),
+        project: relationshipWithContext(
+          {
+            label: '所属项目',
+            collection: 'projects',
+            validation: { isRequired: true },
+          },
+          'treeProject',
+        ),
         labels: localizedText,
         tags,
         order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),

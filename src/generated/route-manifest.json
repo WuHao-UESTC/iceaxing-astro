@@ -21,18 +21,25 @@
     "sourceFile": "src/content/projects/2026-cicc.yaml"
   },
   {
-    "pathname": "/analog-ic/rabaey-digital-ic",
+    "pathname": "/analog-ic/rabaey-digital-ic-note",
     "kind": "project",
-    "contentId": "rabaey-digital-ic",
+    "contentId": "rabaey-digital-ic-note",
     "locale": "zh",
-    "sourceFile": "src/content/projects/rabaey-digital-ic.yaml"
+    "sourceFile": "src/content/projects/rabaey-digital-ic-note.yaml"
   },
   {
-    "pathname": "/analog-ic/razavi-cmos-analog",
+    "pathname": "/analog-ic/razavi-cmos-analog-note",
     "kind": "project",
-    "contentId": "razavi-cmos-analog",
+    "contentId": "razavi-cmos-analog-note",
     "locale": "zh",
-    "sourceFile": "src/content/projects/razavi-cmos-analog.yaml"
+    "sourceFile": "src/content/projects/razavi-cmos-analog-note.yaml"
+  },
+  {
+    "pathname": "/analog-ic/razavi-rf-microelectronics-note",
+    "kind": "project",
+    "contentId": "razavi-rf-microelectronics-note",
+    "locale": "zh",
+    "sourceFile": "src/content/projects/razavi-rf-microelectronics-note.yaml"
   },
   {
     "pathname": "/analog-ic/two-stage-ota",
@@ -70,18 +77,25 @@
     "sourceFile": "src/content/projects/2026-cicc.yaml"
   },
   {
-    "pathname": "/de/analog-ic/rabaey-digital-ic",
+    "pathname": "/de/analog-ic/rabaey-digital-ic-note",
     "kind": "project",
-    "contentId": "rabaey-digital-ic",
+    "contentId": "rabaey-digital-ic-note",
     "locale": "de",
-    "sourceFile": "src/content/projects/rabaey-digital-ic.yaml"
+    "sourceFile": "src/content/projects/rabaey-digital-ic-note.yaml"
   },
   {
-    "pathname": "/de/analog-ic/razavi-cmos-analog",
+    "pathname": "/de/analog-ic/razavi-cmos-analog-note",
     "kind": "project",
-    "contentId": "razavi-cmos-analog",
+    "contentId": "razavi-cmos-analog-note",
     "locale": "de",
-    "sourceFile": "src/content/projects/razavi-cmos-analog.yaml"
+    "sourceFile": "src/content/projects/razavi-cmos-analog-note.yaml"
+  },
+  {
+    "pathname": "/de/analog-ic/razavi-rf-microelectronics-note",
+    "kind": "project",
+    "contentId": "razavi-rf-microelectronics-note",
+    "locale": "de",
+    "sourceFile": "src/content/projects/razavi-rf-microelectronics-note.yaml"
   },
   {
     "pathname": "/de/analog-ic/two-stage-ota",
@@ -112,11 +126,25 @@
     "sourceFile": "src/content/categories/uestc-note.yaml"
   },
   {
+    "pathname": "/de/uestc-note/filter-design-in-digital-world-note",
+    "kind": "project",
+    "contentId": "filter-design-in-digital-world-note",
+    "locale": "de",
+    "sourceFile": "src/content/projects/filter-design-in-digital-world-note.yaml"
+  },
+  {
     "pathname": "/de/uestc-note/liuenke-semiconductance-note",
     "kind": "project",
     "contentId": "liuenke-semiconductance-note",
     "locale": "de",
     "sourceFile": "src/content/projects/liuenke-semiconductance-note.yaml"
+  },
+  {
+    "pathname": "/de/uestc-note/oppenheim-signal-and-system-note",
+    "kind": "project",
+    "contentId": "oppenheim-signal-and-system-note",
+    "locale": "de",
+    "sourceFile": "src/content/projects/oppenheim-signal-and-system-note.yaml"
   },
   {
     "pathname": "/en/about",
@@ -140,18 +168,25 @@
     "sourceFile": "src/content/projects/2026-cicc.yaml"
   },
   {
-    "pathname": "/en/analog-ic/rabaey-digital-ic",
+    "pathname": "/en/analog-ic/rabaey-digital-ic-note",
     "kind": "project",
-    "contentId": "rabaey-digital-ic",
+    "contentId": "rabaey-digital-ic-note",
     "locale": "en",
-    "sourceFile": "src/content/projects/rabaey-digital-ic.yaml"
+    "sourceFile": "src/content/projects/rabaey-digital-ic-note.yaml"
   },
   {
-    "pathname": "/en/analog-ic/razavi-cmos-analog",
+    "pathname": "/en/analog-ic/razavi-cmos-analog-note",
     "kind": "project",
-    "contentId": "razavi-cmos-analog",
+    "contentId": "razavi-cmos-analog-note",
     "locale": "en",
-    "sourceFile": "src/content/projects/razavi-cmos-analog.yaml"
+    "sourceFile": "src/content/projects/razavi-cmos-analog-note.yaml"
+  },
+  {
+    "pathname": "/en/analog-ic/razavi-rf-microelectronics-note",
+    "kind": "project",
+    "contentId": "razavi-rf-microelectronics-note",
+    "locale": "en",
+    "sourceFile": "src/content/projects/razavi-rf-microelectronics-note.yaml"
   },
   {
     "pathname": "/en/analog-ic/two-stage-ota",
@@ -182,11 +217,25 @@
     "sourceFile": "src/content/categories/uestc-note.yaml"
   },
   {
+    "pathname": "/en/uestc-note/filter-design-in-digital-world-note",
+    "kind": "project",
+    "contentId": "filter-design-in-digital-world-note",
+    "locale": "en",
+    "sourceFile": "src/content/projects/filter-design-in-digital-world-note.yaml"
+  },
+  {
     "pathname": "/en/uestc-note/liuenke-semiconductance-note",
     "kind": "project",
     "contentId": "liuenke-semiconductance-note",
     "locale": "en",
     "sourceFile": "src/content/projects/liuenke-semiconductance-note.yaml"
+  },
+  {
+    "pathname": "/en/uestc-note/oppenheim-signal-and-system-note",
+    "kind": "project",
+    "contentId": "oppenheim-signal-and-system-note",
+    "locale": "en",
+    "sourceFile": "src/content/projects/oppenheim-signal-and-system-note.yaml"
   },
   {
     "pathname": "/profile",
@@ -203,10 +252,24 @@
     "sourceFile": "src/content/categories/uestc-note.yaml"
   },
   {
+    "pathname": "/uestc-note/filter-design-in-digital-world-note",
+    "kind": "project",
+    "contentId": "filter-design-in-digital-world-note",
+    "locale": "zh",
+    "sourceFile": "src/content/projects/filter-design-in-digital-world-note.yaml"
+  },
+  {
     "pathname": "/uestc-note/liuenke-semiconductance-note",
     "kind": "project",
     "contentId": "liuenke-semiconductance-note",
     "locale": "zh",
     "sourceFile": "src/content/projects/liuenke-semiconductance-note.yaml"
+  },
+  {
+    "pathname": "/uestc-note/oppenheim-signal-and-system-note",
+    "kind": "project",
+    "contentId": "oppenheim-signal-and-system-note",
+    "locale": "zh",
+    "sourceFile": "src/content/projects/oppenheim-signal-and-system-note.yaml"
   }
 ]
