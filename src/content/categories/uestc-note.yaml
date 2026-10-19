@@ -1,0 +1,15 @@
+categoryId: uestc-note
+slug: uestc-note
+group: skill
+labels:
+  zh:
+    title: 电科课程笔记
+    description: 在电子科技大学本科学习期间的专业课程学习笔记
+  en:
+    title: Note in UESTC
+  de:
+    title: Note in UESTC
+tags:
+  - note
+order: 0
+createdAt: 2026-10-19T15:36:00.000Z
