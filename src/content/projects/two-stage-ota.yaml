@@ -1,0 +1,17 @@
+projectId: two-stage-ota
+slug: two-stage-ota
+category: analog-ic
+labels:
+  zh:
+    title: 二级运放搭建全流程
+    description: 从0到1，第一次搭建出一个能用的二级运放对于我而言是很不容易的，希望这一篇文章可以帮助到更多刚刚IC入门的小白
+  en:
+    title: Build a Two-Stage OTA
+  de:
+    title: Build a Two-Stage OTA
+status: completed
+progress: 100
+tags:
+  - basic
+order: 0
+createdAt: 2026-10-19T15:44:00.000Z

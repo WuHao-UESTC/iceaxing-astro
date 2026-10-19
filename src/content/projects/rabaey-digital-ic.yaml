@@ -1,0 +1,15 @@
+projectId: rabaey-digital-ic
+slug: rabaey-digital-ic
+category: analog-ic
+labels:
+  zh:
+    title: Rabaey-数字集成电路设计学习笔记
+  en:
+    title: Rabaey-Digital IC Note
+  de:
+    title: Rabaey-Digital IC Note
+status: planned
+progress: 0
+tags: []
+order: 0
+createdAt: 2026-10-19T15:57:00.000Z

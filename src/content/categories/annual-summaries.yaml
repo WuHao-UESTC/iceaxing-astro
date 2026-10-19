@@ -1,5 +1,5 @@
-categoryId: annual-summary
-slug: annual-summary
+categoryId: annual-summaries
+slug: annual-summaries
 group: life
 labels:
   zh:
@@ -10,4 +10,4 @@ labels:
     title: Annual Summary
 tags: []
 order: 0
-createdAt: 2026-10-19T15:27:00.000Z
+createdAt: 2026-10-19T15:43:00.000Z

@@ -1,0 +1,18 @@
+projectId: 2026-cicc
+slug: 2026-cicc
+category: analog-ic
+labels:
+  zh:
+    title: 2026年集创赛作品合集
+    description: >-
+      2026年集创赛作品：用于光电流检测的模拟前端（研究生组）。本人完成FDA,PGA,TIA,比较器的相关设计。虽然没能取得一个理想的奖项，但是也收获颇丰。这里展示一些设计的思路与笔记。
+  en:
+    title: 2026 CICC
+  de:
+    title: 2026 CICC
+status: completed
+progress: 100
+tags:
+  - competition
+order: 0
+createdAt: 2026-10-19T15:48:00.000Z

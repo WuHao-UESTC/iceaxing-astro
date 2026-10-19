@@ -1,0 +1,17 @@
+projectId: razavi-cmos-analog
+slug: razavi-cmos-analog
+category: analog-ic
+labels:
+  zh:
+    title: 拉扎维-模拟CMOS集成电路设计学习笔记
+    description: |
+      学习模集过程中的思考与要点记录
+  en:
+    title: Razavi-Analog CMOS IC Note
+  de:
+    title: Razavi-Analog CMOS IC Note
+status: active
+progress: 100
+tags: []
+order: 0
+createdAt: 2026-10-19T15:52:00.000Z
