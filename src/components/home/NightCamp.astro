@@ -1,0 +1,55 @@
+---
+import type { HomeCard, HomeLabels } from './types';
+
+interface Props {
+  labels: HomeLabels;
+  notes: HomeCard[];
+  entries: HomeCard[];
+}
+
+const { labels, notes, entries } = Astro.props;
+---
+
+<div class="journey-panel-inner">
+  <header class="journey-chapter-heading" data-reveal data-step="1">
+    <span>04</span>
+    <div>
+      <small>6200m</small>
+      <h2 id="night-camp-title" tabindex="-1">
+        {labels.chapters[3]}
+      </h2>
+      <p>{labels.chapterIntros[2]}</p>
+    </div>
+  </header>
+  <div class="journey-camp-grid">
+    <section aria-labelledby="field-notes-title">
+      <p class="journey-eyebrow">FIELD NOTES</p>
+      <h3 id="field-notes-title">{labels.fieldNotes}</h3>
+      <div class="journey-notes">
+        {notes.map((card, index) => (
+          <a href={card.href} data-reveal data-step={String(2 + index)}>
+            <small>
+              {card.meta} / 0{index + 1}
+            </small>
+            <h4>{card.title}</h4>
+            <p>{card.description}</p>
+            <i>↗</i>
+          </a>
+        ))}
+      </div>
+    </section>
+    <aside class="journey-directory" aria-labelledby="camp-directory-title">
+      <p class="journey-eyebrow">PEOPLE & PLACES</p>
+      <h3 id="camp-directory-title">{labels.directory}</h3>
+      <div>
+        {entries.map((card, index) => (
+          <a href={card.href} data-reveal data-step={String(3 + index)}>
+            <span>0{index + 1}</span>
+            <strong>{card.title}</strong>
+            <i>→</i>
+          </a>
+        ))}
+      </div>
+    </aside>
+  </div>
+</div>

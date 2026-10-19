@@ -1,0 +1,19 @@
+---
+import katex from 'katex';
+
+interface Props {
+  expression: string;
+  inline?: boolean;
+}
+
+const { expression, inline = false } = Astro.props;
+const html = katex.renderToString(expression, {
+  displayMode: !inline,
+  output: 'htmlAndMathml',
+  strict: 'warn',
+  throwOnError: false,
+});
+const Tag = inline ? 'span' : 'div';
+---
+
+<Tag class={inline ? 'content-math-inline' : 'content-math'} set:html={html} />

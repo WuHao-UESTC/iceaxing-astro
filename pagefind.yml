@@ -1,0 +1,7 @@
+site: dist/client
+output_path: dist/client/pagefind
+exclude_selectors:
+  - '[data-pagefind-ignore]'
+  - 'nav'
+  - '.article-toc'
+  - '.comments'

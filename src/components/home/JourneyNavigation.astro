@@ -1,0 +1,31 @@
+---
+import type { HomeLabels } from './types';
+
+interface Props {
+  labels: HomeLabels;
+}
+
+const { labels } = Astro.props;
+const chapters = [
+  { id: 'base-camp', altitude: '3200m' },
+  { id: 'technical-ridge', altitude: '4200m' },
+  { id: 'snowfield-traverse', altitude: '5100m' },
+  { id: 'night-camp', altitude: '6200m' },
+];
+---
+
+<nav class="journey-navigation" aria-label={labels.route} data-journey-nav>
+  <ol>
+    {chapters.map((chapter, index) => (
+      <li class={index === 0 ? 'is-active' : undefined}>
+        <a href={`#${chapter.id}`} data-journey-link={chapter.id}>
+          <span class="journey-nav-dot" aria-hidden="true" />
+          <span>
+            <b>{chapter.altitude}</b>
+            <small>{labels.chapters[index]}</small>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</nav>

@@ -1,0 +1,62 @@
+---
+import type { HomeCard, HomeLabels } from './types';
+
+interface Props {
+  labels: HomeLabels;
+  categories: HomeCard[];
+  projects: HomeCard[];
+}
+
+const { labels, categories, projects } = Astro.props;
+---
+
+<div class="journey-panel-inner journey-technical-inner">
+  <header class="journey-chapter-heading" data-reveal data-step="1">
+    <span>02</span>
+    <div>
+      <small>4200m</small>
+      <h2 id="technical-ridge-title" tabindex="-1">
+        {labels.chapters[1]}
+      </h2>
+      <p>{labels.chapterIntros[0]}</p>
+    </div>
+  </header>
+  <div class="journey-technical-grid">
+    <nav class="journey-category-route" aria-label={labels.chapters[1]}>
+      <svg viewBox="0 0 420 300" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M18 300C18 220 118 230 105 150S220 92 238 0" />
+      </svg>
+      {categories.map((card, index) => (
+        <a href={card.href} data-reveal data-step={String(2 + index)}>
+          <span>0{index + 1}</span>
+          <div>
+            <h3>{card.title}</h3>
+            <p>{card.description}</p>
+          </div>
+          <i aria-hidden="true" />
+        </a>
+      ))}
+    </nav>
+    <section class="journey-projects" aria-labelledby="journey-projects-title">
+      <p class="journey-eyebrow">IN THE MAKING</p>
+      <h3 id="journey-projects-title">{labels.projects}</h3>
+      <div>
+        {projects.map((card, index) => (
+          <a
+            href={card.href}
+            class="journey-project-card"
+            data-reveal
+            data-step={String(3 + index)}
+          >
+            <small>{card.meta}</small>
+            <h4>{card.title}</h4>
+            <p>{card.description}</p>
+            <span class="journey-progress" aria-label={`${card.progress ?? 0}%`}>
+              <i style={`width:${card.progress ?? 0}%`} />
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+---
+import { localizedPath } from '../i18n/config';
+import type { Locale } from '../i18n/config';
+import SubscribeForm from './SubscribeForm.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copyright =
+  locale === 'de'
+    ? 'Alle Rechte vorbehalten.'
+    : locale === 'en'
+      ? 'All rights reserved.'
+      : '保留所有权利。';
+---
+
+<footer class="site-footer" data-pagefind-ignore>
+  <div class="shell">
+    <SubscribeForm {locale} />
+  </div>
+  <div class="shell footer-inner">
+    <p>
+      © {new Date().getFullYear()} iceaxing. {copyright}
+    </p>
+    <nav aria-label="Footer">
+      <a href={localizedPath(locale, '/rss.xml')}>RSS</a>
+      <a href={localizedPath(locale, '/friends')}>{locale === 'zh' ? '友链' : 'Friends'}</a>
+      <span>Built with Astro.</span>
+    </nav>
+  </div>
+</footer>

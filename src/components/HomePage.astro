@@ -1,0 +1,211 @@
+---
+import { getMessages } from '../i18n/messages';
+import { localizedPath, type Locale } from '../i18n/config';
+import {
+  byOrder,
+  formatDate,
+  getContentIndex,
+  isPublicContent,
+  localizedLabel,
+  newestFirst,
+  routeFor,
+} from '../lib/content';
+import '../styles/home.css';
+import ChapterLandscape from './home/ChapterLandscape.astro';
+import JourneyNavigation from './home/JourneyNavigation.astro';
+import NightCamp from './home/NightCamp.astro';
+import SnowfieldTraverse from './home/SnowfieldTraverse.astro';
+import SnowlineHero from './home/SnowlineHero.astro';
+import TechnicalRidge from './home/TechnicalRidge.astro';
+import type { HomeCard, HomeLabels } from './home/types';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = getMessages(locale);
+const index = await getContentIndex();
+const settings = index.settings[0]?.data;
+const articles = newestFirst(
+  index.articles.filter((entry) => entry.data.locale === locale && isPublicContent(entry.data)),
+);
+const logs = newestFirst(
+  index.logs.filter((entry) => entry.data.locale === locale && isPublicContent(entry.data)),
+);
+const labels: HomeLabels =
+  locale === 'zh'
+    ? {
+        heroTitle: ['向上，', '也向内。'],
+        intro: settings?.descriptions.zh ?? messages.home.introduction,
+        read: '阅读精选',
+        meet: '认识我',
+        featured: '精选文章',
+        chapters: ['山脚营地', '技术栈', '生活日常', '沿途随记'],
+        chapterIntros: [
+          '从原理出发，把想法一步步做成现实。',
+          '在阅读、远行与寻常日子里，收集世界的细节。',
+          '记下偶然的念头，也留住一路相遇的人。',
+        ],
+        projects: '仍在推进',
+        completed: '已经抵达',
+        latest: '最近，过得怎样',
+        fieldNotes: '营地手记',
+        directory: '此间与同行',
+        next: '继续向上',
+        back: '回到山脚',
+        route: '海拔路线',
+      }
+    : locale === 'de'
+      ? {
+          heroTitle: ['Hinauf.', 'Und zu mir.'],
+          intro: settings?.descriptions.de ?? messages.home.introduction,
+          read: 'Notizen lesen',
+          meet: 'Über mich',
+          featured: 'Ausgewählte Notizen',
+          chapters: ['Basislager', 'Technik', 'Alltag', 'Unterwegs'],
+          chapterIntros: [
+            'Von den Grundlagen zu Ideen, die Wirklichkeit werden.',
+            'Kleine Entdeckungen beim Lesen, Reisen und im Alltag.',
+            'Gedanken und Begegnungen unterwegs.',
+          ],
+          projects: 'Laufende Projekte',
+          completed: 'Abgeschlossen',
+          latest: 'In letzter Zeit',
+          fieldNotes: 'Feldnotizen',
+          directory: 'Menschen & Wege',
+          next: 'Weiter aufsteigen',
+          back: 'Zum Basislager',
+          route: 'Höhenroute',
+        }
+      : {
+          heroTitle: ['Upward,', 'and inward.'],
+          intro: settings?.descriptions.en ?? messages.home.introduction,
+          read: 'Read the notes',
+          meet: 'About me',
+          featured: 'Selected notes',
+          chapters: ['Base Camp', 'Technology', 'Everyday Life', 'Along the Way'],
+          chapterIntros: [
+            'From first principles to ideas made real.',
+            'Small discoveries in books, journeys, and ordinary days.',
+            'Passing thoughts and people met along the way.',
+          ],
+          projects: 'In progress',
+          completed: 'Finished',
+          latest: 'Lately in life',
+          fieldNotes: 'Field notes',
+          directory: 'People & places',
+          next: 'Continue the ascent',
+          back: 'Back to base camp',
+          route: 'Altitude route',
+        };
+
+const articleCards: HomeCard[] = articles.map((entry) => ({
+  id: entry.data.contentId,
+  href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
+  title: entry.data.title,
+  description: entry.data.excerpt,
+  meta: formatDate(entry.data.publishedAt, locale),
+  tags: entry.data.tags,
+}));
+const categoryCards: HomeCard[] = byOrder(index.categories).map((entry) => ({
+  id: entry.data.categoryId,
+  href: routeFor(entry.data.categoryId, locale, 'category') ?? '#',
+  title: localizedLabel(entry, locale).title,
+  description: localizedLabel(entry, locale).description,
+  tags: entry.data.tags,
+}));
+const projectCards: HomeCard[] = byOrder(index.projects).map((entry) => ({
+  id: entry.data.projectId,
+  href: routeFor(entry.data.projectId, locale, 'project') ?? '#',
+  title: localizedLabel(entry, locale).title,
+  description: localizedLabel(entry, locale).description,
+  meta: entry.data.status.toUpperCase(),
+  progress: entry.data.progress,
+}));
+const noteCards: HomeCard[] = logs.map((entry) => ({
+  id: entry.data.contentId,
+  href: routeFor(entry.data.contentId, locale, 'log') ?? '#',
+  title: entry.data.title,
+  description: entry.data.excerpt,
+  meta: formatDate(entry.data.logDate, locale),
+}));
+const entries: HomeCard[] = [
+  {
+    id: 'log',
+    href: localizedPath(locale, '/log'),
+    title: locale === 'zh' ? '日志' : 'Log',
+    description: '',
+  },
+  {
+    id: 'about',
+    href: localizedPath(locale, '/about'),
+    title: messages.nav.about,
+    description: '',
+  },
+  {
+    id: 'profile',
+    href: localizedPath(locale, '/profile'),
+    title: locale === 'zh' ? '个人档案' : 'Profile',
+    description: '',
+  },
+  {
+    id: 'friends',
+    href: localizedPath(locale, '/friends'),
+    title: locale === 'zh' ? '友链' : 'Friends',
+    description: '',
+  },
+];
+const mottoEntry = byOrder(
+  index.mottos.filter((entry) => entry.data.locale === locale && entry.data.active),
+)[0];
+const motto = mottoEntry
+  ? { text: mottoEntry.data.text, source: mottoEntry.data.source }
+  : undefined;
+const featuredCards = articleCards
+  .filter((card) => articles.find((entry) => entry.data.contentId === card.id)?.data.featured)
+  .slice(0, 4);
+---
+
+<main id="main-content" class="snowline-home" data-journey data-pagefind-body tabindex="-1">
+  <JourneyNavigation {labels} />
+  <section id="base-camp" class="snowline-panel snowline-hero" aria-labelledby="base-camp-title">
+    <ChapterLandscape scene="cover" />
+    <SnowlineHero
+      {labels}
+      {motto}
+      featured={featuredCards.length ? featuredCards : articleCards.slice(0, 4)}
+      profileHref={localizedPath(locale, '/profile')}
+    />
+  </section>
+  <section
+    id="technical-ridge"
+    class="snowline-panel snowline-technical"
+    aria-labelledby="technical-ridge-title"
+  >
+    <ChapterLandscape scene="ridge" />
+    <TechnicalRidge
+      {labels}
+      categories={categoryCards}
+      projects={projectCards.filter((card) => card.meta !== 'COMPLETED').slice(0, 3)}
+    />
+  </section>
+  <section
+    id="snowfield-traverse"
+    class="snowline-panel snowline-life"
+    aria-labelledby="snowfield-traverse-title"
+  >
+    <ChapterLandscape scene="field" />
+    <SnowfieldTraverse {labels} categories={categoryCards} latest={articleCards.slice(0, 3)} />
+  </section>
+  <section id="night-camp" class="snowline-panel snowline-night" aria-labelledby="night-camp-title">
+    <ChapterLandscape scene="camp" />
+    <NightCamp {labels} notes={noteCards.slice(0, 3)} {entries} />
+  </section>
+</main>
+
+<script>
+  import { initHomeJourney } from '../scripts/home-journey';
+
+  initHomeJourney();
+</script>

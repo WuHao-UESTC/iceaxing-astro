@@ -1,0 +1,67 @@
+{
+  "name": "iceaxing-astro",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run check && astro build && npm run search:index",
+    "build:only": "npm run content:validate && astro build && npm run search:index",
+    "preview": "astro preview",
+    "check": "npm run content:validate && astro check",
+    "content:validate": "tsx scripts/validate-content.ts",
+    "search:index": "pagefind --site dist/client --output-path dist/client/pagefind",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "ci": "npm run format:check && npm run lint && npm run check && npm run test && astro build && npm run search:index"
+  },
+  "dependencies": {
+    "@astrojs/markdoc": "^2.1.0",
+    "@astrojs/react": "^7.1.0",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/vercel": "^11.0.15",
+    "@keystatic/astro": "^6.0.0",
+    "@keystatic/core": "^0.6.9",
+    "@tailwindcss/vite": "^4.3.3",
+    "@upstash/redis": "^1.39.0",
+    "astro": "^7.4.0",
+    "katex": "^0.19.0",
+    "markmap-lib": "^0.18.12",
+    "markmap-view": "^0.18.12",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "resend": "^6.34.1",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@eslint/js": "^10.0.1",
+    "@types/katex": "^0.16.8",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint": "^10.0.1",
+    "eslint-plugin-astro": "^3.2.1",
+    "globals": "^17.13.0",
+    "pagefind": "^1.5.2",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "^5.0.5",
+    "yaml": "^2.9.1"
+  },
+  "overrides": {
+    "katex": "$katex",
+    "path-to-regexp": "6.3.0"
+  }
+}

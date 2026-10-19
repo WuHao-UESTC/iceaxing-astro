@@ -1,0 +1,51 @@
+---
+import type { HomeCard, HomeLabels } from './types';
+
+interface Props {
+  labels: HomeLabels;
+  categories: HomeCard[];
+  latest: HomeCard[];
+}
+
+const { labels, categories, latest } = Astro.props;
+---
+
+<div class="journey-panel-inner">
+  <header class="journey-chapter-heading" data-reveal data-step="1">
+    <span>03</span>
+    <div>
+      <small>5100m</small>
+      <h2 id="snowfield-traverse-title" tabindex="-1">
+        {labels.chapters[2]}
+      </h2>
+      <p>{labels.chapterIntros[1]}</p>
+    </div>
+  </header>
+  <nav class="journey-life-map" aria-label={labels.chapters[2]}>
+    <svg viewBox="0 0 1100 260" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M-80 80C140 290 295 58 510 140S830 310 1180 70" />
+    </svg>
+    <div>
+      {categories.slice(0, 4).map((card, index) => (
+        <a href={card.href} data-reveal data-step={String(2 + index)}>
+          <span>0{index + 1} /</span>
+          <h3>{card.title}</h3>
+          <small>{card.description}</small>
+          <i>↗</i>
+        </a>
+      ))}
+    </div>
+  </nav>
+  <section class="journey-latest" aria-labelledby="journey-latest-title">
+    <h3 id="journey-latest-title">{labels.latest}</h3>
+    <div>
+      {latest.map((card, index) => (
+        <a href={card.href} data-reveal data-step={String(4 + index)}>
+          <span>{card.meta}</span>
+          <strong>{card.title}</strong>
+          <i>↗</i>
+        </a>
+      ))}
+    </div>
+  </section>
+</div>

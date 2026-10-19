@@ -1,0 +1,56 @@
+---
+interface Card {
+  href: string;
+  title: string;
+  description?: string;
+  eyebrow?: string;
+  meta?: string;
+  tags?: string[];
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  eyebrow?: string;
+  cards: Card[];
+  emptyLabel: string;
+}
+
+const { title, description, eyebrow = 'ICEAXING / FIELD INDEX', cards, emptyLabel } = Astro.props;
+---
+
+<main id="main-content" class="listing-page shell" data-pagefind-body>
+  <header class="listing-header">
+    <p class="content-kicker">{eyebrow}</p>
+    <h1 data-pagefind-meta="title">{title}</h1>
+    {description && <p>{description}</p>}
+  </header>
+  {cards.length ? (
+    <div class="listing-grid">
+      {cards.map((card, index) => (
+        <article class="listing-card">
+          <a href={card.href}>
+            <span class="listing-index">{String(index + 1).padStart(2, '0')}</span>
+            {card.eyebrow && <span class="listing-card-eyebrow">{card.eyebrow}</span>}
+            <h2>{card.title}</h2>
+            {card.description && <p>{card.description}</p>}
+            {card.tags && card.tags.length > 0 && (
+              <span class="listing-tags">
+                {card.tags
+                  .slice(0, 4)
+                  .map((tag) => `#${tag}`)
+                  .join(' · ')}
+              </span>
+            )}
+            {card.meta && <span class="listing-meta">{card.meta}</span>}
+            <span class="listing-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <p class="listing-empty">{emptyLabel}</p>
+  )}
+</main>

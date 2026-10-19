@@ -1,0 +1,17 @@
+categoryId: technology
+slug: technology
+labels:
+  zh:
+    title: 技术
+    description: 软件、硬件与工程实践。
+  en:
+    title: Technology
+    description: Software, hardware, and engineering practice.
+  de:
+    title: Technik
+    description: Software, Hardware und technische Praxis.
+tags:
+  - engineering
+order: 10
+icon: circuit
+createdAt: 2026-10-18T08:00:00.000Z

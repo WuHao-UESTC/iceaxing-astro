@@ -1,0 +1,21 @@
+---
+import { getEntry, render } from 'astro:content';
+
+import ArticlePage from '../../components/content/ArticlePage.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+
+const entry = await getEntry('articles', 'zh/markdoc-fixture');
+if (!entry) throw new Error('Missing Markdoc fixture');
+const { Content, headings } = await render(entry);
+---
+
+<BaseLayout
+  locale="zh"
+  title="Markdoc 组件视觉样例 · iceaxing"
+  description="阶段 3 内容组件回归样例。"
+  noindex
+>
+  <ArticlePage {entry} locale="zh" {headings} {Content} kind="article" />
+</BaseLayout>

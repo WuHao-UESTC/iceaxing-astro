@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import type { Locale } from '../../i18n/config';
+
+interface Props {
+  locale: Locale;
+  friends: CollectionEntry<'friends'>[];
+}
+
+const { locale, friends } = Astro.props;
+const title = locale === 'zh' ? '同行者' : locale === 'de' ? 'Weggefährten' : 'Fellow travellers';
+const intro =
+  locale === 'zh'
+    ? '一些值得持续拜访的站点与朋友。'
+    : locale === 'de'
+      ? 'Websites und Menschen, die einen weiteren Besuch wert sind.'
+      : 'Sites and people worth returning to.';
+---
+
+<main id="main-content" class="listing-page shell" data-pagefind-body>
+  <header class="listing-header">
+    <p class="content-kicker">ICEAXING / LINKS</p>
+    <h1>{title}</h1>
+    <p>{intro}</p>
+  </header>
+  <div class="friends-grid">
+    {friends.map((friend) => (
+      <a class="friend-card" href={friend.data.url} rel="friend external">
+        <span aria-hidden="true">{friend.data.name.slice(0, 1).toUpperCase()}</span>
+        <div>
+          <h2>{friend.data.name}</h2>
+          {friend.data.description && <p>{friend.data.description}</p>}
+          <small>{new URL(friend.data.url).hostname}</small>
+        </div>
+        <i aria-hidden="true">↗</i>
+      </a>
+    ))}
+  </div>
+</main>

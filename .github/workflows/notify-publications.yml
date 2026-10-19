@@ -1,0 +1,44 @@
+name: Notify publications
+
+on:
+  deployment_status:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publication-notifications
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+      github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Trigger idempotent publication notification
+        env:
+          SITE_URL: ${{ secrets.PRODUCTION_SITE_URL }}
+          NOTIFY_SECRET: ${{ secrets.PUBLICATION_NOTIFY_SECRET }}
+        shell: bash
+        run: |
+          test -n "$SITE_URL"
+          test -n "$NOTIFY_SECRET"
+          for attempt in $(seq 1 20); do
+            response=$(curl --fail-with-body --retry 3 --retry-all-errors \
+              --request POST \
+              --header "Authorization: Bearer ${NOTIFY_SECRET}" \
+              --header "Content-Type: application/json" \
+              "${SITE_URL%/}/api/publications/notify")
+            remaining=$(jq -r '.data.remaining // 0' <<< "$response")
+            if [ "$remaining" -eq 0 ]; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Notification queue did not drain after 20 batches" >&2
+          exit 1

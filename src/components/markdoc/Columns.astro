@@ -1,0 +1,11 @@
+---
+interface Props {
+  gap?: 'small' | 'medium' | 'large';
+}
+
+const { gap = 'medium' } = Astro.props;
+---
+
+<div class="content-columns" data-gap={gap}>
+  <slot />
+</div>

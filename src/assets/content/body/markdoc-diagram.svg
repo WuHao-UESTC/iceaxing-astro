@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-labelledby="title desc">
+  <title id="title">Astro content pipeline</title>
+  <desc id="desc">Keystatic and Markdoc content flows through validation into static Astro pages.</desc>
+  <rect width="960" height="480" rx="32" fill="#e9f2ef"/>
+  <g fill="#fff" stroke="#176b61" stroke-width="3">
+    <rect x="80" y="175" width="210" height="130" rx="18"/>
+    <rect x="375" y="175" width="210" height="130" rx="18"/>
+    <rect x="670" y="175" width="210" height="130" rx="18"/>
+  </g>
+  <g fill="#172221" font-family="system-ui, sans-serif" font-size="30" text-anchor="middle">
+    <text x="185" y="232">Keystatic</text>
+    <text x="185" y="270" font-size="20">Markdoc + YAML</text>
+    <text x="480" y="232">Validation</text>
+    <text x="480" y="270" font-size="20">Schema + routes</text>
+    <text x="775" y="232">Astro</text>
+    <text x="775" y="270" font-size="20">Static HTML</text>
+  </g>
+  <path d="M290 240h85M585 240h85" stroke="#176b61" stroke-width="5" stroke-linecap="round"/>
+  <path d="m360 225 15 15-15 15M655 225l15 15-15 15" fill="none" stroke="#176b61" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,45 @@
+---
+import ContentRoute from '../../components/ContentRoute.astro';
+import { isPrefixedLocale, prefixedLocales, type PrefixedLocale } from '../../i18n/config';
+import { routes, type RouteEntry } from '../../lib/content';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  const specials = [
+    { path: 'articles', special: 'articles' },
+    { path: 'projects', special: 'projects' },
+    { path: 'log', special: 'log-index' },
+    { path: 'friends', special: 'friends' },
+    { path: 'tools', special: 'tools' },
+  ] as const;
+  const contentPaths = routes
+    .filter((route) => route.locale !== 'zh')
+    .map((route) => ({
+      params: {
+        locale: route.locale,
+        path: route.pathname.replace(new RegExp(`^/${route.locale}/?`), ''),
+      },
+      props: { route },
+    }));
+  const specialPaths = prefixedLocales.flatMap((locale) =>
+    specials.map((item) => ({
+      params: { locale, path: item.path },
+      props: { special: item.special },
+    })),
+  );
+  return [...contentPaths, ...specialPaths];
+}
+
+interface Props {
+  route?: RouteEntry;
+  special?: 'articles' | 'projects' | 'log-index' | 'friends' | 'tools';
+}
+
+const localeParam = Astro.params.locale;
+if (!isPrefixedLocale(localeParam)) throw new Error(`Unsupported locale: ${localeParam}`);
+const locale: PrefixedLocale = localeParam;
+const { route, special } = Astro.props;
+---
+
+<ContentRoute {locale} {route} {special} />

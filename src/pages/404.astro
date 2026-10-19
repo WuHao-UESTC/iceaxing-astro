@@ -1,0 +1,16 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout locale="zh" title="页面未找到 — iceaxing" description="请求的页面不存在。" noindex>
+  <main id="main-content" class="shell status-page">
+    <p class="eyebrow">404</p>
+    <h1>这里没有内容。</h1>
+    <p>链接可能已经变化，或者页面尚未迁移。</p>
+    <a class="button" href="/">
+      返回首页
+    </a>
+  </main>
+</BaseLayout>

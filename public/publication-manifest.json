@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "contentId": "welcome-astro",
+      "kind": "article",
+      "versionHash": "e8e4aeec0b46c0bd38853dfc",
+      "publishedAt": "2026-10-18T08:00:00.000Z",
+      "titles": { "zh": "Astro 内容系统已经接通" },
+      "urls": { "zh": "/technology/astro-rebuild/foundations/hello-astro" },
+      "subscriptionKeys": ["category:technology", "project:astro-rebuild", "collection:foundations"]
+    },
+    {
+      "contentId": "technology",
+      "kind": "category",
+      "versionHash": "00a4c3628068feaaf8ee5545",
+      "publishedAt": "2026-10-18T08:00:00.000Z",
+      "titles": { "zh": "技术", "en": "Technology", "de": "Technik" },
+      "urls": { "de": "/de/technology", "en": "/en/technology", "zh": "/technology" },
+      "subscriptionKeys": ["category:technology"]
+    },
+    {
+      "contentId": "foundations",
+      "kind": "collection",
+      "versionHash": "d94f6bd2aeb1e93d44ef8149",
+      "publishedAt": "2026-10-18T08:00:00.000Z",
+      "titles": { "zh": "基础架构", "en": "Foundations", "de": "Grundlagen" },
+      "urls": {
+        "de": "/de/technology/astro-rebuild/foundations",
+        "en": "/en/technology/astro-rebuild/foundations",
+        "zh": "/technology/astro-rebuild/foundations"
+      },
+      "subscriptionKeys": ["category:technology", "project:astro-rebuild", "collection:foundations"]
+    },
+    {
+      "contentId": "astro-rebuild",
+      "kind": "project",
+      "versionHash": "62798f57f063dd8f17c789aa",
+      "publishedAt": "2026-10-18T08:00:00.000Z",
+      "titles": { "zh": "Astro 重构", "en": "Astro Rebuild", "de": "Astro-Neuaufbau" },
+      "urls": {
+        "de": "/de/technology/astro-rebuild",
+        "en": "/en/technology/astro-rebuild",
+        "zh": "/technology/astro-rebuild"
+      },
+      "subscriptionKeys": ["category:technology", "project:astro-rebuild"]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+---
+import type { RenderResult } from 'astro:content';
+
+import type { PageEntry } from '../../lib/content';
+
+interface Props {
+  entry: PageEntry;
+  Content: RenderResult['Content'];
+}
+
+const { entry, Content } = Astro.props;
+---
+
+<main id="main-content" class="content-page" data-pagefind-body>
+  <header class="content-page-header">
+    <p class="content-kicker">ICEAXING / {entry.data.pageKind.toUpperCase()}</p>
+    <h1 data-pagefind-meta="title">{entry.data.title}</h1>
+    {entry.data.excerpt && <p data-pagefind-meta="description">{entry.data.excerpt}</p>}
+  </header>
+  <div class="prose content-page-body">
+    <Content />
+  </div>
+</main>

@@ -1,0 +1,75 @@
+---
+import { getMessages } from '../i18n/messages';
+import { localizedPath, type Locale } from '../i18n/config';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  locale: Locale;
+  alternatePaths?: Partial<Record<Locale, string>>;
+}
+
+const { locale, alternatePaths } = Astro.props;
+const messages = getMessages(locale);
+const navItems = [
+  { label: messages.nav.home, path: '/' },
+  { label: messages.nav.articles, path: '/articles' },
+  { label: messages.nav.projects, path: '/projects' },
+  { label: messages.nav.tools, path: '/tools' },
+  { label: messages.nav.about, path: '/about' },
+];
+---
+
+<header class="site-header" data-pagefind-ignore>
+  <div class="shell header-inner">
+    <a
+      class="brand"
+      href={localizedPath(locale)}
+      aria-label={`${messages.meta.title} — ${messages.nav.home}`}
+    >
+      iceaxing<span aria-hidden="true">.</span>
+    </a>
+
+    <nav aria-label="Primary navigation">
+      <ul class="nav-list">
+        {navItems.map((item) => (
+          <li>
+            <a href={localizedPath(locale, item.path)}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button class="search-open" type="button" data-search-open aria-label={messages.nav.search}>
+        <span aria-hidden="true">⌕</span>
+      </button>
+      <details class="language-menu">
+        <summary aria-label={messages.common.language}>{locale.toUpperCase()}</summary>
+        <div class="language-options">
+          <a
+            href={alternatePaths?.zh ?? '/'}
+            lang="zh-CN"
+            aria-current={locale === 'zh' ? 'page' : undefined}
+          >
+            中文
+          </a>
+          <a
+            href={alternatePaths?.en ?? '/en'}
+            lang="en"
+            aria-current={locale === 'en' ? 'page' : undefined}
+          >
+            English
+          </a>
+          <a
+            href={alternatePaths?.de ?? '/de'}
+            lang="de"
+            aria-current={locale === 'de' ? 'page' : undefined}
+          >
+            Deutsch
+          </a>
+        </div>
+      </details>
+      <ThemeToggle label={messages.common.switchTheme} />
+    </div>
+  </div>
+</header>

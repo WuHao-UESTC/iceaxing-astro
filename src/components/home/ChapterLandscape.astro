@@ -1,0 +1,107 @@
+---
+interface Props {
+  scene: 'cover' | 'ridge' | 'field' | 'camp';
+}
+
+const { scene } = Astro.props;
+---
+
+<svg
+  class={`journey-landscape journey-landscape-${scene}`}
+  data-reveal="landscape"
+  viewBox="0 0 1440 800"
+  preserveAspectRatio="xMidYMid slice"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  {scene === 'cover' && (
+    <>
+      <circle class="landscape-sun" cx="1090" cy="170" r="52" />
+      <path
+        class="landscape-wash"
+        d="M350 670C520 625 619 517 713 451C795 394 824 338 892 278C936 339 964 368 1007 399C1052 355 1103 277 1175 228C1241 321 1320 362 1440 403V800H350Z"
+      />
+      <path
+        class="landscape-shadow"
+        d="M0 722C230 711 410 677 579 570C699 494 773 390 875 295C955 219 983 157 1015 118C1051 196 1074 246 1150 319C1227 393 1320 443 1440 454V800H0Z"
+      />
+      <path
+        class="landscape-line"
+        pathLength="1"
+        d="M410 655C665 565 767 394 875 295C955 219 983 157 1015 118"
+      />
+      <path
+        class="landscape-front"
+        d="M0 662C194 605 340 645 492 665C711 695 760 517 963 511C1150 506 1252 643 1440 563V800H0Z"
+      />
+      <path
+        class="landscape-trail"
+        d="M722 797C869 746 1105 749 1107 688C1108 644 933 652 935 606C937 580 979 570 1003 566"
+      />
+    </>
+  )}
+  {scene === 'ridge' && (
+    <>
+      <path
+        class="landscape-wash"
+        d="M0 800V685C168 650 307 577 425 401C512 271 538 160 632 0H803C685 172 655 318 588 474C526 619 403 730 324 800Z"
+      />
+      <path
+        class="landscape-shadow"
+        d="M0 800H240C387 701 479 593 538 438C609 251 656 109 729 0H791C689 174 674 345 588 522C528 646 453 731 403 800Z"
+      />
+      <path
+        class="landscape-line"
+        pathLength="1"
+        d="M52 800C303 683 427 549 496 375C555 224 604 97 668 0"
+      />
+      <path
+        class="landscape-fine"
+        d="M91 800C336 687 464 533 530 354C590 191 631 97 694 0M170 800C378 693 497 553 568 383C633 226 651 119 723 0"
+      />
+    </>
+  )}
+  {scene === 'field' && (
+    <>
+      <path
+        class="landscape-wash"
+        d="M0 481C238 341 465 470 703 460C973 449 1108 300 1440 393V800H0Z"
+      />
+      <path
+        class="landscape-shadow"
+        d="M0 644C293 483 468 675 786 603C1054 542 1188 534 1440 588V800H0Z"
+      />
+      <path
+        class="landscape-line"
+        pathLength="1"
+        d="M0 518C234 379 469 507 703 495C973 481 1146 333 1440 429"
+      />
+      <path
+        class="landscape-fine"
+        d="M0 683C282 531 482 717 790 645C1080 577 1230 575 1440 629M0 713C282 561 482 747 790 675C1080 607 1230 605 1440 659"
+      />
+    </>
+  )}
+  {scene === 'camp' && (
+    <>
+      <path
+        class="landscape-wash"
+        d="M0 690C220 700 360 610 550 626C740 642 816 550 886 416C969 259 1060 270 1148 190C1250 99 1339 126 1440 64V800H0Z"
+      />
+      <path
+        class="landscape-shadow"
+        d="M0 754C251 718 420 690 631 710C879 733 961 561 1126 508C1263 464 1350 493 1440 430V800H0Z"
+      />
+      <path
+        class="landscape-line"
+        pathLength="1"
+        d="M0 690C220 700 360 610 550 626C740 642 816 550 886 416C969 259 1060 270 1148 190C1250 99 1339 126 1440 64"
+      />
+      <path
+        class="landscape-trail"
+        d="M130 800C259 710 421 762 586 716C738 674 718 570 820 524C917 479 891 371 1002 306C1114 240 1210 280 1330 166"
+      />
+    </>
+  )}
+</svg>

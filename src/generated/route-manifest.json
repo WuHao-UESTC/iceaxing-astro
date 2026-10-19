@@ -1,0 +1,121 @@
+[
+  {
+    "pathname": "/about",
+    "kind": "page",
+    "contentId": "about-zh",
+    "locale": "zh",
+    "sourceFile": "src/content/pages/zh/about-zh/index.mdoc"
+  },
+  {
+    "pathname": "/de/about",
+    "kind": "page",
+    "contentId": "about-de",
+    "locale": "de",
+    "sourceFile": "src/content/pages/de/about-de/index.mdoc"
+  },
+  {
+    "pathname": "/de/profile",
+    "kind": "page",
+    "contentId": "profile-de",
+    "locale": "de",
+    "sourceFile": "src/content/pages/de/profile-de/index.mdoc"
+  },
+  {
+    "pathname": "/de/technology",
+    "kind": "category",
+    "contentId": "technology",
+    "locale": "de",
+    "sourceFile": "src/content/categories/technology.yaml"
+  },
+  {
+    "pathname": "/de/technology/astro-rebuild",
+    "kind": "project",
+    "contentId": "astro-rebuild",
+    "locale": "de",
+    "sourceFile": "src/content/projects/astro-rebuild.yaml"
+  },
+  {
+    "pathname": "/de/technology/astro-rebuild/foundations",
+    "kind": "collection",
+    "contentId": "foundations",
+    "locale": "de",
+    "sourceFile": "src/content/collections/foundations.yaml"
+  },
+  {
+    "pathname": "/en/about",
+    "kind": "page",
+    "contentId": "about-en",
+    "locale": "en",
+    "sourceFile": "src/content/pages/en/about-en/index.mdoc"
+  },
+  {
+    "pathname": "/en/profile",
+    "kind": "page",
+    "contentId": "profile-en",
+    "locale": "en",
+    "sourceFile": "src/content/pages/en/profile-en/index.mdoc"
+  },
+  {
+    "pathname": "/en/technology",
+    "kind": "category",
+    "contentId": "technology",
+    "locale": "en",
+    "sourceFile": "src/content/categories/technology.yaml"
+  },
+  {
+    "pathname": "/en/technology/astro-rebuild",
+    "kind": "project",
+    "contentId": "astro-rebuild",
+    "locale": "en",
+    "sourceFile": "src/content/projects/astro-rebuild.yaml"
+  },
+  {
+    "pathname": "/en/technology/astro-rebuild/foundations",
+    "kind": "collection",
+    "contentId": "foundations",
+    "locale": "en",
+    "sourceFile": "src/content/collections/foundations.yaml"
+  },
+  {
+    "pathname": "/log/phase-two",
+    "kind": "log",
+    "contentId": "phase-two",
+    "locale": "zh",
+    "sourceFile": "src/content/logs/zh/phase-two/index.mdoc"
+  },
+  {
+    "pathname": "/profile",
+    "kind": "page",
+    "contentId": "profile-zh",
+    "locale": "zh",
+    "sourceFile": "src/content/pages/zh/profile-zh/index.mdoc"
+  },
+  {
+    "pathname": "/technology",
+    "kind": "category",
+    "contentId": "technology",
+    "locale": "zh",
+    "sourceFile": "src/content/categories/technology.yaml"
+  },
+  {
+    "pathname": "/technology/astro-rebuild",
+    "kind": "project",
+    "contentId": "astro-rebuild",
+    "locale": "zh",
+    "sourceFile": "src/content/projects/astro-rebuild.yaml"
+  },
+  {
+    "pathname": "/technology/astro-rebuild/foundations",
+    "kind": "collection",
+    "contentId": "foundations",
+    "locale": "zh",
+    "sourceFile": "src/content/collections/foundations.yaml"
+  },
+  {
+    "pathname": "/technology/astro-rebuild/foundations/hello-astro",
+    "kind": "article",
+    "contentId": "welcome-astro",
+    "locale": "zh",
+    "sourceFile": "src/content/articles/zh/welcome-astro/index.mdoc"
+  }
+]

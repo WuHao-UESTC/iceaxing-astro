@@ -1,0 +1,35 @@
+---
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<button class="theme-toggle" type="button" aria-label={label} title={label} data-theme-toggle>
+  <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18">
+    <path
+      d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+    />
+  </svg>
+</button>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+
+  button?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    root.style.colorScheme = next;
+
+    try {
+      localStorage.setItem('iceaxing-theme', next);
+    } catch {
+      // Storage is optional; the selected theme still applies to this page.
+    }
+  });
+</script>

@@ -1,0 +1,16 @@
+---
+export const prerender = true;
+
+import ToolPage from '../../../components/tools/ToolPage.astro';
+import { isPrefixedLocale, prefixedLocales, type PrefixedLocale } from '../../../i18n/config';
+
+export function getStaticPaths() {
+  return prefixedLocales.map((locale) => ({ params: { locale } }));
+}
+
+const candidate = Astro.params.locale;
+if (!isPrefixedLocale(candidate)) throw new Error(`Unsupported locale: ${candidate}`);
+const locale: PrefixedLocale = candidate;
+---
+
+<ToolPage {locale} tool="pomodoro" />

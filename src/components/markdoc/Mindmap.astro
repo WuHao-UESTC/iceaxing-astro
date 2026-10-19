@@ -1,0 +1,14 @@
+---
+import MindmapIsland from '../islands/MindmapIsland';
+
+interface Props {
+  title?: string;
+  source: string;
+}
+
+const { title, source } = Astro.props;
+---
+
+<figure class="content-mindmap">
+  <MindmapIsland {title} {source} client:visible />
+</figure>

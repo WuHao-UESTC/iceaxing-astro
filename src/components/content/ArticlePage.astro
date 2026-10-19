@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import type { RenderResult } from 'astro:content';
+
+import type { ArticleEntry, LogEntry } from '../../lib/content';
+import { formatDate } from '../../lib/content';
+import type { Locale } from '../../i18n/config';
+import GiscusComments from './GiscusComments.astro';
+import TableOfContents from './TableOfContents.astro';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  entry: ArticleEntry | LogEntry;
+  locale: Locale;
+  headings: Heading[];
+  Content: RenderResult['Content'];
+  kind: 'article' | 'log';
+}
+
+const { entry, locale, headings, Content, kind } = Astro.props;
+const labels =
+  locale === 'zh'
+    ? { contents: '目录', published: '发布于', updated: '更新于', log: '日志' }
+    : locale === 'de'
+      ? { contents: 'Inhalt', published: 'Veröffentlicht', updated: 'Aktualisiert', log: 'Log' }
+      : { contents: 'Contents', published: 'Published', updated: 'Updated', log: 'Log' };
+---
+
+<main id="main-content" class="article-shell" data-pagefind-body>
+  <article class="reading-article">
+    <header class="article-header">
+      <p class="content-kicker">{kind === 'log' ? labels.log : 'ICEAXING / NOTES'}</p>
+      <h1 data-pagefind-meta="title">{entry.data.title}</h1>
+      {entry.data.excerpt && (
+        <p class="article-deck" data-pagefind-meta="description">
+          {entry.data.excerpt}
+        </p>
+      )}
+      <div class="article-meta">
+        <span>{entry.data.authorName}</span>
+        <time datetime={entry.data.publishedAt.toISOString()}>
+          {labels.published} {formatDate(entry.data.publishedAt, locale)}
+        </time>
+        {entry.data.updatedAt && (
+          <time datetime={entry.data.updatedAt.toISOString()}>
+            {labels.updated} {formatDate(entry.data.updatedAt, locale)}
+          </time>
+        )}
+      </div>
+      {entry.data.tags.length > 0 && (
+        <ul class="tag-list" aria-label="Tags">
+          {entry.data.tags.map((tag) => (
+            <li data-pagefind-filter={`tag:${tag}`}>#{tag}</li>
+          ))}
+        </ul>
+      )}
+      {entry.data.coverImage && (
+        <Image
+          class="article-cover"
+          src={entry.data.coverImage}
+          alt=""
+          widths={[720, 1080, 1440]}
+          sizes="(max-width: 900px) 100vw, 860px"
+        />
+      )}
+    </header>
+
+    <div class="article-layout">
+      <div class="article-body prose">
+        <Content />
+      </div>
+      <aside class="toc-rail">
+        <TableOfContents headings={headings} label={labels.contents} />
+      </aside>
+    </div>
+  </article>
+  <GiscusComments {locale} />
+</main>

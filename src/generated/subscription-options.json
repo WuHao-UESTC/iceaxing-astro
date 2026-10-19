@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "options": [
+    {
+      "key": "category:technology",
+      "kind": "category",
+      "id": "technology",
+      "labels": { "zh": "技术", "en": "Technology", "de": "Technik" }
+    },
+    {
+      "key": "project:astro-rebuild",
+      "kind": "project",
+      "id": "astro-rebuild",
+      "parentKey": "category:technology",
+      "labels": { "zh": "Astro 重构", "en": "Astro Rebuild", "de": "Astro-Neuaufbau" }
+    },
+    {
+      "key": "collection:foundations",
+      "kind": "collection",
+      "id": "foundations",
+      "parentKey": "project:astro-rebuild",
+      "labels": { "zh": "基础架构", "en": "Foundations", "de": "Grundlagen" }
+    }
+  ]
+}

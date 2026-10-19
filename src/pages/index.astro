@@ -1,0 +1,27 @@
+---
+export const prerender = true;
+
+import HomePage from '../components/HomePage.astro';
+import { getMessages } from '../i18n/messages';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const locale = 'zh';
+const messages = getMessages(locale);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: messages.meta.title,
+  description: messages.meta.description,
+  url: new URL('/', Astro.site ?? Astro.url.origin).href,
+  inLanguage: 'zh-CN',
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title={messages.meta.title}
+  description={messages.meta.description}
+  {jsonLd}
+>
+  <HomePage locale={locale} />
+</BaseLayout>

@@ -1,0 +1,17 @@
+collectionId: foundations
+slug: foundations
+project: astro-rebuild
+labels:
+  zh:
+    title: 基础架构
+    description: 项目骨架、内容模型与工程约束。
+  en:
+    title: Foundations
+    description: Project structure, content model, and engineering constraints.
+  de:
+    title: Grundlagen
+    description: Projektstruktur, Inhaltsmodell und technische Leitplanken.
+tags:
+  - architecture
+order: 10
+createdAt: 2026-10-18T08:00:00.000Z

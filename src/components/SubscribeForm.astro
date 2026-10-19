@@ -1,0 +1,115 @@
+---
+import type { Locale } from '../i18n/config';
+import { subscriptionOptions } from '../lib/subscriptions/types';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy =
+  locale === 'zh'
+    ? {
+        title: '订阅更新',
+        description: '只在新内容发布后发送邮件。你可以订阅全部内容，或选择关注范围。',
+        email: '邮箱地址',
+        scope: '订阅范围（不选即订阅全部）',
+        submit: '发送确认邮件',
+        pending: '正在提交…',
+      }
+    : locale === 'de'
+      ? {
+          title: 'Updates abonnieren',
+          description: 'E-Mails werden nur bei neuen Veröffentlichungen gesendet.',
+          email: 'E-Mail-Adresse',
+          scope: 'Themen (leer bedeutet alle)',
+          submit: 'Bestätigung senden',
+          pending: 'Wird gesendet…',
+        }
+      : {
+          title: 'Subscribe to updates',
+          description: 'Email is sent only when new content is published.',
+          email: 'Email address',
+          scope: 'Topics (leave empty for everything)',
+          submit: 'Send confirmation',
+          pending: 'Sending…',
+        };
+---
+
+<section class="subscribe-panel" aria-labelledby={`subscribe-title-${locale}`} data-pagefind-ignore>
+  <div>
+    <p class="content-kicker">ICEAXING / LETTERS</p>
+    <h2 id={`subscribe-title-${locale}`}>{copy.title}</h2>
+    <p>{copy.description}</p>
+  </div>
+  <form action="/api/subscribe" method="post" data-subscribe-form>
+    <input type="hidden" name="locale" value={locale} />
+    <label class="subscribe-email">
+      <span>{copy.email}</span>
+      <input
+        name="email"
+        type="email"
+        required
+        maxlength="254"
+        autocomplete="email"
+        placeholder="you@example.com"
+      />
+    </label>
+    <label class="subscribe-honeypot" aria-hidden="true">
+      Website
+      <input name="website" type="text" tabindex="-1" autocomplete="off" />
+    </label>
+    <details>
+      <summary>{copy.scope}</summary>
+      <div class="subscribe-options">
+        {subscriptionOptions.map((option) => (
+          <label data-kind={option.kind}>
+            <input type="checkbox" name="subscriptions" value={option.key} />
+            <span>{option.labels[locale]}</span>
+          </label>
+        ))}
+      </div>
+    </details>
+    <button class="button" type="submit" data-label={copy.submit} data-pending={copy.pending}>
+      {copy.submit}
+    </button>
+    <p class="subscribe-result" data-subscribe-result aria-live="polite"></p>
+  </form>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-subscribe-form]').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      const output = form.querySelector<HTMLElement>('[data-subscribe-result]');
+      if (!button || !output) return;
+      const data = new FormData(form);
+      button.disabled = true;
+      button.textContent = button.dataset.pending ?? 'Sending…';
+      output.textContent = '';
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            email: data.get('email'),
+            locale: data.get('locale'),
+            website: data.get('website') || undefined,
+            subscriptions: data.getAll('subscriptions'),
+          }),
+        });
+        const result = (await response.json()) as { success?: boolean; message?: string };
+        output.dataset.state = response.ok ? 'success' : 'error';
+        output.textContent = result.message ?? (response.ok ? 'Done.' : 'Please try again.');
+        if (response.ok) form.reset();
+      } catch {
+        output.dataset.state = 'error';
+        output.textContent = 'Network error. Please try again.';
+      } finally {
+        button.disabled = false;
+        button.textContent = button.dataset.label ?? 'Subscribe';
+      }
+    });
+  });
+</script>

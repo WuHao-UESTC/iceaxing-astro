@@ -1,0 +1,6 @@
+mottoId: build-for-reading
+locale: zh
+text: 为阅读而构建，而不是为框架而构建。
+source: Astro 重构原则
+order: 10
+active: true

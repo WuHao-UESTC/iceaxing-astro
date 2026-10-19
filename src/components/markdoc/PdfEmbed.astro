@@ -1,0 +1,24 @@
+---
+interface Props {
+  title: string;
+  file: string;
+}
+
+const { title, file } = Astro.props;
+---
+
+<figure class="content-pdf">
+  <object data={file} type="application/pdf" aria-label={title}>
+    <p>
+      <a href={file} download>
+        {title}
+      </a>
+    </p>
+  </object>
+  <figcaption>
+    {title} ·{' '}
+    <a href={file} download>
+      下载 PDF
+    </a>
+  </figcaption>
+</figure>

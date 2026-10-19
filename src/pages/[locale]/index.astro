@@ -1,0 +1,37 @@
+---
+export const prerender = true;
+
+import HomePage from '../../components/HomePage.astro';
+import { getMessages } from '../../i18n/messages';
+import { isPrefixedLocale, prefixedLocales, type PrefixedLocale } from '../../i18n/config';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return prefixedLocales.map((locale) => ({ params: { locale } }));
+}
+
+const candidate = Astro.params.locale;
+if (!isPrefixedLocale(candidate)) {
+  return Astro.redirect('/404');
+}
+
+const locale: PrefixedLocale = candidate;
+const messages = getMessages(locale);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: messages.meta.title,
+  description: messages.meta.description,
+  url: new URL(`/${locale}`, Astro.site ?? Astro.url.origin).href,
+  inLanguage: locale,
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title={messages.meta.title}
+  description={messages.meta.description}
+  {jsonLd}
+>
+  <HomePage locale={locale} />
+</BaseLayout>

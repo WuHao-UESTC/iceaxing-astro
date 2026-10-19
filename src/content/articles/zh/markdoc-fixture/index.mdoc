@@ -1,0 +1,72 @@
+---
+contentId: markdoc-fixture
+translationKey: markdoc-fixture
+locale: zh
+title: Markdoc 组件视觉样例
+slug: markdoc-fixture
+excerpt: 阶段 3 的内容组件回归样例，不进入公开路由。
+status: draft
+publishedAt: 2026-10-19T08:00:00.000Z
+tags:
+  - fixture
+authorName: iceaxing
+featured: false
+order: 999
+project: astro-rebuild
+collection: foundations
+seo:
+  title: Markdoc 组件视觉样例
+  description: 阶段 3 内容组件回归样例。
+---
+
+这篇文档覆盖阶段 3 支持的主要内容节点。
+
+## 图片与代码
+
+![Astro 内容管线](../../../../assets/content/body/markdoc-diagram.svg "内容管线示意图")
+
+```ts
+const pipeline = ['Keystatic', 'Markdoc', 'Astro'];
+```
+
+{% callout variant="tip" title="静态优先" %}
+正文和自定义块在构建期输出，浏览器只接收需要的增强脚本。
+{% /callout %}
+
+## 分栏与折叠
+
+{% columns gap="medium" %}
+{% column %}
+### 左栏
+
+稳定 ID 负责关系。
+{% /column %}
+{% column %}
+### 右栏
+
+URL slug 可以演进。
+{% /column %}
+{% /columns %}
+
+{% toggle summary="展开实现说明" %}
+折叠内容使用原生 `details`，禁用 JavaScript 时仍然可用。
+{% /toggle %}
+
+## 公式、表格与锚点
+
+{% math expression="E = mc^2" /%}
+
+行内公式：{% inlineMath expression="a^2 + b^2 = c^2" /%}
+
+| 层级 | 输出 |
+| --- | --- |
+| 内容 | Markdoc |
+| 页面 | 静态 HTML |
+
+{% anchor id="fixture-anchor" /%}
+
+## PDF 与思维导图
+
+{% pdf title="PDF 回退链接样例" file="/media/files/fixture.pdf" /%}
+
+{% mindmap title="内容链路" source="Keystatic → Schema → Astro → HTML" /%}
