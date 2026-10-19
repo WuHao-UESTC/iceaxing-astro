@@ -1,0 +1,16 @@
+projectId: liuenke-semiconductance-note
+slug: liuenke-semiconductance-note
+category: uestc-note
+labels:
+  zh:
+    title: 刘恩科-半导体物理学笔记
+    description: 学习半导体物理学过程中的思考与感悟
+  en:
+    title: Liu Enke Semiconductor Note
+  de:
+    title: Liu Enke Semiconductor Note
+status: active
+progress: 0
+tags: []
+order: 0
+createdAt: 2026-10-19T16:04:00.000Z
