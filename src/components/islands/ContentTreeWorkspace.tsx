@@ -14,6 +14,11 @@ type CreateArticleTarget = Pick<FolderNode, 'kind' | 'id' | 'label' | 'parentKey
   missingLocales?: ContentLocale[];
 };
 
+type PendingEditorSave = {
+  url: string;
+  expiresAt: number;
+};
+
 const localeLabels: Record<ContentLocale, string> = {
   zh: '中文',
   en: 'English',
@@ -79,6 +84,30 @@ export default function ContentTreeWorkspace() {
   const [deleting, setDeleting] = useState(false);
   const [showNativeNavigation, setShowNativeNavigation] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const pendingEditorSaveRef = useRef<PendingEditorSave | null>(null);
+
+  const navigateEditor = useCallback((url: string) => {
+    pendingEditorSaveRef.current = null;
+    setEditorUrl(url);
+  }, []);
+
+  const restoreEditorAfterSave = useCallback(() => {
+    const pendingSave = pendingEditorSaveRef.current;
+    const frameWindow = iframeRef.current?.contentWindow;
+    if (!pendingSave || !frameWindow) return false;
+    if (Date.now() >= pendingSave.expiresAt) {
+      pendingEditorSaveRef.current = null;
+      return false;
+    }
+    const pathname = frameWindow.location.pathname;
+    if (`${pathname}${frameWindow.location.search}` === pendingSave.url) return false;
+    if (/^\/keystatic(?:\/branch\/[^/]+)?\/?$/.test(pathname)) {
+      frameWindow.location.replace(pendingSave.url);
+      return true;
+    }
+    pendingEditorSaveRef.current = null;
+    return false;
+  }, []);
 
   const refreshTree = useCallback(async (branch?: string | null) => {
     setLoading(true);
@@ -121,16 +150,18 @@ export default function ContentTreeWorkspace() {
       const frame = iframeRef.current;
       if (!frame) return;
       try {
-        const pathname = frame.contentWindow?.location.pathname ?? '';
+        if (restoreEditorAfterSave()) return;
+        const frameWindow = frame.contentWindow;
+        const pathname = frameWindow?.location.pathname ?? '';
         const match = pathname.match(/^\/keystatic\/branch\/([^/]+)/);
         const branch = match?.[1] ? decodeURIComponent(match[1]) : null;
         if (branch && branch !== tree?.branch) void refreshTree(branch);
       } catch {
         // The editor is expected to be same-origin. Ignore transient navigation states.
       }
-    }, 1500);
+    }, 250);
     return () => window.clearInterval(timer);
-  }, [refreshTree, tree?.branch]);
+  }, [refreshTree, restoreEditorAfterSave, tree?.branch]);
 
   const itemsByParent = useMemo(() => {
     const map = new Map<string | null, TreeItem[]>();
@@ -184,7 +215,7 @@ export default function ContentTreeWorkspace() {
   const openFolder = (folder: FolderNode) => {
     if (!tree) return;
     setSelectedKey(folder.key);
-    setEditorUrl(collectionUrl(editorBase(tree), folder.editorCollection, folder.id));
+    navigateEditor(collectionUrl(editorBase(tree), folder.editorCollection, folder.id));
   };
 
   const openArticle = (article: ArticleNode, requestedLocale?: ContentLocale) => {
@@ -196,7 +227,7 @@ export default function ContentTreeWorkspace() {
     if (!version) return;
     setSelectedKey(article.key);
     setSelectedLocale(version.locale);
-    setEditorUrl(collectionUrl(editorBase(tree), version.editorCollection, version.contentId));
+    navigateEditor(collectionUrl(editorBase(tree), version.editorCollection, version.contentId));
   };
 
   const toggleFolder = (key: string) => {
@@ -212,13 +243,13 @@ export default function ContentTreeWorkspace() {
     if (!tree) return;
     const base = editorBase(tree);
     if (!folder) {
-      setEditorUrl(`${base}/collection/categories/create`);
+      navigateEditor(`${base}/collection/categories/create`);
       return;
     }
     if (folder.kind === 'category') {
-      setEditorUrl(queryUrl(`${base}/collection/projects/create`, { treeCategory: folder.id }));
+      navigateEditor(queryUrl(`${base}/collection/projects/create`, { treeCategory: folder.id }));
     } else if (folder.kind === 'project') {
-      setEditorUrl(queryUrl(`${base}/collection/series/create`, { treeProject: folder.id }));
+      navigateEditor(queryUrl(`${base}/collection/series/create`, { treeProject: folder.id }));
     }
   };
 
@@ -231,7 +262,7 @@ export default function ContentTreeWorkspace() {
           ? target.id
           : null;
     const collection = `articles${locale === 'zh' ? 'Zh' : locale === 'en' ? 'En' : 'De'}`;
-    setEditorUrl(
+    navigateEditor(
       queryUrl(`${editorBase(tree)}/collection/${collection}/create`, {
         treeCategory: target.kind === 'category' ? target.id : null,
         treeProject: parentProject,
@@ -304,7 +335,7 @@ export default function ContentTreeWorkspace() {
       );
       setDeleteTarget(null);
       setSelectedKey(null);
-      setEditorUrl(editorBase(tree));
+      navigateEditor(editorBase(tree));
       iframeRef.current?.contentWindow?.location.reload();
       await refreshTree(tree.branch);
     } catch (caught) {
@@ -424,10 +455,11 @@ export default function ContentTreeWorkspace() {
     const style = document.createElement('style');
     style.id = styleId;
     style.textContent = `
-      [data-split-pane="primary"], [data-split-view-resize-handle] {
+      [data-split-pane="primary"]:not([data-split-pane] [data-split-pane="primary"]),
+      [data-split-view-resize-handle]:not([data-split-pane] [data-split-view-resize-handle]) {
         display: none !important;
       }
-      [data-split-pane="secondary"] {
+      [data-split-pane="secondary"]:not([data-split-pane] [data-split-pane="secondary"]) {
         min-width: 0 !important;
       }
     `;
@@ -448,11 +480,25 @@ export default function ContentTreeWorkspace() {
       const document = frame.contentDocument;
       if (document && document.documentElement.dataset.treeWorkspaceBound !== 'true') {
         document.documentElement.dataset.treeWorkspaceBound = 'true';
-        document.addEventListener(
-          'submit',
-          () => window.setTimeout(() => void refreshTree(activeBranch), 1600),
-          { capture: true },
-        );
+        const onSubmit = (event: SubmitEvent) => {
+          const form = event.target;
+          const frameWindow = frame.contentWindow;
+          if (
+            form === document.getElementById('item-edit-form') &&
+            frameWindow &&
+            /\/collection\/[^/]+\/item\/[^/]+\/?$/.test(frameWindow.location.pathname)
+          ) {
+            pendingEditorSaveRef.current = {
+              url: `${frameWindow.location.pathname}${frameWindow.location.search}`,
+              expiresAt: Date.now() + 30_000,
+            };
+            for (const delay of [0, 100, 300, 700, 1500, 3000, 7000]) {
+              window.setTimeout(restoreEditorAfterSave, delay);
+            }
+          }
+          window.setTimeout(() => void refreshTree(activeBranch), 1600);
+        };
+        document.addEventListener('submit', onSubmit, { capture: true });
       }
       applyEditorChrome(showNativeNavigation);
       void refreshTree(activeBranch);
@@ -463,9 +509,9 @@ export default function ContentTreeWorkspace() {
 
   const openUtilityCollection = (value: string) => {
     if (!value || !tree) return;
-    if (value === 'dashboard') setEditorUrl(editorBase(tree));
-    else if (value === 'settings') setEditorUrl(`${editorBase(tree)}/singleton/siteSettings`);
-    else setEditorUrl(collectionUrl(editorBase(tree), value));
+    if (value === 'dashboard') navigateEditor(editorBase(tree));
+    else if (value === 'settings') navigateEditor(`${editorBase(tree)}/singleton/siteSettings`);
+    else navigateEditor(collectionUrl(editorBase(tree), value));
   };
 
   return (
