@@ -2,22 +2,71 @@ import type { APIRoute } from 'astro';
 
 import { isLocale, type Locale } from '../../i18n/config';
 import { upsertResendContact } from '../../lib/subscriptions/email';
-import { htmlStatusPage, localizedMessage } from '../../lib/subscriptions/responses';
+import {
+  htmlConfirmationPage,
+  htmlStatusPage,
+  localizedMessage,
+} from '../../lib/subscriptions/responses';
 import { sha256, subscriberIdFor } from '../../lib/subscriptions/security';
 import { getPersistentStore } from '../../lib/subscriptions/store';
 import type { PendingSubscription, Subscriber } from '../../lib/subscriptions/types';
 
+function requestedLocale(value: FormDataEntryValue | string | null): Locale {
+  const normalized = typeof value === 'string' ? value : undefined;
+  return isLocale(normalized) ? normalized : 'zh';
+}
+
+function validToken(value: unknown): value is string {
+  return typeof value === 'string' && value.length >= 32 && value.length <= 256;
+}
+
+function invalidToken(locale: Locale) {
+  return htmlStatusPage(locale, '确认失败', '确认链接无效或已经过期。', 400);
+}
+
 export const GET: APIRoute = async ({ url }) => {
-  const requestedLocale = url.searchParams.get('locale') ?? undefined;
-  const locale: Locale = isLocale(requestedLocale) ? requestedLocale : 'zh';
+  const locale = requestedLocale(url.searchParams.get('locale'));
   const token = url.searchParams.get('token');
-  if (!token || token.length < 32 || token.length > 256) {
-    return htmlStatusPage(locale, '确认失败', '确认链接无效或已经过期。', 400);
+  if (!validToken(token)) return invalidToken(locale);
+  return htmlConfirmationPage(locale, token);
+};
+
+async function requestData(request: Request) {
+  if ((request.headers.get('content-type') ?? '').includes('application/json')) {
+    return (await request.json()) as { token?: unknown; locale?: unknown };
   }
+  const form = await request.formData();
+  return { token: form.get('token'), locale: form.get('locale') };
+}
+
+export const POST: APIRoute = async ({ request }) => {
+  const data = await requestData(request);
+  const locale = requestedLocale(typeof data.locale === 'string' ? data.locale : null);
+  const token = data.token;
+  if (!validToken(token)) return invalidToken(locale);
+
+  const tokenHash = sha256(token);
+  const confirmationKey = `subscription:confirmed-token:${tokenHash}`;
 
   try {
     const store = getPersistentStore();
-    const tokenHash = sha256(token);
+    const alreadyConfirmed = await store.get<{ confirmedAt: string }>(confirmationKey);
+    if (alreadyConfirmed) {
+      return htmlStatusPage(
+        locale,
+        localizedMessage(locale, {
+          zh: '订阅已经确认',
+          en: 'Subscription already confirmed',
+          de: 'Abonnement bereits bestätigt',
+        }),
+        localizedMessage(locale, {
+          zh: '该确认链接已经成功使用，无需再次操作。',
+          en: 'This confirmation link has already been used successfully.',
+          de: 'Dieser Bestätigungslink wurde bereits erfolgreich verwendet.',
+        }),
+      );
+    }
+
     const pendingKey = `subscription:pending:${tokenHash}`;
     const lockKey = `subscription:confirm-lock:${tokenHash}`;
     const locked = await store.set(lockKey, 'processing', { nx: true, ex: 120 });
@@ -41,6 +90,11 @@ export const GET: APIRoute = async ({ url }) => {
       };
       await store.set(`subscription:subscriber:${subscriberId}`, subscriber);
       await store.addToSet('subscription:active', subscriberId);
+      await store.set(
+        confirmationKey,
+        { confirmedAt: subscriber.confirmedAt },
+        { ex: 48 * 60 * 60 },
+      );
       await store.delete(pendingKey);
       await store.delete(lockKey);
       return htmlStatusPage(
