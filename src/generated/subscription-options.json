@@ -2,24 +2,73 @@
   "version": 1,
   "options": [
     {
-      "key": "category:technology",
+      "key": "category:analog-ic",
       "kind": "category",
-      "id": "technology",
-      "labels": { "zh": "技术", "en": "Technology", "de": "Technik" }
+      "id": "analog-ic",
+      "labels": { "zh": "Analog IC", "en": "Analog IC", "de": "Analog IC" }
     },
     {
-      "key": "project:astro-rebuild",
+      "key": "category:annual-summaries",
+      "kind": "category",
+      "id": "annual-summaries",
+      "labels": { "zh": "年度总结", "en": "Annual Summary", "de": "Annual Summary" }
+    },
+    {
+      "key": "category:uestc-note",
+      "kind": "category",
+      "id": "uestc-note",
+      "labels": { "zh": "电科学习笔记", "en": "Note in UESTC", "de": "Note in UESTC" }
+    },
+    {
+      "key": "project:2026-cicc",
       "kind": "project",
-      "id": "astro-rebuild",
-      "parentKey": "category:technology",
-      "labels": { "zh": "Astro 重构", "en": "Astro Rebuild", "de": "Astro-Neuaufbau" }
+      "id": "2026-cicc",
+      "parentKey": "category:analog-ic",
+      "labels": { "zh": "2026年集创赛作品合集", "en": "2026 CICC", "de": "2026 CICC" }
     },
     {
-      "key": "collection:foundations",
-      "kind": "collection",
-      "id": "foundations",
-      "parentKey": "project:astro-rebuild",
-      "labels": { "zh": "基础架构", "en": "Foundations", "de": "Grundlagen" }
+      "key": "project:liuenke-semiconductance-note",
+      "kind": "project",
+      "id": "liuenke-semiconductance-note",
+      "parentKey": "category:uestc-note",
+      "labels": {
+        "zh": "刘恩科-半导体物理学笔记",
+        "en": "Liu Enke Semiconductor Note",
+        "de": "Liu Enke Semiconductor Note"
+      }
+    },
+    {
+      "key": "project:rabaey-digital-ic",
+      "kind": "project",
+      "id": "rabaey-digital-ic",
+      "parentKey": "category:analog-ic",
+      "labels": {
+        "zh": "Rabaey-数字集成电路设计学习笔记",
+        "en": "Rabaey-Digital IC Note",
+        "de": "Rabaey-Digital IC Note"
+      }
+    },
+    {
+      "key": "project:razavi-cmos-analog",
+      "kind": "project",
+      "id": "razavi-cmos-analog",
+      "parentKey": "category:analog-ic",
+      "labels": {
+        "zh": "拉扎维-模拟CMOS集成电路设计学习笔记",
+        "en": "Razavi-Analog CMOS IC Note",
+        "de": "Razavi-Analog CMOS IC Note"
+      }
+    },
+    {
+      "key": "project:two-stage-ota",
+      "kind": "project",
+      "id": "two-stage-ota",
+      "parentKey": "category:analog-ic",
+      "labels": {
+        "zh": "二级运放搭建全流程",
+        "en": "Build a Two-Stage OTA",
+        "de": "Build a Two-Stage OTA"
+      }
     }
   ]
 }

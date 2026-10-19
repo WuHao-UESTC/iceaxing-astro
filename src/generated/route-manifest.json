@@ -7,11 +7,95 @@
     "sourceFile": "src/content/pages/zh/about-zh/index.mdoc"
   },
   {
+    "pathname": "/analog-ic",
+    "kind": "category",
+    "contentId": "analog-ic",
+    "locale": "zh",
+    "sourceFile": "src/content/categories/analog-ic.yaml"
+  },
+  {
+    "pathname": "/analog-ic/2026-cicc",
+    "kind": "project",
+    "contentId": "2026-cicc",
+    "locale": "zh",
+    "sourceFile": "src/content/projects/2026-cicc.yaml"
+  },
+  {
+    "pathname": "/analog-ic/rabaey-digital-ic",
+    "kind": "project",
+    "contentId": "rabaey-digital-ic",
+    "locale": "zh",
+    "sourceFile": "src/content/projects/rabaey-digital-ic.yaml"
+  },
+  {
+    "pathname": "/analog-ic/razavi-cmos-analog",
+    "kind": "project",
+    "contentId": "razavi-cmos-analog",
+    "locale": "zh",
+    "sourceFile": "src/content/projects/razavi-cmos-analog.yaml"
+  },
+  {
+    "pathname": "/analog-ic/two-stage-ota",
+    "kind": "project",
+    "contentId": "two-stage-ota",
+    "locale": "zh",
+    "sourceFile": "src/content/projects/two-stage-ota.yaml"
+  },
+  {
+    "pathname": "/annual-summaries",
+    "kind": "category",
+    "contentId": "annual-summaries",
+    "locale": "zh",
+    "sourceFile": "src/content/categories/annual-summaries.yaml"
+  },
+  {
     "pathname": "/de/about",
     "kind": "page",
     "contentId": "about-de",
     "locale": "de",
     "sourceFile": "src/content/pages/de/about-de/index.mdoc"
+  },
+  {
+    "pathname": "/de/analog-ic",
+    "kind": "category",
+    "contentId": "analog-ic",
+    "locale": "de",
+    "sourceFile": "src/content/categories/analog-ic.yaml"
+  },
+  {
+    "pathname": "/de/analog-ic/2026-cicc",
+    "kind": "project",
+    "contentId": "2026-cicc",
+    "locale": "de",
+    "sourceFile": "src/content/projects/2026-cicc.yaml"
+  },
+  {
+    "pathname": "/de/analog-ic/rabaey-digital-ic",
+    "kind": "project",
+    "contentId": "rabaey-digital-ic",
+    "locale": "de",
+    "sourceFile": "src/content/projects/rabaey-digital-ic.yaml"
+  },
+  {
+    "pathname": "/de/analog-ic/razavi-cmos-analog",
+    "kind": "project",
+    "contentId": "razavi-cmos-analog",
+    "locale": "de",
+    "sourceFile": "src/content/projects/razavi-cmos-analog.yaml"
+  },
+  {
+    "pathname": "/de/analog-ic/two-stage-ota",
+    "kind": "project",
+    "contentId": "two-stage-ota",
+    "locale": "de",
+    "sourceFile": "src/content/projects/two-stage-ota.yaml"
+  },
+  {
+    "pathname": "/de/annual-summaries",
+    "kind": "category",
+    "contentId": "annual-summaries",
+    "locale": "de",
+    "sourceFile": "src/content/categories/annual-summaries.yaml"
   },
   {
     "pathname": "/de/profile",
@@ -21,25 +105,18 @@
     "sourceFile": "src/content/pages/de/profile-de/index.mdoc"
   },
   {
-    "pathname": "/de/technology",
+    "pathname": "/de/uestc-note",
     "kind": "category",
-    "contentId": "technology",
+    "contentId": "uestc-note",
     "locale": "de",
-    "sourceFile": "src/content/categories/technology.yaml"
+    "sourceFile": "src/content/categories/uestc-note.yaml"
   },
   {
-    "pathname": "/de/technology/astro-rebuild",
+    "pathname": "/de/uestc-note/liuenke-semiconductance-note",
     "kind": "project",
-    "contentId": "astro-rebuild",
+    "contentId": "liuenke-semiconductance-note",
     "locale": "de",
-    "sourceFile": "src/content/projects/astro-rebuild.yaml"
-  },
-  {
-    "pathname": "/de/technology/astro-rebuild/foundations",
-    "kind": "collection",
-    "contentId": "foundations",
-    "locale": "de",
-    "sourceFile": "src/content/collections/foundations.yaml"
+    "sourceFile": "src/content/projects/liuenke-semiconductance-note.yaml"
   },
   {
     "pathname": "/en/about",
@@ -49,6 +126,48 @@
     "sourceFile": "src/content/pages/en/about-en/index.mdoc"
   },
   {
+    "pathname": "/en/analog-ic",
+    "kind": "category",
+    "contentId": "analog-ic",
+    "locale": "en",
+    "sourceFile": "src/content/categories/analog-ic.yaml"
+  },
+  {
+    "pathname": "/en/analog-ic/2026-cicc",
+    "kind": "project",
+    "contentId": "2026-cicc",
+    "locale": "en",
+    "sourceFile": "src/content/projects/2026-cicc.yaml"
+  },
+  {
+    "pathname": "/en/analog-ic/rabaey-digital-ic",
+    "kind": "project",
+    "contentId": "rabaey-digital-ic",
+    "locale": "en",
+    "sourceFile": "src/content/projects/rabaey-digital-ic.yaml"
+  },
+  {
+    "pathname": "/en/analog-ic/razavi-cmos-analog",
+    "kind": "project",
+    "contentId": "razavi-cmos-analog",
+    "locale": "en",
+    "sourceFile": "src/content/projects/razavi-cmos-analog.yaml"
+  },
+  {
+    "pathname": "/en/analog-ic/two-stage-ota",
+    "kind": "project",
+    "contentId": "two-stage-ota",
+    "locale": "en",
+    "sourceFile": "src/content/projects/two-stage-ota.yaml"
+  },
+  {
+    "pathname": "/en/annual-summaries",
+    "kind": "category",
+    "contentId": "annual-summaries",
+    "locale": "en",
+    "sourceFile": "src/content/categories/annual-summaries.yaml"
+  },
+  {
     "pathname": "/en/profile",
     "kind": "page",
     "contentId": "profile-en",
@@ -56,32 +175,18 @@
     "sourceFile": "src/content/pages/en/profile-en/index.mdoc"
   },
   {
-    "pathname": "/en/technology",
+    "pathname": "/en/uestc-note",
     "kind": "category",
-    "contentId": "technology",
+    "contentId": "uestc-note",
     "locale": "en",
-    "sourceFile": "src/content/categories/technology.yaml"
+    "sourceFile": "src/content/categories/uestc-note.yaml"
   },
   {
-    "pathname": "/en/technology/astro-rebuild",
+    "pathname": "/en/uestc-note/liuenke-semiconductance-note",
     "kind": "project",
-    "contentId": "astro-rebuild",
+    "contentId": "liuenke-semiconductance-note",
     "locale": "en",
-    "sourceFile": "src/content/projects/astro-rebuild.yaml"
-  },
-  {
-    "pathname": "/en/technology/astro-rebuild/foundations",
-    "kind": "collection",
-    "contentId": "foundations",
-    "locale": "en",
-    "sourceFile": "src/content/collections/foundations.yaml"
-  },
-  {
-    "pathname": "/log/phase-two",
-    "kind": "log",
-    "contentId": "phase-two",
-    "locale": "zh",
-    "sourceFile": "src/content/logs/zh/phase-two/index.mdoc"
+    "sourceFile": "src/content/projects/liuenke-semiconductance-note.yaml"
   },
   {
     "pathname": "/profile",
@@ -91,31 +196,17 @@
     "sourceFile": "src/content/pages/zh/profile-zh/index.mdoc"
   },
   {
-    "pathname": "/technology",
+    "pathname": "/uestc-note",
     "kind": "category",
-    "contentId": "technology",
+    "contentId": "uestc-note",
     "locale": "zh",
-    "sourceFile": "src/content/categories/technology.yaml"
+    "sourceFile": "src/content/categories/uestc-note.yaml"
   },
   {
-    "pathname": "/technology/astro-rebuild",
+    "pathname": "/uestc-note/liuenke-semiconductance-note",
     "kind": "project",
-    "contentId": "astro-rebuild",
+    "contentId": "liuenke-semiconductance-note",
     "locale": "zh",
-    "sourceFile": "src/content/projects/astro-rebuild.yaml"
-  },
-  {
-    "pathname": "/technology/astro-rebuild/foundations",
-    "kind": "collection",
-    "contentId": "foundations",
-    "locale": "zh",
-    "sourceFile": "src/content/collections/foundations.yaml"
-  },
-  {
-    "pathname": "/technology/astro-rebuild/foundations/hello-astro",
-    "kind": "article",
-    "contentId": "welcome-astro",
-    "locale": "zh",
-    "sourceFile": "src/content/articles/zh/welcome-astro/index.mdoc"
+    "sourceFile": "src/content/projects/liuenke-semiconductance-note.yaml"
   }
 ]

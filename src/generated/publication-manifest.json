@@ -2,48 +2,116 @@
   "version": 1,
   "entries": [
     {
-      "contentId": "welcome-astro",
-      "kind": "article",
-      "versionHash": "e8e4aeec0b46c0bd38853dfc",
-      "publishedAt": "2026-10-18T08:00:00.000Z",
-      "titles": { "zh": "Astro 内容系统已经接通" },
-      "urls": { "zh": "/technology/astro-rebuild/foundations/hello-astro" },
-      "subscriptionKeys": ["category:technology", "project:astro-rebuild", "collection:foundations"]
-    },
-    {
-      "contentId": "technology",
+      "contentId": "analog-ic",
       "kind": "category",
-      "versionHash": "31d77cd4e3528bf45fe7ccaf",
-      "publishedAt": "2026-10-18T08:00:00.000Z",
-      "titles": { "zh": "技术", "en": "Technology", "de": "Technik" },
-      "urls": { "de": "/de/technology", "en": "/en/technology", "zh": "/technology" },
-      "subscriptionKeys": ["category:technology"]
+      "versionHash": "9a75ed190615cda269492e6b",
+      "publishedAt": "2026-10-19T15:21:00.000Z",
+      "titles": { "zh": "Analog IC", "en": "Analog IC", "de": "Analog IC" },
+      "urls": { "zh": "/analog-ic", "de": "/de/analog-ic", "en": "/en/analog-ic" },
+      "subscriptionKeys": ["category:analog-ic"]
     },
     {
-      "contentId": "foundations",
-      "kind": "collection",
-      "versionHash": "d94f6bd2aeb1e93d44ef8149",
-      "publishedAt": "2026-10-18T08:00:00.000Z",
-      "titles": { "zh": "基础架构", "en": "Foundations", "de": "Grundlagen" },
+      "contentId": "annual-summaries",
+      "kind": "category",
+      "versionHash": "7171df9b0596019b4b8b17d6",
+      "publishedAt": "2026-10-19T15:43:00.000Z",
+      "titles": { "zh": "年度总结", "en": "Annual Summary", "de": "Annual Summary" },
       "urls": {
-        "de": "/de/technology/astro-rebuild/foundations",
-        "en": "/en/technology/astro-rebuild/foundations",
-        "zh": "/technology/astro-rebuild/foundations"
+        "zh": "/annual-summaries",
+        "de": "/de/annual-summaries",
+        "en": "/en/annual-summaries"
       },
-      "subscriptionKeys": ["category:technology", "project:astro-rebuild", "collection:foundations"]
+      "subscriptionKeys": ["category:annual-summaries"]
     },
     {
-      "contentId": "astro-rebuild",
+      "contentId": "uestc-note",
+      "kind": "category",
+      "versionHash": "2dad9bcb3613a0ec9b89d573",
+      "publishedAt": "2026-10-19T15:59:00.000Z",
+      "titles": { "zh": "电科学习笔记", "en": "Note in UESTC", "de": "Note in UESTC" },
+      "urls": { "de": "/de/uestc-note", "en": "/en/uestc-note", "zh": "/uestc-note" },
+      "subscriptionKeys": ["category:uestc-note"]
+    },
+    {
+      "contentId": "2026-cicc",
       "kind": "project",
-      "versionHash": "62798f57f063dd8f17c789aa",
-      "publishedAt": "2026-10-18T08:00:00.000Z",
-      "titles": { "zh": "Astro 重构", "en": "Astro Rebuild", "de": "Astro-Neuaufbau" },
+      "versionHash": "3ec466466b70ee807186af71",
+      "publishedAt": "2026-10-19T15:48:00.000Z",
+      "titles": { "zh": "2026年集创赛作品合集", "en": "2026 CICC", "de": "2026 CICC" },
       "urls": {
-        "de": "/de/technology/astro-rebuild",
-        "en": "/en/technology/astro-rebuild",
-        "zh": "/technology/astro-rebuild"
+        "zh": "/analog-ic/2026-cicc",
+        "de": "/de/analog-ic/2026-cicc",
+        "en": "/en/analog-ic/2026-cicc"
       },
-      "subscriptionKeys": ["category:technology", "project:astro-rebuild"]
+      "subscriptionKeys": ["category:analog-ic", "project:2026-cicc"]
+    },
+    {
+      "contentId": "liuenke-semiconductance-note",
+      "kind": "project",
+      "versionHash": "09a6591a060834b4bc1e4fb8",
+      "publishedAt": "2026-10-19T16:04:00.000Z",
+      "titles": {
+        "zh": "刘恩科-半导体物理学笔记",
+        "en": "Liu Enke Semiconductor Note",
+        "de": "Liu Enke Semiconductor Note"
+      },
+      "urls": {
+        "de": "/de/uestc-note/liuenke-semiconductance-note",
+        "en": "/en/uestc-note/liuenke-semiconductance-note",
+        "zh": "/uestc-note/liuenke-semiconductance-note"
+      },
+      "subscriptionKeys": ["category:uestc-note", "project:liuenke-semiconductance-note"]
+    },
+    {
+      "contentId": "rabaey-digital-ic",
+      "kind": "project",
+      "versionHash": "3915c9e2cc4ab69b191c5a3e",
+      "publishedAt": "2026-10-19T15:57:00.000Z",
+      "titles": {
+        "zh": "Rabaey-数字集成电路设计学习笔记",
+        "en": "Rabaey-Digital IC Note",
+        "de": "Rabaey-Digital IC Note"
+      },
+      "urls": {
+        "zh": "/analog-ic/rabaey-digital-ic",
+        "de": "/de/analog-ic/rabaey-digital-ic",
+        "en": "/en/analog-ic/rabaey-digital-ic"
+      },
+      "subscriptionKeys": ["category:analog-ic", "project:rabaey-digital-ic"]
+    },
+    {
+      "contentId": "razavi-cmos-analog",
+      "kind": "project",
+      "versionHash": "fa73b9980730cec3eee6420a",
+      "publishedAt": "2026-10-19T15:52:00.000Z",
+      "titles": {
+        "zh": "拉扎维-模拟CMOS集成电路设计学习笔记",
+        "en": "Razavi-Analog CMOS IC Note",
+        "de": "Razavi-Analog CMOS IC Note"
+      },
+      "urls": {
+        "zh": "/analog-ic/razavi-cmos-analog",
+        "de": "/de/analog-ic/razavi-cmos-analog",
+        "en": "/en/analog-ic/razavi-cmos-analog"
+      },
+      "subscriptionKeys": ["category:analog-ic", "project:razavi-cmos-analog"]
+    },
+    {
+      "contentId": "two-stage-ota",
+      "kind": "project",
+      "versionHash": "c45a802cc0667f4fe15492b7",
+      "publishedAt": "2026-10-19T15:44:00.000Z",
+      "titles": {
+        "zh": "二级运放搭建全流程",
+        "en": "Build a Two-Stage OTA",
+        "de": "Build a Two-Stage OTA"
+      },
+      "urls": {
+        "zh": "/analog-ic/two-stage-ota",
+        "de": "/de/analog-ic/two-stage-ota",
+        "en": "/en/analog-ic/two-stage-ota"
+      },
+      "subscriptionKeys": ["category:analog-ic", "project:two-stage-ota"]
     }
   ]
 }
