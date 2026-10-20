@@ -23,11 +23,23 @@ project: filter-design-in-digital-world-note
 {% /column %}
 
 {% column %}
-![](../../../../assets/content/body/basic-of-passive-filter-design/d8d6c67a-962d-41b8-aadb-97bc1829f941.png)
+![](../../../../assets/content/body/basic-of-passive-filter-design/%E5%9B%BE%E7%89%87.png)
 {% /column %}
 {% /columns %}
 
-如何理解在较高的频率下低通滤波器会退化成一个积分器？
+1. 传递函数，可以用s参数简单地得出
+
+   {% math
+      expression="\\begin{aligned}\nH(\\omega) & =\\frac{1 / j \\omega C_1}{R_1+1 / j \\omega C_1} \\\n& =\\frac{1}{1+j \\omega / \\omega_{\\mathrm{c}}} \\\n& \\simeq\\left{\\begin{array}{cc}\n1 & \\omega \\ll \\omega_{\\mathrm{c}} \\\n\\left(j \\omega / \\omega_{\\mathrm{c}}\\right)^{-1} & \\omega \\gg \\omega_{\\mathrm{c}}\n\\end{array}\\right.\n\\end{aligned}" /%}
+
+1. 零输入相应的电压方程：
+
+1. 如何理解在较高的频率下低通滤波器会退化成一个积分器？
+
+   从傅里叶变换的积分性质可以得到
+
+   1. 对时域微分->对频域乘以{% inlineMath expression="j\\omega" /%}
+   1. 对时域积分->对频域除以{% inlineMath expression="j\\omega" /%}
 
 {% math
    expression="\\begin{aligned}H(\\omega)&\\sim(j\\omega/\\omega_{c})^{-1} \\\\\n\n&\\downarrow \\\\\n\ne_{o}(t)&\\sim \\omega_{c}\\int_{-\\infty}^{t}e_{i}(t)dt\\end{aligned}" /%}
