@@ -16,7 +16,21 @@ export default function markdocWithMath(options) {
             context.addContentEntryType({
               ...entry,
               getRenderModule(input) {
-                return entry.getRenderModule.call(this, {
+                const pluginContext = this;
+                const resolve = pluginContext.resolve.bind(pluginContext);
+                const contextWithDecodedImagePaths = Object.create(pluginContext);
+                contextWithDecodedImagePaths.resolve = async (id, ...args) => {
+                  const result = await resolve(id, ...args);
+                  if (result || typeof id !== 'string') return result;
+                  let decodedId;
+                  try {
+                    decodedId = decodeURI(id);
+                  } catch {
+                    return result;
+                  }
+                  return decodedId === id ? result : resolve(decodedId, ...args);
+                };
+                return entry.getRenderModule.call(contextWithDecodedImagePaths, {
                   ...input,
                   contents: normalizeDollarMath(input.contents),
                 });

@@ -120,6 +120,7 @@ async function loadMarkdoc(
     let raw: AnyRecord;
     try {
       const source = await readFile(file, 'utf8');
+      await validateLocalImages(source, file, sourceFile);
       raw = parseMarkdocFrontmatter(source, sourceFile);
       const data = parseWithSchema(sourceFile, raw, schema);
       if (!data) continue;
@@ -132,6 +133,46 @@ async function loadMarkdoc(
     }
   }
   return result;
+}
+
+const markdownImagePattern = /!\[[^\]]*\]\(\s*<?([^\s)>]+)>?(?:\s+[^)]*)?\)/g;
+const markdocImagePattern =
+  /{%\s*image\s+[^%]*?\bsrc\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s%]+))[^%]*?\/%}/g;
+
+async function validateLocalImages(source: string, file: string, sourceFile: string) {
+  const references = new Set<string>();
+  for (const match of source.matchAll(markdownImagePattern)) {
+    if (match[1]) references.add(match[1]);
+  }
+  for (const match of source.matchAll(markdocImagePattern)) {
+    const reference = match[1] ?? match[2] ?? match[3];
+    if (reference) references.add(reference);
+  }
+
+  for (const reference of references) {
+    if (/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(reference)) continue;
+    let decoded: string;
+    try {
+      decoded = decodeURI(reference);
+    } catch {
+      issue(sourceFile, `圖片路徑包含無效的 URL 編碼：${reference}`);
+      continue;
+    }
+    const candidates = decoded.startsWith('/')
+      ? [path.resolve(root, 'public', decoded.slice(1))]
+      : [path.resolve(path.dirname(file), decoded), path.resolve(root, decoded)];
+    let found = false;
+    for (const candidate of candidates) {
+      try {
+        await readFile(candidate);
+        found = true;
+        break;
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+      }
+    }
+    if (!found) issue(sourceFile, `找不到圖片文件：${reference}（解碼後：${decoded}）`);
+  }
 }
 
 function requiredString(entry: LoadedEntry, key: string) {
