@@ -1,0 +1,101 @@
+---
+contentId: c9-general-condition-of-ic-manu
+translationKey: c9-general-condition-of-ic-manu
+locale: zh
+title: C9-集成电路制造工艺概况
+slug: c9-general-condition-of-ic-manu
+status: published
+publishedAt: 2026-10-20T10:06:00.000Z
+tags: []
+authorName: iceaxing
+featured: false
+order: 0
+seo: {}
+project: quirk-semiconductor-manufacturing-technology-note
+---
+## CMOS工艺流程概述
+
+四大基本方法：薄膜制作，刻印，刻蚀和掺杂
+
+1. 薄膜：给衬底上加一层“薄膜”，可能是金属氧化物，金属，多晶硅等等
+1. 刻印：把掩膜图形转到**光刻胶**上**（可逆的）**
+1. 刻蚀：**选择性**去除材料，把胶图形刻进**膜或衬底（不可逆的）**
+1. 掺杂：把杂质打进硅里，改电学性质
+
+![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+
+## 硅片制造厂的分区
+
+完成工艺流程需要有相对应的车间进行支持
+
+六大生产区：扩散，光刻，刻蚀，薄膜，注入抛光
+
+（不要把生产区与四大基本方法搞混，一个生产区可以运用多种方法，一个方法可能也需要多个生产区配合完成）
+
+![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+
+### 扩散区
+
+1. 主要设备：高温扩散炉+湿法清洗设备
+1. 主要用途：用于高温工艺与薄膜淀积
+1. 可以完成的工艺：氧化，扩散，退火，淀积，合金
+1. 湿法清洗装置：辅助高温扩散炉——进入高温扩散炉前**必须进行清洗**，去除**表面沾污与自然氧化层**
+
+![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+
+### 光刻区
+
+1. 光刻的目的：把掩膜图形转到**光刻胶**上**（可逆的）**
+1. 光刻胶的性质：对特定波长的光线敏感（深紫外光和白光），对黄光不敏感
+1. 主要设备：涂胶显影设备
+1. 主要流程
+   1. 预处理：涂胶，甩胶，烘干**（让硅片上面均匀地涂满一层光刻胶）**
+   1. 送入对准及曝光设备
+   1. 步进光刻机逐个区域进行对焦与曝光![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+
+### 刻蚀区
+
+1. 刻蚀的目的：**在没有光刻胶保护的区域**留下**永久的图形**
+1. 主要设备：等离子体刻蚀机、等离子体去胶机和湿法清洗设备
+1. 主要流程
+   1. 等离子体刻蚀在真空中用**射频能量离化气体分子**
+   1. 等离子体与硅片顶层物质发生化学反应
+   1. 去胶机用**离化的氧气**去除多余的光刻胶
+   1. 化学溶剂彻底清洗硅片
+
+![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+
+### 离子注入区域
+
+1. 主要设备：离子注入机
+1. 主要流程：
+   1. 气体带着杂质在注入机中被离化
+   1. 离子被高压电磁场进行加速
+   1. 离子注入完成后，进行除胶与清洗
+
+![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+
+### 薄膜生长区
+
+1. 主要功能：介质层与金属的淀积
+1. 主要设备：化学气相淀积（CVD 和金属溅射工具（物理气相淀积，PVD），SOG(spin-on-glass) 系 统 、快速退火装置（RTP）系统和湿法清洗设备
+   1. SOG设备：使硅片表面平坦化
+   1. 快速退火装置：修复损伤，金属合金化
+
+![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+
+### 抛光区（化学机械平坦化，CMP）
+
+1. 目的：使得硅片平坦化
+1. 主要设备：抛光机，刷片机，清洗装置，测量工具
+1. 主要方法：化学腐蚀与机械研磨相结合，以除去硅片顶部希望的厚度
+
+## CMOS制作步骤
+
+### 双阱工艺
+
+\**根本目的：**制作出n阱与p阱
+
+\**基本的思想方法：**用光刻胶保护不需要离子注入的
+
+### ![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
