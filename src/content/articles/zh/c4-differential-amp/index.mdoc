@@ -1,0 +1,72 @@
+---
+contentId: c4-differential-amp
+translationKey: c4-differential-amp
+locale: zh
+title: C4-差动放大器
+slug: c4-differential-amp
+status: published
+publishedAt: 2026-10-20T21:08:00.000Z
+tags: []
+authorName: iceaxing
+featured: false
+order: 0
+seo: {}
+project: razavi-cmos-analog-note
+---
+## 什么是差动对？为什么需要差动对？
+
+简单来解释差动对，就是在一个共模电平的基础上加上的一对大小相等，相位相反的信号。在输出端将这两个信号相减，就可以得到原始的信号
+
+![](../../../../assets/content/body/c4-differential-amp/%E5%9B%BE%E7%89%87.png)
+
+差动对有两个优点，一个是能够减小干扰，一个是增大了电压摆幅。增大电压摆幅很好理解，降低干扰可以通过拉扎韦书上的这幅图来理解
+
+![](../../../../assets/content/body/c4-differential-amp/%E5%9B%BE%E7%89%87.png)
+
+可以看到，当把两个差动信号相减的时候，在它们身上叠加的相同的共模干扰也被减掉了。当两个器件在集成电路中挨得够近的时候，我们可以把它们所受到的噪声想象成是相同的。
+
+## 基本差动对
+
+![](../../../../assets/content/body/c4-differential-amp/%E5%9B%BE%E7%89%87.png)
+
+为什么要在基本差动对中加入一个尾电流源：给予电路一个相对稳定的共模输出电平{% inlineMath expression="V_{C M}=V_{D D}-\\frac{1}{2} I_{S S} R_D" /%}
+
+### 定性分析
+
+1. 差分信号分析
+
+   大信号分析可以大致分成三个阶段，当V1-V2从-∞变换到+∞时
+
+   1. 起初M1管截止，M2管导通，所有的电流都从M2管的支路留下来。此时
+
+      {% math
+         expression="\\begin{aligned}\n& \\left{\\begin{array}{l}\nV_{\\text {out } 2}=V_{D D}-I_{S S} R_{D 2} \\\nV_{\\text {out } 1}=V_{D D}\n\\end{array}\\right. \\\n& \\Rightarrow V_{\\text {out } 1}-V_{\\text {out } 2}=I_{S S} R_{D 2}\n\\end{aligned}" /%}
+
+      此时Vout2是输出的最低电平，Vout1是输出的最高电平，这二者是完全确定的，**只与尾电流大小有关**
+
+   1. 当V1和V2相差不大时，M1管与M2管都导通，当Vin1=Vin2时，流经两条支路的电流相等，此时
+
+      {% math
+         expression="\\left{\\begin{array}{l}\nV_{\\text {out } 1}=V_{\\text {out } 2}=V_{D D}-\\frac{1}{2} R_D I_{S S} \\\nV_{\\text {out }}-V_{\\text {out } 2}=0\n\\end{array}\\right." /%}
+
+      此时电路的线性度与增益都是最大的
+
+   1. 最后，当V2远远大于V1时，与最开始的情况相反
+
+   ![](../../../../assets/content/body/c4-differential-amp/%E5%9B%BE%E7%89%87.png)
+
+1. 共模信号分析
+
+   1. Vin.cm极低时，M1，M2截止，M3处于深三极管区，此时可以把M3等小城一个电阻
+
+      ![](../../../../assets/content/body/c4-differential-amp/%E5%9B%BE%E7%89%87.png)
+
+   1. {% inlineMath expression="V_{\\text {in, }, \\mathrm{CM}}>V_{T H}" /%},此时M三仍然处于3L三极管区，M1，M2开启，随着输入电压不断升高，流经M1、M2的电流也不断升高，从而导致P点的电压不断升高
+
+   1. {% inlineMath expression="V_{\\text {in, }, \\mathrm{Cm}}>\\left(V_{G S_3}-V_{T H 3}\\right)+V_{T H}" /%}，P点升高到使得M3从深三极管区进入饱和区，此时尾电流源的电流达到Iss，M1与M2也进入饱和区，此时的增益最大
+
+   1. {% inlineMath expression="V_{\\text {in, } \\mathrm{Cm}}>V_{D D}-\\frac{1}{2} R_D I_{S S}+V_{T H}" /%}，由于输入的电压过大，导致M1、M2进入线性区，此时的增益也开始下降
+
+![](../../../../assets/content/body/c4-differential-amp/%E5%9B%BE%E7%89%87.png)
+
+![](../../../../assets/content/body/c4-differential-amp/%E5%9B%BE%E7%89%87.png)
