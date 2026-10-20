@@ -39,7 +39,7 @@ const socialImage = new URL(image, Astro.site ?? Astro.url.origin);
 ---
 
 <!doctype html>
-<html lang={htmlLanguage[locale]} data-theme="light">
+<html lang={htmlLanguage[locale]} data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -82,13 +82,12 @@ const socialImage = new URL(image, Astro.site ?? Astro.url.origin);
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     <script is:inline>
       (() => {
-        let theme = 'light';
+        let theme = 'dark';
         try {
           const stored = localStorage.getItem('iceaxing-theme');
           if (stored === 'light' || stored === 'dark') theme = stored;
-          else if (matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
         } catch {
-          // Keep the light fallback when storage or media queries are unavailable.
+          // Keep the dark default when storage is unavailable.
         }
         document.documentElement.dataset.theme = theme;
         document.documentElement.style.colorScheme = theme;
