@@ -15,6 +15,10 @@ export default function markdocWithMath(options) {
           addContentEntryType(entry) {
             context.addContentEntryType({
               ...entry,
+              getEntryInfo(input) {
+                const info = entry.getEntryInfo(input);
+                return { ...info, body: normalizeDollarMath(info.body) };
+              },
               getRenderModule(input) {
                 const pluginContext = this;
                 const resolve = pluginContext.resolve.bind(pluginContext);

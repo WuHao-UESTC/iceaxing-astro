@@ -2,8 +2,9 @@ import { readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const PATCH_MARKER = 'iceaxing-keystatic-editor-patch:v2';
+const PATCH_MARKER = 'iceaxing-keystatic-editor-patch:v3';
 const LEGACY_PATCH_MARKER = 'iceaxing-keystatic-editor-patch:v1';
+const PREVIOUS_PATCH_MARKER = 'iceaxing-keystatic-editor-patch:v2';
 const SUPPORTED_VERSION = '0.6.9';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const packageRoot = path.join(root, 'node_modules', '@keystatic', 'core');
@@ -61,6 +62,73 @@ for (const bundleName of bundleNames) {
     source = source.replaceAll(
       'value: { ...defaultProps.value, expression }',
       'value: { ...defaultProps.value, expression: expression.trim() }',
+    );
+    source = replaceOnce(
+      source,
+      `      }))).then(images => {
+        insertNodesButReplaceIfSelectionIsAtEmptyParagraphOrHeading(editor, {
+          type: 'image',
+          src: {
+            content: images[0].data,
+            filename: images[0].name
+          },
+          alt: '',
+          title: '',
+          children: [{
+            text: ''
+          }]
+        });
+      });`,
+      `      }))).then(images => {
+        const nodes = images.map(image => ({
+          type: 'image',
+          src: { content: image.data, filename: image.name },
+          alt: '',
+          title: '',
+          children: [{ text: '' }]
+        }));
+        insertNodesButReplaceIfSelectionIsAtEmptyParagraphOrHeading(editor, nodes);
+      });`,
+      'multi-image paste handler',
+    );
+    await writeFile(bundlePath, source);
+    patchedBundles += 1;
+    continue;
+  }
+  if (source.includes(PREVIOUS_PATCH_MARKER)) {
+    source = replaceOnce(
+      source,
+      `/* ${PREVIOUS_PATCH_MARKER} */`,
+      `/* ${PATCH_MARKER} */`,
+      'previous patch marker',
+    );
+    source = replaceOnce(
+      source,
+      `      }))).then(images => {
+        insertNodesButReplaceIfSelectionIsAtEmptyParagraphOrHeading(editor, {
+          type: 'image',
+          src: {
+            content: images[0].data,
+            filename: images[0].name
+          },
+          alt: '',
+          title: '',
+          children: [{
+            text: ''
+          }]
+        });
+      });`,
+      `      }))).then(images => {
+        const nodes = images.map(image => ({
+          type: 'image',
+          src: { content: image.data, filename: image.name },
+          alt: '',
+          title: '',
+          children: [{ text: '' }]
+        }));
+        insertNodesButReplaceIfSelectionIsAtEmptyParagraphOrHeading(editor, nodes);
+      });`,
+      'multi-image paste handler',
     );
     await writeFile(bundlePath, source);
     patchedBundles += 1;
