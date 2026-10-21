@@ -332,7 +332,6 @@ if (special === 'articles') {
     ],
   };
 } else if (route?.kind === 'project') {
-  listingScene = 'ridge';
   const project = index.projects.find((entry) => entry.data.projectId === route.contentId);
   if (!project) throw new Error(`Missing project: ${route.contentId}`);
   pagefindCategory = project.data.category;
@@ -388,7 +387,6 @@ if (special === 'articles') {
     ],
   };
 } else if (route?.kind === 'collection') {
-  listingScene = 'field';
   const collection = index.series.find((entry) => entry.data.collectionId === route.contentId);
   if (!collection) throw new Error(`Missing collection: ${route.contentId}`);
   pagefindCategory = index.projects.find(

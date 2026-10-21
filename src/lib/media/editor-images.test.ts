@@ -20,7 +20,7 @@ async function editor(handleFile: (file: File) => Promise<{ src: string }>) {
   let source = '';
   for (const name of bundles) {
     const contents = await readFile(`${directory}/${name}`, 'utf8');
-    if (contents.includes('iceaxing-keystatic-git-images:v1')) source = contents;
+    if (contents.includes('iceaxing-keystatic-git-images:v2')) source = contents;
   }
   expect(source).not.toBe('');
   const start = source.indexOf('const articleImageTasks = new WeakMap();');

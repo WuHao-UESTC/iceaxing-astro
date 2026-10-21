@@ -27,9 +27,27 @@ const { labels, categories, latest } = Astro.props;
       <nav class="journey-life-map" aria-label={labels.chapters[2]}>
         <div class="journey-section-label">
           <p class="journey-eyebrow">FIELD INDEX</p>
-          <div class="journey-scroll-controls journey-horizontal-controls" data-scroll-controls hidden>
-            <button type="button" data-scroll-target="life-category-list" data-scroll-direction="left" aria-label="FIELD INDEX: previous categories">←</button>
-            <button type="button" data-scroll-target="life-category-list" data-scroll-direction="right" aria-label="FIELD INDEX: next categories">→</button>
+          <div
+            class="journey-scroll-controls journey-horizontal-controls"
+            data-scroll-controls
+            hidden
+          >
+            <button
+              type="button"
+              data-scroll-target="life-category-list"
+              data-scroll-direction="left"
+              aria-label="FIELD INDEX: previous categories"
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              data-scroll-target="life-category-list"
+              data-scroll-direction="right"
+              aria-label="FIELD INDEX: next categories"
+            >
+              →
+            </button>
           </div>
         </div>
         <div
@@ -49,7 +67,6 @@ const { labels, categories, latest } = Astro.props;
         </div>
       </nav>
     )}
-
   </div>
 
   <section class="journey-latest" aria-labelledby="journey-latest-title">
@@ -58,16 +75,16 @@ const { labels, categories, latest } = Astro.props;
       <ScrollControls target="life-latest-list" label={labels.latest} />
     </div>
     <div id="life-latest-list" data-scroll-list tabindex="0">
-        {latest.map((card, index) => (
-          <a href={card.href} data-reveal data-step={String(3 + index)}>
-            <span>0{index + 1}</span>
-            <div>
-              <small>{card.meta}</small>
-              <strong>{card.title}</strong>
-            </div>
-            <i aria-hidden="true">↗</i>
-          </a>
-        ))}
+      {latest.map((card, index) => (
+        <a href={card.href} data-reveal data-step={String(3 + index)}>
+          <span>0{index + 1}</span>
+          <div>
+            <small>{card.meta}</small>
+            <strong>{card.title}</strong>
+          </div>
+          <i aria-hidden="true">↗</i>
+        </a>
+      ))}
     </div>
   </section>
 </div>

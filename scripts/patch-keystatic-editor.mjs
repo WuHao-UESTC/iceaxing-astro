@@ -1,6 +1,7 @@
 import { readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 import { patchKeystaticImages } from './patch-keystatic-images.mjs';
 import { patchSharedArticleAssets } from './patch-keystatic-shared-assets.mjs';
 import { patchKeystaticMath } from './patch-keystatic-math.mjs';
@@ -326,4 +327,12 @@ for (const bundleName of bundleNames) {
   }
 }
 await patchSharedArticleAssets(distDirectory);
+// Validate generated JavaScript, including installs that reused cached patched bundles.
+for (const name of await readdir(distDirectory)) {
+  if (!name.endsWith('.js')) continue;
+  const bundlePath = path.join(distDirectory, name);
+  const source = await readFile(bundlePath, 'utf8');
+  if (!source.includes('iceaxing-keystatic-')) continue;
+  execFileSync(process.execPath, ['--check', bundlePath], { stdio: 'pipe' });
+}
 console.log('Keystatic article images use shared content-addressed Git assets.');

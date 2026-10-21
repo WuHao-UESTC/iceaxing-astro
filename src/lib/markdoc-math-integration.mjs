@@ -20,9 +20,8 @@ export default function markdocWithMath(options) {
                 return { ...info, body: normalizeDollarMath(info.body) };
               },
               getRenderModule(input) {
-                const pluginContext = this;
-                const resolve = pluginContext.resolve.bind(pluginContext);
-                const contextWithDecodedImagePaths = Object.create(pluginContext);
+                const resolve = this.resolve.bind(this);
+                const contextWithDecodedImagePaths = Object.create(this);
                 contextWithDecodedImagePaths.resolve = async (id, ...args) => {
                   const result = await resolve(id, ...args);
                   if (result || typeof id !== 'string') return result;

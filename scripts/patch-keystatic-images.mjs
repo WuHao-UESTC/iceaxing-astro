@@ -1,12 +1,40 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const marker = 'iceaxing-keystatic-git-images:v1';
+const marker = 'iceaxing-keystatic-git-images:v2';
+
+// Replace entire lines so installs cached from the corrupted v1 template are repaired too.
+const repairImageMessages = (source) => {
+  const start = source.indexOf('function insertArticleImages(view, files, dropPosition) {');
+  const end = source.indexOf('function imageDropPlugin(schema) {', start);
+  if (start < 0 || end < 0)
+    throw new Error('Unable to locate the image helper for message repair.');
+  const helper = source
+    .slice(start, end)
+    .replace(
+      /^.*status\.textContent = .*$/m,
+      "        status.textContent = '正在处理图片 ' + (index + 1) + '/' + images.length + '，完成后再保存文章…';",
+    )
+    .replace(
+      /^.*if \(!result\) throw new Error\(.*$/m,
+      "        if (!result) throw new Error('图片格式不受支持。');",
+    )
+    .replace(
+      /^.*window\.alert\(error instanceof Error.*$/m,
+      "      window.alert(error instanceof Error ? error.message : '图片处理失败，请重试。');",
+    );
+  return source.slice(0, start) + helper + source.slice(end);
+};
 
 /** Patch the ProseMirror editor used by fields.markdoc, not the Slate editor. */
 export async function patchKeystaticImages(bundlePath) {
   let source = await readFile(bundlePath, 'utf8');
   if (source.includes(marker)) return;
+  const previousGitMarker = 'iceaxing-keystatic-git-images:v1';
+  if (source.includes(previousGitMarker)) {
+    await writeFile(bundlePath, repairImageMessages(source.replace(previousGitMarker, marker)));
+    return;
+  }
   const previousMarker = 'iceaxing-keystatic-r2-images:v1';
   if (source.includes(previousMarker)) {
     source = source
@@ -17,7 +45,7 @@ export async function patchKeystaticImages(bundlePath) {
       .replaceAll('schema.schema.nodes.remoteImage', 'schema.schema.nodes.articleImage')
       .replaceAll('正在上传图片', '正在处理图片')
       .replaceAll('图片上传失败', '图片处理失败');
-    await writeFile(bundlePath, source);
+    await writeFile(bundlePath, repairImageMessages(source));
     return;
   }
   const replace = (search, replacement, label) => {
@@ -54,9 +82,9 @@ function insertArticleImages(view, files, dropPosition) {
     try {
       const nodes = [];
       for (const [index, file] of images.entries()) {
-        status.textContent = '姝ｅ湪涓婁紶鍥剧墖 ' + (index + 1) + '/' + images.length + '锛屽畬鎴愬悗鍐嶄繚瀛樻枃绔犫€?;
+        status.textContent = '正在处理图片 ' + (index + 1) + '/' + images.length + '，完成后再保存文章…';
         const result = component.handleFile(file, view.props.config);
-        if (!result) throw new Error('鍥剧墖鏍煎紡涓嶅彈鏀寔銆?);
+        if (!result) throw new Error('图片格式不受支持。');
         const value = await result;
         nodes.push(schema.schema.nodes.articleImage.createChecked({ props: toSerialized(value, component.schema) }));
       }
@@ -67,7 +95,7 @@ function insertArticleImages(view, files, dropPosition) {
       else transaction.setSelection(upload.bookmark.resolve(view.state.doc)).replaceSelection(slice);
       view.dispatch(transaction.scrollIntoView());
     } catch (error) {
-      window.alert(error instanceof Error ? error.message : '鍥剧墖涓婁紶澶辫触锛岃閲嶈瘯銆?);
+      window.alert(error instanceof Error ? error.message : '图片处理失败，请重试。');
     } finally {
       pending.delete(upload);
       status.remove();
@@ -154,5 +182,5 @@ function imageDropPlugin(schema) {`,
     'toolbar image',
   );
 
-  await writeFile(bundlePath, source);
+  await writeFile(bundlePath, repairImageMessages(source));
 }

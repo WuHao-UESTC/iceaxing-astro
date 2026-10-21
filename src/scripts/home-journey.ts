@@ -29,7 +29,9 @@ export function initHomeJourney() {
       const atEnd = horizontal
         ? list.scrollLeft + list.clientWidth >= list.scrollWidth - 1
         : list.scrollTop + list.clientHeight >= list.scrollHeight - 1;
-      button.disabled = ['up', 'left'].includes(button.dataset.scrollDirection ?? '') ? atStart : atEnd;
+      button.disabled = ['up', 'left'].includes(button.dataset.scrollDirection ?? '')
+        ? atStart
+        : atEnd;
     });
   };
 
