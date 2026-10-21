@@ -40,14 +40,14 @@ project: razavi-cmos-analog-note
    1. 起初M1管截止，M2管导通，所有的电流都从M2管的支路留下来。此时
 
       {% math
-         expression="\\begin{aligned}\n& \\left{\\begin{array}{l}\nV_{\\text {out } 2}=V_{D D}-I_{S S} R_{D 2} \\\nV_{\\text {out } 1}=V_{D D}\n\\end{array}\\right. \\\n& \\Rightarrow V_{\\text {out } 1}-V_{\\text {out } 2}=I_{S S} R_{D 2}\n\\end{aligned}" /%}
+         expression="\\begin{aligned}\n& \\left\\{\\begin{array}{l}\nV_{\\text {out } 2}=V_{D D}-I_{S S} R_{D 2} \\\\\nV_{\\text {out } 1}=V_{D D}\n\\end{array}\\right. \\\\\n& \\Rightarrow V_{\\text {out } 1}-V_{\\text {out } 2}=I_{S S} R_{D 2}\n\\end{aligned}" /%}
 
       此时Vout2是输出的最低电平，Vout1是输出的最高电平，这二者是完全确定的，**只与尾电流大小有关**
 
    1. 当V1和V2相差不大时，M1管与M2管都导通，当Vin1=Vin2时，流经两条支路的电流相等，此时
 
       {% math
-         expression="\\left{\\begin{array}{l}\nV_{\\text {out } 1}=V_{\\text {out } 2}=V_{D D}-\\frac{1}{2} R_D I_{S S} \\\nV_{\\text {out }}-V_{\\text {out } 2}=0\n\\end{array}\\right." /%}
+         expression="\\left\\{\\begin{array}{l}\nV_{\\text {out } 1}=V_{\\text {out } 2}=V_{D D}-\\frac{1}{2} R_D I_{S S} \\\\\nV_{\\text {out }}-V_{\\text {out } 2}=0\n\\end{array}\\right." /%}
 
       此时电路的线性度与增益都是最大的
 

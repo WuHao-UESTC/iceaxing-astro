@@ -10,6 +10,17 @@ export default defineMarkdocConfig({
     }),
   ],
   tags: {
+    articleImage: {
+      render: component('./src/components/markdoc/ArticleImage.astro'),
+      selfClosing: true,
+      attributes: {
+        src: { type: String, required: true },
+        alt: { type: String, default: '' },
+        title: { type: String },
+        width: { type: Number },
+        height: { type: Number },
+      },
+    },
     callout: {
       render: component('./src/components/markdoc/Callout.astro'),
       attributes: {

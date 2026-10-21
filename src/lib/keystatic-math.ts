@@ -2,6 +2,7 @@ import type { fields } from '@keystatic/core';
 import type { Node as ProseMirrorNode } from 'prosemirror-model';
 import type { EditorState } from 'prosemirror-state';
 import { findDollarMath, normalizeDollarMath } from './markdoc-math';
+import { hasPendingImages } from './media/client';
 
 type MarkdocField = ReturnType<typeof fields.markdoc>;
 const encoder = new TextEncoder();
@@ -106,6 +107,7 @@ export function withMathPersistence(field: MarkdocField): MarkdocField {
       return field.parse(value, { ...args, content: normalize(args.content) });
     },
     serialize(value, args) {
+      if (hasPendingImages()) throw new Error('图片正在处理，请等处理完成后再保存。');
       return field.serialize(preserveEditorMath(value), args);
     },
     reader: {

@@ -1,6 +1,8 @@
 import { fields } from '@keystatic/core';
 import { block, inline, repeating, wrapper } from '@keystatic/core/content-components';
 import { createElement } from 'react';
+import { articleImage } from './article-image';
+import { normalizeDollarMath } from '../lib/markdoc-math';
 
 const requiredText = (label: string, description?: string) =>
   fields.text({
@@ -10,6 +12,7 @@ const requiredText = (label: string, description?: string) =>
   });
 
 export const markdocComponents = {
+  articleImage,
   callout: wrapper({
     label: '提示框',
     description: '用于提示、警告、说明或成功状态。',
@@ -86,17 +89,20 @@ export const markdocComponents = {
         children,
       ),
   }),
-  math: block({
-    label: '块级公式',
-    schema: {
-      expression: fields.text({
-        label: 'LaTeX',
-        multiline: true,
-        validation: { isRequired: true },
-      }),
-    },
-    ContentView: ({ value }) => value.expression,
-  }),
+  math: Object.assign(
+    block({
+      label: '块级公式',
+      schema: {
+        expression: fields.text({
+          label: 'LaTeX',
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+      },
+      ContentView: ({ value }) => value.expression,
+    }),
+    { normalizeClipboard: normalizeDollarMath },
+  ),
   inlineMath: inline({
     label: '行内公式',
     schema: { expression: requiredText('LaTeX') },

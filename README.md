@@ -49,6 +49,8 @@ src/content/
 
 ## Keystatic 存储模式
 
+正文图片存入 Git：粘贴、拖入或选图后，浏览器自动压缩为 WebP 并以 SHA-256 命名，统一保存到 `src/assets/article-images/`。同一压缩结果跨文章复用，保存文章时一并写入仓库，无需对象存储账户或密钥。使用与兼容说明见 [图片存储说明](doc/IMAGE_STORAGE.md)。
+
 默认使用 local mode，适合本地直接编辑仓库文件。部署 GitHub mode 时设置：
 
 ```dotenv

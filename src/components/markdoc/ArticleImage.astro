@@ -1,0 +1,29 @@
+---
+import type { ImageMetadata } from 'astro';
+interface Props {
+  src: string;
+  alt?: string;
+  title?: string;
+  width?: number;
+  height?: number;
+}
+const { src, alt = '', title } = Astro.props;
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/article-images/*.webp', {
+  eager: true,
+});
+const filename = src.match(/\/([a-f0-9]{64}\.webp)$/)?.[1];
+const asset = filename ? images[`/src/assets/article-images/${filename}`]?.default : undefined;
+if (!asset) throw new Error(`找不到文章图片：${src}`);
+---
+
+<figure class="content-figure">
+  <img
+    src={asset.src}
+    alt={alt}
+    width={asset.width}
+    height={asset.height}
+    loading="lazy"
+    decoding="async"
+  />
+  {title && <figcaption>{title}</figcaption>}
+</figure>

@@ -1,6 +1,9 @@
 import { readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { patchKeystaticImages } from './patch-keystatic-images.mjs';
+import { patchSharedArticleAssets } from './patch-keystatic-shared-assets.mjs';
+import { patchKeystaticMath } from './patch-keystatic-math.mjs';
 
 const PATCH_MARKER = 'iceaxing-keystatic-editor-patch:v3';
 const LEGACY_PATCH_MARKER = 'iceaxing-keystatic-editor-patch:v1';
@@ -313,3 +316,14 @@ if (patchedBundles !== 1) {
 }
 
 console.log(`Keystatic editor enhancements are active (${PATCH_MARKER}).`);
+
+for (const bundleName of bundleNames) {
+  const bundlePath = path.join(distDirectory, bundleName);
+  const source = await readFile(bundlePath, 'utf8');
+  if (source.includes(PATCH_MARKER)) {
+    await patchKeystaticImages(bundlePath);
+    await patchKeystaticMath(bundlePath);
+  }
+}
+await patchSharedArticleAssets(distDirectory);
+console.log('Keystatic article images use shared content-addressed Git assets.');
