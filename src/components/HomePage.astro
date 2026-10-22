@@ -14,9 +14,7 @@ import '../styles/home.css';
 import ChapterLandscape from './home/ChapterLandscape.astro';
 import JourneyNavigation from './home/JourneyNavigation.astro';
 import NightCamp from './home/NightCamp.astro';
-import WaystationLandscape from './home/WaystationLandscape.astro';
 import SnowfieldTraverse from './home/SnowfieldTraverse.astro';
-import LifeLibraryLandscape from './home/LifeLibraryLandscape.astro';
 import SnowlineHero from './home/SnowlineHero.astro';
 import TechnicalRidge from './home/TechnicalRidge.astro';
 import StudyTerrace from './home/StudyTerrace.astro';
@@ -256,22 +254,31 @@ const featuredDestinations = [
     (card) => index.series.find((entry) => entry.data.collectionId === card.id)?.data.featured,
   ),
 ];
-const lifeArticles = articleCards.filter((card) => {
-  const article = articles.find((entry) => entry.data.contentId === card.id);
-  if (!article) return false;
-  if (article.data.category) {
+const lifeArticles = articleCards
+  .filter((card) => {
+    const article = articles.find((entry) => entry.data.contentId === card.id);
+    if (!article) return false;
+    if (article.data.category) {
+      const category = index.categories.find(
+        (entry) => entry.data.categoryId === article.data.category,
+      );
+      if (category)
+        return category.data.group === 'life' && !category.data.tags.includes('daily-ramblings');
+    }
+    const project = index.projects.find((entry) => entry.data.projectId === article.data.project);
     const category = index.categories.find(
+      (entry) => entry.data.categoryId === project?.data.category,
+    );
+    return category?.data.group === 'life' && !category.data.tags.includes('daily-ramblings');
+  })
+  .map((card) => {
+    const article = articles.find((entry) => entry.data.contentId === card.id)!;
+    const direct = index.categories.find(
       (entry) => entry.data.categoryId === article.data.category,
     );
-    if (category)
-      return category.data.group === 'life' && !category.data.tags.includes('daily-ramblings');
-  }
-  const project = index.projects.find((entry) => entry.data.projectId === article.data.project);
-  const category = index.categories.find(
-    (entry) => entry.data.categoryId === project?.data.category,
-  );
-  return category?.data.group === 'life' && !category.data.tags.includes('daily-ramblings');
-});
+    const project = index.projects.find((entry) => entry.data.projectId === article.data.project);
+    return { ...card, categoryId: direct?.data.categoryId ?? project?.data.category };
+  });
 const ramblingsCategory = index.categories.find(
   (entry) =>
     entry.data.categoryId === 'daily-ramblings' || entry.data.tags.includes('daily-ramblings'),
@@ -304,6 +311,7 @@ const ramblingsHref = ramblingsCategory
   <section id="base-camp" class="snowline-panel snowline-hero" aria-labelledby="base-camp-title">
     <ChapterLandscape scene="cover" />
     <SnowlineHero
+      {locale}
       {labels}
       {motto}
       featured={featuredCards.length ? featuredCards : articleCards.slice(0, 2)}
@@ -335,11 +343,9 @@ const ramblingsHref = ramblingsCategory
     class="snowline-panel snowline-life"
     aria-labelledby="snowfield-traverse-title"
   >
-    <LifeLibraryLandscape />
     <SnowfieldTraverse {labels} {locale} categories={lifeCategoryCards} latest={lifeArticles} />
   </section>
   <section id="night-camp" class="snowline-panel snowline-night" aria-labelledby="night-camp-title">
-    <WaystationLandscape />
     <NightCamp {labels} {locale} notes={ramblingCards} {entries} {ramblingsHref} />
   </section>
 </main>

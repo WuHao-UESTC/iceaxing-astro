@@ -1,22 +1,59 @@
----
+﻿---
 import TerrainFacets from './TerrainFacets.astro';
-import { waystationMesh } from '../../data/terrain-scenes';
-const layouts = [
-  { name: 'wide', width: 1440, height: 800, faces: waystationMesh(false) },
-  { name: 'tall', width: 600, height: 1200, faces: waystationMesh(true) },
-];
+import { campCliffMesh, screeMesh } from '../../data/chapter-landscapes';
+const stones = Array.from({ length: 70 }, (_, i) => ({
+  x: ((i * 173 + 19) % 1250) - 40,
+  y: 705 + ((i * 37) % 95),
+  size: 3 + ((i * 7) % 10),
+}));
+const stars = Array.from({ length: 32 }, (_, i) => ({
+  x: 390 + ((i * 197 + 31) % 780),
+  y: 26 + ((i * 113 + 17) % 590),
+  size: i % 7 === 0 ? 2 : 0.8 + (i % 3) * 0.3,
+}));
 ---
 
-{layouts.map(({ name, width, height, faces }) => (
-  <svg
-    class={`journey-landscape waystation-landscape waystation-${name}`}
-    data-reveal="landscape"
-    viewBox={`0 0 ${width} ${height}`}
-    preserveAspectRatio="xMidYMid slice"
-    fill="none"
-    aria-hidden="true"
-    focusable="false"
-  >
-    <TerrainFacets {faces} />
-  </svg>
-))}
+<svg
+  class="journey-landscape waystation-landscape"
+  data-reveal="landscape"
+  viewBox="0 0 1200 800"
+  preserveAspectRatio="none"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <g class="station-stars">
+    {stars.map(({ x, y, size }, i) =>
+      i % 7 === 0 ? (
+        <path d={`M${x - size * 2} ${y}h${size * 4}M${x} ${y - size * 2}v${size * 4}`} />
+      ) : (
+        <circle cx={x} cy={y} r={size} />
+      ),
+    )}
+  </g>
+  <TerrainFacets faces={screeMesh()} />
+  <g class="station-cliff">
+    <TerrainFacets faces={campCliffMesh()} />
+  </g>
+  <g class="station-scree-stones">
+    {stones.map(({ x, y, size }, i) => (
+      <g>
+        <path
+          class={`terrain-face terrain-shade-${2 + (i % 3)} terrain-material-stone`}
+          d={`M${x} ${y}l${size} ${-size / 2}l${size * 0.8} ${size * 0.6}l${-size * 0.6} ${size * 0.5}Z`}
+        />
+        <path
+          class="terrain-face terrain-shade-1 terrain-material-stone"
+          d={`M${x} ${y}l${size} ${-size / 2}l${size * 0.2} ${size * 0.7}Z`}
+        />
+      </g>
+    ))}
+  </g>
+  <g class="hollow-tent" transform="translate(235 720) scale(.85)">
+    <path class="hollow-tent-shadow" d="M-18 25L40 5L103 26L38 43Z" />
+    <path class="hollow-tent-side" d="M0 25L28 -20L65 -9L85 30L38 36Z" />
+    <path class="hollow-tent-front" d="M0 25L28 -20L38 36Z" />
+    <path class="hollow-tent-door" d="M12 27L27 -4L31 31Z" />
+    <path class="hollow-tent-rope" d="M28 -20L-18 33M65 -9L99 34" />
+  </g>
+</svg>

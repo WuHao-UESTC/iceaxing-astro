@@ -2,7 +2,7 @@
 import type { Locale } from '../../i18n/config';
 import '../../styles/life-library.css';
 import ChapterMarker from './ChapterMarker.astro';
-import ScrollControls from './ScrollControls.astro';
+import LifeLibraryLandscape from './LifeLibraryLandscape.astro';
 import type { HomeCard, HomeLabels } from './types';
 
 interface Props {
@@ -13,38 +13,49 @@ interface Props {
 }
 
 const { labels, locale, categories, latest } = Astro.props;
-const [featured, ...remaining] = latest;
+const categoryArticles = Object.groupBy(latest, (article) => article.categoryId ?? '');
+const pages = Array.from({ length: Math.ceil(categories.length / 4) }, (_, i) =>
+  categories.slice(i * 4, i * 4 + 4),
+);
 const copy =
   locale === 'zh'
     ? {
-        shelves: '日常收藏',
-        empty: '翻开下一页',
-        emptyNote: '留一点空白，给正在发生的生活。',
+        collection: '日常收藏',
+        previous: '上一组入口',
+        next: '下一组入口',
+        empty: '留一点空白，给正在发生的生活。',
         foot: '记录，是为了记得。',
-        read: '继续阅读',
-        volume: '卷',
+        categoryEmpty: '暂无文章',
       }
     : locale === 'de'
       ? {
-          shelves: 'Meine Sammlung',
-          empty: 'Die nächste Seite',
-          emptyNote: 'Ein wenig Platz für das Leben, das gerade geschieht.',
+          collection: 'Meine Sammlung',
+          previous: 'Vorherige Ziele',
+          next: 'Nächste Ziele',
+          empty: 'Ein wenig Platz für das Leben, das gerade geschieht.',
           foot: 'Festhalten, um sich zu erinnern.',
-          read: 'Weiterlesen',
-          volume: 'Band',
+          categoryEmpty: 'Noch keine Artikel',
         }
       : {
-          shelves: 'Personal collection',
-          empty: 'Turn the next page',
-          emptyNote: 'A little room for the life still unfolding.',
+          collection: 'Personal collection',
+          previous: 'Previous destinations',
+          next: 'Next destinations',
+          empty: 'A little room for the life still unfolding.',
           foot: 'Write it down. Keep it close.',
-          read: 'Keep reading',
-          volume: 'Vol.',
+          categoryEmpty: 'No articles yet',
         };
 ---
 
-<div class="journey-panel-inner journey-life-inner">
-  <ChapterMarker number="04" altitude="5100m" label="PERSONAL LIBRARY" />
+<LifeLibraryLandscape />
+<div class="journey-panel-inner journey-life-inner" data-life-carousel>
+  <svg
+    class="life-tethers"
+    data-life-tethers
+    aria-hidden="true"
+    focusable="false"
+    fill="none"
+  ></svg>
+  <ChapterMarker number="04" altitude="5100m" label="SNOW MOUNTAIN RIFT" />
   <header class="journey-chapter-heading" data-reveal data-step="1">
     <p class="journey-eyebrow">BOOKS / JOURNEYS / ORDINARY DAYS</p>
     <h2 id="snowfield-traverse-title" tabindex="-1">
@@ -53,97 +64,111 @@ const copy =
     <p>{labels.chapterIntros[2]}</p>
   </header>
 
-  <div class:list={['life-library', { 'life-library-without-topics': !categories.length }]}>
+  <div class="life-snow-scene">
     {categories.length > 0 && (
-      <section class="life-shelf" aria-labelledby="life-shelf-title">
-        <div class="journey-section-label">
-          <h3 id="life-shelf-title">{copy.shelves}</h3>
-          <div class="journey-scroll-controls life-shelf-controls" data-scroll-controls hidden>
-            <button
-              type="button"
-              data-scroll-target="life-category-list"
-              data-scroll-direction="left"
-              aria-label={`${copy.shelves} ←`}
-            >
-              ←
-            </button>
-            <button
-              type="button"
-              data-scroll-target="life-category-list"
-              data-scroll-direction="right"
-              aria-label={`${copy.shelves} →`}
-            >
-              →
-            </button>
-          </div>
-        </div>
-        <nav
-          id="life-category-list"
-          class="life-shelf-books"
-          aria-label={copy.shelves}
-          data-scroll-list
-          data-scroll-axis="x"
-          tabindex="0"
-        >
-          {categories.map((card, index) => (
-            <a class="life-shelf-book" href={card.href} data-reveal data-step={String(2 + index)}>
-              <span class="life-book-volume">
-                {copy.volume} {String(index + 1).padStart(2, '0')}
-              </span>
-              <h4 lang={locale}>{card.title}</h4>
-              {card.description && <p>{card.description}</p>}
-              <span class="life-book-imprint">
-                <span>ICEAXING</span>
-                <i aria-hidden="true">↗</i>
-              </span>
-            </a>
-          ))}
-        </nav>
-      </section>
-    )}
-
-    <section class="life-notebook" aria-labelledby="life-notebook-title" data-reveal data-step="3">
-      <div class="journey-section-label">
-        <h3 id="life-notebook-title">{labels.latest}</h3>
-        {latest.length > 0 && <ScrollControls target="life-latest-list" label={labels.latest} />}
-      </div>
-      <div
-        id="life-latest-list"
-        class="life-notebook-pages"
-        data-scroll-list
-        tabindex={latest.length > 0 ? '0' : undefined}
-      >
-        {featured ? (
-          <>
-            <a class="life-notebook-feature" href={featured.href}>
-              {featured.meta && <small>{featured.meta}</small>}
-              <h4>{featured.title}</h4>
-              {featured.description && <p>{featured.description}</p>}
-              <span class="life-notebook-read">
-                {copy.read} <i aria-hidden="true">↗</i>
-              </span>
-            </a>
-            {remaining.length > 0 && (
-              <div class="life-notebook-more">
-                {remaining.map((card) => (
-                  <a href={card.href}>
-                    {card.meta && <small>{card.meta}</small>}
-                    <h4>{card.title}</h4>
-                    <i aria-hidden="true">↗</i>
-                  </a>
-                ))}
+      <nav id="life-landings" class="life-landings" aria-label={copy.collection}>
+        {pages.map((page, pageIndex) => (
+          <div class="life-landing-page" data-life-page>
+            {page.map((card, index) => (
+              <div class={`life-landing life-landing-${index}`} data-life-category={card.id}>
+                <a
+                  class="life-landing-link"
+                  href={card.href}
+                  title={card.title}
+                  data-reveal
+                  data-step={String(2 + index)}
+                >
+                  <span class="life-landing-number" aria-hidden="true">
+                    {String(pageIndex * 4 + index + 1).padStart(2, '0')}
+                  </span>
+                  <h3 id={`life-category-${pageIndex * 4 + index}`} lang={locale}>
+                    {card.title}
+                  </h3>
+                  {card.description && <p>{card.description}</p>}
+                  <svg
+                    class="life-shard"
+                    viewBox="0 0 40 40"
+                    fill="none"
+                    aria-hidden="true"
+                    focusable="false"
+                    style={`--shard-angle:${[-12, 8, -5, 15][index]}deg`}
+                  >
+                    <path class="life-shard-facet life-shard-facet-a" d="M8 9L26 5L18 23Z" />
+                    <path class="life-shard-facet life-shard-facet-b" d="M29 9L34 28L21 23Z" />
+                    <path class="life-shard-facet life-shard-facet-c" d="M9 15L17 27L10 35Z" />
+                    <path class="life-shard-direction" d="M13 13L28 28M19 28H28V19" />
+                  </svg>
+                </a>
+                {categoryArticles[card.id]?.length ? (
+                  <ol
+                    class="life-category-articles"
+                    tabindex="0"
+                    aria-labelledby={`life-category-${pageIndex * 4 + index}`}
+                  >
+                    {categoryArticles[card.id]!.map((article) => (
+                      <li>
+                        <a href={article.href} title={article.title}>
+                          {article.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                ) : (
+                  <p class="life-category-empty">{copy.categoryEmpty}</p>
+                )}
               </div>
-            )}
-          </>
-        ) : (
-          <div class="life-notebook-empty">
-            <span aria-hidden="true">—</span>
-            <h4>{copy.empty}</h4>
-            <p>{copy.emptyNote}</p>
+            ))}
           </div>
-        )}
-      </div>
-      <p class="life-notebook-colophon">{copy.foot}</p>
-    </section>
+        ))}
+      </nav>
+    )}
   </div>
+  {categories.length > 2 && (
+    <div class="life-page-controls" data-life-controls hidden>
+      <button
+        type="button"
+        data-life-direction="-1"
+        aria-label={copy.previous}
+        aria-controls="life-landings"
+      >
+        ←
+      </button>
+      <span aria-live="polite" aria-atomic="true" data-life-status>
+        1 / {pages.length}
+      </span>
+      <button
+        type="button"
+        data-life-direction="1"
+        aria-label={copy.next}
+        aria-controls="life-landings"
+      >
+        →
+      </button>
+    </div>
+  )}
+
+  <section class="life-recent" aria-labelledby="life-recent-title" data-reveal data-step="4">
+    <h3 id="life-recent-title">{labels.latest}</h3>
+    {latest.length > 0 ? (
+      <ol class="life-recent-list" tabindex="0" role="list" aria-labelledby="life-recent-title">
+        {latest.map((card, index) => (
+          <li>
+            <a href={card.href} class:list={{ 'life-recent-feature': index === 0 }}>
+              <time datetime={card.publishedAt}>{card.meta || '—'}</time>
+              <span class="life-recent-copy">
+                <strong>{card.title}</strong>
+                {index === 0 && card.description && <span>{card.description}</span>}
+              </span>
+              <span class="life-landing-arrow" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    ) : (
+      <p class="life-recent-empty">{copy.empty}</p>
+    )}
+  </section>
+  <p class="life-colophon">{copy.foot}</p>
 </div>

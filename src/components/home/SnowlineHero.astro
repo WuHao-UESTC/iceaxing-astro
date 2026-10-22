@@ -2,8 +2,11 @@
 import ChapterMarker from './ChapterMarker.astro';
 import ScrollControls from './ScrollControls.astro';
 import type { HomeCard, HomeLabels } from './types';
+import { localizedPath, type Locale } from '../../i18n/config';
+import { getMessages } from '../../i18n/messages';
 
 interface Props {
+  locale: Locale;
   labels: HomeLabels;
   motto?: { text: string; source: string };
   featured: HomeCard[];
@@ -11,7 +14,8 @@ interface Props {
   profileHref: string;
 }
 
-const { labels, motto, featured, destinations, profileHref } = Astro.props;
+const { locale, labels, motto, featured, destinations, profileHref } = Astro.props;
+const messages = getMessages(locale);
 const routes = [
   { number: '02', label: labels.chapters[1], href: '#technical-ridge', id: 'technical-ridge' },
   {
@@ -50,10 +54,25 @@ const routes = [
           {motto.source && <figcaption>— {motto.source}</figcaption>}
         </figure>
       )}
-      <a class="journey-profile-link" href={profileHref} data-reveal data-step="3">
-        {labels.meet}
-        <span aria-hidden="true">↗</span>
-      </a>
+      <div class="journey-hero-links" data-reveal data-step="3">
+        <a class="journey-profile-link" href={profileHref}>
+          {labels.meet}
+          <span aria-hidden="true">↗</span>
+        </a>
+        <nav
+          class="journey-hero-archives"
+          aria-label={messages.nav.articles + ' / ' + messages.nav.projects}
+        >
+          <a href={localizedPath(locale, '/articles')}>
+            {messages.nav.articles}
+            <span aria-hidden="true">↗</span>
+          </a>
+          <a href={localizedPath(locale, '/projects')}>
+            {messages.nav.projects}
+            <span aria-hidden="true">↗</span>
+          </a>
+        </nav>
+      </div>
 
       <section
         id="selected-notes"

@@ -1,61 +1,96 @@
 ---
 import TerrainFacets from './TerrainFacets.astro';
-import { snowfieldMesh } from '../../data/terrain-scenes';
-
-// Paired footprints shrink towards the distant pass; each layout has its own trail.
-const wideSteps = [
-  [152, 787, 59, 1.15],
-  [217, 751, 62, 1.1],
-  [285, 718, 67, 1.05],
-  [357, 690, 74, 1],
-  [432, 672, 82, 0.96],
-  [507, 663, 88, 0.92],
-  [582, 658, 81, 0.88],
-  [653, 643, 66, 0.83],
-  [718, 611, 49, 0.78],
-  [767, 563, 46, 0.73],
-  [811, 518, 57, 0.68],
-  [864, 487, 72, 0.63],
-  [922, 468, 76, 0.58],
-  [978, 452, 67, 0.53],
-  [1029, 427, 56, 0.48],
-  [1070, 395, 56, 0.43],
-  [1108, 370, 67, 0.38],
-  [1144, 355, 74, 0.33],
+import { snowRiftMeshes } from '../../data/chapter-landscapes';
+import type { TerrainFace } from '../../lib/terrain-mesh';
+const desktop = snowRiftMeshes();
+const mobile = snowRiftMeshes(true);
+const rubble: [number, number, number, number][] = [
+  [495, 55, 12, -18],
+  [600, 95, 7, 50],
+  [530, 145, 9, 100],
+  [700, 145, 18, 20],
+  [735, 230, 6, -35],
+  [810, 290, 11, 75],
+  [860, 360, 8, 130],
+  [950, 450, 10, -80],
 ];
-const tallSteps = [
-  [95, 1192, 28, 1.15],
-  [125, 1139, 38, 1.08],
-  [167, 1093, 53, 1],
-  [221, 1060, 67, 0.94],
-  [278, 1037, 66, 0.88],
-  [329, 1006, 44, 0.82],
-  [360, 961, 21, 0.76],
-  [376, 909, 14, 0.7],
-  [388, 858, 25, 0.64],
-  [410, 815, 34, 0.59],
-  [435, 773, 20, 0.54],
-  [448, 727, 8, 0.49],
-  [452, 682, 12, 0.44],
-  [462, 641, 26, 0.39],
-  [479, 606, 34, 0.34],
+const compactRubble: [number, number, number, number][] = [
+  [680, 190, 8, 50],
+  [820, 315, 7, -25],
+  [930, 390, 9, 110],
 ];
-const layouts = [
-  { name: 'wide', width: 1440, height: 800, faces: snowfieldMesh(false, wideSteps) },
-  { name: 'tall', width: 600, height: 1200, faces: snowfieldMesh(true, tallSteps) },
-];
+const nearMarker = (face: TerrainFace, compact = false) => {
+  const x = face.points.reduce((sum, point) => sum + point[0], 0) / face.points.length;
+  const y = face.points.reduce((sum, point) => sum + point[1], 0) / face.points.length;
+  return (
+    ((x - 1090) / (compact ? 70 : 90)) ** 2 +
+      ((y - (compact ? 40 : 78)) / (compact ? 38 : 60)) ** 2 <
+    1
+  );
+};
 ---
 
-{layouts.map(({ name, width, height, faces }) => (
-  <svg
-    class={`journey-landscape life-library-landscape snowfield-${name}`}
-    data-reveal="landscape"
-    viewBox={`0 0 ${width} ${height}`}
-    preserveAspectRatio="xMidYMid slice"
-    fill="none"
-    aria-hidden="true"
-    focusable="false"
-  >
-    <TerrainFacets {faces} />
-  </svg>
-))}
+<svg
+  class="journey-landscape life-library-landscape"
+  data-reveal="landscape"
+  viewBox="0 0 1200 800"
+  preserveAspectRatio="none"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <clipPath id="life-upper-desktop">
+      <polygon points={desktop.upperBoundary.map((point) => point.join(',')).join(' ')} />
+    </clipPath>
+    <clipPath id="life-upper-mobile">
+      <polygon points={mobile.upperBoundary.map((point) => point.join(',')).join(' ')} />
+    </clipPath>
+  </defs>
+  <g class="life-rift-desktop">
+    <g class="life-rift-upper" clip-path="url(#life-upper-desktop)">
+      <TerrainFacets faces={desktop.upper.filter((face) => !nearMarker(face))} />
+      <g class="life-rift-marker">
+        <TerrainFacets faces={desktop.upper.filter((face) => nearMarker(face))} />
+      </g>
+    </g>
+    <g class="life-rift-rubble">
+      {rubble.map(([x, y, size, angle]) => (
+        <g transform={`translate(${x} ${y}) rotate(${angle}) scale(${size / 12})`}>
+          <path class="terrain-face terrain-shade-3" d="M-8 7L-2-10L10 5Z" />
+          <path class="terrain-face terrain-shade-1" d="M-8 7L-2-10L1 3Z" />
+        </g>
+      ))}
+    </g>
+    <g class="life-rift-lower">
+      <TerrainFacets faces={desktop.lower} />
+      <polyline
+        data-rift-edge="desktop"
+        points={desktop.lowerBoundary.map((point) => point.join(',')).join(' ')}
+      />
+    </g>
+  </g>
+  <g class="life-rift-mobile">
+    <g class="life-rift-upper" clip-path="url(#life-upper-mobile)">
+      <TerrainFacets faces={mobile.upper.filter((face) => !nearMarker(face, true))} />
+      <g class="life-rift-marker">
+        <TerrainFacets faces={mobile.upper.filter((face) => nearMarker(face, true))} />
+      </g>
+    </g>
+    <g class="life-rift-rubble">
+      {compactRubble.map(([x, y, size, angle]) => (
+        <g transform={`translate(${x} ${y}) rotate(${angle}) scale(${size / 12})`}>
+          <path class="terrain-face terrain-shade-3" d="M-8 7L-2-10L10 5Z" />
+          <path class="terrain-face terrain-shade-1" d="M-8 7L-2-10L1 3Z" />
+        </g>
+      ))}
+    </g>
+    <g class="life-rift-lower">
+      <TerrainFacets faces={mobile.lower} />
+      <polyline
+        data-rift-edge="mobile"
+        points={mobile.lowerBoundary.map((point) => point.join(',')).join(' ')}
+      />
+    </g>
+  </g>
+</svg>
