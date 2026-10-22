@@ -20,6 +20,12 @@ export type CategoryEntry = CollectionEntry<'categories'>;
 export type ProjectEntry = CollectionEntry<'projects'>;
 export type SeriesEntry = CollectionEntry<'series'>;
 
+export function categoryScene(category?: CategoryEntry): 'ridge' | 'study' | 'field' | 'camp' {
+  if (category?.data.group === 'study') return 'study';
+  if (category?.data.tags.includes('daily-ramblings')) return 'camp';
+  return category?.data.group === 'life' ? 'field' : 'ridge';
+}
+
 export const routes = routeManifest as RouteEntry[];
 
 export function isPublicContent(data: { status: string; publishedAt?: Date }) {

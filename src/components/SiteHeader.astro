@@ -15,6 +15,7 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const navItems = [
   { label: messages.nav.home, href: homeHref },
   { label: messages.nav.technology, href: `${homeHref}#technical-ridge` },
+  { label: messages.nav.study, href: `${homeHref}#study-terrace` },
   { label: messages.nav.life, href: `${homeHref}#snowfield-traverse` },
   { label: messages.nav.ramblings, href: localizedPath(locale, '/daily-ramblings') },
   { label: messages.nav.articles, href: localizedPath(locale, '/articles') },

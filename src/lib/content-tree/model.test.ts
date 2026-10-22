@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildContentTree, planCascadeDeletion } from './model';
+import { buildContentTree, planCascadeDeletion, selectContentGroup } from './model';
 import type { ContentSnapshot } from './types';
 
 const snapshot: ContentSnapshot = {
@@ -52,6 +52,93 @@ const snapshot: ContentSnapshot = {
 };
 
 describe('content tree model', () => {
+  it('filters complete descendant trees by the category group and preserves unassigned content', () => {
+    const tree = buildContentTree(
+      {
+        folders: [
+          ...snapshot.folders.map((folder) => ({ ...folder, group: 'study' as const })),
+          { kind: 'category', id: 'daily', label: '日常', group: 'life' },
+          { kind: 'category', id: 'coding', label: '编程' },
+          { kind: 'project', id: 'orphan', label: '未归属项目', parentId: 'missing' },
+        ],
+        articles: [
+          ...snapshot.articles,
+          {
+            locale: 'zh',
+            contentId: 'orphan',
+            translationKey: 'orphan',
+            title: '未归属文章',
+            status: 'draft',
+          },
+        ],
+      },
+      'local',
+      null,
+    );
+    expect(selectContentGroup(tree, 'study').folders.map((folder) => folder.id)).toEqual([
+      'engineering',
+      'chip',
+      'layout',
+    ]);
+    expect(selectContentGroup(tree, 'study').articles).toHaveLength(2);
+    expect(selectContentGroup(tree, 'life').folders.map((folder) => folder.id)).toEqual(['daily']);
+    expect(selectContentGroup(tree, 'life').articles).toEqual([]);
+    expect(selectContentGroup(tree, 'skill').folders.map((folder) => folder.id)).toEqual([
+      'coding',
+    ]);
+    expect(selectContentGroup(tree, 'unassigned').folders.map((folder) => folder.id)).toEqual([
+      'orphan',
+    ]);
+    expect(
+      selectContentGroup(tree, 'unassigned').articles.map((article) => article.translationKey),
+    ).toEqual(['orphan']);
+  });
+
+  it('keeps logs and pages separate even when translation keys match, with the correct editor collections', () => {
+    const withDocuments: ContentSnapshot = {
+      ...snapshot,
+      documents: [
+        {
+          ...snapshot.articles[0]!,
+          category: null,
+          project: null,
+          collection: null,
+          contentType: 'logs',
+        },
+        {
+          ...snapshot.articles[1]!,
+          category: null,
+          project: null,
+          collection: null,
+          contentType: 'logs',
+        },
+        {
+          ...snapshot.articles[0]!,
+          category: null,
+          project: null,
+          collection: null,
+          contentType: 'pages',
+        },
+      ],
+    };
+    const tree = buildContentTree(withDocuments, 'github', 'main');
+    const documents = selectContentGroup(tree, 'documents').articles;
+    expect(documents.map((document) => document.key)).toEqual([
+      'logs:layout-guide',
+      'pages:layout-guide',
+    ]);
+    expect(documents.map((document) => document.parentKey)).toEqual([
+      'utility:logs',
+      'utility:pages',
+    ]);
+    expect(documents[0]?.versions.map((version) => version.editorCollection)).toEqual([
+      'logsZh',
+      'logsEn',
+    ]);
+    expect(documents[1]?.versions[0]?.editorCollection).toBe('pagesZh');
+    expect(planCascadeDeletion(withDocuments, 'category', 'engineering')?.articles).toHaveLength(3);
+  });
+
   it('groups translations into one article node', () => {
     const tree = buildContentTree(snapshot, 'local', null);
     const article = tree.articles.find((entry) => entry.translationKey === 'layout-guide');

@@ -1,0 +1,19 @@
+---
+import type { TerrainFace } from '../../lib/terrain-mesh';
+
+interface Props {
+  faces: TerrainFace[];
+}
+
+const { faces } = Astro.props;
+---
+
+<g class="terrain-mesh">
+  {faces.map(({ points, material, shade, facet }) => (
+    <polygon
+      class={`terrain-face terrain-material-${material} terrain-shade-${shade}`}
+      data-facet={facet}
+      points={points.map(([x, y]) => `${x},${y}`).join(' ')}
+    />
+  ))}
+</g>

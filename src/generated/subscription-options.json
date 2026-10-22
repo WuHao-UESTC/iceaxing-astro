@@ -20,29 +20,9 @@
       "labels": { "zh": "碎碎念", "en": "Ramblings", "de": "Gedanken" }
     },
     {
-      "key": "category:reading",
+      "key": "category:filter-design-in-digital-world-note",
       "kind": "category",
-      "id": "reading",
-      "labels": { "zh": "阅读", "en": "Reading", "de": "Reading" }
-    },
-    {
-      "key": "category:uestc-note",
-      "kind": "category",
-      "id": "uestc-note",
-      "labels": { "zh": "电科学习笔记", "en": "Note in UESTC", "de": "Note in UESTC" }
-    },
-    {
-      "key": "project:2026-cicc",
-      "kind": "project",
-      "id": "2026-cicc",
-      "parentKey": "category:analog-ic",
-      "labels": { "zh": "2026年集创赛作品合集", "en": "2026 CICC", "de": "2026 CICC" }
-    },
-    {
-      "key": "project:filter-design-in-digital-world-note",
-      "kind": "project",
       "id": "filter-design-in-digital-world-note",
-      "parentKey": "category:uestc-note",
       "labels": {
         "zh": "数字时代的滤波器设计-课程笔记",
         "en": "Filter Design in Digital World Note",
@@ -50,10 +30,9 @@
       }
     },
     {
-      "key": "project:liuenke-semiconductance-note",
-      "kind": "project",
+      "key": "category:liuenke-semiconductance-note",
+      "kind": "category",
       "id": "liuenke-semiconductance-note",
-      "parentKey": "category:uestc-note",
       "labels": {
         "zh": "刘恩科-半导体物理学笔记",
         "en": "Liu Enke Semiconductor Note",
@@ -61,10 +40,9 @@
       }
     },
     {
-      "key": "project:oppenheim-signal-and-system-note",
-      "kind": "project",
+      "key": "category:oppenheim-signal-and-system-note",
+      "kind": "category",
       "id": "oppenheim-signal-and-system-note",
-      "parentKey": "category:uestc-note",
       "labels": {
         "zh": "奥本海姆-信号与系统笔记",
         "en": "Oppenheim Signal & System Note",
@@ -72,10 +50,25 @@
       }
     },
     {
-      "key": "project:rabaey-digital-ic-note",
-      "kind": "project",
+      "key": "category:photo-book",
+      "kind": "category",
+      "id": "photo-book",
+      "labels": { "zh": "相册", "en": "Photos", "de": "Photos" }
+    },
+    {
+      "key": "category:quirk-semiconductor-manufacturing-technology-note",
+      "kind": "category",
+      "id": "quirk-semiconductor-manufacturing-technology-note",
+      "labels": {
+        "zh": "奎克-半导体制造技术学习笔记",
+        "en": "Quirk-Semiconductor Manufacturing Technology Note",
+        "de": "Quirk-Semiconductor Manufacturing Technology Note"
+      }
+    },
+    {
+      "key": "category:rabaey-digital-ic-note",
+      "kind": "category",
       "id": "rabaey-digital-ic-note",
-      "parentKey": "category:analog-ic",
       "labels": {
         "zh": "Rabaey-数字集成电路设计学习笔记",
         "en": "Rabaey-Digital IC Note",
@@ -83,10 +76,9 @@
       }
     },
     {
-      "key": "project:razavi-cmos-analog-note",
-      "kind": "project",
+      "key": "category:razavi-cmos-analog-note",
+      "kind": "category",
       "id": "razavi-cmos-analog-note",
-      "parentKey": "category:analog-ic",
       "labels": {
         "zh": "拉扎维-模拟CMOS集成电路设计学习笔记",
         "en": "Razavi-Analog CMOS IC Note",
@@ -94,15 +86,27 @@
       }
     },
     {
-      "key": "project:razavi-rf-microelectronics-note",
-      "kind": "project",
+      "key": "category:razavi-rf-microelectronics-note",
+      "kind": "category",
       "id": "razavi-rf-microelectronics-note",
-      "parentKey": "category:analog-ic",
       "labels": {
         "zh": "拉扎维-射频微电子笔记",
         "en": "Razavi- RF Microelectronics Note",
         "de": "Razavi- RF Microelectronics Note"
       }
+    },
+    {
+      "key": "category:reading",
+      "kind": "category",
+      "id": "reading",
+      "labels": { "zh": "阅读", "en": "Reading", "de": "Reading" }
+    },
+    {
+      "key": "project:2026-cicc",
+      "kind": "project",
+      "id": "2026-cicc",
+      "parentKey": "category:analog-ic",
+      "labels": { "zh": "2026年集创赛作品合集", "en": "2026 CICC", "de": "2026 CICC" }
     },
     {
       "key": "project:test",

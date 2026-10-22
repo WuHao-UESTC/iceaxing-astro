@@ -1,14 +1,49 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { selectContentGroup } from '../../lib/content-tree/model';
 import type {
   ArticleNode,
   ContentLocale,
   ContentTreePayload,
   FolderKind,
   FolderNode,
+  WorkspaceGroup,
 } from '../../lib/content-tree/types';
 
-type TreeItem = FolderNode | ArticleNode;
+type UtilityFolder = {
+  kind: 'utility';
+  key: string;
+  label: string;
+  parentKey: null;
+  order: number;
+  editorCollection: 'logs' | 'pages';
+};
+type TreeItem = FolderNode | ArticleNode | UtilityFolder;
+const workspaceGroups: { value: WorkspaceGroup; label: string }[] = [
+  { value: 'skill', label: '技术栈' },
+  { value: 'life', label: '生活日常' },
+  { value: 'study', label: '学习笔记' },
+  { value: 'documents', label: '日志与页面' },
+  { value: 'unassigned', label: '未归属内容' },
+];
+const utilityFolders: UtilityFolder[] = [
+  {
+    kind: 'utility',
+    key: 'utility:logs',
+    label: '日志',
+    parentKey: null,
+    order: 0,
+    editorCollection: 'logs',
+  },
+  {
+    kind: 'utility',
+    key: 'utility:pages',
+    label: '页面',
+    parentKey: null,
+    order: 1,
+    editorCollection: 'pages',
+  },
+];
 type CreateArticleTarget = Pick<FolderNode, 'kind' | 'id' | 'label' | 'parentKey'> & {
   translationKey?: string;
   missingLocales?: ContentLocale[];
@@ -75,6 +110,7 @@ export default function ContentTreeWorkspace() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [query, setQuery] = useState('');
+  const [group, setGroup] = useState<WorkspaceGroup>('skill');
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [selectedLocale, setSelectedLocale] = useState<ContentLocale>('zh');
@@ -119,12 +155,6 @@ export default function ContentTreeWorkspace() {
       const result = (await response.json()) as ContentTreePayload & { error?: string };
       if (!response.ok) throw new Error(result.error || '无法读取内容树。');
       setTree(result);
-      setExpanded((current) => {
-        if (current.size) return current;
-        return new Set(
-          result.folders.filter((folder) => folder.kind === 'category').map((x) => x.key),
-        );
-      });
       setEditorUrl((current) =>
         current === '/keystatic' && result.storageKind === 'github' ? editorBase(result) : current,
       );
@@ -163,9 +193,21 @@ export default function ContentTreeWorkspace() {
     return () => window.clearInterval(timer);
   }, [refreshTree, restoreEditorAfterSave, tree?.branch]);
 
+  const groupContent = useMemo(
+    () => (tree ? selectContentGroup(tree, group) : { folders: [], articles: [] }),
+    [tree, group],
+  );
+  const groupItems = useMemo<TreeItem[]>(
+    () => [
+      ...(group === 'documents' ? utilityFolders : groupContent.folders),
+      ...groupContent.articles,
+    ],
+    [group, groupContent],
+  );
+
   const itemsByParent = useMemo(() => {
     const map = new Map<string | null, TreeItem[]>();
-    for (const item of [...(tree?.folders ?? []), ...(tree?.articles ?? [])]) {
+    for (const item of groupItems) {
       const siblings = map.get(item.parentKey) ?? [];
       siblings.push(item);
       map.set(item.parentKey, siblings);
@@ -178,19 +220,20 @@ export default function ContentTreeWorkspace() {
       });
     }
     return map;
-  }, [tree]);
+  }, [groupItems]);
 
   const selectedArticle = useMemo(
-    () => tree?.articles.find((article) => article.key === selectedKey) ?? null,
+    () =>
+      [...(tree?.articles ?? []), ...(tree?.documents ?? [])].find(
+        (article) => article.key === selectedKey,
+      ) ?? null,
     [selectedKey, tree],
   );
 
   const visibleKeys = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase();
     if (!normalizedQuery || !tree) return null;
-    const allItems = new Map<string, TreeItem>(
-      [...tree.folders, ...tree.articles].map((item) => [item.key, item]),
-    );
+    const allItems = new Map<string, TreeItem>(groupItems.map((item) => [item.key, item]));
     const result = new Set<string>();
     for (const item of allItems.values()) {
       const matches =
@@ -210,7 +253,7 @@ export default function ContentTreeWorkspace() {
       }
     }
     return result;
-  }, [query, tree]);
+  }, [query, tree, groupItems]);
 
   const openFolder = (folder: FolderNode) => {
     if (!tree) return;
@@ -243,7 +286,11 @@ export default function ContentTreeWorkspace() {
     if (!tree) return;
     const base = editorBase(tree);
     if (!folder) {
-      navigateEditor(`${base}/collection/categories/create`);
+      navigateEditor(
+        queryUrl(`${base}/collection/categories/create`, {
+          treeGroup: group === 'skill' || group === 'life' || group === 'study' ? group : null,
+        }),
+      );
       return;
     }
     if (folder.kind === 'category') {
@@ -378,7 +425,7 @@ export default function ContentTreeWorkspace() {
                 <span key={version.locale}>{version.locale.toUpperCase()}</span>
               ))}
             </span>
-            {missingLocales.length > 0 && (
+            {missingLocales.length > 0 && group !== 'documents' && (
               <ItemMenu label={`管理文章 ${item.label}`}>
                 <button type="button" onClick={() => addTranslation(item)}>
                   添加翻译
@@ -390,6 +437,56 @@ export default function ContentTreeWorkspace() {
       }
 
       const isOpen = expanded.has(item.key) || Boolean(visibleKeys);
+      if (item.kind === 'utility') {
+        return (
+          <div className="tree-folder" key={item.key}>
+            <div
+              className="tree-row folder-row"
+              style={{ '--tree-depth': depth } as React.CSSProperties}
+            >
+              <button
+                className="tree-toggle"
+                type="button"
+                aria-expanded={isOpen}
+                aria-label={`${isOpen ? '收起' : '展开'} ${item.label}`}
+                onClick={() => toggleFolder(item.key)}
+              >
+                <FolderIcon open={isOpen} />
+              </button>
+              <button
+                className="tree-folder-select"
+                type="button"
+                onClick={() => toggleFolder(item.key)}
+              >
+                <span className="tree-row-icon" aria-hidden="true">
+                  ▰
+                </span>
+                <span className="tree-row-label">
+                  <span>{item.label}</span>
+                </span>
+              </button>
+              <ItemMenu label={`管理${item.label}`}>
+                {(Object.keys(localeLabels) as ContentLocale[]).map((locale) => (
+                  <button
+                    type="button"
+                    key={locale}
+                    onClick={() => {
+                      if (!tree) return;
+                      const suffix = locale === 'zh' ? 'Zh' : locale === 'en' ? 'En' : 'De';
+                      navigateEditor(
+                        `${editorBase(tree)}/collection/${item.editorCollection}${suffix}/create`,
+                      );
+                    }}
+                  >
+                    新建{item.label} · {localeLabels[locale]}
+                  </button>
+                ))}
+              </ItemMenu>
+            </div>
+            {isOpen && <div>{renderItems(item.key, depth + 1)}</div>}
+          </div>
+        );
+      }
       return (
         <div className="tree-folder" key={item.key}>
           <div
@@ -400,6 +497,7 @@ export default function ContentTreeWorkspace() {
               className="tree-toggle"
               type="button"
               aria-label={isOpen ? `收起 ${item.label}` : `展开 ${item.label}`}
+              aria-expanded={isOpen}
               onClick={() => toggleFolder(item.key)}
             >
               <FolderIcon open={isOpen} />
@@ -521,8 +619,25 @@ export default function ContentTreeWorkspace() {
           <a href="/" target="_blank" rel="noreferrer" aria-label="打开网站首页">
             ICEAXING
           </a>
-          <div>
-            <strong>内容工作区</strong>
+          <div className="workspace-brand-copy">
+            <div className="workspace-brand-title">
+              <strong>内容工作区</strong>
+              <select
+                aria-label="选择内容分组"
+                value={group}
+                onChange={(event) => {
+                  setGroup(event.target.value as WorkspaceGroup);
+                  setQuery('');
+                  setExpanded(new Set());
+                }}
+              >
+                {workspaceGroups.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
             <span>
               {tree?.storageKind === 'github' ? `GitHub · ${tree.branch ?? '连接中'}` : '本地文件'}
             </span>
@@ -541,19 +656,25 @@ export default function ContentTreeWorkspace() {
           </label>
           <button
             type="button"
-            onClick={() => void refreshTree(tree?.branch)}
+            onClick={() => {
+              setExpanded(new Set());
+              setQuery('');
+              void refreshTree(tree?.branch);
+            }}
             aria-label="刷新内容树"
           >
             ↻
           </button>
-          <button
-            type="button"
-            className="primary-icon-button"
-            onClick={() => createFolder()}
-            aria-label="新建分类"
-          >
-            ＋
-          </button>
+          {group !== 'documents' && (
+            <button
+              type="button"
+              className="primary-icon-button"
+              onClick={() => createFolder()}
+              aria-label="新建分类"
+            >
+              ＋
+            </button>
+          )}
         </div>
 
         {error && <div className="workspace-alert is-error">{error}</div>}
@@ -573,15 +694,20 @@ export default function ContentTreeWorkspace() {
         ))}
 
         <div className="tree-heading">
-          <span>文章层级</span>
+          <span>{workspaceGroups.find((option) => option.value === group)?.label}</span>
           <small>
-            {tree ? `${tree.folders.length} 个文件夹 · ${tree.articles.length} 篇文章` : ''}
+            {tree
+              ? `${group === 'documents' ? utilityFolders.length : groupContent.folders.length} 个文件夹 · ${groupContent.articles.length} 篇内容`
+              : ''}
           </small>
         </div>
-        <nav className="content-tree" aria-label="文章内容树">
+        <nav className="content-tree" aria-label="分组内容树">
           {loading && !tree ? <div className="tree-empty">正在读取内容树…</div> : renderItems(null)}
           {!loading && tree && !itemsByParent.get(null)?.length && (
-            <div className="tree-empty">还没有分类，点击右上角“＋”创建。</div>
+            <div className="tree-empty">当前分组还没有内容。</div>
+          )}
+          {!loading && tree && visibleKeys?.size === 0 && (
+            <div className="tree-empty">当前分组没有匹配的内容。</div>
           )}
         </nav>
 

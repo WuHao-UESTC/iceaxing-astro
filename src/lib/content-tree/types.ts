@@ -1,6 +1,8 @@
 export type ContentLocale = 'zh' | 'en' | 'de';
 
 export type FolderKind = 'category' | 'project' | 'collection';
+export type CategoryGroup = 'skill' | 'life' | 'study';
+export type WorkspaceGroup = CategoryGroup | 'documents' | 'unassigned';
 
 export type FolderNode = {
   key: string;
@@ -10,6 +12,7 @@ export type FolderNode = {
   parentKey: string | null;
   order: number;
   editorCollection: 'categories' | 'projects' | 'series';
+  group?: CategoryGroup;
 };
 
 export type ArticleVersion = {
@@ -17,7 +20,16 @@ export type ArticleVersion = {
   contentId: string;
   title: string;
   status: string;
-  editorCollection: 'articlesZh' | 'articlesEn' | 'articlesDe';
+  editorCollection:
+    | 'articlesZh'
+    | 'articlesEn'
+    | 'articlesDe'
+    | 'logsZh'
+    | 'logsEn'
+    | 'logsDe'
+    | 'pagesZh'
+    | 'pagesEn'
+    | 'pagesDe';
 };
 
 export type ArticleNode = {
@@ -36,6 +48,7 @@ export type ContentTreePayload = {
   branch: string | null;
   folders: FolderNode[];
   articles: ArticleNode[];
+  documents: ArticleNode[];
   warnings: string[];
 };
 
@@ -45,6 +58,7 @@ export type RawFolderEntry = {
   parentId?: string | null;
   label: string;
   order?: number;
+  group?: CategoryGroup;
 };
 
 export type RawArticleEntry = {
@@ -62,6 +76,7 @@ export type RawArticleEntry = {
 export type ContentSnapshot = {
   folders: RawFolderEntry[];
   articles: RawArticleEntry[];
+  documents?: (RawArticleEntry & { contentType: 'logs' | 'pages' })[];
 };
 
 export type CascadeDeletionPlan = {

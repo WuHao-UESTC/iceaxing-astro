@@ -1,4 +1,10 @@
-const chapterIds = ['base-camp', 'technical-ridge', 'snowfield-traverse', 'night-camp'] as const;
+const chapterIds = [
+  'base-camp',
+  'technical-ridge',
+  'study-terrace',
+  'snowfield-traverse',
+  'night-camp',
+] as const;
 
 export function initHomeJourney() {
   const home = document.querySelector<HTMLElement>('[data-journey]');

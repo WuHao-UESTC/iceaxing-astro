@@ -1,4 +1,5 @@
 import subscriptionManifest from '../../generated/subscription-options.json';
+import studyMigration from '../../data/study-migration.json';
 
 import type { Locale } from '../../i18n/config';
 
@@ -35,6 +36,14 @@ export function matchesSubscription(
 ) {
   return (
     subscriptions.length === 0 ||
-    subscriptions.some((subscription) => publicationKeys.includes(subscription))
+    subscriptions.some((subscription) => {
+      if (publicationKeys.includes(subscription)) return true;
+      return studyMigration.books.some(
+        (book) =>
+          publicationKeys.includes(`category:${book.id}`) &&
+          (subscription === `project:${book.id}` ||
+            subscription === `category:${book.previousCategory}`),
+      );
+    })
   );
 }

@@ -1,8 +1,10 @@
 ---
-interface Props {
-  scene: 'cover' | 'ridge' | 'field' | 'camp';
-}
+import TerrainFacets from './TerrainFacets.astro';
+import { coverMesh, ridgeMesh } from '../../data/terrain-scenes';
 
+interface Props {
+  scene: 'cover' | 'ridge';
+}
 const { scene } = Astro.props;
 ---
 
@@ -15,239 +17,36 @@ const { scene } = Astro.props;
   aria-hidden="true"
   focusable="false"
 >
-  {scene === 'cover' && (
+  <TerrainFacets faces={scene === 'cover' ? coverMesh : ridgeMesh} />
+  {scene === 'cover' ? (
     <>
       <g class="landscape-orbit landscape-orbit-cover">
-        <circle cx="1110" cy="164" r="54" />
-        <circle cx="1110" cy="164" r="82" />
-        <path d="M1004 164H1216M1110 58V270" />
+        <path d="M1110 110L1148 126L1164 164L1148 202L1110 218L1072 202L1056 164L1072 126ZM1004 164H1216M1110 58V270" />
       </g>
-
-      <g class="landscape-wind landscape-wind-cover">
-        <path d="M684 128C795 95 907 100 998 132" />
-        <path d="M741 158C829 135 905 139 966 158" />
-        <path d="M76 684C206 650 304 660 417 697" />
-      </g>
-
-      <path
-        class="landscape-mass landscape-mass-far"
-        d="M286 704L542 566L708 438L820 337L891 269L953 331L1019 242L1115 344L1188 277L1292 396L1440 456V800H286Z"
-      />
-      <path
-        class="landscape-mass landscape-mass-mid"
-        d="M0 747C204 721 347 684 514 580C655 492 742 397 862 292C952 213 987 153 1021 105C1055 193 1099 263 1175 332C1241 392 1325 430 1440 447V800H0Z"
-      />
-      <path
-        class="landscape-facet landscape-facet-light"
-        d="M1021 105L862 292L697 501L955 325L1010 248Z"
-      />
-      <path
-        class="landscape-facet landscape-facet-dark"
-        d="M1021 105L1097 262L1250 401L1175 332L1115 344L1010 248Z"
-      />
-      <path
-        class="landscape-snow-seam landscape-line"
-        pathLength="1"
-        d="M382 681C619 583 758 413 862 292C949 191 989 148 1021 105C1047 171 1066 215 1112 267"
-      />
       <g class="landscape-summit-flag">
         <path d="M1021 105V64" />
         <path d="M1022 66L1053 76L1022 87Z" />
       </g>
-
-      <g class="landscape-contours landscape-contours-cover">
-        <path d="M646 613C773 557 835 474 911 391C966 331 1008 310 1056 323" />
-        <path d="M719 650C846 594 900 508 976 433C1028 382 1085 374 1144 399" />
-        <path d="M821 684C943 629 991 553 1060 499C1115 456 1190 459 1263 491" />
-      </g>
-
-      <path
-        class="landscape-mass landscape-mass-near"
-        d="M0 686C181 631 330 659 485 681C697 711 782 548 958 531C1135 514 1257 658 1440 583V800H0Z"
-      />
       <path
         class="landscape-expedition-route"
-        d="M747 800C872 752 1086 759 1094 701C1100 656 942 659 943 614C944 584 985 574 1022 569"
+        d="M747 800L964 754L1094 701L1020 658L943 614L969 582L1022 569"
       />
-      <g class="landscape-route-dots">
-        <circle cx="747" cy="800" r="3" />
-        <circle cx="944" cy="614" r="3" />
-        <circle cx="1094" cy="701" r="3" />
-        <circle cx="1022" cy="569" r="3" />
-      </g>
     </>
-  )}
-
-  {scene === 'ridge' && (
+  ) : (
     <>
-      <g class="landscape-survey-grid">
-        <path d="M760 0V800M920 0V800M1080 0V800M1240 0V800M1400 0V800" />
-        <path d="M680 120H1440M680 280H1440M680 440H1440M680 600H1440M680 760H1440" />
-      </g>
-
-      <path
-        class="landscape-mass landscape-mass-far"
-        d="M0 800V680L162 598L283 469L391 312L492 150L582 0H840L699 194L629 381L535 581L386 731L331 800Z"
-      />
-      <path
-        class="landscape-mass landscape-mass-mid"
-        d="M0 800H248L386 691L481 551L540 397L609 198L699 0H775L682 218L636 414L548 608L429 751L391 800Z"
-      />
-      <path
-        class="landscape-facet landscape-facet-light"
-        d="M0 800L391 312L492 150L582 0H699L540 397L248 800Z"
-      />
-      <path
-        class="landscape-facet landscape-facet-dark"
-        d="M248 800L540 397L699 0H775L636 414L391 800Z"
-      />
-
-      <g class="landscape-strata">
-        <path d="M42 800C249 699 363 572 449 408C523 266 559 123 624 0" />
-        <path d="M93 800C291 699 403 574 484 414C558 269 592 127 650 0" />
-        <path d="M150 800C330 705 438 588 520 433C596 289 619 145 678 0" />
-      </g>
-
-      <path
-        class="landscape-snow-seam landscape-line"
-        pathLength="1"
-        d="M22 800C281 677 393 545 464 369C526 215 574 92 633 0"
-      />
       <path
         class="landscape-expedition-route"
-        d="M347 752C460 700 520 633 555 557S644 478 699 427S759 321 851 292S1014 249 1082 168"
+        d="M347 752L480 664L555 557L620 483L699 427L761 351L851 292L976 250L1082 168"
       />
-      <g class="landscape-route-dots landscape-survey-nodes">
+      <g class="landscape-survey-marks">
+        <path d="M1062 168H1102M1082 148V188M831 292H871M851 272V312M679 427H719M699 407V447" />
+      </g>
+      <g class="landscape-route-dots">
         <circle cx="347" cy="752" r="4" />
         <circle cx="555" cy="557" r="4" />
         <circle cx="699" cy="427" r="4" />
         <circle cx="851" cy="292" r="4" />
         <circle cx="1082" cy="168" r="4" />
-      </g>
-      <g class="landscape-survey-marks">
-        <path d="M1062 168H1102M1082 148V188" />
-        <path d="M831 292H871M851 272V312" />
-        <path d="M679 427H719M699 407V447" />
-      </g>
-    </>
-  )}
-
-  {scene === 'field' && (
-    <>
-      <g class="landscape-orbit landscape-orbit-field">
-        <circle cx="236" cy="170" r="58" />
-        <circle cx="236" cy="170" r="92" />
-      </g>
-      <g class="landscape-wind landscape-wind-field">
-        <path d="M82 243C257 190 404 197 555 229" />
-        <path d="M875 142C1059 95 1221 103 1376 150" />
-        <path d="M937 187C1083 151 1221 160 1334 196" />
-      </g>
-      <g class="landscape-drift-particles">
-        <circle cx="582" cy="174" r="3" />
-        <circle cx="655" cy="128" r="2" />
-        <circle cx="736" cy="202" r="2.5" />
-        <circle cx="811" cy="151" r="2" />
-        <circle cx="923" cy="237" r="3" />
-        <circle cx="1052" cy="122" r="2" />
-      </g>
-
-      <path
-        class="landscape-mass landscape-mass-far"
-        d="M0 495C227 342 462 468 704 459C976 449 1126 298 1440 389V800H0Z"
-      />
-      <path
-        class="landscape-horizon landscape-line"
-        pathLength="1"
-        d="M0 521C230 382 468 508 704 496C974 482 1148 335 1440 428"
-      />
-      <path
-        class="landscape-mass landscape-mass-mid"
-        d="M0 638C282 484 480 673 790 600C1067 535 1211 526 1440 582V800H0Z"
-      />
-      <path
-        class="landscape-mass landscape-mass-near"
-        d="M0 710C290 561 483 749 792 674C1084 603 1245 601 1440 657V800H0Z"
-      />
-
-      <g class="landscape-contours landscape-contours-field">
-        <path d="M0 667C282 515 482 702 790 630C1080 562 1230 560 1440 614" />
-        <path d="M0 735C282 583 482 769 790 697C1080 629 1230 627 1440 681" />
-        <path d="M0 775C282 623 482 809 790 737C1080 669 1230 667 1440 721" />
-      </g>
-
-      <path
-        class="landscape-traverse-track"
-        d="M176 690C318 633 424 648 548 612S804 598 916 560S1124 502 1282 530"
-      />
-      <g class="landscape-track-marks">
-        <ellipse cx="224" cy="671" rx="4" ry="8" transform="rotate(64 224 671)" />
-        <ellipse cx="300" cy="649" rx="4" ry="8" transform="rotate(72 300 649)" />
-        <ellipse cx="382" cy="643" rx="4" ry="8" transform="rotate(83 382 643)" />
-        <ellipse cx="470" cy="630" rx="4" ry="8" transform="rotate(70 470 630)" />
-        <ellipse cx="558" cy="611" rx="4" ry="8" transform="rotate(78 558 611)" />
-        <ellipse cx="652" cy="604" rx="4" ry="8" transform="rotate(88 652 604)" />
-        <ellipse cx="753" cy="594" rx="4" ry="8" transform="rotate(75 753 594)" />
-        <ellipse cx="862" cy="576" rx="4" ry="8" transform="rotate(68 862 576)" />
-      </g>
-    </>
-  )}
-
-  {scene === 'camp' && (
-    <>
-      <g class="landscape-night-sky">
-        <circle class="landscape-star landscape-star-lg" cx="187" cy="132" r="2" />
-        <circle class="landscape-star" cx="305" cy="215" r="1.4" />
-        <circle class="landscape-star" cx="447" cy="118" r="1.4" />
-        <circle class="landscape-star landscape-star-lg" cx="612" cy="185" r="2" />
-        <circle class="landscape-star" cx="739" cy="92" r="1.4" />
-        <circle class="landscape-star" cx="878" cy="178" r="1.4" />
-        <circle class="landscape-star landscape-star-lg" cx="1018" cy="102" r="2" />
-        <circle class="landscape-star" cx="1168" cy="254" r="1.4" />
-        <circle class="landscape-star" cx="1328" cy="142" r="1.4" />
-      </g>
-      <g class="landscape-constellation">
-        <path d="M447 118L612 185L739 92L878 178L1018 102" />
-        <circle cx="447" cy="118" r="3" />
-        <circle cx="612" cy="185" r="3" />
-        <circle cx="739" cy="92" r="3" />
-        <circle cx="878" cy="178" r="3" />
-        <circle cx="1018" cy="102" r="3" />
-      </g>
-      <g class="landscape-moon">
-        <circle cx="1116" cy="222" r="70" />
-        <circle cx="1142" cy="201" r="70" />
-      </g>
-
-      <path
-        class="landscape-mass landscape-mass-far"
-        d="M0 690C216 699 356 610 548 625C737 640 812 552 884 415C967 258 1058 270 1146 190C1248 98 1338 126 1440 64V800H0Z"
-      />
-      <path
-        class="landscape-horizon landscape-line"
-        pathLength="1"
-        d="M0 690C216 699 356 610 548 625C737 640 812 552 884 415C967 258 1058 270 1146 190C1248 98 1338 126 1440 64"
-      />
-      <path
-        class="landscape-mass landscape-mass-mid"
-        d="M0 756C250 718 420 690 630 709C877 732 960 562 1125 508C1262 463 1348 493 1440 429V800H0Z"
-      />
-      <path
-        class="landscape-mass landscape-mass-near"
-        d="M0 800V776C237 721 420 759 608 771C827 785 976 661 1149 634C1277 614 1359 630 1440 599V800Z"
-      />
-      <path
-        class="landscape-expedition-route"
-        d="M133 800C260 712 421 760 585 716C738 674 716 571 820 524C916 480 891 372 1001 306C1115 239 1210 280 1328 166"
-      />
-
-      <g class="landscape-camp-glow">
-        <circle cx="1216" cy="633" r="82" />
-        <circle cx="1216" cy="633" r="38" />
-      </g>
-      <g class="landscape-tent">
-        <path d="M1172 672L1216 610L1261 672ZM1216 610V672M1194 672L1216 633L1238 672" />
-        <path d="M1156 677H1277" />
       </g>
     </>
   )}

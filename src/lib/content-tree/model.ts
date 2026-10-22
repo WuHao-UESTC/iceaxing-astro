@@ -9,6 +9,7 @@ import type {
   FolderNode,
   RawArticleEntry,
   RawFolderEntry,
+  WorkspaceGroup,
 } from './types';
 
 const localeOrder: ContentLocale[] = ['zh', 'en', 'de'];
@@ -57,6 +58,7 @@ export function buildContentTree(
       parentKey: expectedParentKey && folderKeys.has(expectedParentKey) ? expectedParentKey : null,
       order: entry.order ?? 0,
       editorCollection: folderCollection[entry.kind],
+      group: entry.kind === 'category' ? (entry.group ?? 'skill') : undefined,
     };
   });
 
@@ -101,7 +103,49 @@ export function buildContentTree(
     };
   });
 
-  return { storageKind, branch, folders, articles, warnings };
+  const documents: ArticleNode[] = [];
+  for (const contentType of ['logs', 'pages'] as const) {
+    const entries = snapshot.documents?.filter((entry) => entry.contentType === contentType) ?? [];
+    if (!entries.length) continue;
+    const documentTree = buildContentTree({ folders: [], articles: entries }, storageKind, branch);
+    for (const article of documentTree.articles) {
+      documents.push({
+        ...article,
+        key: `${contentType}:${article.translationKey}`,
+        parentKey: `utility:${contentType}`,
+        versions: article.versions.map((version) => ({
+          ...version,
+          editorCollection: `${contentType}${version.locale === 'zh' ? 'Zh' : version.locale === 'en' ? 'En' : 'De'}`,
+        })),
+      });
+    }
+  }
+  return { storageKind, branch, folders, articles, documents, warnings };
+}
+
+export function selectContentGroup(tree: ContentTreePayload, group: WorkspaceGroup) {
+  if (group === 'documents') return { folders: [], articles: tree.documents };
+  const groups = new Map<string, WorkspaceGroup>();
+  const foldersByKey = new Map(tree.folders.map((folder) => [folder.key, folder]));
+  const resolveGroup = (folder: FolderNode): WorkspaceGroup => {
+    const known = groups.get(folder.key);
+    if (known) return known;
+    const parent = folder.parentKey ? foldersByKey.get(folder.parentKey) : undefined;
+    const resolved =
+      folder.kind === 'category'
+        ? (folder.group ?? 'skill')
+        : parent
+          ? resolveGroup(parent)
+          : 'unassigned';
+    groups.set(folder.key, resolved);
+    return resolved;
+  };
+  const folders = tree.folders.filter((folder) => resolveGroup(folder) === group);
+  const keys = new Set(folders.map((folder) => folder.key));
+  const articles = tree.articles.filter((article) =>
+    article.parentKey ? keys.has(article.parentKey) : group === 'unassigned',
+  );
+  return { folders, articles };
 }
 
 function contentPathForFolder(folder: RawFolderEntry) {

@@ -1,6 +1,6 @@
-projectId: liuenke-semiconductance-note
+categoryId: liuenke-semiconductance-note
 slug: liuenke-semiconductance-note
-category: uestc-note
+group: study
 labels:
   zh:
     title: 刘恩科-半导体物理学笔记
@@ -9,8 +9,6 @@ labels:
     title: Liu Enke Semiconductor Note
   de:
     title: Liu Enke Semiconductor Note
-status: active
-progress: 0
 tags: []
 featured: false
 order: 0

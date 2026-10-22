@@ -1,81 +1,159 @@
----
+﻿---
+import type { Locale } from '../../i18n/config';
+import '../../styles/waystation-notes.css';
 import ChapterMarker from './ChapterMarker.astro';
 import ScrollControls from './ScrollControls.astro';
 import type { HomeCard, HomeLabels } from './types';
 
 interface Props {
   labels: HomeLabels;
+  locale: Locale;
   notes: HomeCard[];
   entries: HomeCard[];
   ramblingsHref: string;
 }
 
-const { labels, notes, entries, ramblingsHref } = Astro.props;
+const { labels, locale, notes, entries, ramblingsHref } = Astro.props;
+const copy =
+  locale === 'zh'
+    ? {
+        direction: '在这里，选择下一站',
+        archive: '翻看全部随记',
+        count: '则随记',
+        emptyTitle: '路过这里，留一点念想。',
+        emptyText: '旅途还在继续。偶然的念头、遇见的人，写好了就留在这里。',
+        foot: '短暂停靠，再继续出发。',
+        latest: '最近写下',
+        undated: '未标注日期',
+      }
+    : locale === 'de'
+      ? {
+          direction: 'Wohin geht es als Nächstes?',
+          archive: 'Alle Gedanken lesen',
+          count: 'Notizen',
+          emptyTitle: 'Ein Gedanke für unterwegs.',
+          emptyText: 'Die Reise geht weiter. Gedanken und Begegnungen finden hier ihren Platz.',
+          foot: 'Kurz verweilen. Dann weitergehen.',
+          latest: 'Zuletzt notiert',
+          undated: 'Ohne Datum',
+        }
+      : {
+          direction: 'Choose your next stop',
+          archive: 'Browse all ramblings',
+          count: 'notes',
+          emptyTitle: 'Leave a thought along the way.',
+          emptyText:
+            'The journey continues. Passing thoughts and people met will find their place here.',
+          foot: 'A brief stop. Then onwards.',
+          latest: 'Latest note',
+          undated: 'Undated',
+        };
 ---
 
-<div class="journey-panel-inner journey-night-inner">
-  <ChapterMarker number="04" altitude="6200m" label="NIGHT CAMP" />
+<div class="journey-panel-inner journey-night-inner station-inner">
+  <ChapterMarker number="05" altitude="6200m" label="TRAIL WAYSTATION" />
   <header class="journey-chapter-heading" data-reveal data-step="1">
     <p class="journey-eyebrow">MOMENTS / PEOPLE / PLACES</p>
     <h2 id="night-camp-title" tabindex="-1">
-      {labels.chapters[3]}
+      {labels.chapters[4]}
     </h2>
-    <p>{labels.chapterIntros[2]}</p>
+    <p>{labels.chapterIntros[3]}</p>
   </header>
-
-  <div class="journey-camp-grid">
-    <section aria-labelledby="field-notes-title">
-      <div class="journey-section-label">
-        <h3 id="field-notes-title">
-          <a href={ramblingsHref}>{labels.fieldNotes} ↗</a>
-        </h3>
-        <ScrollControls target="ramblings-list" label={labels.fieldNotes} />
-      </div>
-      <div
-        id="ramblings-list"
-        class="journey-notes journey-ramblings"
-        data-scroll-list
-        tabindex="0"
-      >
-        {notes.length ? (
-          notes.map((card, index) => (
-            <a
-              href={card.href}
-              class="journey-rambling-note"
-              data-reveal
-              data-step={String(2 + index)}
-            >
-              <span class="journey-rambling-index">
-                <span>
-                  {labels.fieldNotes} / {String(index + 1).padStart(2, '0')}
-                </span>
-                <i aria-hidden="true">↗</i>
-              </span>
-              <h4>{card.title}</h4>
-              {card.description && <p>{card.description}</p>}
-              {card.meta && <time>{card.meta}</time>}
-            </a>
-          ))
-        ) : (
-          <p class="journey-empty-note">{labels.emptyRamblings}</p>
-        )}
-      </div>
-    </section>
-
-    <aside class="journey-directory" aria-labelledby="camp-directory-title">
-      <div class="journey-section-label">
-        <h3 id="camp-directory-title">{labels.directory}</h3>
-        <ScrollControls target="camp-directory-list" label={labels.directory} />
-      </div>
-      <div id="camp-directory-list" data-scroll-list tabindex="0">
+  <div class="station-layout">
+    <nav class="station-signpost" aria-label={labels.directory} data-reveal data-step="2">
+      <p class="station-signpost-caption">{copy.direction}</p>
+      <div class="station-signboards">
         {entries.map((card, index) => (
-          <a href={card.href} data-reveal data-step={String(3 + index)}>
-            <span>0{index + 1}</span>
+          <a class="station-signboard" href={card.href}>
+            <svg
+              class="station-signboard-outline"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <polygon points="0.2,1 90.8,1 99.5,50 90.8,99 0.2,99" />
+            </svg>
+            <span class="station-sign-number">{String(index + 1).padStart(2, '0')}</span>
             <strong>{card.title}</strong>
-            <i aria-hidden="true">↗</i>
+            <span class="station-arrow" aria-hidden="true">
+              ↗
+            </span>
           </a>
         ))}
       </div>
-    </aside>
+      <span class="station-signpost-altitude" aria-hidden="true">
+        6200 M / WAYPOINT 05
+      </span>
+    </nav>
+    <section class="station-notes" aria-labelledby="field-notes-title" data-reveal data-step="3">
+      <div class="station-notes-heading">
+        <h3 id="field-notes-title">
+          <a href={ramblingsHref}>
+            {labels.fieldNotes}
+            <span aria-hidden="true">↗</span>
+          </a>
+        </h3>
+        <div class="station-note-tools">
+          <span>
+            {String(notes.length).padStart(2, '0')} {copy.count}
+          </span>
+          {notes.length > 0 && <ScrollControls target="ramblings-list" label={labels.fieldNotes} />}
+        </div>
+      </div>
+      <div
+        id="ramblings-list"
+        class="station-note-scroll"
+        data-scroll-list
+        tabindex={notes.length > 0 ? '0' : undefined}
+      >
+        {notes.length ? (
+          <ol class="station-note-board">
+            {notes.map((card, index) => (
+              <li>
+                <a class="station-note" href={card.href}>
+                  <div class="station-note-meta">
+                    <span>
+                      {index === 0
+                        ? copy.latest
+                        : `${labels.fieldNotes} / ${String(index + 1).padStart(2, '0')}`}
+                    </span>
+                    <time datetime={card.publishedAt}>{card.meta || copy.undated}</time>
+                  </div>
+                  <h4>{card.title}</h4>
+                  {card.description && <p>{card.description}</p>}
+                  <span class="station-note-end">
+                    <span aria-hidden="true">—</span>
+                    <span class="station-arrow" aria-hidden="true">
+                      ↗
+                    </span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <div class="station-empty station-note">
+            <span class="station-note-meta">{copy.latest} / 00</span>
+            <h4>{copy.emptyTitle}</h4>
+            <p>{copy.emptyText}</p>
+            <span class="station-empty-rule" aria-hidden="true"></span>
+          </div>
+        )}
+      </div>
+      <a class="station-archive" href={ramblingsHref}>
+        {copy.archive}
+        <span class="station-arrow" aria-hidden="true">
+          ↗
+        </span>
+      </a>
+    </section>
   </div>
+  <footer class="station-footer" data-reveal data-step="4">
+    <span>{copy.foot}</span>
+    <a href="#base-camp">
+      {labels.back}
+      <span aria-hidden="true">↑</span>
+    </a>
+  </footer>
 </div>

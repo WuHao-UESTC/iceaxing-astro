@@ -3,6 +3,7 @@
   --archive-gold: #7d5600;
   --archive-coral: #a63f2f;
   --archive-violet: #58458d;
+  --archive-study: #247568;
   --archive-accent: var(--archive-blue);
   min-height: 75vh;
   padding-block: 1.4rem 4rem;
@@ -13,6 +14,11 @@
   --archive-gold: #f2be4a;
   --archive-coral: #ff9279;
   --archive-violet: #b6a2ef;
+  --archive-study: #79cdb5;
+}
+
+.archive-tone-study {
+  --archive-accent: var(--archive-study);
 }
 
 .archive-tone-field {

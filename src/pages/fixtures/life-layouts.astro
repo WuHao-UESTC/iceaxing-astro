@@ -1,0 +1,378 @@
+---
+import {
+  byOrder,
+  formatDate,
+  getContentIndex,
+  isPublicContent,
+  localizedLabel,
+  newestFirst,
+  routeFor,
+} from '../../lib/content';
+import '../../styles/global.css';
+import '../../styles/life-layout-preview.css';
+
+export const prerender = false;
+
+const options = [
+  {
+    id: 'a',
+    name: '留白杂志',
+    tagline: '让标题和文字成为主角',
+    description:
+      '左侧是安静的章节扉页，中间陈列主题，右侧展示近况。没有文章时也有完整的构图；适合以阅读、随笔为主的内容。',
+  },
+  {
+    id: 'b',
+    name: '日常长卷',
+    tagline: '把生活铺成一条路',
+    description:
+      '横向的主题入口与下方的时间线分开排列，视线从左向右、从主题走向近况。延续首页的旅途感，文章多时可按时间继续展开。',
+  },
+  {
+    id: 'c',
+    name: '私人书架',
+    tagline: '给每一种日常，一个位置',
+    description:
+      '左侧用竖排书脊收纳主题，右侧是一张展开的近况页。更强调阅读与积累，主题有固定位置，内容更新不会打乱整体布局。',
+  },
+];
+const layout =
+  options.find((item) => item.id === Astro.url.searchParams.get('layout')) ?? options[0]!;
+const useSamples = Astro.url.searchParams.get('content') !== 'real';
+const index = await getContentIndex();
+const categories = byOrder(index.categories)
+  .filter((entry) => entry.data.group === 'life' && !entry.data.tags.includes('daily-ramblings'))
+  .map((entry) => ({
+    id: entry.data.categoryId,
+    href: routeFor(entry.data.categoryId, 'zh', 'category') ?? '/',
+    title: localizedLabel(entry, 'zh').title,
+    description: localizedLabel(entry, 'zh').description || '回望走过的路，也记下自己的变化。',
+  }));
+const lifeIds = new Set(categories.map((entry) => entry.id));
+const actualNotes = newestFirst(
+  index.articles.filter((entry) => {
+    if (entry.data.locale !== 'zh' || !isPublicContent(entry.data)) return false;
+    const project = index.projects.find((project) => project.data.projectId === entry.data.project);
+    return lifeIds.has(entry.data.category ?? project?.data.category ?? '');
+  }),
+)
+  .slice(0, 3)
+  .map((entry) => ({
+    title: entry.data.title,
+    description: entry.data.excerpt ?? '',
+    date: formatDate(entry.data.publishedAt, 'zh'),
+    topic: categories.find((category) => category.id === entry.data.category)?.title ?? '生活',
+    href: routeFor(entry.data.contentId, 'zh', 'article'),
+  }));
+const sampleNotes = [
+  {
+    title: '读书，是给日子留一扇窗',
+    description: '翻过几页，暂时离开熟悉的生活。那些未曾走过的路，有时会先在书里遇见。',
+    date: '2026.10.18',
+    topic: '阅读',
+    href: undefined,
+  },
+  {
+    title: '走得慢一点，也没有关系',
+    description: '记录一个普通周末，和一些不必着急得出答案的问题。',
+    date: '2026.10.12',
+    topic: '生活札记',
+    href: undefined,
+  },
+  {
+    title: '把这一年，轻轻合上',
+    description: '关于得到、告别，以及仍然想继续做的事。',
+    date: '2025.12.31',
+    topic: '年度总结',
+    href: undefined,
+  },
+];
+const notes = useSamples ? sampleNotes : actualNotes;
+const featured = notes[0];
+const contentParam = useSamples ? 'sample' : 'real';
+---
+
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>生活日常 · 三版排版预览</title>
+  </head>
+  <body>
+    <header class="design-controls">
+      <a class="design-home" href="/">
+        ICEAXING <span>/ 排版提案</span>
+      </a>
+      <nav aria-label="选择排版方案">
+        {options.map((option) => (
+          <a
+            href={`?layout=${option.id}&content=${contentParam}`}
+            aria-current={layout.id === option.id ? 'page' : undefined}
+          >
+            <b>{option.id.toUpperCase()}</b> {option.name}
+          </a>
+        ))}
+      </nav>
+      <div class="design-tools">
+        <a href={`?layout=${layout.id}&content=${useSamples ? 'real' : 'sample'}`}>
+          {useSamples ? '查看当前内容' : '查看示例内容'} ⇄
+        </a>
+        <button type="button" id="preview-width" aria-pressed="false">
+          窄屏预览
+        </button>
+        <button type="button" id="preview-theme" aria-label="切换明暗配色">
+          明 / 暗
+        </button>
+      </div>
+    </header>
+    <main id="main-content">
+      <div class="design-intro">
+        <p>
+          <b>
+            方案 {layout.id.toUpperCase()} · {layout.name}
+          </b>
+          <span>{layout.tagline}</span>
+        </p>
+        <p>{layout.description}</p>
+        <small>
+          {useSamples
+            ? '以下文章为排版示例，分类入口使用现有内容。'
+            : '当前公开内容：使用网站真实分类与文章。'}
+        </small>
+      </div>
+      <div class="design-viewport" id="design-viewport">
+        <section class={`life-proposal proposal-${layout.id}`} aria-label={`${layout.name}预览`}>
+          <div class="proposal-topline">
+            <span>ICEAXING</span>
+            <span>04 / EVERYDAY LIFE</span>
+            <span>5,100 M</span>
+          </div>
+          {layout.id === 'a' && (
+            <div class="magazine-layout">
+              <header class="magazine-heading">
+                <p class="life-kicker">THE EVERYDAY ISSUE</p>
+                <h1>
+                  生活
+                  <br />
+                  日常<span>。</span>
+                </h1>
+                <p class="life-intro">
+                  在阅读、远行与寻常日子里，
+                  <br />
+                  收集世界的细节。
+                </p>
+                <div class="quiet-mark" aria-hidden="true">
+                  <span>日子很长</span>
+                  <i></i>
+                  <span>慢慢收藏</span>
+                </div>
+              </header>
+              <nav class="magazine-topics" aria-label="生活主题">
+                {categories.map((category, i) => (
+                  <a href={category.href}>
+                    <span class="topic-caption">
+                      0{i + 1} / {category.id === 'reading' ? 'READING' : 'RETROSPECT'}
+                    </span>
+                    <h2>{category.title}</h2>
+                    <p>{category.description}</p>
+                    <span class="topic-arrow" aria-hidden="true">
+                      ↗
+                    </span>
+                  </a>
+                ))}
+              </nav>
+              <aside class="magazine-notes">
+                <div class="notes-label">
+                  <span>最近，过得怎样</span>
+                  <span>↙</span>
+                </div>
+                {notes.length ? (
+                  notes.map((note, i) => (
+                    <article>
+                      <small>
+                        {note.date} · {note.topic}
+                      </small>
+                      <h3>{note.href ? <a href={note.href}>{note.title}</a> : note.title}</h3>
+                      {i === 0 && <p>{note.description}</p>}
+                    </article>
+                  ))
+                ) : (
+                  <div class="life-empty">
+                    <span>未完待续</span>
+                    <p>
+                      日子正在发生。
+                      <br />
+                      写好了，再慢慢讲给你听。
+                    </p>
+                  </div>
+                )}
+                <span class="notes-end">NOTES FROM ORDINARY DAYS</span>
+              </aside>
+            </div>
+          )}
+          {layout.id === 'b' && (
+            <div class="scroll-layout">
+              <header class="scroll-heading">
+                <div>
+                  <p class="life-kicker">A LITTLE FURTHER, A LITTLE SLOWER</p>
+                  <h1>
+                    生活日常<span> / </span>
+                  </h1>
+                </div>
+                <p class="life-intro">
+                  在阅读、远行与寻常日子里，
+                  <br />
+                  收集世界的细节。
+                </p>
+              </header>
+              <nav class="journey-topics" aria-label="生活主题">
+                {categories.map((category, i) => (
+                  <a href={category.href}>
+                    <span class="route-stop">
+                      0{i + 1}
+                      <i aria-hidden="true"></i>
+                    </span>
+                    <div>
+                      <small>
+                        {category.id === 'reading'
+                          ? '在别人的文字里，走远一点'
+                          : '回过头，看看来时的自己'}
+                      </small>
+                      <h2>
+                        {category.title}
+                        <span aria-hidden="true">↗</span>
+                      </h2>
+                      <p>{category.description}</p>
+                    </div>
+                  </a>
+                ))}
+              </nav>
+              <section class="timeline-section">
+                <div class="notes-label">
+                  <span>最近，过得怎样</span>
+                  <small>片段，按时间慢慢累积</small>
+                </div>
+                <div class="life-timeline">
+                  {notes.length ? (
+                    notes.map((note) => (
+                      <article>
+                        <span class="timeline-dot" aria-hidden="true"></span>
+                        <small>
+                          {note.date} / {note.topic}
+                        </small>
+                        <h3>{note.href ? <a href={note.href}>{note.title}</a> : note.title}</h3>
+                        <p>{note.description}</p>
+                      </article>
+                    ))
+                  ) : (
+                    <div class="life-empty">
+                      <span>下一段故事，还在路上。</span>
+                      <p>从上方的主题出发，先看看已经收藏的日常。</p>
+                    </div>
+                  )}
+                </div>
+              </section>
+            </div>
+          )}
+          {layout.id === 'c' && (
+            <div class="shelf-layout">
+              <header class="shelf-heading">
+                <div>
+                  <p class="life-kicker">A PERSONAL COLLECTION</p>
+                  <h1>
+                    生活日常<span>。</span>
+                  </h1>
+                </div>
+                <p class="life-intro">
+                  读过的书，走过的路，
+                  <br />
+                  和一点一滴成为自己的过程。
+                </p>
+              </header>
+              <div class="shelf-body">
+                <nav class="life-books" aria-label="生活主题">
+                  {categories.map((category, i) => (
+                    <a class="life-book" href={category.href}>
+                      <span class="book-volume">VOL. 0{i + 1}</span>
+                      <h2>{category.title}</h2>
+                      <span class="book-subtitle">
+                        {category.id === 'reading' ? '给生命一点难得的养分' : '把每一年，装订成册'}
+                      </span>
+                      <span class="book-bottom">
+                        ICEAXING <i aria-hidden="true">↗</i>
+                      </span>
+                    </a>
+                  ))}
+                </nav>
+                <section class="open-notebook">
+                  <div class="notes-label">
+                    <span>近况 / LATEST NOTES</span>
+                    <span>01</span>
+                  </div>
+                  {featured ? (
+                    <>
+                      <small>
+                        {featured.date} · {featured.topic}
+                      </small>
+                      <h2>
+                        {featured.href ? (
+                          <a href={featured.href}>{featured.title}</a>
+                        ) : (
+                          featured.title
+                        )}
+                      </h2>
+                      <p class="notebook-excerpt">{featured.description}</p>
+                      <div class="notebook-rule" aria-hidden="true"></div>
+                      <div class="notebook-more">
+                        {notes.slice(1).map((note) => (
+                          <article>
+                            <small>{note.date}</small>
+                            <h3>{note.href ? <a href={note.href}>{note.title}</a> : note.title}</h3>
+                          </article>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <div class="life-empty">
+                      <span>翻开下一页</span>
+                      <p>
+                        留一点空白，
+                        <br />
+                        给正在发生的生活。
+                      </p>
+                    </div>
+                  )}
+                  <span class="notebook-foot">记录，是为了记得。</span>
+                </section>
+              </div>
+            </div>
+          )}
+          <footer class="proposal-bottomline">
+            <span>BOOKS · JOURNEYS · ORDINARY DAYS</span>
+            <a href="/#night-camp">
+              沿途随记 <span aria-hidden="true">↓</span>
+            </a>
+          </footer>
+        </section>
+      </div>
+      <footer class="design-summary">
+        可直接回复 A、B、C，或指定想组合的部分。以上为独立预览，选定后再应用到首页。
+      </footer>
+    </main>
+    <script>
+      const widthButton = document.querySelector<HTMLButtonElement>('#preview-width');
+      widthButton?.addEventListener('click', () => {
+        const narrow =
+          document.querySelector('#design-viewport')?.classList.toggle('is-narrow') ?? false;
+        widthButton.setAttribute('aria-pressed', String(narrow));
+        widthButton.textContent = narrow ? '恢复宽屏' : '窄屏预览';
+      });
+      document.querySelector('#preview-theme')?.addEventListener('click', () => {
+        document.documentElement.dataset.theme =
+          document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+      });
+    </script>
+  </body>
+</html>

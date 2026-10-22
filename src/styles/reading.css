@@ -2,6 +2,7 @@
   --reader-blue: #176b8d;
   --reader-gold: #7d5600;
   --reader-violet: #58458d;
+  --reader-study: #247568;
   --reader-accent: var(--reader-blue);
   --reader-ink: color-mix(in srgb, var(--reader-accent) 42%, var(--text));
   --reader-serif:
@@ -17,6 +18,11 @@
   --reader-blue: #63c6e8;
   --reader-gold: #f2be4a;
   --reader-violet: #b6a2ef;
+  --reader-study: #79cdb5;
+}
+
+.reading-tone-study {
+  --reader-accent: var(--reader-study);
 }
 
 .reading-tone-field {

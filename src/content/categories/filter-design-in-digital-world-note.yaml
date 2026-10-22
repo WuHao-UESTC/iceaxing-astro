@@ -1,6 +1,6 @@
-projectId: filter-design-in-digital-world-note
+categoryId: filter-design-in-digital-world-note
 slug: filter-design-in-digital-world-note
-category: uestc-note
+group: study
 labels:
   zh:
     title: 数字时代的滤波器设计-课程笔记
@@ -9,8 +9,6 @@ labels:
     title: Filter Design in Digital World Note
   de:
     title: Filter Design in Digital World Note
-status: active
-progress: 20
 tags: []
 featured: false
 order: 0

@@ -1,42 +1,69 @@
 ---
+import type { Locale } from '../../i18n/config';
+import '../../styles/life-library.css';
 import ChapterMarker from './ChapterMarker.astro';
 import ScrollControls from './ScrollControls.astro';
 import type { HomeCard, HomeLabels } from './types';
 
 interface Props {
   labels: HomeLabels;
+  locale: Locale;
   categories: HomeCard[];
   latest: HomeCard[];
 }
 
-const { labels, categories, latest } = Astro.props;
+const { labels, locale, categories, latest } = Astro.props;
+const [featured, ...remaining] = latest;
+const copy =
+  locale === 'zh'
+    ? {
+        shelves: '日常收藏',
+        empty: '翻开下一页',
+        emptyNote: '留一点空白，给正在发生的生活。',
+        foot: '记录，是为了记得。',
+        read: '继续阅读',
+        volume: '卷',
+      }
+    : locale === 'de'
+      ? {
+          shelves: 'Meine Sammlung',
+          empty: 'Die nächste Seite',
+          emptyNote: 'Ein wenig Platz für das Leben, das gerade geschieht.',
+          foot: 'Festhalten, um sich zu erinnern.',
+          read: 'Weiterlesen',
+          volume: 'Band',
+        }
+      : {
+          shelves: 'Personal collection',
+          empty: 'Turn the next page',
+          emptyNote: 'A little room for the life still unfolding.',
+          foot: 'Write it down. Keep it close.',
+          read: 'Keep reading',
+          volume: 'Vol.',
+        };
 ---
 
 <div class="journey-panel-inner journey-life-inner">
-  <ChapterMarker number="03" altitude="5100m" label="SNOWFIELD" />
+  <ChapterMarker number="04" altitude="5100m" label="PERSONAL LIBRARY" />
   <header class="journey-chapter-heading" data-reveal data-step="1">
     <p class="journey-eyebrow">BOOKS / JOURNEYS / ORDINARY DAYS</p>
     <h2 id="snowfield-traverse-title" tabindex="-1">
-      {labels.chapters[2]}
+      {labels.chapters[3]}
     </h2>
-    <p>{labels.chapterIntros[1]}</p>
+    <p>{labels.chapterIntros[2]}</p>
   </header>
 
-  <div class:list={['journey-life-content', { 'has-no-categories': categories.length === 0 }]}>
+  <div class:list={['life-library', { 'life-library-without-topics': !categories.length }]}>
     {categories.length > 0 && (
-      <nav class="journey-life-map" aria-label={labels.chapters[2]}>
+      <section class="life-shelf" aria-labelledby="life-shelf-title">
         <div class="journey-section-label">
-          <p class="journey-eyebrow">FIELD INDEX</p>
-          <div
-            class="journey-scroll-controls journey-horizontal-controls"
-            data-scroll-controls
-            hidden
-          >
+          <h3 id="life-shelf-title">{copy.shelves}</h3>
+          <div class="journey-scroll-controls life-shelf-controls" data-scroll-controls hidden>
             <button
               type="button"
               data-scroll-target="life-category-list"
               data-scroll-direction="left"
-              aria-label="FIELD INDEX: previous categories"
+              aria-label={`${copy.shelves} ←`}
             >
               ←
             </button>
@@ -44,47 +71,79 @@ const { labels, categories, latest } = Astro.props;
               type="button"
               data-scroll-target="life-category-list"
               data-scroll-direction="right"
-              aria-label="FIELD INDEX: next categories"
+              aria-label={`${copy.shelves} →`}
             >
               →
             </button>
           </div>
         </div>
-        <div
+        <nav
           id="life-category-list"
-          class="journey-life-sign-list"
+          class="life-shelf-books"
+          aria-label={copy.shelves}
           data-scroll-list
           data-scroll-axis="x"
           tabindex="0"
         >
           {categories.map((card, index) => (
-            <a href={card.href} data-reveal data-step={String(2 + index)}>
-              <h3>{card.title}</h3>
-              <small>{card.description}</small>
-              <i aria-hidden="true">↗</i>
+            <a class="life-shelf-book" href={card.href} data-reveal data-step={String(2 + index)}>
+              <span class="life-book-volume">
+                {copy.volume} {String(index + 1).padStart(2, '0')}
+              </span>
+              <h4 lang={locale}>{card.title}</h4>
+              {card.description && <p>{card.description}</p>}
+              <span class="life-book-imprint">
+                <span>ICEAXING</span>
+                <i aria-hidden="true">↗</i>
+              </span>
             </a>
           ))}
-        </div>
-      </nav>
+        </nav>
+      </section>
     )}
-  </div>
 
-  <section class="journey-latest" aria-labelledby="journey-latest-title">
-    <div class="journey-section-label">
-      <h3 id="journey-latest-title">{labels.latest}</h3>
-      <ScrollControls target="life-latest-list" label={labels.latest} />
-    </div>
-    <div id="life-latest-list" data-scroll-list tabindex="0">
-      {latest.map((card, index) => (
-        <a href={card.href} data-reveal data-step={String(3 + index)}>
-          <span>0{index + 1}</span>
-          <div>
-            <small>{card.meta}</small>
-            <strong>{card.title}</strong>
+    <section class="life-notebook" aria-labelledby="life-notebook-title" data-reveal data-step="3">
+      <div class="journey-section-label">
+        <h3 id="life-notebook-title">{labels.latest}</h3>
+        {latest.length > 0 && <ScrollControls target="life-latest-list" label={labels.latest} />}
+      </div>
+      <div
+        id="life-latest-list"
+        class="life-notebook-pages"
+        data-scroll-list
+        tabindex={latest.length > 0 ? '0' : undefined}
+      >
+        {featured ? (
+          <>
+            <a class="life-notebook-feature" href={featured.href}>
+              {featured.meta && <small>{featured.meta}</small>}
+              <h4>{featured.title}</h4>
+              {featured.description && <p>{featured.description}</p>}
+              <span class="life-notebook-read">
+                {copy.read} <i aria-hidden="true">↗</i>
+              </span>
+            </a>
+            {remaining.length > 0 && (
+              <div class="life-notebook-more">
+                {remaining.map((card) => (
+                  <a href={card.href}>
+                    {card.meta && <small>{card.meta}</small>}
+                    <h4>{card.title}</h4>
+                    <i aria-hidden="true">↗</i>
+                  </a>
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          <div class="life-notebook-empty">
+            <span aria-hidden="true">—</span>
+            <h4>{copy.empty}</h4>
+            <p>{copy.emptyNote}</p>
           </div>
-          <i aria-hidden="true">↗</i>
-        </a>
-      ))}
-    </div>
-  </section>
+        )}
+      </div>
+      <p class="life-notebook-colophon">{copy.foot}</p>
+    </section>
+  </div>
 </div>

@@ -1,0 +1,14 @@
+categoryId: photo-book
+slug: photo-book
+group: life
+labels:
+  zh:
+    title: 相册
+  en:
+    title: Photos
+  de:
+    title: Photos
+tags: []
+featured: false
+order: 0
+createdAt: 2026-10-22T11:05:00.000Z

@@ -21,27 +21,6 @@
     "sourceFile": "src/content/projects/2026-cicc.yaml"
   },
   {
-    "pathname": "/analog-ic/rabaey-digital-ic-note",
-    "kind": "project",
-    "contentId": "rabaey-digital-ic-note",
-    "locale": "zh",
-    "sourceFile": "src/content/projects/rabaey-digital-ic-note.yaml"
-  },
-  {
-    "pathname": "/analog-ic/razavi-cmos-analog-note",
-    "kind": "project",
-    "contentId": "razavi-cmos-analog-note",
-    "locale": "zh",
-    "sourceFile": "src/content/projects/razavi-cmos-analog-note.yaml"
-  },
-  {
-    "pathname": "/analog-ic/razavi-rf-microelectronics-note",
-    "kind": "project",
-    "contentId": "razavi-rf-microelectronics-note",
-    "locale": "zh",
-    "sourceFile": "src/content/projects/razavi-rf-microelectronics-note.yaml"
-  },
-  {
     "pathname": "/analog-ic/two-stage-ota",
     "kind": "project",
     "contentId": "two-stage-ota",
@@ -84,27 +63,6 @@
     "sourceFile": "src/content/projects/2026-cicc.yaml"
   },
   {
-    "pathname": "/de/analog-ic/rabaey-digital-ic-note",
-    "kind": "project",
-    "contentId": "rabaey-digital-ic-note",
-    "locale": "de",
-    "sourceFile": "src/content/projects/rabaey-digital-ic-note.yaml"
-  },
-  {
-    "pathname": "/de/analog-ic/razavi-cmos-analog-note",
-    "kind": "project",
-    "contentId": "razavi-cmos-analog-note",
-    "locale": "de",
-    "sourceFile": "src/content/projects/razavi-cmos-analog-note.yaml"
-  },
-  {
-    "pathname": "/de/analog-ic/razavi-rf-microelectronics-note",
-    "kind": "project",
-    "contentId": "razavi-rf-microelectronics-note",
-    "locale": "de",
-    "sourceFile": "src/content/projects/razavi-rf-microelectronics-note.yaml"
-  },
-  {
     "pathname": "/de/analog-ic/two-stage-ota",
     "kind": "project",
     "contentId": "two-stage-ota",
@@ -126,11 +84,67 @@
     "sourceFile": "src/content/categories/daily-ramblings.yaml"
   },
   {
+    "pathname": "/de/filter-design-in-digital-world-note",
+    "kind": "category",
+    "contentId": "filter-design-in-digital-world-note",
+    "locale": "de",
+    "sourceFile": "src/content/categories/filter-design-in-digital-world-note.yaml"
+  },
+  {
+    "pathname": "/de/liuenke-semiconductance-note",
+    "kind": "category",
+    "contentId": "liuenke-semiconductance-note",
+    "locale": "de",
+    "sourceFile": "src/content/categories/liuenke-semiconductance-note.yaml"
+  },
+  {
+    "pathname": "/de/oppenheim-signal-and-system-note",
+    "kind": "category",
+    "contentId": "oppenheim-signal-and-system-note",
+    "locale": "de",
+    "sourceFile": "src/content/categories/oppenheim-signal-and-system-note.yaml"
+  },
+  {
+    "pathname": "/de/photo-book",
+    "kind": "category",
+    "contentId": "photo-book",
+    "locale": "de",
+    "sourceFile": "src/content/categories/photo-book.yaml"
+  },
+  {
     "pathname": "/de/profile",
     "kind": "page",
     "contentId": "profile-de",
     "locale": "de",
     "sourceFile": "src/content/pages/de/profile-de/index.mdoc"
+  },
+  {
+    "pathname": "/de/quirk-semiconductor-manufacturing-technology-note",
+    "kind": "category",
+    "contentId": "quirk-semiconductor-manufacturing-technology-note",
+    "locale": "de",
+    "sourceFile": "src/content/categories/quirk-semiconductor-manufacturing-technology-note.yaml"
+  },
+  {
+    "pathname": "/de/rabaey-digital-ic-note",
+    "kind": "category",
+    "contentId": "rabaey-digital-ic-note",
+    "locale": "de",
+    "sourceFile": "src/content/categories/rabaey-digital-ic-note.yaml"
+  },
+  {
+    "pathname": "/de/razavi-cmos-analog-note",
+    "kind": "category",
+    "contentId": "razavi-cmos-analog-note",
+    "locale": "de",
+    "sourceFile": "src/content/categories/razavi-cmos-analog-note.yaml"
+  },
+  {
+    "pathname": "/de/razavi-rf-microelectronics-note",
+    "kind": "category",
+    "contentId": "razavi-rf-microelectronics-note",
+    "locale": "de",
+    "sourceFile": "src/content/categories/razavi-rf-microelectronics-note.yaml"
   },
   {
     "pathname": "/de/reading",
@@ -145,34 +159,6 @@
     "contentId": "test",
     "locale": "de",
     "sourceFile": "src/content/projects/test.yaml"
-  },
-  {
-    "pathname": "/de/uestc-note",
-    "kind": "category",
-    "contentId": "uestc-note",
-    "locale": "de",
-    "sourceFile": "src/content/categories/uestc-note.yaml"
-  },
-  {
-    "pathname": "/de/uestc-note/filter-design-in-digital-world-note",
-    "kind": "project",
-    "contentId": "filter-design-in-digital-world-note",
-    "locale": "de",
-    "sourceFile": "src/content/projects/filter-design-in-digital-world-note.yaml"
-  },
-  {
-    "pathname": "/de/uestc-note/liuenke-semiconductance-note",
-    "kind": "project",
-    "contentId": "liuenke-semiconductance-note",
-    "locale": "de",
-    "sourceFile": "src/content/projects/liuenke-semiconductance-note.yaml"
-  },
-  {
-    "pathname": "/de/uestc-note/oppenheim-signal-and-system-note",
-    "kind": "project",
-    "contentId": "oppenheim-signal-and-system-note",
-    "locale": "de",
-    "sourceFile": "src/content/projects/oppenheim-signal-and-system-note.yaml"
   },
   {
     "pathname": "/en/about",
@@ -196,27 +182,6 @@
     "sourceFile": "src/content/projects/2026-cicc.yaml"
   },
   {
-    "pathname": "/en/analog-ic/rabaey-digital-ic-note",
-    "kind": "project",
-    "contentId": "rabaey-digital-ic-note",
-    "locale": "en",
-    "sourceFile": "src/content/projects/rabaey-digital-ic-note.yaml"
-  },
-  {
-    "pathname": "/en/analog-ic/razavi-cmos-analog-note",
-    "kind": "project",
-    "contentId": "razavi-cmos-analog-note",
-    "locale": "en",
-    "sourceFile": "src/content/projects/razavi-cmos-analog-note.yaml"
-  },
-  {
-    "pathname": "/en/analog-ic/razavi-rf-microelectronics-note",
-    "kind": "project",
-    "contentId": "razavi-rf-microelectronics-note",
-    "locale": "en",
-    "sourceFile": "src/content/projects/razavi-rf-microelectronics-note.yaml"
-  },
-  {
     "pathname": "/en/analog-ic/two-stage-ota",
     "kind": "project",
     "contentId": "two-stage-ota",
@@ -238,11 +203,67 @@
     "sourceFile": "src/content/categories/daily-ramblings.yaml"
   },
   {
+    "pathname": "/en/filter-design-in-digital-world-note",
+    "kind": "category",
+    "contentId": "filter-design-in-digital-world-note",
+    "locale": "en",
+    "sourceFile": "src/content/categories/filter-design-in-digital-world-note.yaml"
+  },
+  {
+    "pathname": "/en/liuenke-semiconductance-note",
+    "kind": "category",
+    "contentId": "liuenke-semiconductance-note",
+    "locale": "en",
+    "sourceFile": "src/content/categories/liuenke-semiconductance-note.yaml"
+  },
+  {
+    "pathname": "/en/oppenheim-signal-and-system-note",
+    "kind": "category",
+    "contentId": "oppenheim-signal-and-system-note",
+    "locale": "en",
+    "sourceFile": "src/content/categories/oppenheim-signal-and-system-note.yaml"
+  },
+  {
+    "pathname": "/en/photo-book",
+    "kind": "category",
+    "contentId": "photo-book",
+    "locale": "en",
+    "sourceFile": "src/content/categories/photo-book.yaml"
+  },
+  {
     "pathname": "/en/profile",
     "kind": "page",
     "contentId": "profile-en",
     "locale": "en",
     "sourceFile": "src/content/pages/en/profile-en/index.mdoc"
+  },
+  {
+    "pathname": "/en/quirk-semiconductor-manufacturing-technology-note",
+    "kind": "category",
+    "contentId": "quirk-semiconductor-manufacturing-technology-note",
+    "locale": "en",
+    "sourceFile": "src/content/categories/quirk-semiconductor-manufacturing-technology-note.yaml"
+  },
+  {
+    "pathname": "/en/rabaey-digital-ic-note",
+    "kind": "category",
+    "contentId": "rabaey-digital-ic-note",
+    "locale": "en",
+    "sourceFile": "src/content/categories/rabaey-digital-ic-note.yaml"
+  },
+  {
+    "pathname": "/en/razavi-cmos-analog-note",
+    "kind": "category",
+    "contentId": "razavi-cmos-analog-note",
+    "locale": "en",
+    "sourceFile": "src/content/categories/razavi-cmos-analog-note.yaml"
+  },
+  {
+    "pathname": "/en/razavi-rf-microelectronics-note",
+    "kind": "category",
+    "contentId": "razavi-rf-microelectronics-note",
+    "locale": "en",
+    "sourceFile": "src/content/categories/razavi-rf-microelectronics-note.yaml"
   },
   {
     "pathname": "/en/reading",
@@ -259,32 +280,46 @@
     "sourceFile": "src/content/projects/test.yaml"
   },
   {
-    "pathname": "/en/uestc-note",
+    "pathname": "/filter-design-in-digital-world-note",
     "kind": "category",
-    "contentId": "uestc-note",
-    "locale": "en",
-    "sourceFile": "src/content/categories/uestc-note.yaml"
-  },
-  {
-    "pathname": "/en/uestc-note/filter-design-in-digital-world-note",
-    "kind": "project",
     "contentId": "filter-design-in-digital-world-note",
-    "locale": "en",
-    "sourceFile": "src/content/projects/filter-design-in-digital-world-note.yaml"
+    "locale": "zh",
+    "sourceFile": "src/content/categories/filter-design-in-digital-world-note.yaml"
   },
   {
-    "pathname": "/en/uestc-note/liuenke-semiconductance-note",
-    "kind": "project",
+    "pathname": "/filter-design-in-digital-world-note/basic-of-passive-filter-design",
+    "kind": "article",
+    "contentId": "basic-of-passive-filter-design",
+    "locale": "zh",
+    "sourceFile": "src/content/articles/zh/basic-of-passive-filter-design/index.mdoc"
+  },
+  {
+    "pathname": "/filter-design-in-digital-world-note/basic-of-rf-filter-design",
+    "kind": "article",
+    "contentId": "basic-of-rf-filter-design",
+    "locale": "zh",
+    "sourceFile": "src/content/articles/zh/basic-of-rf-filter-design/index.mdoc"
+  },
+  {
+    "pathname": "/liuenke-semiconductance-note",
+    "kind": "category",
     "contentId": "liuenke-semiconductance-note",
-    "locale": "en",
-    "sourceFile": "src/content/projects/liuenke-semiconductance-note.yaml"
+    "locale": "zh",
+    "sourceFile": "src/content/categories/liuenke-semiconductance-note.yaml"
   },
   {
-    "pathname": "/en/uestc-note/oppenheim-signal-and-system-note",
-    "kind": "project",
+    "pathname": "/oppenheim-signal-and-system-note",
+    "kind": "category",
     "contentId": "oppenheim-signal-and-system-note",
-    "locale": "en",
-    "sourceFile": "src/content/projects/oppenheim-signal-and-system-note.yaml"
+    "locale": "zh",
+    "sourceFile": "src/content/categories/oppenheim-signal-and-system-note.yaml"
+  },
+  {
+    "pathname": "/photo-book",
+    "kind": "category",
+    "contentId": "photo-book",
+    "locale": "zh",
+    "sourceFile": "src/content/categories/photo-book.yaml"
   },
   {
     "pathname": "/profile",
@@ -292,6 +327,48 @@
     "contentId": "profile-zh",
     "locale": "zh",
     "sourceFile": "src/content/pages/zh/profile-zh/index.mdoc"
+  },
+  {
+    "pathname": "/quirk-semiconductor-manufacturing-technology-note",
+    "kind": "category",
+    "contentId": "quirk-semiconductor-manufacturing-technology-note",
+    "locale": "zh",
+    "sourceFile": "src/content/categories/quirk-semiconductor-manufacturing-technology-note.yaml"
+  },
+  {
+    "pathname": "/quirk-semiconductor-manufacturing-technology-note/c9-general-condition-of-ic-manu",
+    "kind": "article",
+    "contentId": "c9-general-condition-of-ic-manu",
+    "locale": "zh",
+    "sourceFile": "src/content/articles/zh/c9-general-condition-of-ic-manu/index.mdoc"
+  },
+  {
+    "pathname": "/rabaey-digital-ic-note",
+    "kind": "category",
+    "contentId": "rabaey-digital-ic-note",
+    "locale": "zh",
+    "sourceFile": "src/content/categories/rabaey-digital-ic-note.yaml"
+  },
+  {
+    "pathname": "/razavi-cmos-analog-note",
+    "kind": "category",
+    "contentId": "razavi-cmos-analog-note",
+    "locale": "zh",
+    "sourceFile": "src/content/categories/razavi-cmos-analog-note.yaml"
+  },
+  {
+    "pathname": "/razavi-cmos-analog-note/c4-differential-amp",
+    "kind": "article",
+    "contentId": "c4-differential-amp",
+    "locale": "zh",
+    "sourceFile": "src/content/articles/zh/c4-differential-amp/index.mdoc"
+  },
+  {
+    "pathname": "/razavi-rf-microelectronics-note",
+    "kind": "category",
+    "contentId": "razavi-rf-microelectronics-note",
+    "locale": "zh",
+    "sourceFile": "src/content/categories/razavi-rf-microelectronics-note.yaml"
   },
   {
     "pathname": "/reading",
@@ -306,40 +383,5 @@
     "contentId": "test",
     "locale": "zh",
     "sourceFile": "src/content/projects/test.yaml"
-  },
-  {
-    "pathname": "/uestc-note",
-    "kind": "category",
-    "contentId": "uestc-note",
-    "locale": "zh",
-    "sourceFile": "src/content/categories/uestc-note.yaml"
-  },
-  {
-    "pathname": "/uestc-note/filter-design-in-digital-world-note",
-    "kind": "project",
-    "contentId": "filter-design-in-digital-world-note",
-    "locale": "zh",
-    "sourceFile": "src/content/projects/filter-design-in-digital-world-note.yaml"
-  },
-  {
-    "pathname": "/uestc-note/filter-design-in-digital-world-note/basic-of-passive-filter-design",
-    "kind": "article",
-    "contentId": "basic-of-passive-filter-design",
-    "locale": "zh",
-    "sourceFile": "src/content/articles/zh/basic-of-passive-filter-design/index.mdoc"
-  },
-  {
-    "pathname": "/uestc-note/liuenke-semiconductance-note",
-    "kind": "project",
-    "contentId": "liuenke-semiconductance-note",
-    "locale": "zh",
-    "sourceFile": "src/content/projects/liuenke-semiconductance-note.yaml"
-  },
-  {
-    "pathname": "/uestc-note/oppenheim-signal-and-system-note",
-    "kind": "project",
-    "contentId": "oppenheim-signal-and-system-note",
-    "locale": "zh",
-    "sourceFile": "src/content/projects/oppenheim-signal-and-system-note.yaml"
   }
 ]

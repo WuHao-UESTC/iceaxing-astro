@@ -1,6 +1,6 @@
-projectId: razavi-cmos-analog-note
+categoryId: razavi-cmos-analog-note
 slug: razavi-cmos-analog-note
-category: analog-ic
+group: study
 labels:
   zh:
     title: 拉扎维-模拟CMOS集成电路设计学习笔记
@@ -10,8 +10,6 @@ labels:
     title: Razavi-Analog CMOS IC Note
   de:
     title: Razavi-Analog CMOS IC Note
-status: active
-progress: 100
 tags: []
 featured: false
 order: 0

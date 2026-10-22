@@ -1,6 +1,6 @@
-projectId: quirk-semiconductor-manufacturing-technology-note
+categoryId: quirk-semiconductor-manufacturing-technology-note
 slug: quirk-semiconductor-manufacturing-technology-note
-category: uestc-note
+group: study
 labels:
   zh:
     title: 奎克-半导体制造技术学习笔记
@@ -8,8 +8,6 @@ labels:
     title: Quirk-Semiconductor Manufacturing Technology Note
   de:
     title: Quirk-Semiconductor Manufacturing Technology Note
-status: active
-progress: 10
 tags: []
 featured: false
 order: 0

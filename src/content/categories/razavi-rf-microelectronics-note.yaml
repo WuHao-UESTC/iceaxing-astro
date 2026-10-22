@@ -1,6 +1,6 @@
-projectId: razavi-rf-microelectronics-note
+categoryId: razavi-rf-microelectronics-note
 slug: razavi-rf-microelectronics-note
-category: analog-ic
+group: study
 labels:
   zh:
     title: 拉扎维-射频微电子笔记
@@ -8,8 +8,6 @@ labels:
     title: Razavi- RF Microelectronics Note
   de:
     title: Razavi- RF Microelectronics Note
-status: active
-progress: 0
 tags: []
 featured: false
 order: 0

@@ -4,6 +4,7 @@ import { render, type RenderResult } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import {
   byOrder,
+  categoryScene,
   contentAlternates,
   formatDate,
   getContentIndex,
@@ -50,7 +51,7 @@ let articleEntry: ArticleEntry | LogEntry | undefined;
 let pageEntry: PageEntry | undefined;
 let Content: RenderResult['Content'] | undefined;
 let headings: Array<{ depth: number; slug: string; text: string }> = [];
-let readingScene: 'ridge' | 'field' | 'camp' = 'ridge';
+let readingScene: 'ridge' | 'study' | 'field' | 'camp' = 'ridge';
 let readingBreadcrumbs: Array<{ title: string; href: string }> = [];
 let readingNeighbors: {
   previous?: { title: string; href: string };
@@ -72,7 +73,7 @@ let listing:
       }>;
     }
   | undefined;
-let listingScene: 'cover' | 'ridge' | 'field' | 'camp' = 'cover';
+let listingScene: 'cover' | 'ridge' | 'study' | 'field' | 'camp' = 'cover';
 let listingParent: { title: string; href: string } | undefined;
 let listingProgress: number | undefined;
 let listingStatus: string | undefined;
@@ -207,11 +208,7 @@ if (special === 'articles') {
       (entry) => entry.data.categoryId === (article.data.category ?? project?.data.category),
     );
     pagefindCategory = category?.data.categoryId;
-    readingScene = category?.data.tags.includes('daily-ramblings')
-      ? 'camp'
-      : category?.data.group === 'life'
-        ? 'field'
-        : 'ridge';
+    readingScene = categoryScene(category);
     const parents = [
       category && { entry: category, id: category.data.categoryId, kind: 'category' as const },
       project && { entry: project, id: project.data.projectId, kind: 'project' as const },
@@ -286,11 +283,7 @@ if (special === 'articles') {
   if (!category) throw new Error(`Missing category: ${route.contentId}`);
   pagefindCategory = category.data.categoryId;
   const label = localizedLabel(category, locale);
-  listingScene = category.data.tags.includes('daily-ramblings')
-    ? 'camp'
-    : category.data.group === 'life'
-      ? 'field'
-      : 'ridge';
+  listingScene = categoryScene(category);
   title = label.title;
   description = label.description;
   alternatePaths = Object.fromEntries(
@@ -339,11 +332,7 @@ if (special === 'articles') {
   const category = index.categories.find(
     (entry) => entry.data.categoryId === project.data.category,
   );
-  listingScene = category?.data.tags.includes('daily-ramblings')
-    ? 'camp'
-    : category?.data.group === 'life'
-      ? 'field'
-      : 'ridge';
+  listingScene = categoryScene(category);
   listingProgress = project.data.progress;
   listingStatus = project.data.status;
   if (category)
@@ -397,11 +386,7 @@ if (special === 'articles') {
   const category = index.categories.find(
     (entry) => entry.data.categoryId === project?.data.category,
   );
-  listingScene = category?.data.tags.includes('daily-ramblings')
-    ? 'camp'
-    : category?.data.group === 'life'
-      ? 'field'
-      : 'ridge';
+  listingScene = categoryScene(category);
   if (project)
     listingParent = {
       title: localizedLabel(project, locale).title,

@@ -1,0 +1,62 @@
+{
+  "books": [
+    {
+      "id": "filter-design-in-digital-world-note",
+      "previousCategory": "uestc-note"
+    },
+    {
+      "id": "liuenke-semiconductance-note",
+      "previousCategory": "uestc-note"
+    },
+    {
+      "id": "oppenheim-signal-and-system-note",
+      "previousCategory": "uestc-note"
+    },
+    {
+      "id": "quirk-semiconductor-manufacturing-technology-note",
+      "previousCategory": "uestc-note"
+    },
+    {
+      "id": "rabaey-digital-ic-note",
+      "previousCategory": "analog-ic"
+    },
+    {
+      "id": "razavi-cmos-analog-note",
+      "previousCategory": "analog-ic"
+    },
+    {
+      "id": "razavi-rf-microelectronics-note",
+      "previousCategory": "analog-ic"
+    }
+  ],
+  "redirects": {
+    "/uestc-note/filter-design-in-digital-world-note": "/filter-design-in-digital-world-note",
+    "/en/uestc-note/filter-design-in-digital-world-note": "/en/filter-design-in-digital-world-note",
+    "/de/uestc-note/filter-design-in-digital-world-note": "/de/filter-design-in-digital-world-note",
+    "/uestc-note/filter-design-in-digital-world-note/basic-of-passive-filter-design": "/filter-design-in-digital-world-note/basic-of-passive-filter-design",
+    "/uestc-note/filter-design-in-digital-world-note/basic-of-rf-filter-design": "/filter-design-in-digital-world-note/basic-of-rf-filter-design",
+    "/uestc-note/liuenke-semiconductance-note": "/liuenke-semiconductance-note",
+    "/en/uestc-note/liuenke-semiconductance-note": "/en/liuenke-semiconductance-note",
+    "/de/uestc-note/liuenke-semiconductance-note": "/de/liuenke-semiconductance-note",
+    "/uestc-note/oppenheim-signal-and-system-note": "/oppenheim-signal-and-system-note",
+    "/en/uestc-note/oppenheim-signal-and-system-note": "/en/oppenheim-signal-and-system-note",
+    "/de/uestc-note/oppenheim-signal-and-system-note": "/de/oppenheim-signal-and-system-note",
+    "/uestc-note/quirk-semiconductor-manufacturing-technology-note": "/quirk-semiconductor-manufacturing-technology-note",
+    "/en/uestc-note/quirk-semiconductor-manufacturing-technology-note": "/en/quirk-semiconductor-manufacturing-technology-note",
+    "/de/uestc-note/quirk-semiconductor-manufacturing-technology-note": "/de/quirk-semiconductor-manufacturing-technology-note",
+    "/uestc-note/quirk-semiconductor-manufacturing-technology-note/c9-general-condition-of-ic-manu": "/quirk-semiconductor-manufacturing-technology-note/c9-general-condition-of-ic-manu",
+    "/analog-ic/rabaey-digital-ic-note": "/rabaey-digital-ic-note",
+    "/en/analog-ic/rabaey-digital-ic-note": "/en/rabaey-digital-ic-note",
+    "/de/analog-ic/rabaey-digital-ic-note": "/de/rabaey-digital-ic-note",
+    "/analog-ic/razavi-cmos-analog-note": "/razavi-cmos-analog-note",
+    "/en/analog-ic/razavi-cmos-analog-note": "/en/razavi-cmos-analog-note",
+    "/de/analog-ic/razavi-cmos-analog-note": "/de/razavi-cmos-analog-note",
+    "/analog-ic/razavi-cmos-analog-note/c4-differential-amp": "/razavi-cmos-analog-note/c4-differential-amp",
+    "/analog-ic/razavi-rf-microelectronics-note": "/razavi-rf-microelectronics-note",
+    "/en/analog-ic/razavi-rf-microelectronics-note": "/en/razavi-rf-microelectronics-note",
+    "/de/analog-ic/razavi-rf-microelectronics-note": "/de/razavi-rf-microelectronics-note",
+    "/uestc-note": "/#study-terrace",
+    "/en/uestc-note": "/en#study-terrace",
+    "/de/uestc-note": "/de#study-terrace"
+  }
+}

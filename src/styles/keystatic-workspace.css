@@ -83,10 +83,35 @@ summary {
   text-decoration: none;
 }
 
-.workspace-brand div {
+.workspace-brand-copy {
   display: grid;
   gap: 2px;
   min-width: 0;
+  flex: 1;
+}
+.workspace-brand-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.workspace-brand-title strong {
+  flex: none;
+}
+.workspace-brand-title select {
+  min-width: 0;
+  max-width: 112px;
+  height: 30px;
+  padding: 0 4px;
+  border: 1px solid #d5d8de;
+  border-radius: 7px;
+  background: #fff;
+  color: inherit;
+  font-size: 11px;
+}
+.workspace-brand-title select:focus-visible {
+  outline: 2px solid #378068;
+  outline-offset: 2px;
 }
 .workspace-brand strong {
   font-size: 14px;
@@ -550,6 +575,7 @@ summary {
     background: #1e2024;
   }
   .tree-toolbar input,
+  .workspace-brand-title select,
   .tree-toolbar button,
   .workspace-sidebar-footer select,
   .language-switcher button,

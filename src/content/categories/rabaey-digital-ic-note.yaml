@@ -1,6 +1,6 @@
-projectId: rabaey-digital-ic-note
+categoryId: rabaey-digital-ic-note
 slug: rabaey-digital-ic-note
-category: analog-ic
+group: study
 labels:
   zh:
     title: Rabaey-数字集成电路设计学习笔记
@@ -8,8 +8,6 @@ labels:
     title: Rabaey-Digital IC Note
   de:
     title: Rabaey-Digital IC Note
-status: planned
-progress: 0
 tags: []
 featured: false
 order: 0

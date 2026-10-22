@@ -26,6 +26,12 @@ type ContentReader = {
     articlesZh: CollectionReader;
     articlesEn: CollectionReader;
     articlesDe: CollectionReader;
+    logsZh: CollectionReader;
+    logsEn: CollectionReader;
+    logsDe: CollectionReader;
+    pagesZh: CollectionReader;
+    pagesEn: CollectionReader;
+    pagesDe: CollectionReader;
   };
 };
 
@@ -71,6 +77,10 @@ function folderEntries(items: readonly ReaderItem[], kind: FolderKind): RawFolde
       parentId: parentField ? asOptionalString(entry[parentField]) : null,
       label: localizedLabel(entry, slug),
       order: asNumber(entry.order),
+      group:
+        kind === 'category' && ['skill', 'life', 'study'].includes(asString(entry.group))
+          ? (entry.group as RawFolderEntry['group'])
+          : undefined,
     };
   });
 }
@@ -96,16 +106,38 @@ function articleEntries(
 }
 
 async function snapshotFromReader(reader: ContentReader): Promise<ContentSnapshot> {
-  const [categories, projects, series, articlesZh, articlesEn, articlesDe] = await Promise.all([
-    reader.collections.categories.all(),
-    reader.collections.projects.all(),
-    reader.collections.series.all(),
-    reader.collections.articlesZh.all(),
-    reader.collections.articlesEn.all(),
-    reader.collections.articlesDe.all(),
-  ]);
+  const documentCollections = [
+    ['logsZh', 'logs', 'zh'],
+    ['logsEn', 'logs', 'en'],
+    ['logsDe', 'logs', 'de'],
+    ['pagesZh', 'pages', 'zh'],
+    ['pagesEn', 'pages', 'en'],
+    ['pagesDe', 'pages', 'de'],
+  ] as const;
+  const documentsPromise = Promise.all(
+    documentCollections.map(async ([collection, contentType, locale]) =>
+      articleEntries(await reader.collections[collection].all(), locale).map((entry) => ({
+        ...entry,
+        contentType,
+        category: null,
+        project: null,
+        collection: null,
+      })),
+    ),
+  );
+  const [categories, projects, series, articlesZh, articlesEn, articlesDe, documents] =
+    await Promise.all([
+      reader.collections.categories.all(),
+      reader.collections.projects.all(),
+      reader.collections.series.all(),
+      reader.collections.articlesZh.all(),
+      reader.collections.articlesEn.all(),
+      reader.collections.articlesDe.all(),
+      documentsPromise,
+    ]);
 
   return {
+    documents: documents.flat(),
     folders: [
       ...folderEntries(categories, 'category'),
       ...folderEntries(projects, 'project'),

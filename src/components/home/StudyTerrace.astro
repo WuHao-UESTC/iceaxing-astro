@@ -1,0 +1,226 @@
+---
+import type { Locale } from '../../i18n/config';
+import {
+  backgroundStars,
+  starPosition,
+  constellationEdges,
+  constellationStarCount,
+} from '../../lib/study-constellation';
+import '../../styles/study-constellation.css';
+import ChapterMarker from './ChapterMarker.astro';
+import StudyLandscape from './StudyLandscape.astro';
+import type { HomeCard, HomeLabels } from './types';
+
+interface Props {
+  labels: HomeLabels;
+  locale: Locale;
+  topics: HomeCard[];
+  latest: HomeCard[];
+}
+const { labels, locale, topics, latest } = Astro.props;
+const dimStars = backgroundStars.slice(0, Math.max(0, constellationStarCount - topics.length));
+const litNodes = topics.map((topic) => ({ id: topic.id, ...starPosition(topic.id), lit: true }));
+const dimNodes = dimStars.map((star, index) => ({
+  ...star,
+  id: `background-${index}`,
+  lit: false,
+}));
+const edges = constellationEdges([...litNodes, ...dimNodes]);
+const copy =
+  locale === 'zh'
+    ? {
+        hint: '每一颗亮星，都是一段求知的旅程。选择一本教材，展开它的笔记。',
+        back: '返回完整星图',
+        open: '打开完整分类',
+        empty: '笔记整理中，新的思考将在这里点亮。',
+        map: '教材星图',
+        selected: '当前教材',
+        change: '切换教材',
+        lit: '颗已点亮',
+        select: '选择一颗星，开始探索',
+        all: '全部教材',
+      }
+    : locale === 'de'
+      ? {
+          hint: 'Jeder helle Stern steht für ein Lehrbuch. Wähle einen Stern und entdecke seine Notizen.',
+          back: 'Zur Sternkarte',
+          open: 'Alle Notizen öffnen',
+          empty: 'Neue Notizen entstehen hier.',
+          map: 'Sternkarte der Lehrbücher',
+          selected: 'Ausgewähltes Lehrbuch',
+          change: 'Lehrbuch wechseln',
+          lit: 'Sterne leuchten',
+          select: 'Wähle einen Stern zum Entdecken',
+          all: 'Alle Lehrbücher',
+        }
+      : {
+          hint: 'Every bright star is a journey of learning. Choose a textbook to discover its notes.',
+          back: 'Back to the star map',
+          open: 'Open full category',
+          empty: 'Notes are taking shape. New ideas will shine here.',
+          map: 'Textbook star map',
+          selected: 'Selected textbook',
+          change: 'Switch textbook',
+          lit: 'stars illuminated',
+          select: 'Choose a star to explore',
+          all: 'All textbooks',
+        };
+---
+
+<StudyLandscape />
+<div class="journey-panel-inner journey-study-inner" data-constellation>
+  <ChapterMarker number="03" altitude="4700m" label="KNOWLEDGE ATLAS" />
+  <header class="journey-chapter-heading" data-reveal data-step="1">
+    <p class="journey-eyebrow">READ / WONDER / CONNECT</p>
+    <h2 id="study-terrace-title" tabindex="-1">
+      {labels.chapters[2]}
+    </h2>
+    <p>{labels.chapterIntros[1]}</p>
+  </header>
+  <div class="study-atlas" data-atlas>
+    <div class="study-atlas-toolbar">
+      <p>
+        <span class="study-status-dot" aria-hidden="true" />{' '}
+        {String(topics.length).padStart(2, '0')} <span>{copy.lit}</span>
+        <span class="study-atlas-divider">/</span>
+        <span>4700m</span>
+      </p>
+      <button type="button" class="study-reset" data-star-reset hidden>
+        <span aria-hidden="true">↗</span> {copy.back}
+      </button>
+    </div>
+    <div class="study-atlas-stage">
+      <nav class="study-star-map" aria-label={copy.map}>
+        <div class="study-star-world" data-star-world>
+          <svg
+            class="study-star-sky"
+            viewBox="0 0 1000 500"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <g class="study-star-network">
+              {edges.map(({ from, to, lit }) => (
+                <line
+                  class:list={{ 'is-lit': lit }}
+                  data-star-edge-from={from.id}
+                  data-star-edge-to={to.id}
+                  x1={from.x * 10}
+                  y1={from.y * 5}
+                  x2={to.x * 10}
+                  y2={to.y * 5}
+                />
+              ))}
+            </g>
+            <g class="study-dim-stars">
+              {dimStars.map((star, index) => (
+                <circle
+                  cx={star.x * 10}
+                  cy={star.y * 5}
+                  r={star.radius}
+                  style={`--twinkle-delay:${index % 7}s`}
+                />
+              ))}
+            </g>
+          </svg>
+          {topics.map((topic, index) => {
+            const { x, y } = starPosition(topic.id);
+            return (
+              <a
+                href={topic.href}
+                class="study-star"
+                data-star={topic.id}
+                data-star-x={x}
+                data-star-y={y}
+                data-star-edge={x < 25 ? 'left' : x > 72 ? 'right' : 'center'}
+                style={`left:${x}%;top:${y}%;--star-delay:${index * 0.7}s`}
+                aria-label={`${topic.title} · ${topic.noteCount ?? 0} ${labels.studyCount}`}
+              >
+                <span class="study-star-core" aria-hidden="true">
+                  <span />
+                </span>
+                <span class="study-star-caption">
+                  <span class="study-star-number">{String(index + 1).padStart(2, '0')}</span>
+                  <span>{topic.title}</span>
+                </span>
+                <span class="study-star-tooltip" role="tooltip">
+                  {topic.title}
+                  <small>
+                    {topic.noteCount ?? 0} {labels.studyCount}
+                  </small>
+                </span>
+              </a>
+            );
+          })}
+        </div>
+        <p class="study-chart-invitation" data-star-invitation>
+          {copy.select}
+        </p>
+      </nav>
+      <div class="study-detail" data-star-detail hidden>
+        {topics.map((topic, index) => {
+          const notes = latest.filter((card) => card.categoryId === topic.id);
+          return (
+            <section
+              class="study-topic-panel"
+              id={`study-topic-${topic.id}`}
+              data-topic={topic.id}
+              aria-labelledby={`study-heading-${topic.id}`}
+              hidden
+            >
+              <p class="study-detail-eyebrow">
+                {copy.selected} / {String(index + 1).padStart(2, '0')}
+              </p>
+              <h3 id={`study-heading-${topic.id}`} tabindex="-1">
+                {topic.title}
+              </h3>
+              {topic.description && <p class="study-topic-description">{topic.description}</p>}
+              <div class="study-note-heading">
+                <span>{labels.studyLatest}</span>
+                <span>
+                  {topic.noteCount ?? 0} {labels.studyCount}
+                </span>
+              </div>
+              <div class="study-article-list" tabindex={notes.length > 3 ? '0' : undefined}>
+                {notes.length ? (
+                  notes.slice(0, 8).map((card) => (
+                    <a href={card.href}>
+                      <div>
+                        <small>{card.meta}</small>
+                        <h4>{card.title}</h4>
+                      </div>
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  ))
+                ) : (
+                  <p class="study-empty">{copy.empty}</p>
+                )}
+              </div>
+              <a class="study-category-link" href={topic.href}>
+                {copy.open} <span aria-hidden="true">↗</span>
+              </a>
+            </section>
+          );
+        })}
+      </div>
+    </div>
+    <div class="study-atlas-footer">
+      <p data-star-hint>{copy.hint}</p>
+      <label class="study-topic-switch" data-star-switch hidden>
+        <span>{copy.change}</span>
+        <select data-star-select aria-label={copy.change}>
+          <option value="">{copy.all}</option>
+          {topics.map((topic) => (
+            <option value={topic.id}>{topic.title}</option>
+          ))}
+        </select>
+      </label>
+    </div>
+    <p class="study-sr-only" data-star-status aria-live="polite" aria-atomic="true" />
+  </div>
+</div>
+
+<script>
+  import { initStudyConstellation } from '../../scripts/study-constellation';
+  initStudyConstellation();
+</script>

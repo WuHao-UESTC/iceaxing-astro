@@ -8,6 +8,7 @@ export interface Messages {
   nav: {
     home: string;
     technology: string;
+    study: string;
     life: string;
     ramblings: string;
     articles: string;
@@ -48,6 +49,7 @@ const messages: Record<Locale, Messages> = {
     nav: {
       home: '首页',
       technology: '技术栈',
+      study: '学习笔记',
       life: '生活日常',
       ramblings: '碎碎念',
       articles: '文章',
@@ -83,6 +85,7 @@ const messages: Record<Locale, Messages> = {
     nav: {
       home: 'Home',
       technology: 'Technology',
+      study: 'Study Notes',
       life: 'Daily life',
       ramblings: 'Ramblings',
       articles: 'Articles',
@@ -118,6 +121,7 @@ const messages: Record<Locale, Messages> = {
     nav: {
       home: 'Start',
       technology: 'Technik',
+      study: 'Lernnotizen',
       life: 'Alltag',
       ramblings: 'Gedanken',
       articles: 'Artikel',

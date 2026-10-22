@@ -1,0 +1,22 @@
+---
+import TerrainFacets from './TerrainFacets.astro';
+import { waystationMesh } from '../../data/terrain-scenes';
+const layouts = [
+  { name: 'wide', width: 1440, height: 800, faces: waystationMesh(false) },
+  { name: 'tall', width: 600, height: 1200, faces: waystationMesh(true) },
+];
+---
+
+{layouts.map(({ name, width, height, faces }) => (
+  <svg
+    class={`journey-landscape waystation-landscape waystation-${name}`}
+    data-reveal="landscape"
+    viewBox={`0 0 ${width} ${height}`}
+    preserveAspectRatio="xMidYMid slice"
+    fill="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <TerrainFacets {faces} />
+  </svg>
+))}
