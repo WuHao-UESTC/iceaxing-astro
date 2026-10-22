@@ -132,7 +132,7 @@
   min-height: 0;
   flex: 1;
   overflow-y: auto;
-  overscroll-behavior-y: contain;
+  overscroll-behavior-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
   padding-right: 0.8rem;

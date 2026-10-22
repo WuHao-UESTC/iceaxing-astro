@@ -1,5 +1,7 @@
 ---
 import { localizedPath, type Locale } from '../../i18n/config';
+import { archiveStatistics } from '../../lib/archive-statistics';
+import ArchiveStatisticArt from './ArchiveStatisticArt.astro';
 import '../../styles/listing.css';
 
 interface Card {
@@ -10,6 +12,7 @@ interface Card {
   meta?: string;
   tags?: string[];
   kind?: 'project' | 'collection' | 'article';
+  standalone?: boolean;
 }
 interface Props {
   title: string;
@@ -48,6 +51,8 @@ const labels =
         projectGroup: '项目',
         collectionGroup: '合集',
         articleGroup: '文章',
+        standalone: '独立文章',
+        statistics: '内容统计',
         entryGroup: '条目',
         contents: '本页目录',
         progress: '项目进度',
@@ -69,6 +74,8 @@ const labels =
           projectGroup: 'Projekte',
           collectionGroup: 'Sammlungen',
           articleGroup: 'Artikel',
+          standalone: 'Einzelartikel',
+          statistics: 'Inhaltsstatistik',
           entryGroup: 'Einträge',
           contents: 'Inhalt',
           progress: 'Fortschritt',
@@ -89,6 +96,8 @@ const labels =
           projectGroup: 'Projects',
           collectionGroup: 'Collections',
           articleGroup: 'Articles',
+          standalone: 'Standalone articles',
+          statistics: 'Content statistics',
           entryGroup: 'Entries',
           contents: 'On this page',
           progress: 'Project progress',
@@ -118,6 +127,13 @@ const statusLabel = status
       archived: labels.archived,
     }[status] ?? status)
   : undefined;
+const statistics = archiveStatistics(kind, cards).map((statistic) => ({
+  ...statistic,
+  label:
+    statistic.type === 'article' && (kind === 'category' || kind === 'project')
+      ? labels.standalone
+      : labels[`${statistic.type}Group`],
+}));
 ---
 
 <main
@@ -142,10 +158,21 @@ const statusLabel = status
       <h1 data-pagefind-meta="title">{title}</h1>
       {description && <p class="archive-description">{description}</p>}
     </div>
-    <div class="archive-stamp" aria-hidden="true">
-      <span>{kind.toUpperCase()}</span>
-      <strong>{String(cards.length).padStart(2, '0')}</strong>
-      <span>ICEAXING / INDEX</span>
+    <div class="archive-statistics" role="list" aria-label={labels.statistics}>
+      {statistics.map((statistic) => (
+        <div
+          class="archive-statistic"
+          role="listitem"
+          data-stat-kind={statistic.type}
+          data-stat-count={statistic.count}
+        >
+          <ArchiveStatisticArt {scene} variant={statistic.type} />
+          <div class="archive-statistic-copy">
+            <strong>{String(statistic.count).padStart(2, '0')}</strong>
+            <span>{statistic.label}</span>
+          </div>
+        </div>
+      ))}
     </div>
   </header>
   <div class="archive-layout">

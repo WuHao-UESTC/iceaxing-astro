@@ -47,8 +47,12 @@ const socialImage = new URL(image, Astro.site ?? Astro.url.origin);
     <meta name="description" content={description} />
     <meta data-pagefind-filter="locale[content]" content={locale} />
     <meta data-pagefind-filter="type[content]" content={pagefindType} />
+    <meta data-pagefind-meta="type[content]" content={pagefindType} />
     {pagefindCategory && (
-      <meta data-pagefind-filter="category[content]" content={pagefindCategory} />
+      <>
+        <meta data-pagefind-filter="category[content]" content={pagefindCategory} />
+        <meta data-pagefind-meta="category[content]" content={pagefindCategory} />
+      </>
     )}
     <meta name="view-transition" content="same-origin" />
     <meta property="og:type" content={type} />

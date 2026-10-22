@@ -70,6 +70,7 @@ let listing:
         meta?: string;
         tags?: string[];
         kind?: 'project' | 'collection' | 'article';
+        standalone?: boolean;
       }>;
     }
   | undefined;
@@ -315,6 +316,7 @@ if (special === 'articles') {
       })),
       ...articles.map((entry) => ({
         kind: 'article' as const,
+        standalone: !entry.data.project && !entry.data.collection,
         href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
         title: entry.data.title,
         description: entry.data.excerpt,
@@ -366,6 +368,7 @@ if (special === 'articles') {
       })),
       ...articles.map((entry) => ({
         kind: 'article' as const,
+        standalone: !entry.data.collection,
         href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
         title: entry.data.title,
         description: entry.data.excerpt,

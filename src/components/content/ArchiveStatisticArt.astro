@@ -1,0 +1,88 @@
+---
+interface Props {
+  scene: 'cover' | 'ridge' | 'study' | 'field' | 'camp';
+  variant: string;
+}
+const { scene, variant } = Astro.props;
+// Open silhouettes, with air between facets rather than a closed badge shape.
+const landscapes = {
+  cover: [
+    ['M12 112L55 25L42 91Z', 'middle'],
+    ['M59 19L82 64L47 88Z', 'near'],
+    ['M47 94L84 69L69 121Z', 'far'],
+    ['M88 73L115 106L75 125Z', 'middle'],
+    ['M10 119L37 101L31 134Z', 'far'],
+    ['M82 129L116 112L142 133Z', 'far'],
+    ['M116 56L128 44L130 61Z', 'spark'],
+    ['M139 88L151 94L140 102Z', 'middle'],
+    ['M20 48L27 36L30 51Z', 'far'],
+  ],
+  ridge: [
+    ['M8 120L35 85L29 125Z', 'far'],
+    ['M39 80L58 57L49 98Z', 'middle'],
+    ['M34 127L52 101L67 118Z', 'near'],
+    ['M64 53L90 35L76 74Z', 'near'],
+    ['M80 80L107 48L109 93Z', 'far'],
+    ['M96 31L130 13L114 50Z', 'middle'],
+    ['M121 56L138 24L148 49Z', 'near'],
+    ['M113 108L136 93L132 120Z', 'middle'],
+    ['M13 66L22 51L26 69Z', 'spark'],
+    ['M144 79L153 72L151 86Z', 'spark'],
+  ],
+  study: [
+    ['M7 126L27 87L32 116Z', 'middle'],
+    ['M31 81L49 111L35 128Z', 'near'],
+    ['M44 130L56 105L74 133Z', 'far'],
+    ['M92 109L114 97L109 124Z', 'far'],
+    ['M122 121L137 99L149 130Z', 'middle'],
+    ['M21 43L28 34L32 47Z', 'spark'],
+    ['M56 17L66 10L68 24Z', 'middle'],
+    ['M88 31L96 20L102 35Z', 'spark'],
+    ['M129 54L139 46L143 60Z', 'near'],
+    ['M116 12L121 7L124 15Z', 'spark'],
+    ['M11 78L16 72L19 82Z', 'far'],
+  ],
+  field: [
+    ['M88 10L118 17L109 40Z', 'far'],
+    ['M124 20L148 43L120 48Z', 'middle'],
+    ['M123 54L151 49L146 77Z', 'near'],
+    ['M135 81L154 83L143 111Z', 'middle'],
+    ['M9 77L32 89L13 105Z', 'middle'],
+    ['M20 109L40 94L51 116Z', 'near'],
+    ['M46 120L59 109L79 131Z', 'far'],
+    ['M81 134L95 120L117 137Z', 'middle'],
+    ['M118 133L138 117L143 140Z', 'near'],
+    ['M19 29L29 22L32 36Z', 'spark'],
+    ['M53 49L62 44L60 56Z', 'far'],
+    ['M104 91L113 85L116 99Z', 'spark'],
+  ],
+  camp: [
+    ['M9 20L48 12L34 48Z', 'middle'],
+    ['M12 26L29 52L13 78Z', 'near'],
+    ['M33 54L46 23L43 77Z', 'far'],
+    ['M17 83L36 65L30 102Z', 'middle'],
+    ['M7 115L25 105L36 123Z', 'far'],
+    ['M43 130L60 114L70 134Z', 'middle'],
+    ['M81 120L96 108L105 128Z', 'far'],
+    ['M112 134L128 112L143 130Z', 'near'],
+    ['M103 22L113 15L118 29Z', 'spark'],
+    ['M139 55L145 44L151 58Z', 'middle'],
+    ['M64 39L71 33L72 44Z', 'spark'],
+  ],
+};
+---
+
+<svg
+  class="archive-statistic-art"
+  data-stat-scene={scene}
+  viewBox="0 0 160 144"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <g transform={variant === 'article' ? 'rotate(6 80 72)' : undefined}>
+    {landscapes[scene].map(([d, tone]) => (
+      <path class={`archive-fragment archive-fragment-${tone}`} d={d} />
+    ))}
+  </g>
+</svg>

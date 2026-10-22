@@ -15,6 +15,16 @@
   background: var(--page);
 }
 
+/* A chapter taller than the viewport cannot use mandatory snapping: the
+   browser would keep pulling the reader back to the chapter start. */
+.snowline-home[data-panel-overflow] {
+  scroll-snap-type: y proximity;
+}
+
+.snowline-home[data-panel-overflow] .snowline-panel {
+  scroll-snap-stop: normal;
+}
+
 :root[data-theme='dark'] .snowline-home {
   --ice-blue: #63c6e8;
   --study-green: #79cdb5;
@@ -468,7 +478,8 @@
 }
 
 [data-scroll-list] {
-  overscroll-behavior-y: contain;
+  /* Nested lists must hand wheel/touch scrolling back to the chapter at their edges. */
+  overscroll-behavior-y: auto;
   scrollbar-color: color-mix(in srgb, var(--scene-accent) 48%, transparent) transparent;
   scrollbar-width: thin;
 }
@@ -1721,4 +1732,18 @@
   .landscape-star {
     animation: none;
   }
+}
+
+/* A small wheel/trackpad gesture must not snap back to the same chapter.
+   Pointer devices get wheel paging from home-journey.ts, while touch keeps
+   native snapping. */
+@media (hover: hover) and (pointer: fine) {
+  .snowline-home {
+    scroll-snap-type: none;
+  }
+}
+
+/* Wheel navigation on hybrid devices whose primary pointer is not "fine". */
+.snowline-home.is-wheel-driven {
+  scroll-snap-type: none;
 }

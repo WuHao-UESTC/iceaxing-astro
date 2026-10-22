@@ -13,6 +13,13 @@
   display: none;
 }
 .life-rift-marker .terrain-face {
+  --terrain-color: color-mix(
+    in srgb,
+    var(--surface) calc(96% - var(--terrain-ink)),
+    var(--scene-accent)
+  );
+}
+:root[data-theme='dark'] .life-rift-marker .terrain-face {
   --terrain-color: color-mix(in srgb, #101916 calc(96% - var(--terrain-ink)), #4d5036);
 }
 .life-anchor-stone-body {
@@ -96,9 +103,9 @@
   width: 24%;
 }
 .life-landing-3 {
-  left: 62%;
+  left: 79%;
   top: 69%;
-  width: 21%;
+  width: 18%;
 }
 .life-landing-number {
   grid-column: 1;
@@ -192,7 +199,7 @@
 .life-category-articles {
   max-height: 3.8em;
   overflow-y: auto;
-  overscroll-behavior-y: contain;
+  overscroll-behavior-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
   list-style: none;
@@ -264,7 +271,7 @@
 .life-recent-list {
   min-height: 0;
   overflow-y: auto;
-  overscroll-behavior-y: contain;
+  overscroll-behavior-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
   margin: 0;

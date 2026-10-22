@@ -1,192 +1,121 @@
 ---
+import { getCollection } from 'astro:content';
 import type { Locale } from '../i18n/config';
-import { subscriptionOptions } from '../lib/subscriptions/types';
+import { byOrder, localizedLabel } from '../lib/content';
+import { searchCopy } from '../lib/search-copy';
+import { searchQueryLimit, searchTypes } from '../lib/search';
+import '../styles/search.css';
 
 interface Props {
   locale: Locale;
 }
-
 const { locale } = Astro.props;
-const copy =
-  locale === 'zh'
-    ? {
-        title: '搜索站内内容',
-        placeholder: '输入标题、正文或标签…',
-        type: '类型',
-        category: '分类',
-        all: '全部',
-        close: '关闭',
-        empty: '没有找到结果。',
-        loading: '正在载入搜索索引…',
-        failed: '搜索索引暂不可用。',
-      }
-    : locale === 'de'
-      ? {
-          title: 'Website durchsuchen',
-          placeholder: 'Titel, Text oder Tag…',
-          type: 'Typ',
-          category: 'Kategorie',
-          all: 'Alle',
-          close: 'Schließen',
-          empty: 'Keine Ergebnisse.',
-          loading: 'Suchindex wird geladen…',
-          failed: 'Der Suchindex ist nicht verfügbar.',
-        }
-      : {
-          title: 'Search the site',
-          placeholder: 'Title, text, or tag…',
-          type: 'Type',
-          category: 'Category',
-          all: 'All',
-          close: 'Close',
-          empty: 'No results found.',
-          loading: 'Loading search index…',
-          failed: 'Search is temporarily unavailable.',
-        };
-const categories = subscriptionOptions.filter((option) => option.kind === 'category');
+const copy = searchCopy[locale];
+const categories = byOrder(await getCollection('categories'));
 ---
 
-<dialog class="search-dialog" data-search-dialog data-locale={locale} data-pagefind-ignore>
+<dialog
+  class="search-dialog"
+  data-search-dialog
+  data-locale={locale}
+  data-search-mode={import.meta.env.DEV ? 'fallback' : 'pagefind'}
+  aria-labelledby="search-dialog-title"
+  data-pagefind-ignore
+>
   <div class="search-dialog-card">
     <header>
       <div>
         <p>ICEAXING / SEARCH</p>
-        <h2>{copy.title}</h2>
+        <h2 id="search-dialog-title">{copy.title}</h2>
       </div>
       <button type="button" data-search-close aria-label={copy.close}>
         ×
       </button>
     </header>
     <form role="search" data-search-form>
-      <label>
-        <span class="sr-only">{copy.title}</span>
-        <input type="search" name="query" placeholder={copy.placeholder} autocomplete="off" />
-      </label>
+      <div class="search-input-row">
+        <label class="sr-only" for="site-search-query">
+          {copy.title}
+        </label>
+        <span class="search-input-symbol" aria-hidden="true">
+          ⌕
+        </span>
+        <input
+          id="site-search-query"
+          type="search"
+          name="query"
+          placeholder={copy.placeholder}
+          maxlength={searchQueryLimit}
+          autocomplete="off"
+          spellcheck="false"
+          aria-controls="site-search-results"
+        />
+        <button type="button" class="search-clear" data-search-clear aria-label={copy.clear} hidden>
+          ×
+        </button>
+      </div>
       <div class="search-filters">
         <label>
           <span>{copy.type}</span>
           <select name="type">
             <option value="">{copy.all}</option>
-            <option value="article">Article</option>
-            <option value="log">Log</option>
-            <option value="page">Page</option>
-            <option value="category">Category</option>
-            <option value="project">Project</option>
-            <option value="collection">Collection</option>
+            {searchTypes.map((type) => (
+              <option value={type}>{copy[type]}</option>
+            ))}
           </select>
         </label>
         <label>
           <span>{copy.category}</span>
           <select name="category">
             <option value="">{copy.all}</option>
-            {categories.map((option) => (
-              <option value={option.id}>{option.labels[locale]}</option>
+            {categories.map((category) => (
+              <option value={category.data.categoryId}>
+                {localizedLabel(category, locale).title}
+              </option>
             ))}
           </select>
         </label>
+        <button type="button" class="search-reset" data-search-reset hidden>
+          {copy.reset}
+        </button>
       </div>
     </form>
-    <p class="search-status" data-search-status aria-live="polite"></p>
-    <ol class="search-results" data-search-results></ol>
+    <div class="search-feedback">
+      <p
+        class="search-status"
+        data-search-status
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {copy.hint}
+      </p>
+      <button type="button" class="search-action" data-search-retry hidden>
+        {copy.retry}
+      </button>
+    </div>
+    <ol class="search-results" id="site-search-results" data-search-results aria-busy="false"></ol>
+    <button type="button" class="search-action search-more" data-search-more hidden>
+      {copy.more}
+    </button>
+    <footer class="search-help" aria-label={copy.shortcut}>
+      <span>
+        <kbd>↑</kbd> <kbd>↓</kbd> {copy.navigate}
+      </span>
+      <span>
+        <kbd>Enter</kbd> {copy.open}
+      </span>
+      <span>
+        <kbd>Esc</kbd> {copy.escape}
+      </span>
+      <span>
+        <kbd>Ctrl / ⌘ K</kbd>
+      </span>
+    </footer>
   </div>
 </dialog>
 
 <script>
-  interface PagefindResultData {
-    url: string;
-    meta: { title?: string };
-    excerpt: string;
-  }
-  interface PagefindSearchResult {
-    data(): Promise<PagefindResultData>;
-  }
-  interface PagefindModule {
-    init(): Promise<void>;
-    search(
-      query: string,
-      options?: { filters?: Record<string, string> },
-    ): Promise<{ results: PagefindSearchResult[] }>;
-  }
-
-  const dialog = document.querySelector<HTMLDialogElement>('[data-search-dialog]');
-  const form = dialog?.querySelector<HTMLFormElement>('[data-search-form]');
-  const input = form?.elements.namedItem('query');
-  const status = dialog?.querySelector<HTMLElement>('[data-search-status]');
-  const results = dialog?.querySelector<HTMLOListElement>('[data-search-results]');
-  let pagefind: PagefindModule | undefined;
-  let searchSequence = 0;
-
-  async function loadPagefind() {
-    if (pagefind) return pagefind;
-    const bundlePath = '/pagefind/pagefind.js';
-    pagefind = (await import(/* @vite-ignore */ bundlePath)) as PagefindModule;
-    await pagefind.init();
-    return pagefind;
-  }
-
-  async function runSearch() {
-    if (!dialog || !form || !(input instanceof HTMLInputElement) || !status || !results) return;
-    const query = input.value.trim();
-    const sequence = ++searchSequence;
-    results.replaceChildren();
-    if (!query) {
-      status.textContent = '';
-      return;
-    }
-    status.textContent = dialog.dataset.locale === 'zh' ? '正在搜索…' : 'Searching…';
-    try {
-      const engine = await loadPagefind();
-      const data = new FormData(form);
-      const filters: Record<string, string> = { locale: dialog.dataset.locale ?? 'zh' };
-      const type = String(data.get('type') ?? '');
-      const category = String(data.get('category') ?? '');
-      if (type) filters.type = type;
-      if (category) filters.category = category;
-      const search = await engine.search(query, { filters });
-      const items = await Promise.all(search.results.slice(0, 20).map((result) => result.data()));
-      if (sequence !== searchSequence) return;
-      status.textContent = items.length
-        ? `${items.length} result${items.length === 1 ? '' : 's'}`
-        : dialog.dataset.locale === 'zh'
-          ? '没有找到结果。'
-          : 'No results found.';
-      for (const item of items) {
-        const li = document.createElement('li');
-        const link = document.createElement('a');
-        const title = document.createElement('strong');
-        const excerpt = document.createElement('p');
-        link.href = item.url;
-        title.textContent = item.meta.title ?? item.url;
-        excerpt.innerHTML = item.excerpt;
-        link.append(title, excerpt);
-        li.append(link);
-        results.append(li);
-      }
-    } catch {
-      if (sequence === searchSequence) {
-        status.textContent =
-          dialog.dataset.locale === 'zh' ? '搜索索引暂不可用。' : 'Search is unavailable.';
-      }
-    }
-  }
-
-  document.querySelectorAll<HTMLElement>('[data-search-open]').forEach((button) => {
-    button.addEventListener('click', () => {
-      dialog?.showModal();
-      if (input instanceof HTMLInputElement) {
-        input.focus();
-        void loadPagefind().catch(() => undefined);
-      }
-    });
-  });
-  dialog?.querySelector('[data-search-close]')?.addEventListener('click', () => dialog.close());
-  dialog?.addEventListener('click', (event) => {
-    if (event.target === dialog) dialog.close();
-  });
-  form?.addEventListener('submit', (event) => event.preventDefault());
-  let debounce = 0;
-  form?.addEventListener('input', () => {
-    window.clearTimeout(debounce);
-    debounce = window.setTimeout(runSearch, 180);
-  });
+  import { initSearchDialog } from '../scripts/search-dialog';
+  initSearchDialog();
 </script>

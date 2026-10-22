@@ -1,0 +1,14 @@
+categoryId: journey
+slug: journey
+group: life
+labels:
+  zh:
+    title: 旅行手记
+  en:
+    title: Journey
+  de:
+    title: Journey
+tags: []
+featured: false
+order: 0
+createdAt: 2026-10-22T20:40:00.000Z

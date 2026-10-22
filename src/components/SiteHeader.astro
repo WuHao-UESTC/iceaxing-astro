@@ -50,7 +50,15 @@ const navItems = [
     </nav>
 
     <div class="header-actions">
-      <button class="search-open" type="button" data-search-open aria-label={messages.nav.search}>
+      <button
+        class="search-open"
+        type="button"
+        data-search-open
+        aria-label={messages.nav.search}
+        aria-haspopup="dialog"
+        aria-keyshortcuts="Control+k Meta+k /"
+        title={`${messages.nav.search} (Ctrl / ⌘ K)`}
+      >
         <span aria-hidden="true">⌕</span>
       </button>
       <details class="language-menu" data-header-details>

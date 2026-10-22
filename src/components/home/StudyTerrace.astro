@@ -32,6 +32,7 @@ const copy =
         hint: '每一颗亮星，都是一段求知的旅程。选择一本教材，展开它的笔记。',
         back: '返回完整星图',
         open: '打开完整分类',
+        countUnit: '篇',
         empty: '笔记整理中，新的思考将在这里点亮。',
         map: '教材星图',
         selected: '当前教材',
@@ -45,6 +46,7 @@ const copy =
           hint: 'Jeder helle Stern steht für ein Lehrbuch. Wähle einen Stern und entdecke seine Notizen.',
           back: 'Zur Sternkarte',
           open: 'Alle Notizen öffnen',
+          countUnit: 'Not.',
           empty: 'Neue Notizen entstehen hier.',
           map: 'Sternkarte der Lehrbücher',
           selected: 'Ausgewähltes Lehrbuch',
@@ -57,6 +59,7 @@ const copy =
           hint: 'Every bright star is a journey of learning. Choose a textbook to discover its notes.',
           back: 'Back to the star map',
           open: 'Open full category',
+          countUnit: 'notes',
           empty: 'Notes are taking shape. New ideas will shine here.',
           map: 'Textbook star map',
           selected: 'Selected textbook',
@@ -69,14 +72,16 @@ const copy =
 
 <StudyLandscape />
 <div class="journey-panel-inner journey-study-inner" data-constellation>
-  <ChapterMarker number="03" altitude="4700m" label="KNOWLEDGE ATLAS" />
-  <header class="journey-chapter-heading" data-reveal data-step="1">
-    <p class="journey-eyebrow">READ / WONDER / CONNECT</p>
-    <h2 id="study-terrace-title" tabindex="-1">
-      {labels.chapters[2]}
-    </h2>
-    <p>{labels.chapterIntros[1]}</p>
-  </header>
+  <div class="study-heading-band">
+    <ChapterMarker number="03" altitude="4700m" label="KNOWLEDGE ATLAS" />
+    <header class="journey-chapter-heading" data-reveal data-step="1">
+      <p class="journey-eyebrow">READ / WONDER / CONNECT</p>
+      <h2 id="study-terrace-title" tabindex="-1">
+        {labels.chapters[2]}
+      </h2>
+      <p>{labels.chapterIntros[1]}</p>
+    </header>
+  </div>
   <div class="study-atlas" data-atlas>
     <div class="study-atlas-toolbar">
       <p>
@@ -158,7 +163,7 @@ const copy =
         </p>
       </nav>
       <div class="study-detail" data-star-detail hidden>
-        {topics.map((topic, index) => {
+        {topics.map((topic) => {
           const notes = latest.filter((card) => card.categoryId === topic.id);
           return (
             <section
@@ -168,18 +173,23 @@ const copy =
               aria-labelledby={`study-heading-${topic.id}`}
               hidden
             >
-              <p class="study-detail-eyebrow">
-                {copy.selected} / {String(index + 1).padStart(2, '0')}
-              </p>
-              <h3 id={`study-heading-${topic.id}`} tabindex="-1">
-                {topic.title}
-              </h3>
-              {topic.description && <p class="study-topic-description">{topic.description}</p>}
-              <div class="study-note-heading">
-                <span>{labels.studyLatest}</span>
-                <span>
-                  {topic.noteCount ?? 0} {labels.studyCount}
-                </span>
+              <div class="study-topic-header">
+                <div class="study-topic-title-row">
+                  <span
+                    class="study-note-count"
+                    aria-label={`${topic.noteCount ?? 0} ${labels.studyCount}`}
+                  >
+                    {topic.noteCount ?? 0}
+                    {copy.countUnit}
+                  </span>
+                  <h3 id={`study-heading-${topic.id}`} tabindex="-1">
+                    {topic.title}
+                  </h3>
+                  <a class="study-category-link" href={topic.href}>
+                    {copy.open} <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+                {topic.description && <p class="study-topic-description">{topic.description}</p>}
               </div>
               <div class="study-article-list" tabindex={notes.length > 3 ? '0' : undefined}>
                 {notes.length ? (
@@ -196,9 +206,6 @@ const copy =
                   <p class="study-empty">{copy.empty}</p>
                 )}
               </div>
-              <a class="study-category-link" href={topic.href}>
-                {copy.open} <span aria-hidden="true">↗</span>
-              </a>
             </section>
           );
         })}

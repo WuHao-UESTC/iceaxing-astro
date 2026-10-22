@@ -378,11 +378,6 @@ summary:focus-visible {
   font: inherit;
 }
 
-.search-dialog form > label {
-  display: block;
-  margin-block: 1.4rem 0.8rem;
-}
-
 .search-filters {
   justify-content: start;
 }

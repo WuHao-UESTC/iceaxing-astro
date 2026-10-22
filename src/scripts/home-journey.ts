@@ -237,6 +237,193 @@ export function initHomeJourney() {
     }
   }
 
+  // A chapter taller than the viewport must fall back to proximity snapping,
+  // otherwise readers get stuck at its first screen.
+  const syncPanelOverflow = () => {
+    home.toggleAttribute(
+      'data-panel-overflow',
+      panels.some((panel) => panel.offsetHeight > home.clientHeight + 1),
+    );
+  };
+  syncPanelOverflow();
+  const panelObserver = new ResizeObserver(syncPanelOverflow);
+  panelObserver.observe(home);
+  panels.forEach((panel) => panelObserver.observe(panel));
+
+  // CSS mandatory snapping swallows a wheel notch while it pulls the page back
+  // to the current chapter. Drive pointer scrolling here instead: the distance
+  // travelled by a gesture decides how many chapters to move, nested scrollers
+  // keep their own scrolling, and chapters taller than the viewport scroll
+  // normally until their edge.
+  const WHEEL_MIN_INTENT = 16;
+  const WHEEL_REARM_GAP = 180;
+  const wheelState = {
+    active: false,
+    startIndex: 0,
+    targetIndex: 0,
+    direction: 0,
+    distance: 0,
+    lastWheel: 0,
+    releaseTimer: 0,
+  };
+  const wheelDistance = (event: WheelEvent) => {
+    if (event.deltaMode === 1) return event.deltaY * 16;
+    if (event.deltaMode === 2) return event.deltaY * home.clientHeight;
+    return event.deltaY;
+  };
+  const scrollableChild = (target: EventTarget | null, direction: number) => {
+    let element = target instanceof Element ? target : null;
+    while (element && element !== home) {
+      if (element instanceof HTMLElement) {
+        const overflowY = getComputedStyle(element).overflowY;
+        if (
+          /(auto|scroll|overlay)/.test(overflowY) &&
+          element.scrollHeight > element.clientHeight + 1
+        ) {
+          const canContinue =
+            direction > 0
+              ? element.scrollTop + element.clientHeight < element.scrollHeight - 1
+              : element.scrollTop > 1;
+          if (canContinue) return element;
+        }
+      }
+      element = element.parentElement;
+    }
+    return null;
+  };
+  const chapterIndexAt = (top: number) => {
+    let index = panels.length - 1;
+    while (index > 0 && (panels[index]?.offsetTop ?? 0) > top + 1) index--;
+    return index;
+  };
+  const canTurnFrom = (direction: number) => {
+    const top = home.scrollTop;
+    const index = chapterIndexAt(top);
+    const nextIndex = index + direction;
+    if (nextIndex < 0 || nextIndex >= panels.length) return false;
+    const panel = panels[index];
+    if (!panel) return false;
+    if (panel.offsetHeight > home.clientHeight + 1) {
+      if (direction > 0 && top + home.clientHeight < panel.offsetTop + panel.offsetHeight - 2)
+        return false;
+      if (direction < 0 && top > panel.offsetTop + 2) return false;
+    }
+    return true;
+  };
+  const wheelPageStep = () => Math.max(100, home.clientHeight * 0.1);
+  const pagesFor = (distance: number) =>
+    Math.max(1, Math.round(Math.abs(distance) / wheelPageStep()));
+  const releaseWheel = () => {
+    wheelState.active = false;
+    wheelState.startIndex = wheelState.targetIndex;
+    wheelState.direction = 0;
+    wheelState.distance = 0;
+    window.clearTimeout(wheelState.releaseTimer);
+  };
+  const settleWheel = (delay: number) => {
+    window.clearTimeout(wheelState.releaseTimer);
+    wheelState.releaseTimer = window.setTimeout(releaseWheel, delay);
+  };
+  const resetUncommittedWheel = () => {
+    if (wheelState.active) return;
+    wheelState.direction = 0;
+    wheelState.distance = 0;
+  };
+  const commitWheel = () => {
+    if (!wheelState.direction) return;
+    const target = Math.max(
+      0,
+      Math.min(
+        panels.length - 1,
+        wheelState.startIndex + wheelState.direction * pagesFor(wheelState.distance),
+      ),
+    );
+    if (target === wheelState.targetIndex && wheelState.active) return;
+    if (target === wheelState.startIndex) {
+      resetUncommittedWheel();
+      return;
+    }
+    wheelState.targetIndex = target;
+    wheelState.active = true;
+    home.scrollTo({
+      top: panels[target]?.offsetTop ?? 0,
+      behavior: reducedMotion.matches ? 'instant' : 'smooth',
+    });
+    settleWheel(700);
+  };
+  window.addEventListener(
+    'wheel',
+    (event) => {
+      if (
+        event.defaultPrevented ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.altKey ||
+        event.shiftKey
+      )
+        return;
+      const target = event.target instanceof Element ? event.target : null;
+      const insideHome = target ? home.contains(target) : false;
+      const overPageChrome =
+        !target ||
+        target === document.body ||
+        target === document.documentElement ||
+        Boolean(target.closest('.site-header'));
+      if (!insideHome && !overPageChrome) return;
+      const distance = wheelDistance(event);
+      if (!distance || Math.abs(event.deltaX) >= Math.abs(distance)) return;
+      const direction = distance > 0 ? 1 : -1;
+      const now = performance.now();
+
+      if (!wheelState.active && scrollableChild(event.target, direction)) {
+        resetUncommittedWheel();
+        return;
+      }
+      if (!home.classList.contains('is-wheel-driven')) home.classList.add('is-wheel-driven');
+
+      if (!wheelState.active) {
+        const stale = wheelState.direction !== 0 && now - wheelState.lastWheel > WHEEL_REARM_GAP;
+        if (wheelState.direction === 0 || stale || direction !== wheelState.direction) {
+          if (!canTurnFrom(direction)) {
+            resetUncommittedWheel();
+            return;
+          }
+          wheelState.startIndex = chapterIndexAt(home.scrollTop);
+          wheelState.targetIndex = wheelState.startIndex;
+          wheelState.direction = direction;
+          wheelState.distance = distance;
+        } else {
+          wheelState.distance += distance;
+        }
+        wheelState.lastWheel = now;
+        if (Math.abs(wheelState.distance) < WHEEL_MIN_INTENT) return;
+        event.preventDefault();
+        commitWheel();
+        return;
+      }
+
+      event.preventDefault();
+      if (direction !== wheelState.direction) {
+        wheelState.startIndex = wheelState.targetIndex;
+        wheelState.direction = direction;
+        wheelState.distance = distance;
+      } else {
+        wheelState.distance += distance;
+      }
+      wheelState.lastWheel = now;
+      commitWheel();
+      settleWheel(500);
+    },
+    { passive: false },
+  );
+  home.addEventListener(
+    'scrollend',
+    () => {
+      if (wheelState.active) settleWheel(260);
+    },
+    { passive: true },
+  );
+
   const observer = new IntersectionObserver(
     (entries) => {
       const visible = entries
@@ -249,6 +436,7 @@ export function initHomeJourney() {
   panels.forEach((panel) => observer.observe(panel));
 
   function navigate(hash: string, smooth: boolean) {
+    releaseWheel();
     const target = document.getElementById(hash);
     if (!target) return;
     target.scrollIntoView({ behavior: smooth && !reducedMotion.matches ? 'smooth' : 'instant' });
