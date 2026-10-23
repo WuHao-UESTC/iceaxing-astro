@@ -3,6 +3,7 @@ import { createElement } from 'react';
 
 import { markdocComponents } from './src/content/markdoc-components';
 import { withMathPersistence } from './src/lib/keystatic-math';
+import { withWikiLinks } from './src/lib/keystatic-wikilinks';
 
 type Locale = 'zh' | 'en' | 'de';
 
@@ -107,25 +108,27 @@ const localeField = (locale: Locale) =>
   });
 
 const body = withMathPersistence(
-  fields.markdoc({
-    label: '正文',
-    extension: 'mdoc',
-    options: {
-      heading: [2, 3, 4, 5, 6],
-      table: true,
-      divider: true,
-      codeBlock: true,
-      image: {
-        directory: 'src/assets/content/body',
-        publicPath: '../../../../assets/content/body/',
-        schema: {
-          alt: fields.text({ label: '替代文本', validation: { isRequired: true } }),
-          title: fields.text({ label: '图片标题' }),
+  withWikiLinks(
+    fields.markdoc({
+      label: '正文',
+      extension: 'mdoc',
+      options: {
+        heading: [2, 3, 4, 5, 6],
+        table: true,
+        divider: true,
+        codeBlock: true,
+        image: {
+          directory: 'src/assets/content/body',
+          publicPath: '../../../../assets/content/body/',
+          schema: {
+            alt: fields.text({ label: '替代文本', validation: { isRequired: true } }),
+            title: fields.text({ label: '图片标题' }),
+          },
         },
       },
-    },
-    components: markdocComponents,
-  }),
+      components: markdocComponents,
+    }),
+  ),
 );
 
 const commonContentFields = (locale: Locale) => ({
@@ -170,8 +173,6 @@ const commonContentFields = (locale: Locale) => ({
   order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
   coverImage: coverImage('../../../../assets/content/covers/'),
   seo,
-  legacySanityId: fields.text({ label: '旧 Sanity ID' }),
-  legacyPath: fields.text({ label: '旧站路径' }),
 });
 
 const articleCollection = (locale: Locale) =>
@@ -184,6 +185,12 @@ const articleCollection = (locale: Locale) =>
     columns: ['title', 'status', 'publishedAt'],
     schema: {
       ...commonContentFields(locale),
+      featured: fields.checkbox({
+        label: '首页列表精选',
+        description:
+          '显示在首页左侧的精选文章列表，仅展示已公开文章，按发布时间从新到旧最多显示 8 篇。',
+        defaultValue: false,
+      }),
       category: relationshipWithContext(
         {
           label: '直属分类',
@@ -406,7 +413,11 @@ export default config({
         },
         labels: localizedText,
         tags,
-        featured: fields.checkbox({ label: '首页精选', defaultValue: false }),
+        featured: fields.checkbox({
+          label: '首页卡片精选',
+          description: '显示在首页右侧的精选入口卡片区。',
+          defaultValue: false,
+        }),
         order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
         icon: fields.text({ label: '图标键' }),
         coverImage: coverImage('../../assets/content/covers/'),
@@ -451,7 +462,11 @@ export default config({
           validation: { min: 0, max: 100, isRequired: true },
         }),
         tags,
-        featured: fields.checkbox({ label: '首页精选', defaultValue: false }),
+        featured: fields.checkbox({
+          label: '首页卡片精选',
+          description: '显示在首页右侧的精选入口卡片区。',
+          defaultValue: false,
+        }),
         order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
         coverImage: coverImage('../../assets/content/covers/'),
         createdAt: fields.datetime({
@@ -480,7 +495,11 @@ export default config({
         ),
         labels: localizedText,
         tags,
-        featured: fields.checkbox({ label: '首页精选', defaultValue: false }),
+        featured: fields.checkbox({
+          label: '首页卡片精选',
+          description: '显示在首页右侧的精选入口卡片区。',
+          defaultValue: false,
+        }),
         order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
         coverImage: coverImage('../../assets/content/covers/'),
         createdAt: fields.datetime({

@@ -24,17 +24,23 @@
       "kind": "category",
       "id": "filter-design-in-digital-world-note",
       "labels": {
-        "zh": "数字时代的滤波器设计-课程笔记",
+        "zh": "数字时代的滤波器设计",
         "en": "Filter Design in Digital World Note",
         "de": "Filter Design in Digital World Note"
       }
+    },
+    {
+      "key": "category:journey",
+      "kind": "category",
+      "id": "journey",
+      "labels": { "zh": "旅行手记", "en": "Journey", "de": "Journey" }
     },
     {
       "key": "category:liuenke-semiconductance-note",
       "kind": "category",
       "id": "liuenke-semiconductance-note",
       "labels": {
-        "zh": "刘恩科-半导体物理学笔记",
+        "zh": "刘恩科-半导体物理学",
         "en": "Liu Enke Semiconductor Note",
         "de": "Liu Enke Semiconductor Note"
       }
@@ -44,7 +50,7 @@
       "kind": "category",
       "id": "oppenheim-signal-and-system-note",
       "labels": {
-        "zh": "奥本海姆-信号与系统笔记",
+        "zh": "奥本海姆-信号与系统",
         "en": "Oppenheim Signal & System Note",
         "de": "Oppenheim Signal & System Note"
       }
@@ -60,7 +66,7 @@
       "kind": "category",
       "id": "quirk-semiconductor-manufacturing-technology-note",
       "labels": {
-        "zh": "奎克-半导体制造技术学习笔记",
+        "zh": "奎克-半导体制造技术",
         "en": "Quirk-Semiconductor Manufacturing Technology Note",
         "de": "Quirk-Semiconductor Manufacturing Technology Note"
       }
@@ -70,7 +76,7 @@
       "kind": "category",
       "id": "rabaey-digital-ic-note",
       "labels": {
-        "zh": "Rabaey-数字集成电路设计学习笔记",
+        "zh": "Rabaey-数字集成电路设计",
         "en": "Rabaey-Digital IC Note",
         "de": "Rabaey-Digital IC Note"
       }
@@ -80,7 +86,7 @@
       "kind": "category",
       "id": "razavi-cmos-analog-note",
       "labels": {
-        "zh": "拉扎维-模拟CMOS集成电路设计学习笔记",
+        "zh": "拉扎维-模拟CMOS集成电路设计",
         "en": "Razavi-Analog CMOS IC Note",
         "de": "Razavi-Analog CMOS IC Note"
       }
@@ -90,7 +96,7 @@
       "kind": "category",
       "id": "razavi-rf-microelectronics-note",
       "labels": {
-        "zh": "拉扎维-射频微电子笔记",
+        "zh": "拉扎维-射频微电子",
         "en": "Razavi- RF Microelectronics Note",
         "de": "Razavi- RF Microelectronics Note"
       }

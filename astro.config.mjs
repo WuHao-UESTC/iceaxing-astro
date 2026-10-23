@@ -1,4 +1,5 @@
-import markdoc from './src/lib/markdoc-math-integration.mjs';
+import markdocWithContentExtensions from './src/lib/markdoc-math-integration.mjs';
+import keystaticDevSave from './src/lib/keystatic-dev-save.mjs';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
@@ -21,8 +22,9 @@ export default defineConfig({
   ),
   integrations: [
     react(),
-    markdoc({ allowHTML: false, typographer: true }),
+    markdocWithContentExtensions({ allowHTML: false, typographer: true }),
     keystatic(),
+    keystaticDevSave(),
     sitemap({
       filter: (page) =>
         !page.includes('/keystatic') && !page.includes('/api/') && !page.includes('/fixtures/'),

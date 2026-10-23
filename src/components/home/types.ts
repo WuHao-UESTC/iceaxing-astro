@@ -10,6 +10,7 @@ export interface HomeCard {
   topic?: string;
   categoryId?: string;
   noteCount?: number;
+  group?: 'skill' | 'study' | 'life';
 }
 
 export interface HomeLabels {

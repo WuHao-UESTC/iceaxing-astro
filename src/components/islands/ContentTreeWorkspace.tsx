@@ -49,21 +49,17 @@ type CreateArticleTarget = Pick<FolderNode, 'kind' | 'id' | 'label' | 'parentKey
   missingLocales?: ContentLocale[];
 };
 
-type PendingEditorSave = {
-  url: string;
-  expiresAt: number;
-};
-
 const localeLabels: Record<ContentLocale, string> = {
   zh: '中文',
   en: 'English',
   de: 'Deutsch',
 };
 
-const folderLabels: Record<FolderKind, string> = {
-  category: '分类',
-  project: '项目',
-  collection: '合集',
+const publicationLabels: Record<string, string> = {
+  draft: '草稿',
+  scheduled: '定时发布',
+  published: '已发布',
+  archived: '已归档',
 };
 
 const childFolderLabels: Partial<Record<FolderKind, string>> = {
@@ -109,6 +105,7 @@ export default function ContentTreeWorkspace() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const [refreshingPreview, setRefreshingPreview] = useState(false);
   const [query, setQuery] = useState('');
   const [group, setGroup] = useState<WorkspaceGroup>('skill');
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
@@ -120,29 +117,9 @@ export default function ContentTreeWorkspace() {
   const [deleting, setDeleting] = useState(false);
   const [showNativeNavigation, setShowNativeNavigation] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const pendingEditorSaveRef = useRef<PendingEditorSave | null>(null);
 
   const navigateEditor = useCallback((url: string) => {
-    pendingEditorSaveRef.current = null;
     setEditorUrl(url);
-  }, []);
-
-  const restoreEditorAfterSave = useCallback(() => {
-    const pendingSave = pendingEditorSaveRef.current;
-    const frameWindow = iframeRef.current?.contentWindow;
-    if (!pendingSave || !frameWindow) return false;
-    if (Date.now() >= pendingSave.expiresAt) {
-      pendingEditorSaveRef.current = null;
-      return false;
-    }
-    const pathname = frameWindow.location.pathname;
-    if (`${pathname}${frameWindow.location.search}` === pendingSave.url) return false;
-    if (/^\/keystatic(?:\/branch\/[^/]+)?\/?$/.test(pathname)) {
-      frameWindow.location.replace(pendingSave.url);
-      return true;
-    }
-    pendingEditorSaveRef.current = null;
-    return false;
   }, []);
 
   const refreshTree = useCallback(async (branch?: string | null) => {
@@ -165,6 +142,26 @@ export default function ContentTreeWorkspace() {
     }
   }, []);
 
+  const refreshPreview = async () => {
+    if (refreshingPreview) return;
+    setRefreshingPreview(true);
+    setError('');
+    setNotice('');
+    try {
+      const response = await fetch('/api/keystatic-refresh', { method: 'POST' });
+      if (!response.ok) {
+        const result = await response.json().catch(() => null);
+        throw new Error(result?.error || '刷新预览失败，请确认开发服务器正在运行。');
+      }
+      await refreshTree(tree?.branch);
+      setNotice('预览内容已刷新。已打开的网站预览页会自动更新，编辑器位置保持不变。');
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : '刷新预览失败。');
+    } finally {
+      setRefreshingPreview(false);
+    }
+  };
+
   useEffect(() => {
     void refreshTree();
   }, [refreshTree]);
@@ -180,7 +177,6 @@ export default function ContentTreeWorkspace() {
       const frame = iframeRef.current;
       if (!frame) return;
       try {
-        if (restoreEditorAfterSave()) return;
         const frameWindow = frame.contentWindow;
         const pathname = frameWindow?.location.pathname ?? '';
         const match = pathname.match(/^\/keystatic\/branch\/([^/]+)/);
@@ -191,7 +187,7 @@ export default function ContentTreeWorkspace() {
       }
     }, 250);
     return () => window.clearInterval(timer);
-  }, [refreshTree, restoreEditorAfterSave, tree?.branch]);
+  }, [refreshTree, tree?.branch]);
 
   const groupContent = useMemo(
     () => (tree ? selectContentGroup(tree, group) : { folders: [], articles: [] }),
@@ -418,11 +414,15 @@ export default function ContentTreeWorkspace() {
             </span>
             <span className="tree-row-label">
               <span>{item.label}</span>
-              <small>{item.translationKey}</small>
             </span>
             <span className="locale-badges" aria-label="可用语言">
               {item.versions.map((version) => (
-                <span key={version.locale}>{version.locale.toUpperCase()}</span>
+                <span className="version-badge" key={version.locale}>
+                  <span className="locale-badge">{version.locale.toUpperCase()}</span>
+                  <span className={`publication-badge is-${version.status}`}>
+                    {publicationLabels[version.status] ?? '未知状态'}
+                  </span>
+                </span>
               ))}
             </span>
             {missingLocales.length > 0 && group !== 'documents' && (
@@ -508,9 +508,6 @@ export default function ContentTreeWorkspace() {
               </span>
               <span className="tree-row-label">
                 <span>{item.label}</span>
-                <small>
-                  {folderLabels[item.kind]} · {item.id}
-                </small>
               </span>
             </button>
             <ItemMenu label={`管理文件夹 ${item.label}`}>
@@ -578,22 +575,7 @@ export default function ContentTreeWorkspace() {
       const document = frame.contentDocument;
       if (document && document.documentElement.dataset.treeWorkspaceBound !== 'true') {
         document.documentElement.dataset.treeWorkspaceBound = 'true';
-        const onSubmit = (event: SubmitEvent) => {
-          const form = event.target;
-          const frameWindow = frame.contentWindow;
-          if (
-            form === document.getElementById('item-edit-form') &&
-            frameWindow &&
-            /\/collection\/[^/]+\/item\/[^/]+\/?$/.test(frameWindow.location.pathname)
-          ) {
-            pendingEditorSaveRef.current = {
-              url: `${frameWindow.location.pathname}${frameWindow.location.search}`,
-              expiresAt: Date.now() + 30_000,
-            };
-            for (const delay of [0, 100, 300, 700, 1500, 3000, 7000]) {
-              window.setTimeout(restoreEditorAfterSave, delay);
-            }
-          }
+        const onSubmit = () => {
           window.setTimeout(() => void refreshTree(activeBranch), 1600);
         };
         document.addEventListener('submit', onSubmit, { capture: true });
@@ -712,6 +694,9 @@ export default function ContentTreeWorkspace() {
         </nav>
 
         <footer className="workspace-sidebar-footer">
+          <a href="/keystatic/comments" target="_blank" rel="noreferrer">
+            评论管理
+          </a>
           <label htmlFor="utility-navigation">其他内容</label>
           <select
             id="utility-navigation"
@@ -772,6 +757,18 @@ export default function ContentTreeWorkspace() {
                 );
               })}
             </div>
+          )}
+          {import.meta.env.DEV && tree?.storageKind === 'local' && (
+            <button
+              className="native-navigation-toggle refresh-preview-button"
+              type="button"
+              disabled={refreshingPreview}
+              aria-busy={refreshingPreview}
+              title="保存后刷新网站预览内容与路由，保留当前编辑位置"
+              onClick={() => void refreshPreview()}
+            >
+              {refreshingPreview ? '正在刷新…' : '刷新预览'}
+            </button>
           )}
           <button
             className="native-navigation-toggle"

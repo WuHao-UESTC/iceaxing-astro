@@ -1,8 +1,11 @@
 import markdoc from '@astrojs/markdoc';
 import { normalizeDollarMath } from './markdoc-math';
+import { normalizeWikiLinks } from './wikilinks';
 
-/** Keep the standard Markdoc integration; normalize only its render input. */
-export default function markdocWithMath(options) {
+const normalizeContent = (source) => normalizeWikiLinks(normalizeDollarMath(source));
+
+/** Keep the standard Markdoc integration; extend prose syntax at its input. */
+export default function markdocWithContentExtensions(options) {
   const integration = markdoc(options);
   const setup = integration.hooks['astro:config:setup'];
   return {
@@ -17,7 +20,7 @@ export default function markdocWithMath(options) {
               ...entry,
               getEntryInfo(input) {
                 const info = entry.getEntryInfo(input);
-                return { ...info, body: normalizeDollarMath(info.body) };
+                return { ...info, body: normalizeContent(info.body) };
               },
               getRenderModule(input) {
                 const resolve = this.resolve.bind(this);
@@ -35,7 +38,7 @@ export default function markdocWithMath(options) {
                 };
                 return entry.getRenderModule.call(contextWithDecodedImagePaths, {
                   ...input,
-                  contents: normalizeDollarMath(input.contents),
+                  contents: normalizeContent(input.contents),
                 });
               },
             });

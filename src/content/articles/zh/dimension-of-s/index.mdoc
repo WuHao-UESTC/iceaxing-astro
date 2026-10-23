@@ -1,0 +1,63 @@
+---
+contentId: dimension-of-s
+translationKey: dimension-of-s
+locale: zh
+title: 为什么‘s’的量纲是1/s？
+slug: dimension-of-s
+status: published
+publishedAt: 2026-10-23T02:25:00.000Z
+tags: []
+authorName: iceaxing
+featured: true
+order: 0
+seo: {}
+category: oppenheim-signal-and-system-note
+---
+笔者在研究二阶系统方程特性的过程中，偶然遇到了关于拉普拉斯变换的参数S的量纲的问题，借此机会才发现s的量纲竟然是是1/s，其中s是“秒”。在此做一个简单的介绍。
+
+## 从拉普拉斯变换的定义看
+
+拉普拉斯变换写作：{% inlineMath expression="X(s)=\\int x(t) e^{-s t} dt" /%}
+
+{% inlineMath expression="e^{-s t}" /%}  **是不应当有量纲的**！
+
+- 从物理含义上来看，X(s)相当于是不同时间下的x(t)乘以不同权重之后，积分叠加。 {% inlineMath expression="e^{-st}" /%}  作为一个权重， 不应当有量纲。
+- 从自然对数本身的级数定义来看：{% inlineMath expression="e^x=1+x+\\frac{x^2}{2!}+\\frac{x^3}{3!}+\\cdots \\cdots" /%}，显然，在这里，如果X有量纲，那么便无法判断{% inlineMath expression="e^x" /%}次方的量纲
+
+因此，st无量纲，自然s的量纲为1/s，我们可以记作：{% inlineMath expression="[s]=\\frac{1}{s}" /%}
+
+## 从s本身的表达式看
+
+{% inlineMath expression="e^{-s t}=e^{-(\\sigma+j \\omega) t}=e^{-\\sigma t} e^{-j \\omega t}" /%}，其中{% inlineMath expression="e^{-\\sigma t}" /%} 表示包络， {% inlineMath expression="e^{-j \\omega t}" /%} 表示振荡。
+
+{% inlineMath expression="\\omega" /%} 的单位是rad/s，量纲自然就是1/s。而 {% inlineMath expression="\\sigma" /%} 表示衰减的速度，其量纲自然也是1/s，更严谨的说明如下：
+
+{% math
+   expression="\\begin{aligned}\n\\ln e^{-\\sigma t} & =-\\sigma t \\\\\n& \\Rightarrow \\frac{d}{d t} \\ln e^{-\\sigma t}  =-\\sigma\n\\end{aligned}" /%}
+
+即{% inlineMath expression="\\sigma" /%}表示**每单位时间的相对变化率**，量纲是1/s。
+
+## 从微分算子的角度
+
+我们知道傅里叶变换的微分性质为：
+
+{% math
+   expression="\\begin{aligned}\nx(t) & \\stackrel{F}{\\longrightarrow} X(j \\omega) \\\\\n\\frac{d}{d t} x(t) & \\stackrel{F}{\\longrightarrow} j \\omega X(j \\omega)\n\\end{aligned}" /%}
+
+同样的，对拉普拉斯变换也有微分性质：
+
+{% math
+   expression="\\begin{aligned}\n x(t) &\\stackrel{L}{\\longleftrightarrow} X(s) \\\\\n \\frac{d}{d t} x(t) &\\stackrel{L}{\\longleftrightarrow} s X(s)\n\\end{aligned}" /%}
+
+从而我们可以得到微分算子与jw/s的对应关系：
+
+{% math
+   expression="\\begin{aligned}\n& \\frac{d}{d t} \\stackrel{F}{\\longleftrightarrow} j \\omega \\\\\n& \\frac{d}{d t} \\stackrel{L}{\\longleftrightarrow} s\n\\end{aligned}" /%}
+
+这又从另外一个角度反映了s的量纲是1/s
+
+## 小结
+
+在我们实际应用拉普斯变换的时候，我们似乎不会去考虑一个最常见的参数S的量纲应该是什么。但是在我们真正地进行物理分析的过程中，明确了S的量纲有时是非常有用的。
+
+从另外一个角度来看，当我们深入了解这一个点的推导的过程中，也在无意识之间加深了对傅里叶变换与拉普拉斯变换的理解。

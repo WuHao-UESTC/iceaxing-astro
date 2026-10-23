@@ -10,6 +10,15 @@ export default defineMarkdocConfig({
     }),
   ],
   tags: {
+    wikiLink: {
+      render: component('./src/components/markdoc/WikiLink.astro'),
+      selfClosing: true,
+      attributes: {
+        target: { type: String, required: true },
+        label: { type: String, default: '' },
+        anchor: { type: String, default: '' },
+      },
+    },
     articleImage: {
       render: component('./src/components/markdoc/ArticleImage.astro'),
       selfClosing: true,

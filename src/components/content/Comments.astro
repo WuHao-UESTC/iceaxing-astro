@@ -1,0 +1,98 @@
+---
+import type { Locale } from '../../i18n/config';
+import { commentCopy } from '../../lib/comments/copy';
+import '../../styles/comments.css';
+
+interface Props {
+  locale: Locale;
+  thread?: string;
+  admin?: boolean;
+}
+const { locale, thread = '', admin = false } = Astro.props;
+const copy = commentCopy[locale];
+---
+
+<section
+  class="site-comments"
+  data-comments
+  data-thread={thread}
+  data-locale={locale}
+  data-admin={String(admin)}
+  aria-label={admin ? copy.admin : copy.title}
+  data-pagefind-ignore
+>
+  <header class="comment-heading">
+    <h2>{admin ? copy.admin : copy.title}</h2>
+    <button type="button" data-refresh>
+      {copy.refresh}
+    </button>
+  </header>
+  <p class="comment-status" data-status role="status" aria-live="polite"></p>
+  <div data-auth>
+    <p>{admin ? copy.adminOnly : copy.login}</p>
+    <form data-login>
+      <label>
+        {copy.email}
+        <input name="email" type="email" autocomplete="email" maxlength="254" required />
+      </label>
+      <button type="submit">{copy.send}</button>
+    </form>
+    <form data-verify hidden>
+      <label>
+        {copy.code}
+        <input
+          name="code"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          pattern="[0-9]{6}"
+          maxlength="6"
+          required
+        />
+      </label>
+      <button type="submit">{copy.verify}</button>
+      <button type="button" data-change>
+        {copy.change}
+      </button>
+    </form>
+  </div>
+  <div class="comment-identity" data-identity hidden>
+    <span data-email></span>
+    <a href="/keystatic/comments" data-manage hidden>
+      {copy.manage}
+    </a>
+    <button type="button" data-logout>
+      {copy.logout}
+    </button>
+  </div>
+  <form class="comment-composer" data-compose hidden>
+    <p data-replying hidden></p>
+    <button type="button" data-cancel hidden>
+      {copy.cancel}
+    </button>
+    <label>
+      {copy.name}
+      <input name="name" autocomplete="nickname" maxlength="40" required />
+    </label>
+    <label>
+      {copy.body}
+      <textarea name="body" rows="4" maxlength="5000" required></textarea>
+    </label>
+    <button type="submit">{copy.submit}</button>
+  </form>
+  {admin && (
+    <section data-blocklist hidden>
+      <h3>{copy.blocked}</h3>
+      <div data-blocked></div>
+    </section>
+  )}
+  <div class="comment-list" data-list aria-live="polite"></div>
+  <button type="button" data-more hidden>
+    {copy.more}
+  </button>
+</section>
+<script>
+  import { initComments } from '../../scripts/comments';
+  initComments();
+  document.addEventListener('astro:page-load', initComments);
+</script>

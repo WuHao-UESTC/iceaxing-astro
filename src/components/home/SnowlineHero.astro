@@ -1,6 +1,5 @@
 ---
 import ChapterMarker from './ChapterMarker.astro';
-import ScrollControls from './ScrollControls.astro';
 import type { HomeCard, HomeLabels } from './types';
 import { localizedPath, type Locale } from '../../i18n/config';
 import { getMessages } from '../../i18n/messages';
@@ -89,21 +88,18 @@ const routes = [
             {labels.next}
             <span aria-hidden="true">↓</span>
           </a>
-          <ScrollControls target="hero-featured-list" label={labels.featured} />
         </header>
-        <div id="hero-featured-list" class="journey-featured-track" data-scroll-list tabindex="0">
+        <div id="hero-featured-list" class="journey-featured-track">
           {featured.map((card, index) => (
             <a
               class="journey-featured-card"
               href={card.href}
+              data-group={card.group ?? 'unassigned'}
+              title={card.title}
               data-reveal
               data-step={String(4 + index)}
             >
-              <span>0{index + 1}</span>
-              <div>
-                <small>{card.meta}</small>
-                <strong>{card.title}</strong>
-              </div>
+              <strong>{card.title}</strong>
               <i aria-hidden="true">↗</i>
             </a>
           ))}

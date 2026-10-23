@@ -4,7 +4,7 @@
     {
       "contentId": "basic-of-passive-filter-design",
       "kind": "article",
-      "versionHash": "36c05f71766436f61bfcbf7b",
+      "versionHash": "066f5fad3b12203243644bfc",
       "publishedAt": "2026-10-19T17:01:00.000Z",
       "titles": { "zh": "无源滤波器设计" },
       "urls": { "zh": "/filter-design-in-digital-world-note/basic-of-passive-filter-design" },
@@ -31,13 +31,22 @@
     {
       "contentId": "c9-general-condition-of-ic-manu",
       "kind": "article",
-      "versionHash": "e40996fb2bdee6f98989359a",
+      "versionHash": "ea58f8dbf2584cb75075f2d6",
       "publishedAt": "2026-10-20T10:06:00.000Z",
       "titles": { "zh": "C9-集成电路制造工艺概况" },
       "urls": {
         "zh": "/quirk-semiconductor-manufacturing-technology-note/c9-general-condition-of-ic-manu"
       },
       "subscriptionKeys": ["category:quirk-semiconductor-manufacturing-technology-note"]
+    },
+    {
+      "contentId": "dimension-of-s",
+      "kind": "article",
+      "versionHash": "0896986e7d2ba0d0801fa1ea",
+      "publishedAt": "2026-10-23T02:25:00.000Z",
+      "titles": { "zh": "为什么‘s’的量纲是1/s？" },
+      "urls": { "zh": "/oppenheim-signal-and-system-note/dimension-of-s" },
+      "subscriptionKeys": ["category:oppenheim-signal-and-system-note"]
     },
     {
       "contentId": "analog-ic",
@@ -77,10 +86,10 @@
     {
       "contentId": "filter-design-in-digital-world-note",
       "kind": "category",
-      "versionHash": "afea1f4fdd4a990bd75eb4db",
+      "versionHash": "a02f137d99510c944f58a887",
       "publishedAt": "2026-10-19T16:59:00.000Z",
       "titles": {
-        "zh": "数字时代的滤波器设计-课程笔记",
+        "zh": "数字时代的滤波器设计",
         "en": "Filter Design in Digital World Note",
         "de": "Filter Design in Digital World Note"
       },
@@ -92,12 +101,21 @@
       "subscriptionKeys": ["category:filter-design-in-digital-world-note"]
     },
     {
+      "contentId": "journey",
+      "kind": "category",
+      "versionHash": "87009a3fae42110328ebca7b",
+      "publishedAt": "2026-10-22T20:40:00.000Z",
+      "titles": { "zh": "旅行手记", "en": "Journey", "de": "Journey" },
+      "urls": { "de": "/de/journey", "en": "/en/journey", "zh": "/journey" },
+      "subscriptionKeys": ["category:journey"]
+    },
+    {
       "contentId": "liuenke-semiconductance-note",
       "kind": "category",
-      "versionHash": "f73bd5b1187dddd012161cd5",
+      "versionHash": "8e3636779223ae744f2910e7",
       "publishedAt": "2026-10-19T16:04:00.000Z",
       "titles": {
-        "zh": "刘恩科-半导体物理学笔记",
+        "zh": "刘恩科-半导体物理学",
         "en": "Liu Enke Semiconductor Note",
         "de": "Liu Enke Semiconductor Note"
       },
@@ -111,10 +129,10 @@
     {
       "contentId": "oppenheim-signal-and-system-note",
       "kind": "category",
-      "versionHash": "29de8632a46385923910713b",
+      "versionHash": "5c95b863a288a01ea5384e44",
       "publishedAt": "2026-10-19T16:49:00.000Z",
       "titles": {
-        "zh": "奥本海姆-信号与系统笔记",
+        "zh": "奥本海姆-信号与系统",
         "en": "Oppenheim Signal & System Note",
         "de": "Oppenheim Signal & System Note"
       },
@@ -137,10 +155,10 @@
     {
       "contentId": "quirk-semiconductor-manufacturing-technology-note",
       "kind": "category",
-      "versionHash": "0505fa42019926fa691db293",
+      "versionHash": "b75ed2bba3367401f336abe6",
       "publishedAt": "2026-10-20T10:03:00.000Z",
       "titles": {
-        "zh": "奎克-半导体制造技术学习笔记",
+        "zh": "奎克-半导体制造技术",
         "en": "Quirk-Semiconductor Manufacturing Technology Note",
         "de": "Quirk-Semiconductor Manufacturing Technology Note"
       },
@@ -154,10 +172,10 @@
     {
       "contentId": "rabaey-digital-ic-note",
       "kind": "category",
-      "versionHash": "300a75e9cb4c50f9055a690f",
+      "versionHash": "d4dd7c8b8e6fa0507df16cb4",
       "publishedAt": "2026-10-19T15:57:00.000Z",
       "titles": {
-        "zh": "Rabaey-数字集成电路设计学习笔记",
+        "zh": "Rabaey-数字集成电路设计",
         "en": "Rabaey-Digital IC Note",
         "de": "Rabaey-Digital IC Note"
       },
@@ -171,10 +189,10 @@
     {
       "contentId": "razavi-cmos-analog-note",
       "kind": "category",
-      "versionHash": "47ef7f86e968759da7b12152",
+      "versionHash": "7efa588233ca33c81a02a9f7",
       "publishedAt": "2026-10-19T15:52:00.000Z",
       "titles": {
-        "zh": "拉扎维-模拟CMOS集成电路设计学习笔记",
+        "zh": "拉扎维-模拟CMOS集成电路设计",
         "en": "Razavi-Analog CMOS IC Note",
         "de": "Razavi-Analog CMOS IC Note"
       },
@@ -188,10 +206,10 @@
     {
       "contentId": "razavi-rf-microelectronics-note",
       "kind": "category",
-      "versionHash": "b4db1eda3873434fca90b411",
+      "versionHash": "aaf709e247e712896dba7dc3",
       "publishedAt": "2026-10-19T16:54:00.000Z",
       "titles": {
-        "zh": "拉扎维-射频微电子笔记",
+        "zh": "拉扎维-射频微电子",
         "en": "Razavi- RF Microelectronics Note",
         "de": "Razavi- RF Microelectronics Note"
       },

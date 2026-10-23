@@ -8,6 +8,34 @@ const mathNodes = (source: string) =>
   [...parse(source).walk()].filter((node) => node.tag === 'math' || node.tag === 'inlineMath');
 
 describe('dollar math before Markdoc parsing', () => {
+  it.each(['\n', '\r\n'])(
+    'keeps prose after a formula when Astro blanks frontmatter (%j)',
+    (newline) => {
+      // Astro replaces YAML with blank lines to preserve source locations.
+      const source =
+        newline.repeat(18) +
+        '{% inlineMath expression="e^{-s t}" /%}  **是不应当有量纲的**！' +
+        newline +
+        newline +
+        '{% inlineMath expression="x" /%}，其中 x 是变量。';
+      const tokenizer = new Markdoc.Tokenizer({ allowComments: true, typographer: true });
+      const ast = Markdoc.parse(tokenizer.tokenize(source));
+      const tree = Markdoc.transform(ast, {
+        tags: {
+          inlineMath: {
+            render: 'inline-math',
+            selfClosing: true,
+            attributes: { expression: { type: String } },
+          },
+        },
+      });
+      const html = Markdoc.renderers.html(tree);
+      expect(html).toContain('<strong>是不应当有量纲的</strong>！');
+      expect(html).toContain('，其中 x 是变量。');
+      expect([...ast.walk()].find((node) => node.tag === 'inlineMath')?.lines[0]).toBe(18);
+    },
+  );
+
   it.each([
     '$$ E = mc^2 $$',
     '$$\nE = mc^2\n$$',

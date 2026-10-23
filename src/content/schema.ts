@@ -34,8 +34,6 @@ export const baseContentSchema = z.object({
   featured: z.boolean().default(false),
   order: z.number().int().min(0).default(0),
   seo: seoSchema,
-  legacySanityId: z.string().optional(),
-  legacyPath: z.string().optional(),
 });
 
 export const articleSchema = baseContentSchema.extend({

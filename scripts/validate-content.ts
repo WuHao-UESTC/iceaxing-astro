@@ -4,6 +4,9 @@ import path from 'node:path';
 
 import { format, resolveConfig } from 'prettier';
 import { parse } from 'yaml';
+import Markdoc from '@markdoc/markdoc';
+import { normalizeDollarMath } from '../src/lib/markdoc-math';
+import { normalizeWikiLinks, resolveWikiTarget, type WikiLinkTarget } from '../src/lib/wikilinks';
 
 import {
   articleSchema,
@@ -414,6 +417,41 @@ for (const route of routes) {
       `路由“${route.pathname}”与 ${previous.sourceFile}（${previous.kind}）冲突`,
     );
   } else routeOwners.set(route.pathname, route);
+}
+
+// Published references must resolve to a public route. Drafts may contain
+// unfinished references while their linked articles are still being written.
+const wikiTargets: WikiLinkTarget[] = [...articles, ...logs, ...pages].flatMap((entry) => {
+  const route = routes.find((route) => route.sourceFile === entry.sourceFile);
+  return route
+    ? [
+        {
+          id: entry.entryKey,
+          title: requiredString(entry, 'title'),
+          locale: route.locale,
+          kind: route.kind as WikiLinkTarget['kind'],
+          href: route.pathname,
+        },
+      ]
+    : [];
+});
+for (const entry of [...articles, ...logs, ...pages]) {
+  if (!routes.some((route) => route.sourceFile === entry.sourceFile)) continue;
+  const source = await readFile(path.join(root, entry.sourceFile), 'utf8');
+  const ast = Markdoc.parse(normalizeWikiLinks(normalizeDollarMath(source)));
+  for (const node of ast.walk()) {
+    if (node.tag !== 'wikiLink') continue;
+    const target = node.attributes.target;
+    if (
+      typeof target !== 'string' ||
+      !resolveWikiTarget(target, wikiTargets, entry.data.locale as Locale)
+    ) {
+      issue(
+        entry.sourceFile,
+        `WikiLink 目标不存在、未发布或标题不唯一：${String(target)}；请在编辑器中重新选择文章。`,
+      );
+    }
+  }
 }
 
 if (errors.length) {

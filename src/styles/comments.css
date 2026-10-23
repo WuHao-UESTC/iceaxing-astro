@@ -1,0 +1,113 @@
+.site-comments {
+  margin-block: 2.5rem;
+  padding-block: 1.5rem;
+  border-top: 1px solid var(--line, #ccd2cf);
+  color: var(--text, inherit);
+  font:
+    400 0.9rem/1.65 system-ui,
+    sans-serif;
+}
+.site-comments [hidden] {
+  display: none !important;
+}
+.comment-heading,
+.comment-identity,
+.comment-actions,
+.comment-entry header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+.comment-heading {
+  justify-content: space-between;
+}
+.comment-heading h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.site-comments button {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--line, #bcc6c0);
+  border-radius: 0.4rem;
+  background: var(--surface, #f8faf9);
+  color: var(--text, #18372d);
+  font: inherit;
+  cursor: pointer;
+}
+.site-comments button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+.site-comments input,
+.site-comments textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.65rem;
+  border: 1px solid var(--line, #bcc6c0);
+  border-radius: 0.4rem;
+  background: var(--surface, #fff);
+  color: var(--text, #18372d);
+  font: inherit;
+}
+.site-comments label {
+  display: grid;
+  gap: 0.3rem;
+}
+.site-comments form {
+  display: grid;
+  gap: 0.75rem;
+  margin-block: 1rem;
+}
+.site-comments form button {
+  justify-self: start;
+}
+.comment-composer textarea {
+  resize: vertical;
+}
+.comment-status {
+  min-height: 1.5em;
+  overflow-wrap: anywhere;
+}
+.comment-entry {
+  padding-block: 1.2rem;
+  border-top: 1px solid var(--line, #ccd2cf);
+  overflow-wrap: anywhere;
+}
+.comment-entry.is-reply {
+  margin-inline-start: 1rem;
+  padding-inline-start: 1rem;
+  border-left: 2px solid var(--line, #ccd2cf);
+}
+.comment-entry time,
+.comment-reply-to,
+.comment-actions {
+  color: var(--muted, #5e7169);
+  font-size: 0.8rem;
+}
+.comment-body {
+  white-space: pre-wrap;
+}
+.comment-author {
+  padding: 0 0.4rem;
+  border-radius: 0.3rem;
+  color: var(--accent-strong, #19574f);
+  background: var(--surface, #eef5f1);
+  font-size: 0.75rem;
+}
+.comment-identity {
+  overflow-wrap: anywhere;
+  margin-block: 1rem;
+}
+[data-blocked] p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+.comments-admin {
+  max-width: 60rem;
+  margin: auto;
+  padding: 1rem 1.5rem;
+}

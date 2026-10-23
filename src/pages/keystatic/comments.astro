@@ -1,0 +1,21 @@
+---
+import Comments from '../../components/content/Comments.astro';
+import '../../styles/global.css';
+export const prerender = false;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>评论管理 · iceaxing</title>
+  </head>
+  <body>
+    <main class="comments-admin">
+      <a href="/keystatic/workspace">← 内容工作区</a>
+      <Comments locale="zh" admin />
+    </main>
+  </body>
+</html>

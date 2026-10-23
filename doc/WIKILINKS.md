@@ -1,0 +1,31 @@
+# Keystatic WikiLink
+
+在文章、日志或页面正文中输入 `[[`，然后输入文章标题或稳定内容 ID 搜索。用方向键选择，按 Enter 插入；也可以用鼠标选择，按 Esc 关闭列表。
+
+选择器保存目标内容的 `contentId`，不保存当前 URL。前台按最新路由解析链接；目标标题、URL slug 或所属目录变化后，重新构建即可更新链接。默认显示目标文章的最新标题，填写自定义显示文字后则保留自定义文字。
+
+支持以下输入和粘贴格式：
+
+```text
+[[basic-of-passive-filter-design]]
+[[basic-of-passive-filter-design|无源滤波器设计入门]]
+[[basic-of-passive-filter-design#low-pass|低通滤波器部分]]
+```
+
+`#` 后填写目标标题的锚点 ID。可以从目标文章目录链接中复制 `#` 后的部分。
+
+插入后可点击编辑器中的引用，修改目标 ID、显示文字或标题锚点；也可以从正文的组件菜单插入「WikiLink · 文章引用」。删除引用的操作与其他行内组件相同。
+
+直接填写 `[[文章标题]]` 支持精确标题匹配。同名文章需要通过搜索列表选择，以保证保存唯一的稳定 ID；新引用建议始终通过列表选择或直接填写 ID。
+
+搜索会包含草稿，并显示草稿标记。草稿没有公开链接；发布文章的引用必须指向已经公开的文章、日志或页面，`npm run content:validate` 会报告无法解析的引用。此检查不会阻止草稿暂存未完成的引用。
+
+代码块、行内代码和已有 Markdown 链接中的 `[[...]]` 保持原样。正文需要显示字面的双括号时，可以输入 `\[[文字]]`，或使用行内代码。
+
+引用在 `.mdoc` 文件中保存为标准 Markdoc 行内组件，例如：
+
+```markdoc
+{% wikiLink target="basic-of-passive-filter-design" label="无源滤波器设计入门" anchor="" /%}
+```
+
+这项功能使用项目内的 ProseMirror 插件和 Keystatic 字段封装，不依赖修改 Keystatic 的 WikiLink 源码补丁。

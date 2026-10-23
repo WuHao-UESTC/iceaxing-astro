@@ -259,25 +259,33 @@ summary {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.tree-row-label small {
-  overflow: hidden;
-  color: #858b95;
-  font-size: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .locale-badges {
   display: flex;
-  gap: 2px;
+  flex-direction: column;
+  flex: none;
+  gap: 3px;
 }
-.locale-badges span {
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.locale-badge,
+.publication-badge {
   border-radius: 4px;
   background: #e6e8ec;
   color: #686f7a;
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 750;
   padding: 2px 3px;
+}
+.publication-badge.is-published {
+  background: #ddf2e8;
+  color: #236249;
+}
+.publication-badge.is-scheduled {
+  background: #fff0cf;
+  color: #77500d;
 }
 
 .tree-item-menu {
@@ -416,6 +424,10 @@ summary {
   background: #fff;
   color: #59616c;
   font-size: 10px;
+}
+.refresh-preview-button:disabled {
+  cursor: progress;
+  opacity: 0.65;
 }
 .content-editor-pane iframe {
   width: 100%;
@@ -585,6 +597,32 @@ summary {
   }
   .tree-row:hover {
     background: #292c31;
+  }
+  .tree-row {
+    color: #e4e7ec;
+  }
+  .tree-toggle,
+  .tree-row-icon,
+  .tree-item-menu > summary,
+  .tree-toolbar button,
+  .native-navigation-toggle {
+    color: #bec6d2;
+  }
+  .folder-row .tree-row-icon {
+    color: #e5b65e;
+  }
+  .locale-badge,
+  .publication-badge {
+    background: #343b46;
+    color: #dbe2ed;
+  }
+  .publication-badge.is-published {
+    background: #254a3e;
+    color: #b4f0cf;
+  }
+  .publication-badge.is-scheduled {
+    background: #514126;
+    color: #ffe0a1;
   }
   .tree-row.is-selected {
     background: #254a3e;

@@ -3,6 +3,7 @@ import { block, inline, repeating, wrapper } from '@keystatic/core/content-compo
 import { createElement } from 'react';
 import { articleImage } from './article-image';
 import { normalizeDollarMath } from '../lib/markdoc-math';
+import { wikiLink } from './wiki-link';
 
 const requiredText = (label: string, description?: string) =>
   fields.text({
@@ -12,6 +13,7 @@ const requiredText = (label: string, description?: string) =>
   });
 
 export const markdocComponents = {
+  wikiLink,
   articleImage,
   callout: wrapper({
     label: '提示框',

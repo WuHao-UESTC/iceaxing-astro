@@ -5,6 +5,8 @@ import { execFileSync } from 'node:child_process';
 import { patchKeystaticImages } from './patch-keystatic-images.mjs';
 import { patchSharedArticleAssets } from './patch-keystatic-shared-assets.mjs';
 import { patchKeystaticMath } from './patch-keystatic-math.mjs';
+import { patchKeystaticSave } from './patch-keystatic-save.mjs';
+import { patchMarkdocParser } from './patch-markdoc-parser.mjs';
 
 const PATCH_MARKER = 'iceaxing-keystatic-editor-patch:v3';
 const LEGACY_PATCH_MARKER = 'iceaxing-keystatic-editor-patch:v1';
@@ -327,6 +329,8 @@ for (const bundleName of bundleNames) {
   }
 }
 await patchSharedArticleAssets(distDirectory);
+await patchKeystaticSave(path.join(distDirectory, 'keystatic-core-ui.js'));
+await patchMarkdocParser();
 // Validate generated JavaScript, including installs that reused cached patched bundles.
 for (const name of await readdir(distDirectory)) {
   if (!name.endsWith('.js')) continue;

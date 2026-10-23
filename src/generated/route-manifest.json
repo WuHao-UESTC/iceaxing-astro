@@ -91,6 +91,13 @@
     "sourceFile": "src/content/categories/filter-design-in-digital-world-note.yaml"
   },
   {
+    "pathname": "/de/journey",
+    "kind": "category",
+    "contentId": "journey",
+    "locale": "de",
+    "sourceFile": "src/content/categories/journey.yaml"
+  },
+  {
     "pathname": "/de/liuenke-semiconductance-note",
     "kind": "category",
     "contentId": "liuenke-semiconductance-note",
@@ -210,6 +217,13 @@
     "sourceFile": "src/content/categories/filter-design-in-digital-world-note.yaml"
   },
   {
+    "pathname": "/en/journey",
+    "kind": "category",
+    "contentId": "journey",
+    "locale": "en",
+    "sourceFile": "src/content/categories/journey.yaml"
+  },
+  {
     "pathname": "/en/liuenke-semiconductance-note",
     "kind": "category",
     "contentId": "liuenke-semiconductance-note",
@@ -301,6 +315,13 @@
     "sourceFile": "src/content/articles/zh/basic-of-rf-filter-design/index.mdoc"
   },
   {
+    "pathname": "/journey",
+    "kind": "category",
+    "contentId": "journey",
+    "locale": "zh",
+    "sourceFile": "src/content/categories/journey.yaml"
+  },
+  {
     "pathname": "/liuenke-semiconductance-note",
     "kind": "category",
     "contentId": "liuenke-semiconductance-note",
@@ -313,6 +334,13 @@
     "contentId": "oppenheim-signal-and-system-note",
     "locale": "zh",
     "sourceFile": "src/content/categories/oppenheim-signal-and-system-note.yaml"
+  },
+  {
+    "pathname": "/oppenheim-signal-and-system-note/dimension-of-s",
+    "kind": "article",
+    "contentId": "dimension-of-s",
+    "locale": "zh",
+    "sourceFile": "src/content/articles/zh/dimension-of-s/index.mdoc"
   },
   {
     "pathname": "/photo-book",

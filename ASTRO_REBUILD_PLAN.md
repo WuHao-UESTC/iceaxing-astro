@@ -315,7 +315,6 @@ coverImage: ../../../../assets/content/high-k/cover.webp
 - `publishedAt`、`updatedAt`。
 - `category` 或 `project`；`collection` 可选但要求同时存在 `project`。
 - `tags`、`authorName`、`coverImage`、SEO 覆盖字段；不保存文章级 `theme`。
-- 可选 `legacySanityId` 和 `legacyPath`，仅用于迁移追踪。
 
 #### Category
 

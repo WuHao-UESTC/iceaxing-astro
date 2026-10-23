@@ -17,11 +17,17 @@ category: filter-design-in-digital-world-note
 
 {% columns gap="medium" %}
 {% column %}
-![](../../../../assets/content/body/basic-of-passive-filter-design/d8d6c67a-962d-41b8-aadb-97bc1829f941.png)
+{% articleImage
+   src="../../../../assets/article-images/ae3bb9bb800311c7008f4fbd8ae089e37e8ccf493467aeb87ccb27c4751f6f36.webp"
+   width=398
+   height=259 /%}
 {% /column %}
 
 {% column %}
-![](../../../../assets/content/body/basic-of-passive-filter-design/%E5%9B%BE%E7%89%87.png)
+{% articleImage
+   src="../../../../assets/article-images/b3b06d7c8e7c554832700685d82899967f902f4c249e3c6ff2bbdefcc58d93eb.webp"
+   width=859
+   height=610 /%}
 {% /column %}
 {% /columns %}
 
@@ -35,6 +41,11 @@ category: filter-design-in-digital-world-note
 1. 零输入相应的电压方程：
 
    快速写出方程：{% inlineMath expression="U(t)=U(\\infty)\\left[1-\\exp \\left(-\\frac{t}{\\tau}\\right)\\right]" /%}
+
+   {% articleImage
+      src="../../../../assets/article-images/f34d94b5fad828f2480c0d6c761776aefcbfddd8d5c962ba4085ac415db3f446.webp"
+      width=785
+      height=571 /%}
 
 1. 如何理解在较高的频率下低通滤波器会退化成一个积分器？
 
@@ -50,11 +61,17 @@ category: filter-design-in-digital-world-note
 
 {% columns gap="medium" %}
 {% column %}
-![](../../../../assets/content/body/basic-of-passive-filter-design/%E5%9B%BE%E7%89%87.png)
+{% articleImage
+   src="../../../../assets/article-images/fab6d3e5075dc12bd67834d091d031b521c8ed6dc6b6540b78a629a7963bedd3.webp"
+   width=368
+   height=256 /%}
 {% /column %}
 
 {% column %}
-![](../../../../assets/content/body/basic-of-passive-filter-design/%E5%9B%BE%E7%89%87.png)
+{% articleImage
+   src="../../../../assets/article-images/fe9ddbbd4f7e850cbbae3b9aca879ec09c01c7953dcb79f86d8b9cff8badb955.webp"
+   width=873
+   height=628 /%}
 {% /column %}
 {% /columns %}
 
@@ -64,6 +81,11 @@ category: filter-design-in-digital-world-note
       expression="\\begin{aligned} H(\\omega) & =\\frac{R}{R_1+1 / j \\omega C_1} \\\\ & =\\frac{j \\omega / \\omega_{\\mathrm{c}}}{1+j \\omega / \\omega_{\\mathrm{c}}} \\\\ & \\simeq\\left\\{\\begin{array}{cc}\\left(j \\omega / \\omega_{\\mathrm{c}}\\right) & \\omega \\ll \\omega_{\\mathrm{c}} \\\\ 1 & \\omega \\gg \\omega_{\\mathrm{c}}\\end{array}\\right.\\end{aligned}" /%}
 
 1. 零状态相应方程：与低通滤波器相同
+
+   {% articleImage
+      src="../../../../assets/article-images/8b200576962c5380bff728a7d20b72536777d1cd53881239a8aec325844e736b.webp"
+      width=784
+      height=577 /%}
 
 1. 在较高频率下的高通滤波器退化成一个微分器：原因与低通滤波器退化成积分器的相似
 
@@ -76,9 +98,46 @@ category: filter-design-in-digital-world-note
 ## 两级RC级联的滤波器
 
 1. 传递函数
+
+   {% columns gap="medium" %}
+   {% column %}
+   {% articleImage
+      src="../../../../assets/article-images/389d7acbe05a63dd0ff11f043f3f1a0356d9ef4e3a7c14e270c87dfe0bc41a65.webp"
+      width=570
+      height=269 /%}
+   {% /column %}
+
+   {% column %}
+   {% articleImage
+      src="../../../../assets/article-images/5376bd1bcb5f31c83b64568fca39e1a74e1278942ef29a902491f346cd4c49fb.webp"
+      width=854
+      height=614 /%}
+   {% /column %}
+   {% /columns %}
+
+   1. {% math
+         expression="\\begin{aligned}\nH(\\omega) & =\\frac{1}{\\left(1+j \\omega / \\omega_{\\mathrm{c}}\\right)^2+j \\omega / \\omega_{\\mathrm{c}}} \\\\\n& =\\frac{1}{\\left(j \\omega / \\omega_{\\mathrm{c}}+a_{+}\\right)\\left(j \\omega / \\omega_{\\mathrm{c}}+a_{-}\\right)} \\\\\n& \\simeq \\begin{cases}1 & \\omega \\ll a_{-} \\omega_{\\mathrm{c}} \\\\\na_{+}\\left(j \\omega / \\omega_{\\mathrm{c}}\\right)^{-1} & a_{-} \\omega_{\\mathrm{c}} \\ll \\omega \\ll a_{+} \\omega \\\\\n\\left(j \\omega / \\omega_{\\mathrm{c}}\\right)^{-2} & \\omega \\gg a_{+} \\omega_{\\mathrm{c}}\\end{cases}\n\\end{aligned}" /%}
+
 1. 幅频响应与相频响应特点
 
+   1. 双极点系统增益在第一个基点之后为-20dB/dec , 在第二个节点之后为-40dB/dec，这是可以从传递函数的表达式中看出来
+   1. 同样的，相位第一个节点之后为-90°。
+      在第二个节点后为-180°。同样可以从传递函数中看出来。
+
 ## RLC二阶滤波器的振荡问题
+
+### 为什么需要引入RLC二阶滤波器？
+
+根本原因在于直接级联两级RC滤波器，其在通带的增益**必然会减少**！
+
+要真正解决这个问题，我觉得还是要从数学的角度入手，因此下面的论述会很多，也很繁杂，我们按照逻辑的顺序来梳理。
+
+### 标准二阶形式
+
+sssaaammmkkkdddaaannniaaassss
+
+{% math
+   expression="\\begin{aligned}\n& \\frac{1}{\\left(1+j \\omega / \\omega_c\\right)^2+\\left(j \\omega / \\omega_c\\right)} \\\\\n= & \\frac{1}{\\left(j \\omega / \\omega_c\\right)^2+3\\left(j \\omega / \\omega_c\\right)+1} \\\\\n= & \\frac{1}{\\omega^2+\\omega / Q+1} \\\\\n& u=  j \\omega / \\omega_c, Q=\\frac{1}{3}\n\\end{aligned}" /%}
 
 1. 振荡产生的原因
 1. 如何解决振荡问题

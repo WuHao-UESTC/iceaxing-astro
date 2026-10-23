@@ -4,7 +4,7 @@ import type { RenderResult } from 'astro:content';
 import type { ArticleEntry, LogEntry } from '../../lib/content';
 import { formatDate } from '../../lib/content';
 import { localizedPath, type Locale } from '../../i18n/config';
-import GiscusComments from './GiscusComments.astro';
+import Comments from './Comments.astro';
 import TableOfContents from './TableOfContents.astro';
 import '../../styles/reading.css';
 
@@ -216,7 +216,7 @@ const indexHref = parent?.href ?? localizedPath(locale, kind === 'log' ? '/log' 
             <a href="#reader-top">{labels.top} ↑</a>
           </div>
         </footer>
-        <GiscusComments {locale} />
+        <Comments {locale} thread={`${kind}:${entry.data.contentId}:${locale}`} />
       </div>
 
       <aside class="reader-aside" data-pagefind-ignore>

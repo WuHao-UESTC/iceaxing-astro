@@ -11,6 +11,7 @@ export interface SendMessage {
   text: string;
   headers?: Record<string, string>;
   idempotencyKey: string;
+  replyTo?: string;
 }
 
 function escapeHtml(value: string) {
@@ -60,6 +61,7 @@ export async function sendMessage(message: SendMessage) {
       html: message.html,
       text: message.text,
       headers: message.headers,
+      replyTo: message.replyTo,
     },
     { idempotencyKey: message.idempotencyKey.slice(0, 256) },
   );

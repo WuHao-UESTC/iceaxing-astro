@@ -116,15 +116,25 @@ const labels: HomeLabels =
           route: 'Altitude route',
         };
 
-const articleCards: HomeCard[] = articles.map((entry) => ({
-  id: entry.data.contentId,
-  href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
-  title: entry.data.title,
-  description: entry.data.excerpt,
-  meta: formatDate(entry.data.publishedAt, locale),
-  publishedAt: entry.data.publishedAt.toISOString(),
-  tags: entry.data.tags,
-}));
+const categoryById = new Map(index.categories.map((entry) => [entry.data.categoryId, entry]));
+const projectById = new Map(index.projects.map((entry) => [entry.data.projectId, entry]));
+const collectionById = new Map(index.series.map((entry) => [entry.data.collectionId, entry]));
+const articleCards: HomeCard[] = articles.map((entry) => {
+  const collection = entry.data.collection ? collectionById.get(entry.data.collection) : undefined;
+  const projectId = entry.data.project ?? collection?.data.project;
+  const project = projectId ? projectById.get(projectId) : undefined;
+  const categoryId = entry.data.category ?? project?.data.category;
+  return {
+    id: entry.data.contentId,
+    href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
+    title: entry.data.title,
+    description: entry.data.excerpt,
+    meta: formatDate(entry.data.publishedAt, locale),
+    publishedAt: entry.data.publishedAt.toISOString(),
+    tags: entry.data.tags,
+    group: categoryId ? categoryById.get(categoryId)?.data.group : undefined,
+  };
+});
 const categoryCards = Object.groupBy(
   byOrder(index.categories).map((entry) => ({
     group: entry.data.group,
@@ -228,9 +238,9 @@ const mottoEntry = byOrder(
 const motto = mottoEntry
   ? { text: mottoEntry.data.text, source: mottoEntry.data.source }
   : undefined;
-const featuredCards = articleCards.filter(
-  (card) => articles.find((entry) => entry.data.contentId === card.id)?.data.featured,
-);
+const featuredCards = articleCards
+  .filter((card) => articles.find((entry) => entry.data.contentId === card.id)?.data.featured)
+  .slice(0, 8);
 const featuredDestinations = [
   ...(categoryCards.study
     ?.map((entry) => entry.card)
@@ -314,7 +324,7 @@ const ramblingsHref = ramblingsCategory
       {locale}
       {labels}
       {motto}
-      featured={featuredCards.length ? featuredCards : articleCards.slice(0, 2)}
+      featured={featuredCards}
       destinations={featuredDestinations}
       profileHref={localizedPath(locale, '/profile')}
     />
