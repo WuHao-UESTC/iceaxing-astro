@@ -13,6 +13,88 @@ order: 0
 seo: {}
 category: filter-design-in-digital-world-note
 ---
-在跟随Hashimoto教授学习滤波器设计的过程中，笔者发现自己对于二阶系统基本特性的学习并不扎实。因此，为了能听懂教授讲授的课程，笔者不得不深入学习二级系统的基本特性。笔者整理了深入学习二阶系统特性的整个过程，写下此文。
+在跟随Hashimoto教授学习滤波器设计的过程中，笔者发现自己对于二阶系统基本特性的学习并不扎实（并且数学基础已经烂到了一定程度）。因此，为了能听懂教授讲授的课程，笔者不得不深入学习二级系统的基本特性。笔者整理了深入学习二阶系统特性的整个过程，写下此文。希望能对和我同样感到困惑的同学起到帮助。
 
-sss
+## 一般的二阶线性时不变系统方程
+
+### 数学推导
+
+从数学的角度来看，一版的二阶线性方程的写法很简单也很优美：
+
+{% math
+   expression="a_2 \\frac{d^2 y}{d t^2}+a_1 \\frac{d y}{d t}+a_0 y=b_2 \\frac{d^2 x}{d t^2}+b_1 \\frac{d x}{d t}+b_0 x" /%}
+
+做拉普拉斯变换之后，可以得到：
+
+\begin{aligned}
+
+& a_2 s^2 Y(s)+a_1 s Y(s)+a_0 Y(s)=b_2 s^2 X(s)+b_1 s X(s)+b_0 X(s) \
+
+\Rightarrow & H(s)=\frac{Y(s)}{X(s)}=\frac{b_2 s^2+b_1 s+b_0}{a_2 s^2+a_1 s+a_0} \
+
+\Rightarrow & \text { 极点: } a_2 s^2+a_1 s+a_0=0 \
+
+& \text { 零点: } b_2 s^2+b_{1}s+b_0=0
+
+\end{aligned}
+
+对于一个**可实现的物理系统**，我们要求其分子的阶数不高于分母阶数，具体可以参考{% wikiLink target="bibo-stability" /%}.
+
+### 物理由来
+
+而在在物理系统中，二阶系统的“二阶”通常来自于两个独立的储能元件的相互耦合（有的时候会通过阻尼原件，如电阻耦合），可以举两个最简单的例子来直观感受
+
+#### 小球-弹簧系统
+
+{% articleImage
+   src="../../../../assets/article-images/96af28033a8c50ca5d7547df88a579f1acad72c2c7041147ec49b20a50bb0ac3.webp"
+   width=1463
+   height=445 /%}
+
+由牛顿第二定律可以得到：
+
+{% math
+   expression="\\begin{aligned}\n& m \\frac{d^2 x}{d t^2}=F(t)-k x-c \\frac{d x}{d t} \\\\\n\\Rightarrow & m \\frac{d^2 x}{d t^2}+c \\frac{d x}{d t}+k x=F(t)\n\\end{aligned}" /%}
+
+归一化并做拉普拉斯变换之后，可以得到：
+
+{% math
+   expression="\\begin{aligned}\n& \\frac{d^2 x}{d t^2}+\\frac{c}{m} \\frac{d x}{d t}+\\frac{k}{m} x=\\frac{F(t)}{m} \\\\\n\\Rightarrow & s^2 X(s)+\\frac{c}{m} s X(s)+\\frac{k}{m} X(s)=\\frac{1}{m} F(s) \\\\\n\\Rightarrow & H(s)=\\frac{X(s)}{F(s)}=\\frac{\\frac{1}{m}}{s^2+\\frac{c}{m} s+\\frac{k}{m}}\n\\end{aligned}" /%}
+
+对其进行整理与参数替换，之后得到：
+
+{% math
+   expression="\\begin{aligned}\n& H(s)=\\frac{\\frac{1}{m}}{s^2+2 \\zeta \\omega_0 s+\\omega_0^2} \\\\\n& \\omega_0=\\sqrt{\\frac{k}{m}}, \\zeta=\\frac{c}{2 \\sqrt{m k}}\n\\end{aligned}" /%}
+
+其中的参数{% inlineMath expression="\\zeta" /%} 表征阻尼大小，{% inlineMath expression="\\omega_0" /%} 表征谐振频率。
+
+在这个系统中的两个储能原件是小球和弹簧，小球的动能和弹簧的弹性势能相互转换，外加动力是F(t)，阻尼是与速度相关的摩擦力
+
+#### RLC电路系统
+
+{% articleImage
+   src="../../../../assets/article-images/8da66d82c7995ee823591676ab4507b23aadc0d0ad9cd7e941019718d5936094.webp"
+   width=1068
+   height=425 /%}
+
+由KVL列出基本的方程
+
+{% math
+   expression="\\begin{aligned}\n& V_{\\text {in }}-V_{\\text {out }}=R_i+L \\frac{d i}{d t} \\\\\n& i=C \\frac{d V_{\\text {out }}}{d t} \\\\\n& \\Rightarrow V_{\\text {in }}=L C \\frac{d^2 V_{\\text {out }}}{d t^2}+R C \\frac{d V_{\\text {out }}}{d t}+V_{\\text {out }}\n\\end{aligned}" /%}
+
+进行归一化与拉普拉斯变换后得到传递函数
+
+{% math
+   expression="\\begin{aligned}\n& V_{\\text {in }}-V_{\\text {out }}=R_i+L \\frac{d i}{d t} \\\\\n& i=C \\frac{d V_{\\text {out }}}{d t} \\\\\n& \\Rightarrow V_{\\text {in }}=L C \\frac{d^2 V_{\\text {out }}}{d t^2}+R C \\frac{d V_{\\text {out }}}{d t}+V_{\\text {out }}\n\\end{aligned}" /%}
+
+其中
+
+在这个系统中的两个储能元件显然就是电容和电感，分别储存能够相互转化的电场能和磁场能，阻尼是电阻R，外部的激励是Vin
+
+### 为什么要引入归一化参数？
+
+#### 从数学层面——参数的引入是必然的
+
+#### 从物理的层面——选择具有实际物理意义的参数
+
+## 

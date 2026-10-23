@@ -43,8 +43,9 @@ export function initComments() {
     let loading = false;
     let busy = false;
     let cooldownUntil = 0;
-    const status = (text: string) => {
+    const status = (text: string, tone = 'info') => {
       el('[data-status]').textContent = text;
+      el('[data-status]').dataset.tone = tone;
     };
 
     async function api(action: string, data?: unknown) {
@@ -91,7 +92,7 @@ export function initComments() {
       try {
         await work();
       } catch (error) {
-        status(error instanceof Error ? error.message : copy.unavailable);
+        status(error instanceof Error ? error.message : copy.unavailable, 'error');
       } finally {
         busy = false;
         root.removeAttribute('aria-busy');
@@ -105,6 +106,7 @@ export function initComments() {
       const node = document.createElement('button');
       node.type = 'button';
       node.textContent = label;
+      if (label === copy.delete || label === copy.block) node.className = 'is-destructive';
       node.addEventListener('click', action);
       return node;
     }
@@ -130,6 +132,7 @@ export function initComments() {
       list.replaceChildren();
       if (!comments.length) {
         const p = document.createElement('p');
+        p.className = 'comment-empty';
         p.textContent = copy.empty;
         list.append(p);
       }
@@ -152,8 +155,15 @@ export function initComments() {
       for (const comment of ordered) {
         const row = document.createElement('article');
         row.id = `comment-${comment.id}`;
-        row.className = `comment-entry${comment.parentId ? ' is-reply' : ''}`;
+        row.className = `comment-entry${comment.parentId ? ' is-reply' : ''}${comment.author ? ' is-author' : ''}${comment.deleted ? ' is-deleted' : ''}`;
         const header = document.createElement('header');
+        const avatar = document.createElement('span');
+        avatar.className = 'comment-avatar';
+        avatar.setAttribute('aria-hidden', 'true');
+        avatar.textContent = comment.deleted
+          ? '·'
+          : (Array.from(comment.name.trim())[0]?.toLocaleUpperCase(locale) ?? '·');
+        header.append(avatar);
         const name = document.createElement('strong');
         name.textContent = comment.deleted ? copy.deleted : comment.name;
         header.append(name);

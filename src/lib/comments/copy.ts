@@ -1,6 +1,9 @@
 export const commentCopy = {
   zh: {
     title: '评论与回复',
+    intro: '读到这里，留下你的想法。',
+    join: '加入这场讨论',
+    placeholder: '一个问题、一点补充，或是读完后的感想……',
     login: '验证邮箱后参与讨论，同一浏览器下次无需重复验证。邮箱不会公开。',
     email: '邮箱',
     send: '发送验证码',
@@ -41,6 +44,9 @@ export const commentCopy = {
   },
   en: {
     title: 'Comments & replies',
+    intro: 'A place for thoughts along the way.',
+    join: 'Join the conversation',
+    placeholder: 'A question, a different perspective, or something this brought to mind…',
     login:
       'Verify your email to join the discussion. This browser will remember you. Your email stays private.',
     email: 'Email',
@@ -82,6 +88,9 @@ export const commentCopy = {
   },
   de: {
     title: 'Kommentare & Antworten',
+    intro: 'Platz für Gedanken unterwegs.',
+    join: 'Diskutiere mit',
+    placeholder: 'Eine Frage, eine Ergänzung oder ein Gedanke nach dem Lesen…',
     login:
       'Bestätige deine E-Mail, um mitzuschreiben. Dieser Browser merkt sich deine Anmeldung. Deine E-Mail bleibt privat.',
     email: 'E-Mail',
