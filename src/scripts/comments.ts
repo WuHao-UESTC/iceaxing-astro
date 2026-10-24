@@ -182,7 +182,10 @@ export function initComments() {
         const header = document.createElement('header');
         const name = document.createElement('strong');
         name.className = 'comment-name';
-        name.textContent = comment.name;
+        name.append(el<HTMLTemplateElement>('[data-name-art]').content.cloneNode(true));
+        const nameText = document.createElement('span');
+        nameText.textContent = comment.name;
+        name.append(nameText);
         header.append(name);
         if (comment.author && !comment.deleted) {
           const badge = document.createElement('span');
@@ -272,7 +275,10 @@ export function initComments() {
         group.append(row);
       }
       for (const group of groups.values()) {
-        if (group.childElementCount) list.append(group);
+        if (group.childElementCount) {
+          group.prepend(el<HTMLTemplateElement>('[data-divider-art]').content.cloneNode(true));
+          list.append(group);
+        }
       }
     }
 

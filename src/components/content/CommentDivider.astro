@@ -1,0 +1,80 @@
+---
+interface Props {
+  scene: 'ridge' | 'study' | 'field' | 'camp';
+}
+const { scene } = Astro.props;
+const designs = {
+  ridge: {
+    lines: [
+      'M0 31H95L121 17L143 27 M161 30L190 8L209 25L232 18L254 31H370 M403 31H488L511 21L531 30H640',
+      'M180 22L190 8L196 24 M107 36H151 M276 35H323',
+    ],
+    facets: [
+      'M113 26L124 12L134 23Z',
+      'M161 26L184 5L176 26Z',
+      'M199 12L218 29L207 26Z',
+      'M353 28L367 20L378 29Z',
+      'M490 27L506 15L503 29Z',
+    ],
+    sparks: ['M147 12L153 8L155 15Z'],
+  },
+  study: {
+    lines: [
+      'M0 32H102 M120 32H164V25H211 M238 25H286V18H336 M368 18H416V26H471 M496 32H640',
+      'M146 39H183 M262 33H304 M390 10H423',
+    ],
+    facets: [
+      'M99 24L113 8L117 27Z',
+      'M125 19L141 27L121 30Z',
+      'M213 28L232 18L229 31Z',
+      'M338 17L351 4L357 20Z',
+      'M461 24L477 12L482 29Z',
+    ],
+    sparks: ['M309 8L315 3L318 10Z', 'M490 15L495 10L499 18Z'],
+  },
+  field: {
+    lines: [
+      'M0 29H105 M136 31L182 27L227 33 M269 31L311 22L354 26 M393 30L430 33L473 27 M514 30H640',
+      'M194 39L226 41 M327 15L353 13 M462 37L486 34',
+    ],
+    facets: [
+      'M106 16L125 21L114 32Z',
+      'M131 26L151 17L146 32Z',
+      'M240 25L259 32L238 38Z',
+      'M362 22L376 9L381 27Z',
+      'M489 18L508 23L496 35Z',
+    ],
+    sparks: ['M178 13L183 8L187 16Z', 'M411 19L416 14L419 21Z'],
+  },
+  camp: {
+    lines: [
+      'M0 29H105 M136 28L186 17L236 29 M268 29L319 12L367 28 M399 30L447 18L493 28 M526 29H640',
+      'M186 17L200 7 M319 12L339 4 M447 18L460 8',
+    ],
+    facets: [
+      'M112 22L124 9L129 30Z',
+      'M243 24L255 13L259 31Z',
+      'M373 22L386 9L391 30Z',
+      'M500 23L512 11L518 31Z',
+    ],
+    sparks: [
+      'M181 17L186 12L191 17L186 22Z',
+      'M314 12L319 7L324 12L319 17Z',
+      'M443 18L447 14L451 18L447 22Z',
+    ],
+  },
+};
+const design = designs[scene];
+---
+
+<svg class="comment-divider" viewBox="0 0 640 44" fill="none" aria-hidden="true" focusable="false">
+  {design.lines.map((d) => (
+    <path class="comment-divider-line" d={d} />
+  ))}
+  {design.facets.map((d, index) => (
+    <path class={`comment-divider-facet comment-divider-facet-${index % 3}`} d={d} />
+  ))}
+  {design.sparks.map((d) => (
+    <path class="comment-divider-spark" d={d} />
+  ))}
+</svg>

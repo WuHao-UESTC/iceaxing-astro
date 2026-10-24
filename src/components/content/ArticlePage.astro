@@ -216,7 +216,7 @@ const indexHref = parent?.href ?? localizedPath(locale, kind === 'log' ? '/log' 
             <a href="#reader-top">{labels.top} ↑</a>
           </div>
         </footer>
-        <Comments {locale} thread={`${kind}:${entry.data.contentId}:${locale}`} />
+        <Comments {locale} {scene} thread={`${kind}:${entry.data.contentId}:${locale}`} />
       </div>
 
       <aside class="reader-aside" data-pagefind-ignore>

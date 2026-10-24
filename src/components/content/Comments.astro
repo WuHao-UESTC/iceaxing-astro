@@ -1,14 +1,17 @@
 ---
 import type { Locale } from '../../i18n/config';
 import { commentCopy } from '../../lib/comments/copy';
+import ArchiveStatisticArt from './ArchiveStatisticArt.astro';
+import CommentDivider from './CommentDivider.astro';
 import '../../styles/comments.css';
 
 interface Props {
   locale: Locale;
   thread?: string;
   admin?: boolean;
+  scene?: 'ridge' | 'study' | 'field' | 'camp';
 }
-const { locale, thread = '', admin = false } = Astro.props;
+const { locale, thread = '', admin = false, scene = 'ridge' } = Astro.props;
 const copy = commentCopy[locale];
 const composerId = `comment-compose-${encodeURIComponent(admin ? 'admin' : thread)}`;
 ---
@@ -19,9 +22,16 @@ const composerId = `comment-compose-${encodeURIComponent(admin ? 'admin' : threa
   data-thread={thread}
   data-locale={locale}
   data-admin={String(admin)}
+  data-comment-scene={scene}
   aria-label={admin ? copy.admin : copy.title}
   data-pagefind-ignore
 >
+  <template data-name-art>
+    <ArchiveStatisticArt {scene} variant="comment" />
+  </template>
+  <template data-divider-art>
+    <CommentDivider {scene} />
+  </template>
   <header class="comment-heading">
     <div class="comment-heading-copy">
       <p class="comment-eyebrow">
@@ -29,19 +39,17 @@ const composerId = `comment-compose-${encodeURIComponent(admin ? 'admin' : threa
       </p>
       <h2>{admin ? copy.admin : copy.title}</h2>
     </div>
-    <div class="comment-heading-aside">
-      <svg class="comment-ridgeline" viewBox="0 0 160 60" fill="none" aria-hidden="true">
-        <path d="M1 53 31 29 47 40 82 7 111 37 128 24 159 53" />
-        <path d="m61 27 13 2 8-7 11 10 7-3M18 53h125M77 12l5-5 6 6" />
-        <circle cx="131" cy="10" r="3" />
-      </svg>
-      <button class="comment-refresh" type="button" data-refresh>
-        <span class="comment-refresh-icon" aria-hidden="true">
-          ↻
-        </span>
-        {copy.refresh}
-      </button>
-    </div>
+    <svg class="comment-ridgeline" viewBox="0 0 160 60" fill="none" aria-hidden="true">
+      <path d="M1 53 31 29 47 40 82 7 111 37 128 24 159 53" />
+      <path d="m61 27 13 2 8-7 11 10 7-3M18 53h125M77 12l5-5 6 6" />
+      <circle cx="131" cy="10" r="3" />
+    </svg>
+    <button class="comment-refresh" type="button" data-refresh>
+      <span class="comment-refresh-icon" aria-hidden="true">
+        ↻
+      </span>
+      {copy.refresh}
+    </button>
   </header>
   <div class="comment-identity" data-identity hidden>
     <div class="comment-email-field">
