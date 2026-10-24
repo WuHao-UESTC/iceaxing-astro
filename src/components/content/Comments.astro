@@ -10,6 +10,7 @@ interface Props {
 }
 const { locale, thread = '', admin = false } = Astro.props;
 const copy = commentCopy[locale];
+const composerId = `comment-compose-${encodeURIComponent(admin ? 'admin' : thread)}`;
 ---
 
 <section
@@ -27,7 +28,6 @@ const copy = commentCopy[locale];
         {admin ? 'FIELD NOTES / DESK' : 'ALONG THE TRAIL / FIELD NOTES'}
       </p>
       <h2>{admin ? copy.admin : copy.title}</h2>
-      <p class="comment-intro">{admin ? copy.all : copy.intro}</p>
     </div>
     <div class="comment-heading-aside">
       <svg class="comment-ridgeline" viewBox="0 0 160 60" fill="none" aria-hidden="true">
@@ -43,6 +43,30 @@ const copy = commentCopy[locale];
       </button>
     </div>
   </header>
+  <div class="comment-identity" data-identity hidden>
+    <div class="comment-email-field">
+      <span>{copy.email}</span>
+      <span data-email></span>
+      <button class="comment-quiet" type="button" data-logout>
+        {copy.change}
+      </button>
+    </div>
+    <label class="comment-name-field">
+      {copy.name}
+      <input
+        form={composerId}
+        name="name"
+        autocomplete="nickname"
+        maxlength="40"
+        placeholder={copy.name}
+        required
+      />
+    </label>
+    <a href="/keystatic/comments" data-manage hidden>
+      {copy.manage}
+    </a>
+  </div>
+  <p class="comment-intro">{admin ? copy.all : copy.intro}</p>
   <p class="comment-status" data-status role="status" aria-live="polite"></p>
   <div class="comment-auth" data-auth>
     <div class="comment-auth-intro">
@@ -89,19 +113,7 @@ const copy = commentCopy[locale];
       </button>
     </form>
   </div>
-  <div class="comment-identity" data-identity hidden>
-    <span class="comment-verified-mark" aria-hidden="true">
-      ✓
-    </span>
-    <span data-email></span>
-    <a href="/keystatic/comments" data-manage hidden>
-      {copy.manage}
-    </a>
-    <button class="comment-quiet" type="button" data-logout>
-      {copy.logout}
-    </button>
-  </div>
-  <form class="comment-composer" data-compose hidden>
+  <form id={composerId} class="comment-composer" data-compose hidden>
     <p class="comment-eyebrow comment-compose-caption" aria-hidden="true">
       YOUR FIELD NOTE
     </p>
@@ -109,10 +121,6 @@ const copy = commentCopy[locale];
     <button class="comment-quiet" type="button" data-cancel hidden>
       {copy.cancel}
     </button>
-    <label class="comment-name-field">
-      {copy.name}
-      <input name="name" autocomplete="nickname" maxlength="40" required />
-    </label>
     <label>
       {copy.body}
       <textarea

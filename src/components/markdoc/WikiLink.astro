@@ -17,16 +17,15 @@ for (const [kind, entries] of [
   ['page', index.pages],
 ] as const) {
   for (const entry of entries) {
-    if (!isPublicContent(entry.data)) continue;
-    const href = routeFor(entry.data.contentId, entry.data.locale, kind);
-    if (href)
-      targets.push({
-        id: entry.data.contentId,
-        title: entry.data.title,
-        locale: entry.data.locale,
-        kind,
-        href,
-      });
+    targets.push({
+      id: entry.data.contentId,
+      title: entry.data.title,
+      locale: entry.data.locale,
+      kind,
+      href: isPublicContent(entry.data)
+        ? routeFor(entry.data.contentId, entry.data.locale, kind)
+        : undefined,
+    });
   }
 }
 const locale = Astro.url.pathname.startsWith('/en/')
@@ -44,7 +43,10 @@ const text = label || resolved?.title || target;
     {text}
   </a>
 ) : (
-  <span class="wikilink-unresolved" title="目标文章不存在或尚未发布">
+  <span
+    class="wikilink-unresolved"
+    title={resolved ? '目标文章尚未发布' : '目标文章不存在或标题不唯一'}
+  >
     {text}
   </span>
 )}

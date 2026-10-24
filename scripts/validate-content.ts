@@ -419,22 +419,23 @@ for (const route of routes) {
   } else routeOwners.set(route.pathname, route);
 }
 
-// Published references must resolve to a public route. Drafts may contain
-// unfinished references while their linked articles are still being written.
-const wikiTargets: WikiLinkTarget[] = [...articles, ...logs, ...pages].flatMap((entry) => {
-  const route = routes.find((route) => route.sourceFile === entry.sourceFile);
-  return route
-    ? [
-        {
-          id: entry.entryKey,
-          title: requiredString(entry, 'title'),
-          locale: route.locale,
-          kind: route.kind as WikiLinkTarget['kind'],
-          href: route.pathname,
-        },
-      ]
-    : [];
-});
+// References may point to content that exists but is not public yet.
+// Route availability controls clickability, not whether a reference is valid.
+const wikiTargets: WikiLinkTarget[] = (
+  [
+    { kind: 'article', entries: articles },
+    { kind: 'log', entries: logs },
+    { kind: 'page', entries: pages },
+  ] as const
+).flatMap(({ kind, entries }) =>
+  entries.map((entry) => ({
+    id: entry.entryKey,
+    title: requiredString(entry, 'title'),
+    locale: requiredString(entry, 'locale') as Locale,
+    kind,
+    href: routes.find((route) => route.sourceFile === entry.sourceFile)?.pathname,
+  })),
+);
 for (const entry of [...articles, ...logs, ...pages]) {
   if (!routes.some((route) => route.sourceFile === entry.sourceFile)) continue;
   const source = await readFile(path.join(root, entry.sourceFile), 'utf8');
@@ -448,7 +449,7 @@ for (const entry of [...articles, ...logs, ...pages]) {
     ) {
       issue(
         entry.sourceFile,
-        `WikiLink 目标不存在、未发布或标题不唯一：${String(target)}；请在编辑器中重新选择文章。`,
+        `WikiLink 目标不存在或标题不唯一：${String(target)}；请在编辑器中重新选择文章。`,
       );
     }
   }

@@ -4,7 +4,7 @@ translationKey: deep-in-2nd-order-system
 locale: zh
 title: 对二阶系统刨根问底
 slug: deep-in-2nd-order-system
-status: draft
+status: published
 publishedAt: 2026-10-23T01:56:00.000Z
 tags: []
 authorName: iceaxing
@@ -85,16 +85,37 @@ category: filter-design-in-digital-world-note
 进行归一化与拉普拉斯变换后得到传递函数
 
 {% math
-   expression="\\begin{aligned}\n& V_{\\text {in }}-V_{\\text {out }}=R_i+L \\frac{d i}{d t} \\\\\n& i=C \\frac{d V_{\\text {out }}}{d t} \\\\\n& \\Rightarrow V_{\\text {in }}=L C \\frac{d^2 V_{\\text {out }}}{d t^2}+R C \\frac{d V_{\\text {out }}}{d t}+V_{\\text {out }}\n\\end{aligned}" /%}
+   expression="\\begin{aligned}\n& \\frac{d^2 V_{\\text {out }}}{d t^2}+\\frac{R}{L} \\frac{d v_{\\text {out }}}{d t}+\\frac{1}{L C} V_{\\text {out }}=\\frac{1}{L C} V_{\\text {in }} \\\\\n& \\begin{aligned}\nH(s)=\\frac{V_{\\text {at }}(s)}{V_{\\text {in }}(s)} & =\\frac{\\frac{1}{L C}}{s^2+\\left(\\frac{R}{L}\\right) s+\\frac{1}{L C}} \\\\\n& =\\frac{\\omega_0^2}{s^2+\\frac{\\omega_0}{Q} s+\\omega_0^2}\n\\end{aligned}\n\\end{aligned}" /%}
 
-其中
+其中 {% inlineMath expression="\\omega_0" /%} 为谐振频率，Q为品质因数（后面会重点讲解这两个参数）
 
 在这个系统中的两个储能元件显然就是电容和电感，分别储存能够相互转化的电场能和磁场能，阻尼是电阻R，外部的激励是Vin
 
 ### 为什么要引入归一化参数？
 
-#### 从数学层面——参数的引入是必然的
+读者可能会被莫名其妙引入的{% inlineMath expression="\\zeta" /%}、{% inlineMath expression="\\omega_0" /%} 和Q这几个参数感到奇怪——好像他们是凭空出现的一样。为什么我们不直接使用数学层面最简明的a0,a1,a2,b0,b1,b1，反而要创造出这些参数来表征传递函数呢？我觉得可以从数学和物理两个层面进行阐述
+
+#### 从数学层面——参数的引入是必然
+
+为了方便起见，我们直接来考虑传递函数的分母，传递函数中一共有3个系数，但是实际上我们只需要了两个参数就能表征这个系统。因此，我们先对原方程进行归一化操作
+
+{% math
+   expression="\\begin{aligned}\n&a_2 \\cdot s^2 Y(\\omega)+a \\cdot s Y(s)+a_0 Y(s)=0\\\\\n&\\Rightarrow \\begin{array}{cc}\ns^2 Y(s)+\\frac{a_1}{a_2} s Y(s)+\\frac{a_0}{a_2} Y(s)=0\n\\end{array}\n\\end{aligned}" /%}
+
+从量纲的角度来分析这个方程，可以得到各系数应当具备的量纲。我们知道拉普拉斯变换的参数s的量纲是1/s（可参见{% wikiLink target="dimension-of-s" /%}）
 
 #### 从物理的层面——选择具有实际物理意义的参数
+
+## 系统地认识参数Q
+
+在我们明确了参数的必要性以及合理性的之后，我们理应对这个参数进行系统的认知。进一步了解其在系统中表示的物理含义以及数学上的特性
+
+## 极点与零点
+
+## 稳定性
+
+## 频域响应
+
+## 时域响应
 
 ## 

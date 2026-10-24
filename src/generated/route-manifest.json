@@ -315,6 +315,13 @@
     "sourceFile": "src/content/articles/zh/basic-of-rf-filter-design/index.mdoc"
   },
   {
+    "pathname": "/filter-design-in-digital-world-note/deep-in-2nd-order-system",
+    "kind": "article",
+    "contentId": "deep-in-2nd-order-system",
+    "locale": "zh",
+    "sourceFile": "src/content/articles/zh/deep-in-2nd-order-system/index.mdoc"
+  },
+  {
     "pathname": "/journey",
     "kind": "category",
     "contentId": "journey",

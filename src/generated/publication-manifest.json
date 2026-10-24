@@ -40,6 +40,15 @@
       "subscriptionKeys": ["category:quirk-semiconductor-manufacturing-technology-note"]
     },
     {
+      "contentId": "deep-in-2nd-order-system",
+      "kind": "article",
+      "versionHash": "a40177a984d00c57d46a7a6c",
+      "publishedAt": "2026-10-23T01:56:00.000Z",
+      "titles": { "zh": "对二阶系统刨根问底" },
+      "urls": { "zh": "/filter-design-in-digital-world-note/deep-in-2nd-order-system" },
+      "subscriptionKeys": ["category:filter-design-in-digital-world-note"]
+    },
+    {
       "contentId": "dimension-of-s",
       "kind": "article",
       "versionHash": "0896986e7d2ba0d0801fa1ea",

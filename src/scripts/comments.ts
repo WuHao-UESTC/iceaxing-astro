@@ -43,6 +43,7 @@ export function initComments() {
     let loading = false;
     let busy = false;
     let cooldownUntil = 0;
+    let nicknameEmail: string | null = null;
     const status = (text: string, tone = 'info') => {
       el('[data-status]').textContent = text;
       el('[data-status]').dataset.tone = tone;
@@ -76,8 +77,16 @@ export function initComments() {
       el('[data-email]').textContent = identity?.email || '';
       el('[data-manage]').hidden = !identity?.admin;
       compose.hidden = !identity || (admin && (!identity.admin || !replying));
-      if (identity?.admin && !field(compose, 'name').value)
-        field(compose, 'name').value = 'iceaxing';
+      if (nicknameEmail !== (identity?.email ?? null)) {
+        nicknameEmail = identity?.email ?? null;
+        let name = identity?.admin ? 'iceaxing' : '';
+        try {
+          if (identity) name = localStorage.getItem(`comment-name:${identity.email}`) ?? name;
+        } catch {
+          /* The editor also works when browser storage is unavailable. */
+        }
+        field(compose, 'name').value = name;
+      }
     }
 
     async function operation(work: () => Promise<void>) {
@@ -130,7 +139,7 @@ export function initComments() {
       );
       const list = el('[data-list]');
       list.replaceChildren();
-      if (!comments.length) {
+      if (!comments.some((comment) => !comment.deleted)) {
         const p = document.createElement('p');
         p.className = 'comment-empty';
         p.textContent = copy.empty;
@@ -146,26 +155,34 @@ export function initComments() {
         }
       }
       const ordered: Comment[] = [];
-      const append = (comment: Comment) => {
+      const groups = new Map<string, HTMLElement>();
+      const groupForComment = new Map<string, HTMLElement>();
+      const visited = new Set<string>();
+      const append = (comment: Comment, group: HTMLElement) => {
+        if (visited.has(comment.id)) return;
+        visited.add(comment.id);
         ordered.push(comment);
-        for (const reply of children.get(comment.id) ?? []) append(reply);
+        groupForComment.set(comment.id, group);
+        for (const reply of children.get(comment.id) ?? []) append(reply, group);
       };
-      for (const comment of comments)
-        if (!comment.parentId || !ids.has(comment.parentId)) append(comment);
+      for (const comment of comments) {
+        if (!comment.parentId || !ids.has(comment.parentId)) {
+          const group = document.createElement('section');
+          group.className = 'comment-thread';
+          groups.set(comment.id, group);
+          append(comment, group);
+        }
+      }
       for (const comment of ordered) {
+        if (comment.deleted) continue;
+        const group = groupForComment.get(comment.id)!;
         const row = document.createElement('article');
         row.id = `comment-${comment.id}`;
-        row.className = `comment-entry${comment.parentId ? ' is-reply' : ''}${comment.author ? ' is-author' : ''}${comment.deleted ? ' is-deleted' : ''}`;
+        row.className = `comment-entry${group.childElementCount ? ' is-reply' : ''}${comment.author ? ' is-author' : ''}`;
         const header = document.createElement('header');
-        const avatar = document.createElement('span');
-        avatar.className = 'comment-avatar';
-        avatar.setAttribute('aria-hidden', 'true');
-        avatar.textContent = comment.deleted
-          ? '·'
-          : (Array.from(comment.name.trim())[0]?.toLocaleUpperCase(locale) ?? '·');
-        header.append(avatar);
         const name = document.createElement('strong');
-        name.textContent = comment.deleted ? copy.deleted : comment.name;
+        name.className = 'comment-name';
+        name.textContent = comment.name;
         header.append(name);
         if (comment.author && !comment.deleted) {
           const badge = document.createElement('span');
@@ -184,7 +201,10 @@ export function initComments() {
           link.textContent = comment.articleTitle || comment.articlePath;
           row.append(link);
         }
-        if (comment.replyTo) {
+        if (
+          comment.replyTo &&
+          !comments.some((parent) => parent.id === comment.parentId && parent.deleted)
+        ) {
           const p = document.createElement('p');
           p.className = 'comment-reply-to';
           p.textContent = `${copy.replying} ${comment.replyTo}`;
@@ -249,7 +269,10 @@ export function initComments() {
             );
         }
         row.append(actions);
-        list.append(row);
+        group.append(row);
+      }
+      for (const group of groups.values()) {
+        if (group.childElementCount) list.append(group);
       }
     }
 
@@ -357,6 +380,14 @@ export function initComments() {
         }),
     );
     el('[data-cancel]').addEventListener('click', () => setReply(null));
+    field(compose, 'name').addEventListener('input', () => {
+      try {
+        if (identity)
+          localStorage.setItem(`comment-name:${identity.email}`, field(compose, 'name').value);
+      } catch {
+        /* Saving a nickname is optional. */
+      }
+    });
     compose.addEventListener('submit', (event) => {
       event.preventDefault();
       void operation(async () => {
