@@ -1,3 +1,6 @@
+import { pinyin } from 'pinyin-pro';
+import { folderIsPublic } from '../publication';
+
 import type {
   ArticleNode,
   ArticleVersion,
@@ -13,6 +16,36 @@ import type {
 } from './types';
 
 const localeOrder: ContentLocale[] = ['zh', 'en', 'de'];
+const titleCollator = new Intl.Collator('en', {
+  sensitivity: 'base',
+  numeric: true,
+});
+const sortTitles = new Map<string, string>();
+function titleSortKey(title: string) {
+  const known = sortTitles.get(title);
+  if (known !== undefined) return known;
+  const key = pinyin(title, { toneType: 'none', type: 'array', v: true })
+    .join('')
+    .normalize('NFKD')
+    .replace(/\p{M}/gu, '')
+    .replace(/[\p{P}\p{Z}\s]/gu, '')
+    .toLowerCase();
+  if (sortTitles.size >= 2000) sortTitles.clear();
+  sortTitles.set(title, key);
+  return key;
+}
+
+/** All language versions share the Chinese title's position in the workspace. */
+export function compareArticleNodes(a: ArticleNode, b: ArticleNode) {
+  const title = (article: ArticleNode) =>
+    article.versions.find((version) => version.locale === 'zh')?.title.trim() ||
+    article.label.trim() ||
+    article.translationKey;
+  return (
+    titleCollator.compare(titleSortKey(title(a)), titleSortKey(title(b))) ||
+    a.translationKey.localeCompare(b.translationKey, 'en')
+  );
+}
 
 const folderCollection = {
   category: 'categories',
@@ -42,6 +75,28 @@ export function buildContentTree(
 ): ContentTreePayload {
   const warnings: string[] = [];
   const folderKeys = new Set(snapshot.folders.map((entry) => folderKey(entry.kind, entry.id)));
+  const rawFolders = new Map(
+    snapshot.folders.map((entry) => [folderKey(entry.kind, entry.id), entry]),
+  );
+  const availability = (entry: RawFolderEntry) => {
+    const ownPublic = folderIsPublic(entry);
+    let current: RawFolderEntry | undefined = entry;
+    const seen = new Set<string>();
+    while (current) {
+      const key = folderKey(current.kind, current.id);
+      if (seen.has(key)) return { isPublic: false, blockedBy: '层级关系异常' };
+      seen.add(key);
+      if (current !== entry && !folderIsPublic(current))
+        return { isPublic: false, blockedBy: current.label };
+      if (current.kind === 'category') return { isPublic: ownPublic };
+      const parent = rawFolders.get(
+        folderKey(current.kind === 'project' ? 'category' : 'project', current.parentId ?? ''),
+      );
+      if (!parent) return { isPublic: false, blockedBy: '上级不存在' };
+      current = parent;
+    }
+    return { isPublic: false };
+  };
   const folders: FolderNode[] = snapshot.folders.map((entry) => {
     const expectedParentKey =
       entry.kind === 'category' || !entry.parentId
@@ -59,6 +114,9 @@ export function buildContentTree(
       order: entry.order ?? 0,
       editorCollection: folderCollection[entry.kind],
       group: entry.kind === 'category' ? (entry.group ?? 'skill') : undefined,
+      publicationStatus: entry.publicationStatus ?? 'published',
+      publishedAt: entry.publishedAt,
+      ...availability(entry),
     };
   });
 
@@ -80,9 +138,6 @@ export function buildContentTree(
     }
     const preferred = orderedEntries[0]!;
     const expectedParentKey = articleParentKey(preferred);
-    if (expectedParentKey && !folderKeys.has(expectedParentKey)) {
-      warnings.push(`文章“${preferred.title || translationKey}”的父级不存在，已暂时显示在根目录。`);
-    }
     const versions: ArticleVersion[] = orderedEntries.map((entry) => ({
       locale: entry.locale,
       contentId: entry.contentId,
@@ -120,6 +175,8 @@ export function buildContentTree(
       });
     }
   }
+  articles.sort(compareArticleNodes);
+  documents.sort(compareArticleNodes);
   return { storageKind, branch, folders, articles, documents, warnings };
 }
 

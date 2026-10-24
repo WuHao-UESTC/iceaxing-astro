@@ -5,6 +5,9 @@ import {
   createPomodoroData,
   resetPomodoro,
   togglePomodoro,
+  tickPomodoro,
+  skipPomodoro,
+  restorePomodoro,
 } from './pomodoro';
 
 describe('pomodoro state', () => {
@@ -38,5 +41,44 @@ describe('pomodoro state', () => {
     const data = createPomodoroData();
     data.daily = { date: '1970-01-01', completedFocus: 2, focusMinutes: 50 };
     expect(resetPomodoro(data, 1_000).daily.completedFocus).toBe(2);
+  });
+
+  it('catches up auto-start phases using original deadlines after background throttling', () => {
+    const data = createPomodoroData();
+    data.settings.autoStart = true;
+    const started = togglePomodoro(data, 1_000);
+    const restored = tickPomodoro(started, 61 * 60_000 + 1_000);
+    expect(restored.daily.completedFocus).toBe(2);
+    expect(restored.session.phase).toBe('focus');
+    expect(restored.session.cycle).toBe(3);
+    expect(restored.session.endsAt).toBe(85 * 60_000 + 1_000);
+  });
+
+  it('restores an entire elapsed set without creating more than one set', () => {
+    const data = createPomodoroData();
+    data.settings.autoStart = true;
+    const started = togglePomodoro(data, 1_000);
+    const restored = restorePomodoro(JSON.parse(JSON.stringify(started)), 150 * 60_000);
+    expect(restored.session.status).toBe('finished');
+    expect(restored.daily.completedFocus).toBe(4);
+    expect(restored.daily.focusMinutes).toBe(100);
+  });
+
+  it('skips a completed phase without double-counting its focus time', () => {
+    const completed = tickPomodoro(togglePomodoro(createPomodoroData(), 1_000), 1_501_000);
+    const next = skipPomodoro(completed, 1_502_000);
+    expect(next.session.phase).toBe('shortBreak');
+    expect(next.session.status).toBe('running');
+    expect(next.daily.completedFocus).toBe(1);
+    expect(completePomodoroPhase(completed, 1_502_000).daily.completedFocus).toBe(1);
+  });
+
+  it('starts a selected break and skips it to the next focus phase', () => {
+    const data = createPomodoroData();
+    data.session.phase = 'shortBreak';
+    const started = togglePomodoro(data, 1_000);
+    expect(started.session.endsAt).toBe(301_000);
+    expect(skipPomodoro(started, 2_000).session.phase).toBe('focus');
+    expect(skipPomodoro(started, 2_000).daily.completedFocus).toBe(0);
   });
 });

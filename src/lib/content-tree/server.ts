@@ -77,6 +77,11 @@ function folderEntries(items: readonly ReaderItem[], kind: FolderKind): RawFolde
       parentId: parentField ? asOptionalString(entry[parentField]) : null,
       label: localizedLabel(entry, slug),
       order: asNumber(entry.order),
+      publicationStatus: asString(entry.publicationStatus) || 'published',
+      publishedAt:
+        entry.publishedAt instanceof Date
+          ? entry.publishedAt.toISOString()
+          : asString(entry.publishedAt),
       group:
         kind === 'category' && ['skill', 'life', 'study'].includes(asString(entry.group))
           ? (entry.group as RawFolderEntry['group'])

@@ -11,7 +11,8 @@ labels:
   de:
     title: Analog IC
 tags:
-  - 'EE '
+  - EE
+featured: false
 order: 0
-coverImage: ../../assets/content/covers/analog-ic/coverImage.jpg
 createdAt: 2026-10-19T15:21:00.000Z
+coverImage: ../../assets/content/covers/analog-ic/coverImage.jpg

@@ -1,6 +1,8 @@
 ---
 import ContentTreeWorkspace from '../../components/islands/ContentTreeWorkspace';
 import '../../styles/keystatic-workspace.css';
+import '../../styles/keystatic-workspace-theme.css';
+import '../../styles/keystatic-workspace-shell.css';
 
 export const prerender = false;
 ---
@@ -11,7 +13,20 @@ export const prerender = false;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>内容工作区 · iceaxing</title>
+    <script is:inline>
+      document.documentElement.dataset.workspaceGroup = 'skill';
+      let mode = 'dark';
+      try {
+        const stored = localStorage.getItem('iceaxing-theme');
+        if (stored === 'light' || stored === 'dark') mode = stored;
+      } catch {
+        /* Use the site's default theme when storage is unavailable. */
+      }
+      document.documentElement.dataset.workspaceMode = mode;
+      document.documentElement.style.colorScheme = mode;
+    </script>
   </head>
   <body>
     <ContentTreeWorkspace client:load />

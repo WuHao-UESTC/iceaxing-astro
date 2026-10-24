@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { selectContentGroup } from '../../lib/content-tree/model';
+import { compareArticleNodes, selectContentGroup } from '../../lib/content-tree/model';
+import { enhanceWorkspaceEditor } from '../../lib/keystatic-workspace';
+import { syncWorkspaceTheme } from '../../lib/keystatic-workspace-theme';
+import WorkspaceLandscape from './WorkspaceLandscape';
+import ObsidianSync from './ObsidianSync';
+import type { WorkspaceEditorLocation } from '../../lib/keystatic-workspace-names';
 import type {
   ArticleNode,
   ContentLocale,
@@ -26,6 +31,13 @@ const workspaceGroups: { value: WorkspaceGroup; label: string }[] = [
   { value: 'documents', label: '日志与页面' },
   { value: 'unassigned', label: '未归属内容' },
 ];
+const groupScenes: Record<WorkspaceGroup, { chapter: string; note: string }> = {
+  skill: { chapter: 'THE RIDGE', note: '从原理走向实践' },
+  study: { chapter: 'THE TERRACE', note: '把知识慢慢连成路' },
+  life: { chapter: 'THE SNOWFIELD', note: '收集日常的光' },
+  documents: { chapter: 'THE WAYSTATION', note: '留下沿途的念头' },
+  unassigned: { chapter: 'THE TRAILHEAD', note: '想法的起点' },
+};
 const utilityFolders: UtilityFolder[] = [
   {
     kind: 'utility',
@@ -108,6 +120,7 @@ export default function ContentTreeWorkspace() {
   const [refreshingPreview, setRefreshingPreview] = useState(false);
   const [query, setQuery] = useState('');
   const [group, setGroup] = useState<WorkspaceGroup>('skill');
+  const [mode, setMode] = useState<'light' | 'dark'>('dark');
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [selectedLocale, setSelectedLocale] = useState<ContentLocale>('zh');
@@ -115,8 +128,85 @@ export default function ContentTreeWorkspace() {
   const [deleteTarget, setDeleteTarget] = useState<FolderNode | null>(null);
   const [createArticleTarget, setCreateArticleTarget] = useState<CreateArticleTarget | null>(null);
   const [deleting, setDeleting] = useState(false);
-  const [showNativeNavigation, setShowNativeNavigation] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const propertiesControlsRef = useRef<HTMLDivElement>(null);
+  const workspaceRef = useRef<HTMLElement>(null);
+  const [sidebarWidth, setSidebarWidth] = useState(280);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [focusMode, setFocusMode] = useState(false);
+  const [editorLocation, setEditorLocation] = useState<WorkspaceEditorLocation | null>(null);
+  const [resizingSidebar, setResizingSidebar] = useState(false);
+  const [layoutReady, setLayoutReady] = useState(false);
+  useEffect(() => {
+    const editor = iframeRef.current?.contentDocument;
+    if (editor?.defaultView)
+      editor.dispatchEvent(
+        new editor.defaultView.CustomEvent('workspace:focus', { detail: focusMode }),
+      );
+  }, [focusMode]);
+  useEffect(() => {
+    const exit = () => setFocusMode(false);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') exit();
+    };
+    document.addEventListener('workspace:exit-focus', exit);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('workspace:exit-focus', exit);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, []);
+  useEffect(() => {
+    const readMode = () => {
+      try {
+        setMode(localStorage.getItem('iceaxing-theme') === 'light' ? 'light' : 'dark');
+      } catch {
+        /* Optional theme preference. */
+      }
+    };
+    readMode();
+    window.addEventListener('storage', readMode);
+    return () => window.removeEventListener('storage', readMode);
+  }, []);
+  useEffect(() => {
+    syncWorkspaceTheme(document, group, mode);
+    const editor = iframeRef.current?.contentDocument;
+    if (editor) syncWorkspaceTheme(editor, group, mode);
+  }, [group, mode]);
+  const toggleMode = () => {
+    const next = mode === 'dark' ? 'light' : 'dark';
+    setMode(next);
+    try {
+      localStorage.setItem('iceaxing-theme', next);
+    } catch {
+      /* Optional storage. */
+    }
+  };
+  useEffect(() => {
+    if (window.innerWidth <= 820) setSidebarCollapsed(true);
+    try {
+      const saved = JSON.parse(localStorage.getItem('iceaxing-workspace-layout') ?? 'null');
+      if (saved && Number.isFinite(saved.width))
+        setSidebarWidth(Math.min(520, Math.max(220, saved.width)));
+      if (typeof saved?.collapsed === 'boolean') setSidebarCollapsed(saved.collapsed);
+    } catch {
+      /* Layout preferences are optional. */
+    }
+    setLayoutReady(true);
+  }, []);
+  useEffect(() => {
+    if (!layoutReady) return;
+    try {
+      localStorage.setItem(
+        'iceaxing-workspace-layout',
+        JSON.stringify({ width: sidebarWidth, collapsed: sidebarCollapsed }),
+      );
+    } catch {
+      /* Optional storage. */
+    }
+  }, [sidebarWidth, sidebarCollapsed, layoutReady]);
+  const stopEditorEnhancement = useRef<(() => void) | null>(null);
+  useEffect(() => () => stopEditorEnhancement.current?.(), []);
 
   const navigateEditor = useCallback((url: string) => {
     setEditorUrl(url);
@@ -210,6 +300,7 @@ export default function ContentTreeWorkspace() {
     }
     for (const siblings of map.values()) {
       siblings.sort((a, b) => {
+        if (a.kind === 'article' && b.kind === 'article') return compareArticleNodes(a, b);
         if (a.kind === 'article' && b.kind !== 'article') return 1;
         if (a.kind !== 'article' && b.kind === 'article') return -1;
         return a.order - b.order || a.label.localeCompare(b.label, 'zh-CN');
@@ -394,6 +485,9 @@ export default function ContentTreeWorkspace() {
     return children.map((item) => {
       if (visibleKeys && !visibleKeys.has(item.key)) return null;
       if (item.kind === 'article') {
+        const parentBlocked =
+          !!item.parentKey &&
+          tree?.folders.find((folder) => folder.key === item.parentKey)?.isPublic === false;
         const missingLocales = (Object.keys(localeLabels) as ContentLocale[]).filter(
           (locale) => !item.versions.some((version) => version.locale === locale),
         );
@@ -419,8 +513,12 @@ export default function ContentTreeWorkspace() {
               {item.versions.map((version) => (
                 <span className="version-badge" key={version.locale}>
                   <span className="locale-badge">{version.locale.toUpperCase()}</span>
-                  <span className={`publication-badge is-${version.status}`}>
-                    {publicationLabels[version.status] ?? '未知状态'}
+                  <span
+                    className={`publication-badge is-${parentBlocked && ['published', 'scheduled'].includes(version.status) ? 'blocked' : version.status}`}
+                  >
+                    {parentBlocked && ['published', 'scheduled'].includes(version.status)
+                      ? '上级未发布'
+                      : (publicationLabels[version.status] ?? '未知状态')}
                   </span>
                 </span>
               ))}
@@ -458,9 +556,6 @@ export default function ContentTreeWorkspace() {
                 type="button"
                 onClick={() => toggleFolder(item.key)}
               >
-                <span className="tree-row-icon" aria-hidden="true">
-                  ▰
-                </span>
                 <span className="tree-row-label">
                   <span>{item.label}</span>
                 </span>
@@ -503,13 +598,19 @@ export default function ContentTreeWorkspace() {
               <FolderIcon open={isOpen} />
             </button>
             <button className="tree-folder-select" type="button" onClick={() => openFolder(item)}>
-              <span className="tree-row-icon" aria-hidden="true">
-                ▰
-              </span>
               <span className="tree-row-label">
                 <span>{item.label}</span>
               </span>
             </button>
+            <span
+              className={`publication-badge is-${item.blockedBy && ['published', 'scheduled'].includes(item.publicationStatus ?? 'published') ? 'blocked' : (item.publicationStatus ?? 'published')}`}
+              title={item.blockedBy ? `上级“${item.blockedBy}”尚未公开` : undefined}
+            >
+              {item.blockedBy &&
+              ['published', 'scheduled'].includes(item.publicationStatus ?? 'published')
+                ? '上级未发布'
+                : publicationLabels[item.publicationStatus ?? 'published']}
+            </span>
             <ItemMenu label={`管理文件夹 ${item.label}`}>
               <button type="button" onClick={() => openFolder(item)}>
                 修改属性
@@ -537,15 +638,11 @@ export default function ContentTreeWorkspace() {
     if (selectedArticle) openArticle(selectedArticle, locale);
   };
 
-  const applyEditorChrome = useCallback((show: boolean) => {
+  const applyEditorChrome = useCallback(() => {
     const document = iframeRef.current?.contentDocument;
     if (!document) return;
     const styleId = 'iceaxing-tree-workspace-chrome';
     const existing = document.getElementById(styleId);
-    if (show) {
-      existing?.remove();
-      return;
-    }
     if (existing) return;
     const style = document.createElement('style');
     style.id = styleId;
@@ -561,10 +658,6 @@ export default function ContentTreeWorkspace() {
     document.head.append(style);
   }, []);
 
-  useEffect(() => {
-    applyEditorChrome(showNativeNavigation);
-  }, [applyEditorChrome, showNativeNavigation]);
-
   const handleEditorLoad = () => {
     const frame = iframeRef.current;
     if (!frame) return;
@@ -573,6 +666,13 @@ export default function ContentTreeWorkspace() {
       const match = pathname.match(/^\/keystatic\/branch\/([^/]+)/);
       const activeBranch = match?.[1] ? decodeURIComponent(match[1]) : tree?.branch;
       const document = frame.contentDocument;
+      if (document) syncWorkspaceTheme(document, group, mode);
+      stopEditorEnhancement.current?.();
+      const propertiesControls = propertiesControlsRef.current;
+      stopEditorEnhancement.current =
+        document && propertiesControls
+          ? enhanceWorkspaceEditor(document, propertiesControls, setEditorLocation)
+          : null;
       if (document && document.documentElement.dataset.treeWorkspaceBound !== 'true') {
         document.documentElement.dataset.treeWorkspaceBound = 'true';
         const onSubmit = () => {
@@ -580,7 +680,7 @@ export default function ContentTreeWorkspace() {
         };
         document.addEventListener('submit', onSubmit, { capture: true });
       }
-      applyEditorChrome(showNativeNavigation);
+      applyEditorChrome();
       void refreshTree(activeBranch);
     } catch {
       // Ignore transient same-origin navigation states while Keystatic redirects.
@@ -594,12 +694,29 @@ export default function ContentTreeWorkspace() {
     else navigateEditor(collectionUrl(editorBase(tree), value));
   };
 
+  useEffect(() => {
+    // A cached iframe can load before React attaches the load handler.
+    const document = iframeRef.current?.contentDocument;
+    if (document?.readyState === 'complete') handleEditorLoad();
+  }, []);
+
   return (
-    <main className="content-tree-workspace">
-      <aside className="content-tree-sidebar">
+    <main
+      ref={workspaceRef}
+      className="content-tree-workspace"
+      data-sidebar-collapsed={sidebarCollapsed || focusMode}
+      data-workspace-focus={focusMode}
+      data-resizing={resizingSidebar}
+      style={{ '--workspace-tree-width': `${sidebarWidth}px` } as React.CSSProperties}
+    >
+      <aside
+        id="workspace-file-tree"
+        className="content-tree-sidebar"
+        hidden={sidebarCollapsed || focusMode}
+      >
         <header className="workspace-brand">
           <a href="/" target="_blank" rel="noreferrer" aria-label="打开网站首页">
-            ICEAXING
+            <img src="/favicon.svg" alt="" width="38" height="38" />
           </a>
           <div className="workspace-brand-copy">
             <div className="workspace-brand-title">
@@ -625,6 +742,13 @@ export default function ContentTreeWorkspace() {
             </span>
           </div>
         </header>
+
+        <div className="workspace-scene-banner">
+          <WorkspaceLandscape group={group} />
+          <p>{groupScenes[group].chapter}</p>
+          <h1>{workspaceGroups.find((option) => option.value === group)?.label}</h1>
+          <span>{groupScenes[group].note}</span>
+        </div>
 
         <div className="tree-toolbar">
           <label>
@@ -685,15 +809,28 @@ export default function ContentTreeWorkspace() {
         </div>
         <nav className="content-tree" aria-label="分组内容树">
           {loading && !tree ? <div className="tree-empty">正在读取内容树…</div> : renderItems(null)}
-          {!loading && tree && !itemsByParent.get(null)?.length && (
-            <div className="tree-empty">当前分组还没有内容。</div>
+          {!loading && tree && !itemsByParent.get(null)?.length && !query.trim() && (
+            <div className="tree-empty workspace-empty-scene">
+              <WorkspaceLandscape group={group} />
+              <strong>一段新的路，正待书写。</strong>
+              <span>在这里整理新的想法，或切换分组查看内容。</span>
+            </div>
           )}
           {!loading && tree && visibleKeys?.size === 0 && (
-            <div className="tree-empty">当前分组没有匹配的内容。</div>
+            <div className="tree-empty workspace-empty-scene">
+              <WorkspaceLandscape group={group} />
+              <strong>还没有找到这篇文字。</strong>
+              <span>换个关键词，或清空搜索继续浏览。</span>
+              <button type="button" onClick={() => setQuery('')}>
+                清空搜索
+              </button>
+            </div>
           )}
         </nav>
 
         <footer className="workspace-sidebar-footer">
+          <ObsidianSync branch={tree?.branch} />
+          <p className="workspace-footer-note">每一次整理，都是向前一步。</p>
           <a href="/keystatic/comments" target="_blank" rel="noreferrer">
             评论管理
           </a>
@@ -729,14 +866,89 @@ export default function ContentTreeWorkspace() {
         </footer>
       </aside>
 
+      {!sidebarCollapsed && !focusMode && (
+        <div
+          className="workspace-tree-resizer"
+          role="separator"
+          tabIndex={0}
+          aria-label="调整文件树宽度"
+          aria-orientation="vertical"
+          aria-valuemin={220}
+          aria-valuemax={520}
+          aria-valuenow={sidebarWidth}
+          aria-controls="workspace-file-tree"
+          onDoubleClick={() => setSidebarWidth(280)}
+          onKeyDown={(event) => {
+            if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+              event.preventDefault();
+              setSidebarWidth((value) =>
+                Math.min(520, Math.max(220, value + (event.key === 'ArrowRight' ? 16 : -16))),
+              );
+            }
+            if (event.key === 'Home') {
+              event.preventDefault();
+              setSidebarWidth(280);
+            }
+          }}
+          onPointerDown={(event) => {
+            setResizingSidebar(true);
+            event.currentTarget.setPointerCapture(event.pointerId);
+          }}
+          onPointerMove={(event) => {
+            if (!resizingSidebar) return;
+            const bounds = workspaceRef.current?.getBoundingClientRect();
+            if (bounds)
+              setSidebarWidth(
+                Math.max(220, Math.min(520, bounds.width - 340, event.clientX - bounds.left)),
+              );
+          }}
+          onPointerUp={() => setResizingSidebar(false)}
+          onPointerCancel={() => setResizingSidebar(false)}
+          onLostPointerCapture={() => setResizingSidebar(false)}
+        />
+      )}
+
       <section className="content-editor-pane">
         <header className="editor-toolbar">
-          <div>
-            <strong>{selectedArticle?.label ?? 'Keystatic 编辑器'}</strong>
+          <button
+            className="native-navigation-toggle workspace-tree-toggle"
+            type="button"
+            aria-controls="workspace-file-tree"
+            aria-expanded={!sidebarCollapsed}
+            disabled={focusMode}
+            onClick={() => setSidebarCollapsed((value) => !value)}
+          >
+            {sidebarCollapsed ? '展开文件树' : '收起文件树'}
+          </button>
+          <div className="workspace-properties-controls" ref={propertiesControlsRef} />
+          <button
+            type="button"
+            className="native-navigation-toggle workspace-focus-toggle"
+            aria-pressed={focusMode}
+            title="专注时收起目录和属性；按 Esc 恢复原布局"
+            onClick={() => setFocusMode((value) => !value)}
+          >
+            {focusMode ? '退出专注' : '专注写作'}
+          </button>
+          <div className="workspace-editor-title">
+            <strong>{editorLocation?.label ?? selectedArticle?.label ?? 'Keystatic 编辑器'}</strong>
             <span>
-              {selectedArticle ? selectedArticle.translationKey : '选择左侧节点以编辑内容或属性'}
+              {editorLocation
+                ? [...editorLocation.parents, editorLocation.id].join(' / ')
+                : selectedArticle
+                  ? selectedArticle.translationKey
+                  : '选择左侧节点以编辑内容或属性'}
             </span>
           </div>
+          <button
+            className="native-navigation-toggle workspace-theme-toggle"
+            type="button"
+            onClick={toggleMode}
+            aria-label={mode === 'dark' ? '切换浅色' : '切换深色'}
+            title={mode === 'dark' ? '切换浅色' : '切换深色'}
+          >
+            {mode === 'dark' ? '☼' : '☾'}
+          </button>
           {selectedArticle && (
             <div className="language-switcher" aria-label="文章语言版本">
               {(Object.keys(localeLabels) as ContentLocale[]).map((locale) => {
@@ -770,16 +982,6 @@ export default function ContentTreeWorkspace() {
               {refreshingPreview ? '正在刷新…' : '刷新预览'}
             </button>
           )}
-          <button
-            className="native-navigation-toggle"
-            type="button"
-            onClick={() => setShowNativeNavigation((current) => !current)}
-          >
-            {showNativeNavigation ? '隐藏原生导航' : '原生导航'}
-          </button>
-          <a href={editorUrl} target="_blank" rel="noreferrer">
-            在新窗口打开
-          </a>
         </header>
         <iframe
           ref={iframeRef}

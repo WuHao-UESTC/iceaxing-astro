@@ -115,13 +115,6 @@
       "labels": { "zh": "2026年集创赛作品合集", "en": "2026 CICC", "de": "2026 CICC" }
     },
     {
-      "key": "project:test",
-      "kind": "project",
-      "id": "test",
-      "parentKey": "category:reading",
-      "labels": { "zh": "测试", "en": "test", "de": "test" }
-    },
-    {
       "key": "project:two-stage-ota",
       "kind": "project",
       "id": "two-stage-ota",

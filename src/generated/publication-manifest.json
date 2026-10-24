@@ -42,7 +42,7 @@
     {
       "contentId": "deep-in-2nd-order-system",
       "kind": "article",
-      "versionHash": "a40177a984d00c57d46a7a6c",
+      "versionHash": "6d1f5d61ddb9b0e4dc6fa3ea",
       "publishedAt": "2026-10-23T01:56:00.000Z",
       "titles": { "zh": "对二阶系统刨根问底" },
       "urls": { "zh": "/filter-design-in-digital-world-note/deep-in-2nd-order-system" },
@@ -60,7 +60,7 @@
     {
       "contentId": "analog-ic",
       "kind": "category",
-      "versionHash": "9a75ed190615cda269492e6b",
+      "versionHash": "5d657c8e41edbeedb20b9cef",
       "publishedAt": "2026-10-19T15:21:00.000Z",
       "titles": { "zh": "Analog IC", "en": "Analog IC", "de": "Analog IC" },
       "urls": { "zh": "/analog-ic", "de": "/de/analog-ic", "en": "/en/analog-ic" },
@@ -250,15 +250,6 @@
         "en": "/en/analog-ic/2026-cicc"
       },
       "subscriptionKeys": ["category:analog-ic", "project:2026-cicc"]
-    },
-    {
-      "contentId": "test",
-      "kind": "project",
-      "versionHash": "2af1cda5e9a442f0b0cb1d9a",
-      "publishedAt": "2026-10-19T23:27:00.000Z",
-      "titles": { "zh": "测试", "en": "test", "de": "test" },
-      "urls": { "de": "/de/reading/test", "en": "/en/reading/test", "zh": "/reading/test" },
-      "subscriptionKeys": ["category:reading", "project:test"]
     },
     {
       "contentId": "two-stage-ota",

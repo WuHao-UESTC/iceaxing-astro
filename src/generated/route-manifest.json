@@ -161,13 +161,6 @@
     "sourceFile": "src/content/categories/reading.yaml"
   },
   {
-    "pathname": "/de/reading/test",
-    "kind": "project",
-    "contentId": "test",
-    "locale": "de",
-    "sourceFile": "src/content/projects/test.yaml"
-  },
-  {
     "pathname": "/en/about",
     "kind": "page",
     "contentId": "about-en",
@@ -287,13 +280,6 @@
     "sourceFile": "src/content/categories/reading.yaml"
   },
   {
-    "pathname": "/en/reading/test",
-    "kind": "project",
-    "contentId": "test",
-    "locale": "en",
-    "sourceFile": "src/content/projects/test.yaml"
-  },
-  {
     "pathname": "/filter-design-in-digital-world-note",
     "kind": "category",
     "contentId": "filter-design-in-digital-world-note",
@@ -411,12 +397,5 @@
     "contentId": "reading",
     "locale": "zh",
     "sourceFile": "src/content/categories/reading.yaml"
-  },
-  {
-    "pathname": "/reading/test",
-    "kind": "project",
-    "contentId": "test",
-    "locale": "zh",
-    "sourceFile": "src/content/projects/test.yaml"
   }
 ]

@@ -88,6 +88,7 @@ export function completePomodoroPhase(
   now: number,
   countFocus = true,
 ): PomodoroData {
+  if (!['running', 'paused'].includes(data.session.status)) return data;
   const daily = today(data, now);
   const nextDaily =
     data.session.phase === 'focus' && countFocus
@@ -115,7 +116,7 @@ export function completePomodoroPhase(
         endsAt: null,
         remainingMs: 0,
         nextPhase: null,
-        completionId: data.session.completionId + 1,
+        completionId: data.session.completionId + (countFocus ? 1 : 0),
       },
     };
   }
@@ -128,7 +129,7 @@ export function completePomodoroPhase(
       endsAt: null,
       remainingMs: 0,
       nextPhase,
-      completionId: data.session.completionId + 1,
+      completionId: data.session.completionId + (countFocus ? 1 : 0),
     },
   };
   return data.settings.autoStart ? startNextPomodoroPhase(completed, now) : completed;
@@ -157,6 +158,12 @@ export function startNextPomodoroPhase(data: PomodoroData, now: number) {
 }
 
 export function togglePomodoro(data: PomodoroData, now: number): PomodoroData {
+  if (
+    data.session.status === 'running' &&
+    data.session.endsAt !== null &&
+    data.session.endsAt <= now
+  )
+    return tickPomodoro(data, now);
   if (data.session.status === 'running') {
     return {
       ...data,
@@ -175,14 +182,15 @@ export function togglePomodoro(data: PomodoroData, now: number): PomodoroData {
     };
   }
   if (data.session.status === 'phaseComplete') return startNextPomodoroPhase(data, now);
-  const duration = phaseDuration(data.settings, 'focus');
+  const phase = data.session.status === 'idle' ? data.session.phase : 'focus';
+  const duration = phaseDuration(data.settings, phase);
   return {
     ...data,
     daily: today(data, now),
     session: {
       ...data.session,
       status: 'running',
-      phase: 'focus',
+      phase,
       cycle: 1,
       endsAt: now + duration,
       remainingMs: duration,
@@ -192,10 +200,33 @@ export function togglePomodoro(data: PomodoroData, now: number): PomodoroData {
 }
 
 export function tickPomodoro(data: PomodoroData, now: number) {
-  if (data.session.status === 'running' && data.session.endsAt && data.session.endsAt <= now) {
-    return completePomodoroPhase(data, now);
+  let current = data;
+  // Use the actual deadline so throttled tabs and restored sessions do not drift.
+  for (
+    let i = 0;
+    i < 30 &&
+    current.session.status === 'running' &&
+    current.session.endsAt !== null &&
+    current.session.endsAt <= now;
+    i++
+  ) {
+    current = completePomodoroPhase(current, current.session.endsAt);
   }
-  return data.daily.date === localDateKey(now) ? data : { ...data, daily: today(data, now) };
+  return current.daily.date === localDateKey(now)
+    ? current
+    : { ...current, daily: today(current, now) };
+}
+
+export function skipPomodoro(data: PomodoroData, now: number): PomodoroData {
+  if (data.session.status === 'phaseComplete') return startNextPomodoroPhase(data, now);
+  if (!['running', 'paused'].includes(data.session.status)) return data;
+  const completed = completePomodoroPhase(
+    { ...data, settings: { ...data.settings, autoStart: false } },
+    now,
+    false,
+  );
+  const next = { ...completed, settings: data.settings };
+  return next.session.nextPhase ? startNextPomodoroPhase(next, now) : next;
 }
 
 export function resetPomodoro(data: PomodoroData, now: number): PomodoroData {

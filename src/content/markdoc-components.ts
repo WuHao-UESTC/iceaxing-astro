@@ -4,6 +4,7 @@ import { createElement } from 'react';
 import { articleImage } from './article-image';
 import { normalizeDollarMath } from '../lib/markdoc-math';
 import { wikiLink } from './wiki-link';
+import { EditorMath } from './editor-math';
 
 const requiredText = (label: string, description?: string) =>
   fields.text({
@@ -101,14 +102,14 @@ export const markdocComponents = {
           validation: { isRequired: true },
         }),
       },
-      ContentView: ({ value }) => value.expression,
+      NodeView: (props) => createElement(EditorMath, props),
     }),
     { normalizeClipboard: normalizeDollarMath },
   ),
   inlineMath: inline({
     label: '行内公式',
     schema: { expression: requiredText('LaTeX') },
-    ContentView: ({ value }) => value.expression,
+    NodeView: (props) => createElement(EditorMath, { ...props, inline: true }),
   }),
   anchor: inline({
     label: '锚点',

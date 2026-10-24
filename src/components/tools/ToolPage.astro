@@ -1,4 +1,6 @@
 ---
+import TerrainFacets from '../home/TerrainFacets.astro';
+import { coverMesh } from '../../data/terrain-scenes';
 import type { Locale } from '../../i18n/config';
 import { localizedPath } from '../../i18n/config';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -54,20 +56,26 @@ const alternatePaths = {
   description={details.description}
   {alternatePaths}
   pagefindType="tool"
+  fullViewport
 >
-  <main id="main-content" class={`tool-page tool-page-${tool}`} data-pagefind-ignore>
-    <header class="tool-page-header">
-      <p class="content-kicker">ICEAXING / TOOLS</p>
-      <h1>{details.title}</h1>
-      <p>{details.description}</p>
-      <a href={localizedPath(locale, '/tools')}>
-        ← {locale === 'zh' ? '全部工具' : locale === 'de' ? 'Alle Werkzeuge' : 'All tools'}
-      </a>
-    </header>
+  <main
+    id="main-content"
+    class={`tool-page tool-page-${tool}`}
+    aria-label={details.title}
+    data-pagefind-ignore
+  >
+    <svg
+      class="tool-landscape"
+      viewBox="0 0 1440 800"
+      preserveAspectRatio="xMidYMid slice"
+      aria-hidden="true"
+    >
+      <TerrainFacets faces={coverMesh} />
+    </svg>
     {tool === 'pomodoro' ? (
       <PomodoroTimer {locale} client:load />
     ) : (
-      <SmithChartTool {locale} client:visible />
+      <SmithChartTool {locale} client:load />
     )}
   </main>
 </BaseLayout>

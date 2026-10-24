@@ -1,0 +1,21 @@
+---
+import WorkspaceDesignPreview from '../../components/islands/WorkspaceDesignPreview';
+import '../../styles/workspace-design-preview.css';
+
+export const prerender = false;
+if (!import.meta.env.DEV) return new Response(null, { status: 404 });
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>工作区设计提案 · iceaxing</title>
+  </head>
+  <body>
+    <WorkspaceDesignPreview client:load />
+  </body>
+</html>

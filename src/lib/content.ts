@@ -1,6 +1,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 import routeManifest from '../generated/route-manifest.json';
+import { folderIsPublic } from './publication';
 import type { Locale } from '../i18n/config';
 
 export type RouteKind = 'category' | 'project' | 'collection' | 'article' | 'log' | 'page';
@@ -60,7 +61,33 @@ export async function getContentIndex() {
       getCollection('settings'),
     ]);
 
-  return { articles, logs, pages, categories, projects, series, friends, mottos, settings };
+  const visibleCategories = categories.filter((entry) => folderIsPublic(entry.data));
+  const categoryIds = new Set(visibleCategories.map((entry) => entry.data.categoryId));
+  const visibleProjects = projects.filter(
+    (entry) => folderIsPublic(entry.data) && categoryIds.has(entry.data.category),
+  );
+  const projectIds = new Set(visibleProjects.map((entry) => entry.data.projectId));
+  const visibleSeries = series.filter(
+    (entry) => folderIsPublic(entry.data) && projectIds.has(entry.data.project),
+  );
+  const seriesIds = new Set(visibleSeries.map((entry) => entry.data.collectionId));
+  const visibleArticles = articles.filter(
+    (entry) =>
+      (!entry.data.category || categoryIds.has(entry.data.category)) &&
+      (!entry.data.project || projectIds.has(entry.data.project)) &&
+      (!entry.data.collection || seriesIds.has(entry.data.collection)),
+  );
+  return {
+    articles: visibleArticles,
+    logs,
+    pages,
+    categories: visibleCategories,
+    projects: visibleProjects,
+    series: visibleSeries,
+    friends,
+    mottos,
+    settings,
+  };
 }
 
 export function byOrder<T extends { data: { order: number } }>(entries: T[]) {

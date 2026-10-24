@@ -13,6 +13,10 @@ export type FolderNode = {
   order: number;
   editorCollection: 'categories' | 'projects' | 'series';
   group?: CategoryGroup;
+  publicationStatus?: string;
+  publishedAt?: string;
+  isPublic?: boolean;
+  blockedBy?: string;
 };
 
 export type ArticleVersion = {
@@ -59,6 +63,8 @@ export type RawFolderEntry = {
   label: string;
   order?: number;
   group?: CategoryGroup;
+  publicationStatus?: string;
+  publishedAt?: string;
 };
 
 export type RawArticleEntry = {

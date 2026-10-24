@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildContentTree, planCascadeDeletion, selectContentGroup } from './model';
+import {
+  buildContentTree,
+  compareArticleNodes,
+  planCascadeDeletion,
+  selectContentGroup,
+} from './model';
 import type { ContentSnapshot } from './types';
 
 const snapshot: ContentSnapshot = {
@@ -52,6 +57,107 @@ const snapshot: ContentSnapshot = {
 };
 
 describe('content tree model', () => {
+  it('routes missing article parents into unassigned content without redundant warnings', () => {
+    const tree = buildContentTree(
+      {
+        folders: [],
+        articles: [
+          {
+            locale: 'zh',
+            contentId: 'fixture',
+            translationKey: 'fixture',
+            title: 'Markdoc 组件视觉样例',
+            status: 'draft',
+            project: 'missing',
+          },
+        ],
+      },
+      'local',
+      null,
+    );
+    expect(tree.warnings).toEqual([]);
+    expect(
+      selectContentGroup(tree, 'unassigned').articles.map((article) => article.translationKey),
+    ).toEqual(['fixture']);
+  });
+  it('sorts translation groups by Chinese pinyin regardless of foreign titles or manual order', () => {
+    const articles: ContentSnapshot['articles'] = [
+      {
+        locale: 'de',
+        contentId: 'b-de',
+        translationKey: 'b',
+        title: 'A Deutsch',
+        status: 'draft',
+        order: -100,
+      },
+      { locale: 'en', contentId: 'b-en', translationKey: 'b', title: 'A English', status: 'draft' },
+      {
+        locale: 'zh',
+        contentId: 'b-zh',
+        translationKey: 'b',
+        title: '波形分析',
+        status: 'draft',
+        order: -100,
+      },
+      { locale: 'en', contentId: 'a-en', translationKey: 'a', title: 'Z English', status: 'draft' },
+      {
+        locale: 'zh',
+        contentId: 'a-zh',
+        translationKey: 'a',
+        title: '安全设计',
+        status: 'draft',
+        order: 999,
+      },
+      { locale: 'zh', contentId: 'c-zh', translationKey: 'c', title: '采样基础', status: 'draft' },
+    ];
+    const tree = buildContentTree({ folders: [], articles }, 'local', null);
+    expect(tree.articles.map((article) => article.translationKey)).toEqual(['a', 'b', 'c']);
+    expect(tree.articles[1]?.versions.map((version) => version.locale)).toEqual(['zh', 'en', 'de']);
+    const renamed = tree.articles.map((article) => ({ ...article, label: '同名展示' }));
+    expect(
+      renamed
+        .reverse()
+        .sort(compareArticleNodes)
+        .map((article) => article.translationKey),
+    ).toEqual(['a', 'b', 'c']);
+  });
+
+  it('falls back predictably without Chinese versions and resolves equal titles by stable ID', () => {
+    const articles: ContentSnapshot['articles'] = [
+      { locale: 'de', contentId: 'beta', translationKey: 'beta', title: 'Beta', status: 'draft' },
+      {
+        locale: 'en',
+        contentId: 'alpha',
+        translationKey: 'alpha',
+        title: 'Alpha',
+        status: 'draft',
+      },
+      {
+        locale: 'zh',
+        contentId: 'tie-z',
+        translationKey: 'tie-z',
+        title: '相同标题',
+        status: 'draft',
+      },
+      {
+        locale: 'zh',
+        contentId: 'tie-a',
+        translationKey: 'tie-a',
+        title: '相同标题',
+        status: 'draft',
+      },
+    ];
+    const tree = buildContentTree({ folders: [], articles }, 'local', null);
+    expect(tree.articles.map((article) => article.translationKey)).toEqual([
+      'alpha',
+      'beta',
+      'tie-a',
+      'tie-z',
+    ]);
+    expect(
+      buildContentTree({ folders: [], articles: [...articles].reverse() }, 'local', null).articles,
+    ).toEqual(tree.articles);
+  });
   it('filters complete descendant trees by the category group and preserves unassigned content', () => {
     const tree = buildContentTree(
       {

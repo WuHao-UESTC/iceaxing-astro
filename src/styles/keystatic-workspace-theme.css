@@ -1,0 +1,51 @@
+/* Shared by the workspace shell and its same-origin editor iframe. */
+:root[data-workspace-group] {
+  --ws-accent: #176b8d;
+  --ws-paper: #fdfefd;
+  --ws-page: #f5f7f6;
+  --ws-text: #243530;
+  --ws-muted: #687872;
+  --ws-line: color-mix(in srgb, var(--ws-accent) 14%, #e5e9e6);
+  --ws-wash: color-mix(in srgb, var(--ws-accent) 4%, var(--ws-paper));
+  --ws-soft: color-mix(in srgb, var(--ws-accent) 9%, var(--ws-paper));
+  --ws-serif:
+    'Iowan Old Style', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', SimSun, Georgia, serif;
+  --ws-sans: Inter, 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --ws-mono: 'Cascadia Code', Consolas, monospace;
+  color-scheme: light;
+  background: var(--ws-page);
+  color: var(--ws-text);
+}
+:root[data-workspace-group='study'] {
+  --ws-accent: #247568;
+}
+:root[data-workspace-group='life'] {
+  --ws-accent: #7d5600;
+}
+:root[data-workspace-group='documents'] {
+  --ws-accent: #58458d;
+}
+:root[data-workspace-group='unassigned'] {
+  --ws-accent: #586b66;
+}
+:root[data-workspace-mode='dark'] {
+  color-scheme: dark;
+  --ws-accent: #63c6e8;
+  --ws-paper: #17201f;
+  --ws-page: #101716;
+  --ws-text: #e1e9e4;
+  --ws-muted: #a1b1a9;
+  --ws-line: color-mix(in srgb, var(--ws-accent) 16%, #2c3833);
+}
+:root[data-workspace-mode='dark'][data-workspace-group='study'] {
+  --ws-accent: #79cdb5;
+}
+:root[data-workspace-mode='dark'][data-workspace-group='life'] {
+  --ws-accent: #f2be4a;
+}
+:root[data-workspace-mode='dark'][data-workspace-group='documents'] {
+  --ws-accent: #b6a2ef;
+}
+:root[data-workspace-mode='dark'][data-workspace-group='unassigned'] {
+  --ws-accent: #afc5bd;
+}

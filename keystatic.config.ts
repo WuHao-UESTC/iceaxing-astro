@@ -4,6 +4,10 @@ import { createElement } from 'react';
 import { markdocComponents } from './src/content/markdoc-components';
 import { withMathPersistence } from './src/lib/keystatic-math';
 import { withWikiLinks } from './src/lib/keystatic-wikilinks';
+import { tagField } from './src/content/tag-field';
+import { projectProgress } from './src/content/project-progress';
+import { WorkspaceRelationship } from './src/content/workspace-relationship';
+import { publicationField } from './src/content/publication-field';
 
 type Locale = 'zh' | 'en' | 'de';
 
@@ -20,6 +24,14 @@ const relationshipWithContext = (
   const field = fields.relationship(options);
   return {
     ...field,
+    Input: (props: Parameters<typeof field.Input>[0]) =>
+      createElement(WorkspaceRelationship, {
+        ...props,
+        label: options.label,
+        collection: options.collection,
+        description: options.description,
+        required: options.validation?.isRequired,
+      }),
     defaultValue: () => contextValue(contextKey) ?? field.defaultValue(),
   };
 };
@@ -75,13 +87,10 @@ const localizedText = fields.object(
       description: fields.text({ label: 'Deutsche Beschreibung', multiline: true }),
     }),
   },
-  { label: '多语言文案' },
+  { layout: [4, 4, 4] },
 );
 
-const tags = fields.array(fields.text({ label: '标签', validation: { isRequired: true } }), {
-  label: '标签',
-  itemLabel: (props) => props.value,
-});
+const tags = tagField;
 
 const coverImage = (publicPath: string) =>
   fields.image({
@@ -147,16 +156,7 @@ const commonContentFields = (locale: Locale) => ({
     validation: urlSlugValidation,
   }),
   excerpt: fields.text({ label: '摘要', multiline: true }),
-  status: fields.select({
-    label: '状态',
-    defaultValue: 'draft',
-    options: [
-      { label: '草稿', value: 'draft' },
-      { label: '定时', value: 'scheduled' },
-      { label: '已发布', value: 'published' },
-      { label: '已归档', value: 'archived' },
-    ],
-  }),
+  status: publicationField('状态', true),
   publishedAt: fields.datetime({
     label: '发布时间',
     defaultValue: { kind: 'now' },
@@ -339,6 +339,14 @@ const pageCollection = (locale: Locale) =>
   });
 
 const githubOwner = import.meta.env.PUBLIC_KEYSTATIC_GITHUB_OWNER;
+const folderPublication = () => ({
+  publicationStatus: publicationField(),
+  publishedAt: fields.datetime({
+    label: '发布时间',
+    description: '定时发布时使用的公开时间。',
+    defaultValue: { kind: 'now' },
+  }),
+});
 const githubRepo = import.meta.env.PUBLIC_KEYSTATIC_GITHUB_REPO;
 const useGitHub = Boolean(
   import.meta.env.PUBLIC_KEYSTATIC_STORAGE_KIND === 'github' && githubOwner && githubRepo,
@@ -413,19 +421,20 @@ export default config({
         },
         labels: localizedText,
         tags,
+        ...folderPublication(),
         featured: fields.checkbox({
           label: '首页卡片精选',
           description: '显示在首页右侧的精选入口卡片区。',
           defaultValue: false,
         }),
         order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
-        icon: fields.text({ label: '图标键' }),
-        coverImage: coverImage('../../assets/content/covers/'),
         createdAt: fields.datetime({
           label: '创建时间',
           defaultValue: { kind: 'now' },
           validation: { isRequired: true },
         }),
+        icon: fields.text({ label: '图标键' }),
+        coverImage: coverImage('../../assets/content/covers/'),
       },
     }),
     projects: collection({
@@ -446,6 +455,19 @@ export default config({
           'treeCategory',
         ),
         labels: localizedText,
+        tags,
+        ...folderPublication(),
+        featured: fields.checkbox({
+          label: '首页卡片精选',
+          description: '显示在首页右侧的精选入口卡片区。',
+          defaultValue: false,
+        }),
+        order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
+        createdAt: fields.datetime({
+          label: '创建时间',
+          defaultValue: { kind: 'now' },
+          validation: { isRequired: true },
+        }),
         status: fields.select({
           label: '状态',
           defaultValue: 'planned',
@@ -456,24 +478,8 @@ export default config({
             { label: '已归档', value: 'archived' },
           ],
         }),
-        progress: fields.integer({
-          label: '进度（%）',
-          defaultValue: 0,
-          validation: { min: 0, max: 100, isRequired: true },
-        }),
-        tags,
-        featured: fields.checkbox({
-          label: '首页卡片精选',
-          description: '显示在首页右侧的精选入口卡片区。',
-          defaultValue: false,
-        }),
-        order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
+        progress: projectProgress,
         coverImage: coverImage('../../assets/content/covers/'),
-        createdAt: fields.datetime({
-          label: '创建时间',
-          defaultValue: { kind: 'now' },
-          validation: { isRequired: true },
-        }),
       },
     }),
     series: collection({
@@ -495,6 +501,7 @@ export default config({
         ),
         labels: localizedText,
         tags,
+        ...folderPublication(),
         featured: fields.checkbox({
           label: '首页卡片精选',
           description: '显示在首页右侧的精选入口卡片区。',

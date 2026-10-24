@@ -6,6 +6,10 @@ export type Locale = (typeof locales)[number];
 export const stableKeyPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 export const urlSlugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const dateTimeSchema = z.coerce.date();
+const folderPublication = {
+  publicationStatus: z.enum(['draft', 'scheduled', 'published', 'archived']).default('published'),
+  publishedAt: dateTimeSchema.optional(),
+};
 
 export const localizedTextSchema = z.object({
   zh: z.object({ title: z.string().min(1), description: z.string().default('') }),
@@ -88,6 +92,7 @@ export const pageSchema = baseContentSchema
   });
 
 export const categorySchema = z.object({
+  ...folderPublication,
   categoryId: z.string().regex(stableKeyPattern),
   slug: z.string().regex(urlSlugPattern),
   group: z.enum(['skill', 'study', 'life']),
@@ -100,6 +105,7 @@ export const categorySchema = z.object({
 });
 
 export const projectSchema = z.object({
+  ...folderPublication,
   projectId: z.string().regex(stableKeyPattern),
   slug: z.string().regex(urlSlugPattern),
   category: z.string().regex(stableKeyPattern),
@@ -113,6 +119,7 @@ export const projectSchema = z.object({
 });
 
 export const seriesSchema = z.object({
+  ...folderPublication,
   collectionId: z.string().regex(stableKeyPattern),
   slug: z.string().regex(urlSlugPattern),
   project: z.string().regex(stableKeyPattern),

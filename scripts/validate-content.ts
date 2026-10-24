@@ -6,6 +6,7 @@ import { format, resolveConfig } from 'prettier';
 import { parse } from 'yaml';
 import Markdoc from '@markdoc/markdoc';
 import { normalizeDollarMath } from '../src/lib/markdoc-math';
+import { folderIsPublic } from '../src/lib/publication';
 import { normalizeWikiLinks, resolveWikiTarget, type WikiLinkTarget } from '../src/lib/wikilinks';
 
 import {
@@ -294,11 +295,25 @@ for (const item of series) {
 }
 
 const routes: RouteEntry[] = [];
+const categoryIsVisible = (entry: LoadedEntry) => folderIsPublic(entry.data);
+const projectIsVisible = (entry: LoadedEntry) => {
+  const parent = categoryById.get(String(entry.data.category));
+  return folderIsPublic(entry.data) && !!parent && categoryIsVisible(parent);
+};
+const seriesIsVisible = (entry: LoadedEntry) => {
+  const parent = projectById.get(String(entry.data.project));
+  return folderIsPublic(entry.data) && !!parent && projectIsVisible(parent);
+};
+for (const entry of [...categories, ...projects, ...series]) {
+  if (entry.data.publicationStatus === 'scheduled' && !entry.data.publishedAt)
+    issue(entry.sourceFile, '定时发布需要填写发布时间');
+}
 const addRoute = (route: RouteEntry) => routes.push(route);
 
 for (const locale of locales) {
   const prefix = localePrefix(locale);
   for (const category of categories) {
+    if (!categoryIsVisible(category)) continue;
     addRoute({
       pathname: joinRoute(prefix, requiredString(category, 'slug')),
       kind: 'category',
@@ -308,6 +323,7 @@ for (const locale of locales) {
     });
   }
   for (const project of projects) {
+    if (!projectIsVisible(project)) continue;
     const category = categoryById.get(requiredString(project, 'category'));
     if (!category) continue;
     addRoute({
@@ -323,6 +339,7 @@ for (const locale of locales) {
     });
   }
   for (const item of series) {
+    if (!seriesIsVisible(item)) continue;
     const project = projectById.get(requiredString(item, 'project'));
     const category = project && categoryById.get(requiredString(project, 'category'));
     if (!project || !category) continue;
@@ -368,6 +385,12 @@ for (const article of articles) {
     }
   }
   if (!category || (projectId && !project)) continue;
+  if (
+    !categoryIsVisible(category) ||
+    (project && !projectIsVisible(project)) ||
+    (item && !seriesIsVisible(item))
+  )
+    continue;
 
   addRoute({
     pathname: joinRoute(
@@ -480,20 +503,20 @@ if (errors.length) {
   const subscriptionOptions = {
     version: 1,
     options: [
-      ...categories.map((entry) => ({
+      ...categories.filter(categoryIsVisible).map((entry) => ({
         key: `category:${entry.entryKey}`,
         kind: 'category',
         id: entry.entryKey,
         labels: labelsFor(entry),
       })),
-      ...projects.map((entry) => ({
+      ...projects.filter(projectIsVisible).map((entry) => ({
         key: `project:${entry.entryKey}`,
         kind: 'project',
         id: entry.entryKey,
         parentKey: `category:${String(entry.data.category)}`,
         labels: labelsFor(entry),
       })),
-      ...series.map((entry) => ({
+      ...series.filter(seriesIsVisible).map((entry) => ({
         key: `collection:${entry.entryKey}`,
         kind: 'collection',
         id: entry.entryKey,
@@ -519,31 +542,31 @@ if (errors.length) {
     return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
   };
   const publicationEntries = [
-    ...categories.map((entry) => ({
+    ...categories.filter(categoryIsVisible).map((entry) => ({
       contentId: entry.entryKey,
       kind: 'category',
       versionHash: entry.versionHash,
-      publishedAt: asIso(entry.data.createdAt),
+      publishedAt: asIso(entry.data.publishedAt ?? entry.data.createdAt),
       titles: labelsFor(entry),
       urls: localizedRoutes('category', entry.entryKey),
       subscriptionKeys: [`category:${entry.entryKey}`],
     })),
-    ...projects.map((entry) => ({
+    ...projects.filter(projectIsVisible).map((entry) => ({
       contentId: entry.entryKey,
       kind: 'project',
       versionHash: entry.versionHash,
-      publishedAt: asIso(entry.data.createdAt),
+      publishedAt: asIso(entry.data.publishedAt ?? entry.data.createdAt),
       titles: labelsFor(entry),
       urls: localizedRoutes('project', entry.entryKey),
       subscriptionKeys: [`category:${String(entry.data.category)}`, `project:${entry.entryKey}`],
     })),
-    ...series.map((entry) => {
+    ...series.filter(seriesIsVisible).map((entry) => {
       const project = projectById.get(String(entry.data.project));
       return {
         contentId: entry.entryKey,
         kind: 'collection',
         versionHash: entry.versionHash,
-        publishedAt: asIso(entry.data.createdAt),
+        publishedAt: asIso(entry.data.publishedAt ?? entry.data.createdAt),
         titles: labelsFor(entry),
         urls: localizedRoutes('collection', entry.entryKey),
         subscriptionKeys: [
@@ -554,7 +577,11 @@ if (errors.length) {
       };
     }),
     ...articles
-      .filter((entry) => isPublic(entry.data))
+      .filter(
+        (entry) =>
+          isPublic(entry.data) &&
+          routes.some((route) => route.kind === 'article' && route.sourceFile === entry.sourceFile),
+      )
       .map((entry) => {
         const project = projectById.get(String(entry.data.project ?? ''));
         const categoryId = String(entry.data.category ?? project?.data.category ?? '');
