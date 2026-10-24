@@ -1,0 +1,75 @@
+﻿---
+interface Props {
+  group: 'skill' | 'study' | 'life';
+}
+const { group } = Astro.props;
+type Face = { points: string; ink: number };
+// Shared vertices make adjacent facets a continuous terrain surface.
+function strip(upper: number[], lower: number[], ink: number): Face[] {
+  return upper.slice(0, -1).flatMap((y, i) => {
+    const x = i * 50;
+    const a = `${x},${y}`;
+    const b = `${x + 50},${upper[i + 1]!}`;
+    const c = `${x},${lower[i]!}`;
+    const d = `${x + 50},${lower[i + 1]!}`;
+    return i % 2
+      ? [
+          { points: `${a} ${b} ${c}`, ink: ink + (i % 3) * 3 },
+          { points: `${b} ${d} ${c}`, ink: ink + 7 },
+        ]
+      : [
+          { points: `${a} ${b} ${d}`, ink: ink + 4 },
+          { points: `${a} ${d} ${c}`, ink: ink + (i % 3) * 3 },
+        ];
+  });
+}
+const floor = [149, 155, 147, 158, 150, 153, 146, 158, 151, 156, 147, 155, 150, 159, 148, 154, 151];
+const ridge = [94, 70, 39, 64, 46, 13, 48, 77, 53, 25, 56, 82, 60, 29, 59, 88, 72];
+const ridgeFoot = [
+  122, 112, 101, 119, 107, 91, 110, 127, 111, 96, 115, 130, 110, 99, 117, 131, 119,
+];
+const farPeaks = [62, 28, 54, 17, 48, 34, 58, 21, 47, 11, 48, 32, 59, 20, 51, 30, 61];
+const farFoot = farPeaks.map(() => 113);
+const nearPeaks = [112, 89, 62, 98, 77, 103, 68, 93, 56, 91, 72, 108, 65, 96, 79, 109, 84];
+const nearFoot = [
+  139, 126, 113, 136, 123, 141, 115, 130, 106, 129, 119, 142, 114, 134, 122, 144, 128,
+];
+const plateau = [12, 17, 11, 20, 14, 22, 16, 25, 18, 27, 20, 30, 22, 33, 25, 35, 28];
+const cliffLip = [31, 29, 36, 38, 41, 46, 45, 53, 59, 57, 65, 70, 73, 81, 87, 90, 97];
+const cliffDrop = [56, 54, 63, 62, 70, 73, 76, 82, 89, 88, 96, 100, 106, 113, 118, 124, 128];
+const oppositeEdge = cliffDrop.map((y, i) => y + (i % 3 === 0 ? 18 : 13));
+const designs = {
+  skill: [...strip(ridge, ridgeFoot, 9), ...strip(ridgeFoot, floor, 6)],
+  study: [
+    ...strip(farPeaks, farFoot, 5),
+    ...strip(nearPeaks, nearFoot, 11),
+    ...strip(nearFoot, floor, 7),
+  ],
+  life: [
+    ...strip(plateau, cliffLip, 6),
+    ...strip(cliffLip, cliffDrop, 14),
+    ...strip(oppositeEdge, floor, 10),
+  ],
+};
+const details = {
+  skill: ['M237 26L250 13L262 29', 'M638 42L650 29L664 45'],
+  study: ['M141 29L150 17L160 29', 'M441 23L450 11L460 24'],
+  life: ['M154 83L177 86', 'M553 123L573 128'],
+};
+---
+
+<svg
+  class="subscribe-ribbon-art"
+  viewBox="0 0 800 160"
+  preserveAspectRatio="xMidYMid slice"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  {designs[group].map(({ points, ink }) => (
+    <polygon class="subscribe-facet" points={points} style={`--facet-opacity:${ink / 100}`} />
+  ))}
+  {details[group].map((d) => (
+    <path class="subscribe-trail" d={d} />
+  ))}
+</svg>

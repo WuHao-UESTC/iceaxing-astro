@@ -1,0 +1,303 @@
+.subscribe-panel {
+  scroll-margin-top: 6rem;
+  margin-block: 3rem 1.5rem;
+  padding-block: 1rem;
+  background: transparent;
+  color: var(--text);
+}
+.subscribe-heading .content-kicker {
+  grid-column: 1 / -1;
+  margin: 0 0 0.5rem;
+  color: var(--accent);
+  font-size: 0.58rem;
+  font-weight: 650;
+  letter-spacing: 0.15em;
+}
+.subscribe-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(12rem, 27rem);
+  align-items: center;
+  column-gap: 1.5rem;
+}
+.subscribe-heading > p:last-child {
+  grid-column: 1 / -1;
+}
+.subscribe-heading h2 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+  font-weight: 550;
+}
+.subscribe-heading > p:last-child,
+.subscribe-rule {
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.8;
+}
+.subscribe-panel form {
+  min-width: 0;
+  margin-top: 1.5rem;
+}
+.subscribe-email {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0.75rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.subscribe-email > span {
+  flex: none;
+}
+.subscribe-email input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 2.3rem;
+  padding: 0.35rem 0.15rem;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+}
+.subscribe-email input:focus-visible {
+  outline: none;
+  border-bottom-color: var(--accent);
+  box-shadow: 0 1px 0 var(--accent);
+}
+.subscribe-scopes,
+.subscribe-band {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.subscribe-scopes > legend {
+  padding: 0;
+  font-size: 0.82rem;
+}
+.subscribe-bands {
+  display: grid;
+  gap: 1.8rem;
+  margin-top: 1.8rem;
+}
+.subscribe-band {
+  --ribbon-accent: #176b8d;
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(10rem, 20vw, 14rem);
+  padding: 0.5rem 1.4rem 1.8rem;
+}
+.subscribe-band[data-group='study'] {
+  --ribbon-accent: #247568;
+}
+.subscribe-band[data-group='life'] {
+  --ribbon-accent: #7d5600;
+}
+:root[data-theme='dark'] .subscribe-band {
+  --ribbon-accent: #63c6e8;
+}
+:root[data-theme='dark'] .subscribe-band[data-group='study'] {
+  --ribbon-accent: #79cdb5;
+}
+:root[data-theme='dark'] .subscribe-band[data-group='life'] {
+  --ribbon-accent: #f2be4a;
+}
+.subscribe-band-title {
+  position: relative;
+  z-index: 1;
+  padding: 0 0.5rem 0 0;
+  color: var(--ribbon-accent);
+  font-size: 0.9rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+}
+.subscribe-band-title > span {
+  margin-right: 0.55rem;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+.subscribe-ribbon-art {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  width: 100%;
+  height: clamp(10rem, 20vw, 14rem);
+  overflow: hidden;
+  color: var(--ribbon-accent);
+  pointer-events: none;
+}
+.subscribe-facet {
+  fill: currentColor;
+  opacity: var(--facet-opacity, 0.12);
+}
+.subscribe-trail {
+  stroke: currentColor;
+  stroke-width: 0.7;
+  stroke-opacity: 0.12;
+  vector-effect: non-scaling-stroke;
+}
+.subscribe-band:has(input:checked) .subscribe-facet {
+  opacity: calc(var(--facet-opacity, 0.12) + 0.025);
+}
+.subscribe-band-trail {
+  margin: 0.35rem 0 1rem;
+  color: var(--muted);
+  font-size: 0.66rem;
+}
+.subscribe-clusters,
+.subscribe-projects,
+.subscribe-collections {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.65rem 1.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.subscribe-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.85rem;
+  max-width: 100%;
+}
+.subscribe-projects {
+  flex: 0 1 auto;
+  box-sizing: border-box;
+  max-width: 100%;
+  gap: 0.25rem 0.85rem;
+  padding-left: 0.9rem;
+  border-left: 1px solid color-mix(in srgb, var(--ribbon-accent) 25%, transparent);
+}
+.subscribe-project {
+  max-width: 100%;
+}
+.subscribe-collections {
+  gap: 0.15rem 0.7rem;
+  margin-left: 1.1rem;
+}
+.subscribe-choice {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-height: 2.3rem;
+  padding: 0.25rem 0.25rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.7;
+  cursor: pointer;
+}
+.subscribe-choice[data-kind='category'] {
+  color: color-mix(in srgb, var(--ribbon-accent) 40%, var(--text));
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+.subscribe-choice input {
+  flex: none;
+  width: 0.85rem;
+  height: 0.85rem;
+  margin: 0 0.2rem 0 0;
+  accent-color: var(--ribbon-accent);
+  cursor: inherit;
+}
+.subscribe-choice-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.subscribe-choice-kind,
+.subscribe-covered {
+  font-size: 0.56rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+.subscribe-covered {
+  color: var(--ribbon-accent);
+}
+.subscribe-covered[hidden] {
+  display: none;
+}
+.subscribe-choice:is(:hover, :has(input:checked), [data-covered='true']) {
+  color: var(--ribbon-accent);
+}
+.subscribe-choice:has(input:focus-visible) {
+  outline: 1px dashed var(--ribbon-accent);
+  outline-offset: 2px;
+}
+.subscribe-choice[data-covered='true'] {
+  cursor: default;
+}
+.subscribe-panel button {
+  margin-top: 1.5rem;
+  border: 0;
+  cursor: pointer;
+}
+.subscribe-panel button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+.subscribe-honeypot {
+  position: absolute;
+  left: -9999px;
+}
+.subscribe-result {
+  min-height: 1.4rem;
+  margin: 0.7rem 0 0;
+  font-size: 0.82rem;
+}
+.subscribe-result[data-state='success'] {
+  color: var(--accent-strong);
+}
+.subscribe-result[data-state='error'] {
+  color: #a33e2d;
+}
+:root[data-theme='dark'] .subscribe-result[data-state='error'] {
+  color: #ffab98;
+}
+@media (max-width: 40rem) {
+  .subscribe-heading {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 0.8rem;
+  }
+  .subscribe-heading h2 {
+    font-size: 1.1rem;
+  }
+  .subscribe-email > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .subscribe-ribbon-art {
+    inset: auto 0 0.5rem;
+    height: 10rem;
+  }
+  .subscribe-band {
+    padding-inline: 0.4rem;
+  }
+  .subscribe-clusters {
+    gap: 0.5rem 1rem;
+  }
+  .subscribe-projects {
+    flex-basis: 100%;
+    margin-left: 1.2rem;
+  }
+  .subscribe-choice {
+    min-height: 2.75rem;
+  }
+  .subscribe-email input {
+    font-size: 1rem;
+  }
+}

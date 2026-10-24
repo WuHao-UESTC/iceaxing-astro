@@ -216,7 +216,9 @@ export function initComments() {
         const text = document.createElement('p');
         text.className = 'comment-body';
         text.textContent = comment.body;
-        if (!comment.deleted) row.append(text);
+        const content = document.createElement('div');
+        content.className = 'comment-content';
+        content.append(text);
         const actions = document.createElement('div');
         actions.className = 'comment-actions';
         if (!comment.deleted)
@@ -233,8 +235,9 @@ export function initComments() {
         if (identity?.admin) {
           if (comment.email) {
             const email = document.createElement('span');
+            email.className = 'comment-owner-email';
             email.textContent = comment.email;
-            actions.append(email);
+            row.append(email);
           }
           if (!comment.deleted)
             actions.append(
@@ -271,7 +274,8 @@ export function initComments() {
               ),
             );
         }
-        row.append(actions);
+        content.append(actions);
+        row.append(content);
         group.append(row);
       }
       for (const group of groups.values()) {

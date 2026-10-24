@@ -221,7 +221,7 @@
   font-style: normal;
 }
 .reader-toc nav {
-  max-height: calc(100dvh - 13rem);
+  max-height: calc(100dvh - 17rem);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
@@ -257,6 +257,25 @@
   border-left-color: var(--reader-accent);
   color: var(--reader-accent);
   background: color-mix(in srgb, var(--reader-accent) 6%, transparent);
+}
+.reader-subscribe {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  max-width: 100%;
+  margin-top: 0.9rem;
+  padding-block: 0.35rem;
+  color: var(--reader-accent);
+  font-size: 0.68rem;
+  line-height: 1.8;
+  text-decoration: none;
+}
+.reader-subscribe > span:last-child {
+  flex: none;
+}
+.reader-subscribe:hover > span:first-child {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
 }
 
 .reading-page .reader-body {

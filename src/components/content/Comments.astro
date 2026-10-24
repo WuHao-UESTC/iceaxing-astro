@@ -129,20 +129,20 @@ const composerId = `comment-compose-${encodeURIComponent(admin ? 'admin' : threa
     <button class="comment-quiet" type="button" data-cancel hidden>
       {copy.cancel}
     </button>
-    <label>
-      {copy.body}
-      <textarea
-        name="body"
-        rows="4"
-        maxlength="5000"
-        placeholder={copy.placeholder}
-        required
-      ></textarea>
-    </label>
-    <button class="comment-primary" type="submit">
-      {copy.submit}
-      <span aria-hidden="true">↗</span>
-    </button>
+    <div class="comment-compose-heading">
+      <label for={`${composerId}-body`}>{copy.body}</label>
+      <button class="comment-submit" type="submit">
+        {copy.submit}
+      </button>
+    </div>
+    <textarea
+      id={`${composerId}-body`}
+      name="body"
+      rows="3"
+      maxlength="5000"
+      placeholder={copy.placeholder}
+      required
+    ></textarea>
   </form>
   {admin && (
     <section data-blocklist hidden>

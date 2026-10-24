@@ -341,9 +341,32 @@
 .comment-compose-caption {
   margin: 0.2rem 0 -0.25rem;
 }
+.comment-compose-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: -0.6rem;
+}
+.site-comments .comment-submit {
+  min-height: 2rem;
+  padding: 0.25rem 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--comment-accent);
+  font-weight: 650;
+}
+.site-comments .comment-submit:hover:not(:disabled) {
+  background: transparent;
+  color: var(--comment-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
 .site-comments .comment-composer textarea {
   --note-line: color-mix(in srgb, var(--comment-accent) 14%, transparent);
-  min-height: 10.5rem;
+  height: 6.3rem;
+  min-height: 6.3rem;
   padding: 0 0.2rem;
   border: 0;
   border-radius: 0;
@@ -416,7 +439,7 @@
 }
 .comment-thread {
   position: relative;
-  margin-block: 1.6rem 2rem;
+  margin-block: 1rem 1.2rem;
   padding: 0;
   background: transparent;
   isolation: isolate;
@@ -424,15 +447,15 @@
 .comment-divider {
   display: block;
   width: 100%;
-  height: clamp(1.7rem, 5vw, 3rem);
-  margin-bottom: 0.6rem;
+  height: clamp(1.5rem, 4vw, 2rem);
+  margin-bottom: 0.25rem;
   color: var(--comment-accent);
   pointer-events: none;
 }
 .comment-divider-line {
   stroke: currentColor;
   stroke-width: 0.8;
-  stroke-opacity: 0.24;
+  stroke-opacity: 0.18;
   vector-effect: non-scaling-stroke;
 }
 .comment-divider-facet {
@@ -445,13 +468,9 @@
 .comment-divider-facet-2 {
   opacity: 0.1;
 }
-.comment-divider-spark {
-  fill: currentColor;
-  opacity: 0.55;
-}
 .comment-entry {
   position: relative;
-  padding: 1rem 0;
+  padding: 0.65rem 0;
   overflow-wrap: anywhere;
   scroll-margin-top: 6rem;
 }
@@ -472,7 +491,7 @@
   box-sizing: border-box;
   min-width: 5rem;
   max-width: 100%;
-  padding: 0.6rem 0.8rem 0.6rem 0.35rem;
+  padding: 0.4rem 0.8rem 0.4rem 0.35rem;
   background: transparent;
   color: var(--comment-ink);
   font-size: 0.85rem;
@@ -514,8 +533,16 @@
   font-size: 0.65rem;
   font-variant-numeric: tabular-nums;
 }
+.comment-content {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem 1rem;
+  margin-top: 0.35rem;
+}
 .comment-body {
-  margin: 0.55rem 0 0.65rem;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
   color: var(--text);
   font-family: var(--reader-serif, var(--font-reading, Georgia, serif));
   font-size: 0.92rem;
@@ -547,8 +574,8 @@
 }
 .comment-entry.is-reply::before {
   position: absolute;
-  top: 1.3rem;
-  bottom: 1.1rem;
+  top: 0.95rem;
+  bottom: 0.75rem;
   left: 0;
   width: 1px;
   background: color-mix(in srgb, var(--comment-accent) 20%, transparent);
@@ -556,11 +583,19 @@
 }
 .comment-actions {
   display: flex;
+  flex: 0 1 auto;
   flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
-  gap: 0.2rem 0.85rem;
+  max-width: 45%;
+  gap: 0.15rem 0.65rem;
   color: var(--muted);
   font-size: 0.7rem;
+}
+.comment-owner-email {
+  display: block;
+  color: var(--muted);
+  font-size: 0.65rem;
 }
 .site-comments .comment-actions button {
   min-height: 1.8rem;

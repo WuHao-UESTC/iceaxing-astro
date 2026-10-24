@@ -1,0 +1,25 @@
+---
+import type { Locale } from '../../i18n/config';
+import type { SubscriptionOption } from '../../lib/subscriptions/types';
+interface Props {
+  option: SubscriptionOption;
+  locale: Locale;
+  included: string;
+  kindLabel?: string;
+}
+const { option, locale, included, kindLabel } = Astro.props;
+---
+
+<label class="subscribe-choice" data-kind={option.kind}>
+  <input
+    type="checkbox"
+    name="subscriptions"
+    value={option.key}
+    data-parent-key={option.parentKey}
+  />
+  <span class="subscribe-choice-text">{option.labels[locale]}</span>
+  {kindLabel && <small class="subscribe-choice-kind">{kindLabel}</small>}
+  <small class="subscribe-covered" hidden>
+    {included}
+  </small>
+</label>

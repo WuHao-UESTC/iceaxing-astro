@@ -1,0 +1,299 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Comments from '../../components/content/Comments.astro';
+import '../../styles/reading.css';
+
+// This temporary showcase is available only in the local development server.
+export const prerender = false;
+if (!import.meta.env.DEV) return new Response(null, { status: 404 });
+
+const scenes = [
+  { scene: 'ridge', title: '技术栈', subtitle: '冰蓝 · 冰脊折线与碎片' },
+  { scene: 'study', title: '学习笔记', subtitle: '青绿 · 梯田线条与碎片' },
+  { scene: 'field', title: '生活日常', subtitle: '暖金 · 散落碎片与沿途线条' },
+  { scene: 'camp', title: '沿途随记', subtitle: '夜紫 · 星点连线与碎片' },
+] as const;
+---
+
+<BaseLayout
+  locale="zh"
+  title="评论与订阅 · 临时样式预览"
+  description="本地评论主题与订阅更新样式预览。"
+  noindex
+>
+  <script is:inline>
+    (() => {
+      const originalFetch = window.fetch.bind(window);
+      const examples = {
+        ridge: [
+          '在实践中，慢慢理解电路。',
+          '这次搭建里的取舍很有启发，想听听你是怎样验证这个想法的。',
+          '先从最小的模型出发，再用仿真和测量逐步核对。',
+        ],
+        study: [
+          '把读过的内容，连成自己的理解。',
+          '这一段推导终于看明白了，尤其是边界条件的解释，很适合写在笔记旁边。',
+          '也可以换一个角度，把公式和图形放在一起对照。',
+        ],
+        field: [
+          '收集路上的风景与日常。',
+          '读到这里，想起上次走过的那条山路。傍晚的光和风，似乎又回来了。',
+          '那些普通却难忘的片刻，很值得慢慢记下来。',
+        ],
+        camp: [
+          '夜色里，留下偶然闪过的念头。',
+          '喜欢这种短短的随记。读完后，觉得一天里不起眼的小事也变得有趣。',
+          '就像营地里的闲谈，想到哪里，便记到哪里。',
+        ],
+      };
+      const threads = new Map();
+      for (const [scene, [opening, body, reply]] of Object.entries(examples)) {
+        const entry = (suffix, name, text, extra = {}) => ({
+          id: `${scene}-${suffix}`,
+          name,
+          body: text,
+          createdAt: '2026-10-24T08:30:00Z',
+          author: false,
+          deleted: false,
+          ...extra,
+        });
+        threads.set(`preview:${scene}`, [
+          entry('a', '山间来信', body),
+          entry('b', 'iceaxing', reply, {
+            parentId: `${scene}-a`,
+            replyTo: '山间来信',
+            author: true,
+          }),
+          entry('c', '一位与山野同行的读者', '谢谢补充，我也想沿着这个思路再探索一下。', {
+            parentId: `${scene}-b`,
+            replyTo: 'iceaxing',
+          }),
+          entry('d', '沿途拾光', `${opening}\n先记下这一刻，留待以后重读。`),
+          entry('deleted', '', '', { deleted: true }),
+          entry('kept', '远方的朋友', '这是一条保留下来的回复，原评论已经隐藏。', {
+            parentId: `${scene}-deleted`,
+            replyTo: '已删除的评论人',
+          }),
+        ]);
+      }
+      let identity = { email: 'preview@example.com', admin: false };
+      let sequence = 0;
+      window.fetch = async (input, options) => {
+        const url = new URL(input instanceof Request ? input.url : String(input), location.href);
+        if (
+          !/^\/fixtures\/community-preview\/?$/.test(location.pathname) ||
+          url.origin !== location.origin ||
+          !(url.pathname.startsWith('/api/comments/') || url.pathname === '/api/subscribe')
+        ) {
+          return originalFetch(input, options);
+        }
+        const response = (data, status = 200) =>
+          new Response(JSON.stringify(data), {
+            status,
+            headers: { 'Content-Type': 'application/json' },
+          });
+        const data = options?.body ? JSON.parse(options.body) : {};
+        if (url.pathname === '/api/subscribe')
+          return response({ success: true, message: '预览提交成功：未发送邮件，也未保存订阅。' });
+        const action = url.pathname.split('/').pop();
+        if (action === 'session') return response({ identity });
+        if (action === 'list')
+          return response({
+            comments: threads.get(url.searchParams.get('thread')) ?? [],
+            more: false,
+          });
+        if (action === 'logout') {
+          identity = null;
+          return response({});
+        }
+        if (action === 'request-code') return response({});
+        if (action === 'verify') {
+          identity = { email: 'preview@example.com', admin: false };
+          return response({ identity });
+        }
+        if (action === 'post') {
+          const entries = threads.get(data.thread);
+          if (!entries) return response({ error: '预览讨论不存在。' }, 400);
+          const parent = entries.find((entry) => entry.id === data.parentId);
+          const comment = {
+            id: `preview-new-${++sequence}`,
+            name: data.name,
+            body: data.body,
+            createdAt: new Date().toISOString(),
+            parentId: data.parentId,
+            replyTo: parent?.name,
+            author: false,
+            deleted: false,
+          };
+          entries.push(comment);
+          return response({ comment });
+        }
+        return response({ error: '该操作未在预览中启用。' }, 400);
+      };
+    })();
+  </script>
+  <main id="main-content" class="community-preview shell" data-pagefind-ignore>
+    <header class="preview-intro">
+      <p class="preview-kicker">LOCAL PREVIEW / COMMENTS & LETTERS</p>
+      <h1>评论与订阅 · 样式预览</h1>
+      <p>切换主题对比评论样式，下方可查看三条订阅长带。右上角可切换深浅色。</p>
+      <p class="preview-note">
+        本页仅用于本地预览。评论和订阅均为模拟操作，刷新页面即可还原；验证码填写任意六位数字。
+      </p>
+    </header>
+    <div class="preview-navigation">
+      <div class="preview-tabs" role="tablist" aria-label="评论主题">
+        {scenes.map(({ scene, title }, index) => (
+          <button
+            type="button"
+            role="tab"
+            id={`tab-${scene}`}
+            aria-controls={`preview-${scene}`}
+            aria-selected={index === 0}
+            tabindex={index === 0 ? 0 : -1}
+            data-preview-tab={scene}
+          >
+            {title}
+          </button>
+        ))}
+      </div>
+      <a href="#preview-subscribe">查看订阅更新 ↓</a>
+    </div>
+    {scenes.map(({ scene, title, subtitle }, index) => (
+      <section
+        id={`preview-${scene}`}
+        class={`reading-page reading-tone-${scene} preview-scene`}
+        role="tabpanel"
+        aria-labelledby={`tab-${scene}`}
+        hidden={index !== 0}
+      >
+        <p class="preview-scene-label">
+          {title}
+          <span>{subtitle}</span>
+        </p>
+        <Comments locale="zh" {scene} thread={`preview:${scene}`} />
+      </section>
+    ))}
+    <div id="preview-subscribe" class="preview-subscribe-anchor">
+      <p class="preview-kicker">LETTERS / THREE GROUPS</p>
+      <p>下面是实际订阅组件，可试选分类与子项；提交仅显示模拟结果。</p>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-preview-tab]')];
+  function selectTab(tab: HTMLButtonElement) {
+    for (const item of tabs) {
+      const selected = item === tab;
+      item.setAttribute('aria-selected', String(selected));
+      item.tabIndex = selected ? 0 : -1;
+      document.getElementById(item.getAttribute('aria-controls')!)!.hidden = !selected;
+    }
+  }
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => selectTab(tab));
+    tab.addEventListener('keydown', (event) => {
+      const keys = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
+      if (!keys.includes(event.key)) return;
+      event.preventDefault();
+      const next =
+        event.key === 'Home'
+          ? 0
+          : event.key === 'End'
+            ? tabs.length - 1
+            : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+      const nextTab = tabs[next];
+      if (nextTab) {
+        selectTab(nextTab);
+        nextTab.focus();
+      }
+    });
+  });
+</script>
+
+<style>
+  .community-preview {
+    padding-block: 3rem 0;
+  }
+  .preview-intro {
+    max-width: 52rem;
+  }
+  .preview-kicker {
+    color: var(--accent);
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+  }
+  .preview-intro h1 {
+    font-size: clamp(1.5rem, 4vw, 2.1rem);
+    margin-block: 0.7rem;
+  }
+  .preview-intro > p:not(.preview-kicker),
+  .preview-subscribe-anchor > p:last-child {
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.9;
+  }
+  .preview-note {
+    max-width: 46rem;
+  }
+  .preview-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-block: 2rem;
+  }
+  .preview-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .preview-tabs button {
+    min-height: 2.7rem;
+    padding: 0.45rem 0.85rem;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  .preview-tabs button[aria-selected='true'] {
+    border-bottom-color: var(--accent);
+    color: var(--text);
+  }
+  .preview-navigation > a {
+    color: var(--accent);
+    font-size: 0.8rem;
+    text-underline-offset: 0.25em;
+  }
+  .preview-scene {
+    max-width: 48rem;
+    min-height: 0;
+    padding: 1rem 0 2rem;
+  }
+  .preview-scene[hidden] {
+    display: none;
+  }
+  .preview-scene-label {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1rem;
+    color: var(--reader-accent);
+    font-size: 0.85rem;
+  }
+  .preview-scene-label span {
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+  .preview-scene :global(.site-comments) {
+    margin-top: 0.7rem;
+  }
+  .preview-subscribe-anchor {
+    margin-top: 1rem;
+    scroll-margin-top: 6rem;
+  }
+</style>

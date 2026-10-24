@@ -338,16 +338,14 @@ summary:focus-visible {
 }
 
 .search-dialog header,
-.search-filters,
-.subscribe-panel {
+.search-filters {
   display: flex;
   align-items: start;
   justify-content: space-between;
   gap: 1rem;
 }
 
-.search-dialog header p,
-.subscribe-panel .content-kicker {
+.search-dialog header p {
   margin: 0 0 0.3rem;
   color: var(--accent);
   font-size: 0.72rem;
@@ -366,8 +364,7 @@ summary:focus-visible {
   cursor: pointer;
 }
 
-.search-dialog input[type='search'],
-.subscribe-email input {
+.search-dialog input[type='search'] {
   width: 100%;
   min-height: 3.25rem;
   padding: 0.7rem 0.9rem;
@@ -432,97 +429,6 @@ summary:focus-visible {
   color: var(--text);
 }
 
-.subscribe-panel {
-  margin-block: 3rem 1.5rem;
-  padding: clamp(1.2rem, 4vw, 2.2rem);
-  border: 1px solid var(--line);
-  border-radius: 1rem;
-  background: var(--surface);
-}
-
-.subscribe-panel > div,
-.subscribe-panel form {
-  flex: 1 1 0;
-  min-width: 0;
-}
-
-.subscribe-panel h2 {
-  margin: 0;
-}
-
-.subscribe-panel > div > p:last-child {
-  max-width: 34rem;
-  color: var(--muted);
-}
-
-.subscribe-email {
-  display: grid;
-  gap: 0.35rem;
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.subscribe-panel details {
-  margin-block: 0.8rem;
-}
-
-.subscribe-panel summary {
-  color: var(--muted);
-  cursor: pointer;
-  font-size: 0.82rem;
-}
-
-.subscribe-options {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.4rem 0.8rem;
-  margin-top: 0.65rem;
-}
-
-.subscribe-options label {
-  display: flex;
-  gap: 0.45rem;
-  align-items: center;
-  font-size: 0.82rem;
-}
-
-.subscribe-options label[data-kind='project'] {
-  padding-left: 0.8rem;
-}
-
-.subscribe-options label[data-kind='collection'] {
-  padding-left: 1.6rem;
-}
-
-.subscribe-panel button {
-  border: 0;
-  cursor: pointer;
-}
-
-.subscribe-panel button:disabled {
-  cursor: wait;
-  opacity: 0.65;
-}
-
-.subscribe-honeypot {
-  position: absolute;
-  left: -9999px;
-}
-
-.subscribe-result {
-  min-height: 1.4rem;
-  margin: 0.7rem 0 0;
-  font-size: 0.82rem;
-}
-
-.subscribe-result[data-state='success'] {
-  color: var(--accent-strong);
-}
-
-.subscribe-result[data-state='error'] {
-  color: #a33e2d;
-}
-
 @view-transition {
   navigation: auto;
 }
@@ -540,16 +446,6 @@ summary:focus-visible {
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
-  }
-}
-
-@media (max-width: 720px) {
-  .subscribe-panel {
-    display: grid;
-  }
-
-  .subscribe-options {
-    grid-template-columns: 1fr;
   }
 }
 

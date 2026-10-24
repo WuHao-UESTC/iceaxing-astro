@@ -1,12 +1,18 @@
 ---
 import type { Locale } from '../i18n/config';
 import { subscriptionOptions } from '../lib/subscriptions/types';
+import { getCollection } from 'astro:content';
+import { byOrder } from '../lib/content';
+import SubscriptionChoice from './subscriptions/SubscriptionChoice.astro';
+import SubscriptionRibbon from './subscriptions/SubscriptionRibbon.astro';
+import '../styles/subscriptions.css';
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
+const formId = `subscribe-form-${locale}`;
 const copy =
   locale === 'zh'
     ? {
@@ -16,6 +22,13 @@ const copy =
         scope: '订阅范围（不选即订阅全部）',
         submit: '发送确认邮件',
         pending: '正在提交…',
+        rule: '勾选分类即包含其下项目与合集，也可单独选择子项。不选则订阅全站。',
+        included: '已包含',
+        project: '项目',
+        collection: '合集',
+        groups: ['技术栈', '学习笔记', '生活日常'],
+        trails: ['沿着冰脊，追踪想法的实现', '拾级而上，积累新的理解', '收集沿途，留住日常片刻'],
+        networkError: '网络连接失败，请稍后重试。',
       }
     : locale === 'de'
       ? {
@@ -25,6 +38,17 @@ const copy =
           scope: 'Themen (leer bedeutet alle)',
           submit: 'Bestätigung senden',
           pending: 'Wird gesendet…',
+          rule: 'Eine Kategorie umfasst ihre Projekte und Sammlungen. Unterthemen sind einzeln wählbar. Ohne Auswahl abonnierst du alles.',
+          included: 'Enthalten',
+          project: 'Projekt',
+          collection: 'Sammlung',
+          groups: ['Technik', 'Lernnotizen', 'Alltag'],
+          trails: [
+            'Ideen Schritt für Schritt umsetzen',
+            'Mit jeder Notiz weiterlernen',
+            'Gedanken und Begegnungen unterwegs',
+          ],
+          networkError: 'Netzwerkfehler. Bitte versuche es erneut.',
         }
       : {
           title: 'Subscribe to updates',
@@ -33,20 +57,62 @@ const copy =
           scope: 'Topics (leave empty for everything)',
           submit: 'Send confirmation',
           pending: 'Sending…',
+          rule: 'A category includes its projects and collections. You can also choose individual topics. Leave empty for everything.',
+          included: 'Included',
+          project: 'Project',
+          collection: 'Collection',
+          groups: ['Technology', 'Study notes', 'Everyday life'],
+          trails: [
+            'Follow ideas into practice',
+            'Build understanding, one note at a time',
+            'Thoughts and encounters along the way',
+          ],
+          networkError: 'Network error. Please try again.',
         };
+const categories = byOrder(await getCollection('categories'));
+const bands = (['skill', 'study', 'life'] as const).map((group, index) => ({
+  group,
+  title: copy.groups[index],
+  trail: copy.trails[index],
+  categories: categories
+    .filter((entry) => entry.data.group === group)
+    .flatMap((entry) => {
+      const option = subscriptionOptions.find(
+        (option) => option.key === `category:${entry.data.categoryId}`,
+      );
+      return option
+        ? [
+            {
+              option,
+              projects: subscriptionOptions
+                .filter((project) => project.parentKey === option.key)
+                .map((project) => ({
+                  option: project,
+                  collections: subscriptionOptions.filter(
+                    (collection) => collection.parentKey === project.key,
+                  ),
+                })),
+            },
+          ]
+        : [];
+    }),
+}));
 ---
 
-<section class="subscribe-panel" aria-labelledby={`subscribe-title-${locale}`} data-pagefind-ignore>
-  <div>
+<section
+  id={`subscribe-${locale}`}
+  class="subscribe-panel"
+  aria-labelledby={`subscribe-title-${locale}`}
+  tabindex="-1"
+  data-pagefind-ignore
+>
+  <header class="subscribe-heading">
     <p class="content-kicker">ICEAXING / LETTERS</p>
     <h2 id={`subscribe-title-${locale}`}>{copy.title}</h2>
-    <p>{copy.description}</p>
-  </div>
-  <form action="/api/subscribe" method="post" data-subscribe-form>
-    <input type="hidden" name="locale" value={locale} />
     <label class="subscribe-email">
       <span>{copy.email}</span>
       <input
+        form={formId}
         name="email"
         type="email"
         required
@@ -55,21 +121,73 @@ const copy =
         placeholder="you@example.com"
       />
     </label>
+    <p>{copy.description}</p>
+  </header>
+  <form
+    id={formId}
+    action="/api/subscribe"
+    method="post"
+    data-subscribe-form
+    data-network-error={copy.networkError}
+  >
+    <input type="hidden" name="locale" value={locale} />
     <label class="subscribe-honeypot" aria-hidden="true">
       Website
       <input name="website" type="text" tabindex="-1" autocomplete="off" />
     </label>
-    <details>
-      <summary>{copy.scope}</summary>
-      <div class="subscribe-options">
-        {subscriptionOptions.map((option) => (
-          <label data-kind={option.kind}>
-            <input type="checkbox" name="subscriptions" value={option.key} />
-            <span>{option.labels[locale]}</span>
-          </label>
+    <fieldset class="subscribe-scopes" aria-describedby={`subscribe-rule-${locale}`}>
+      <legend>{copy.scope}</legend>
+      <p class="subscribe-rule" id={`subscribe-rule-${locale}`}>
+        {copy.rule}
+      </p>
+      <div class="subscribe-bands">
+        {bands.map((band, index) => (
+          <fieldset class="subscribe-band" data-group={band.group}>
+            <legend class="subscribe-band-title">
+              <span aria-hidden="true">0{index + 1} / </span>
+              {band.title}
+            </legend>
+            <SubscriptionRibbon group={band.group} />
+            <p class="subscribe-band-trail">{band.trail}</p>
+            <ul class="subscribe-clusters">
+              {band.categories.map((category) => (
+                <li class="subscribe-cluster">
+                  <SubscriptionChoice option={category.option} {locale} included={copy.included} />
+                  {category.projects.length > 0 && (
+                    <ul class="subscribe-projects">
+                      {category.projects.map((project) => (
+                        <li class="subscribe-project">
+                          <SubscriptionChoice
+                            option={project.option}
+                            {locale}
+                            included={copy.included}
+                            kindLabel={copy.project}
+                          />
+                          {project.collections.length > 0 && (
+                            <ul class="subscribe-collections">
+                              {project.collections.map((option) => (
+                                <li>
+                                  <SubscriptionChoice
+                                    {option}
+                                    {locale}
+                                    included={copy.included}
+                                    kindLabel={copy.collection}
+                                  />
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </fieldset>
         ))}
       </div>
-    </details>
+    </fieldset>
     <button class="button" type="submit" data-label={copy.submit} data-pending={copy.pending}>
       {copy.submit}
     </button>
@@ -78,38 +196,65 @@ const copy =
 </section>
 
 <script>
-  document.querySelectorAll<HTMLFormElement>('[data-subscribe-form]').forEach((form) => {
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-      const output = form.querySelector<HTMLElement>('[data-subscribe-result]');
-      if (!button || !output) return;
-      const data = new FormData(form);
-      button.disabled = true;
-      button.textContent = button.dataset.pending ?? 'Sending…';
-      output.textContent = '';
-      try {
-        const response = await fetch(form.action, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({
-            email: data.get('email'),
-            locale: data.get('locale'),
-            website: data.get('website') || undefined,
-            subscriptions: data.getAll('subscriptions'),
-          }),
-        });
-        const result = (await response.json()) as { success?: boolean; message?: string };
-        output.dataset.state = response.ok ? 'success' : 'error';
-        output.textContent = result.message ?? (response.ok ? 'Done.' : 'Please try again.');
-        if (response.ok) form.reset();
-      } catch {
-        output.dataset.state = 'error';
-        output.textContent = 'Network error. Please try again.';
-      } finally {
-        button.disabled = false;
-        button.textContent = button.dataset.label ?? 'Subscribe';
-      }
+  function initSubscriptions() {
+    document.querySelectorAll<HTMLFormElement>('[data-subscribe-form]').forEach((form) => {
+      if (form.dataset.ready) return;
+      form.dataset.ready = 'true';
+      const choices = [...form.querySelectorAll<HTMLInputElement>('input[name="subscriptions"]')];
+      const byKey = new Map(choices.map((input) => [input.value, input]));
+      const updateCoverage = () => {
+        for (const input of choices) {
+          let parent = byKey.get(input.dataset.parentKey ?? '');
+          let covered = false;
+          while (parent) {
+            if (parent.checked) covered = true;
+            parent = byKey.get(parent.dataset.parentKey ?? '');
+          }
+          input.disabled = covered;
+          input.indeterminate = covered && !input.checked;
+          const label = input.closest<HTMLElement>('label')!;
+          label.dataset.covered = String(covered);
+          label.querySelector<HTMLElement>('.subscribe-covered')!.hidden = !covered;
+        }
+      };
+      form.addEventListener('change', updateCoverage);
+      form.addEventListener('reset', () => queueMicrotask(updateCoverage));
+      updateCoverage();
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+        const output = form.querySelector<HTMLElement>('[data-subscribe-result]');
+        if (!button || !output) return;
+        if (button.disabled) return;
+        const data = new FormData(form);
+        button.disabled = true;
+        button.textContent = button.dataset.pending ?? 'Sending…';
+        output.textContent = '';
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              email: data.get('email'),
+              locale: data.get('locale'),
+              website: data.get('website') || undefined,
+              subscriptions: data.getAll('subscriptions'),
+            }),
+          });
+          const result = (await response.json()) as { success?: boolean; message?: string };
+          output.dataset.state = response.ok ? 'success' : 'error';
+          output.textContent = result.message ?? (response.ok ? 'Done.' : 'Please try again.');
+          if (response.ok) form.reset();
+        } catch {
+          output.dataset.state = 'error';
+          output.textContent = form.dataset.networkError ?? 'Network error. Please try again.';
+        } finally {
+          button.disabled = false;
+          button.textContent = button.dataset.label ?? 'Subscribe';
+        }
+      });
     });
-  });
+  }
+  initSubscriptions();
+  document.addEventListener('astro:page-load', initSubscriptions);
 </script>
