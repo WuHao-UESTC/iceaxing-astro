@@ -1,0 +1,18 @@
+categoryId: hayt-engineering-electromagnetics-note
+slug: hayt-engineering-electromagnetics-note
+group: study
+labels:
+  zh:
+    title: 海特-工程电磁场
+  en:
+    title: Hayt-Engineering Magnetics
+  de:
+    title: Hayt-Engineering Magnetics
+tags:
+  - 电磁场
+  - 微波
+publicationStatus: published
+publishedAt: 2026-10-25T05:24:00.000Z
+featured: false
+order: 0
+createdAt: 2026-10-25T05:24:00.000Z
