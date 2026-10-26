@@ -30,6 +30,16 @@
       }
     },
     {
+      "key": "category:hayt-engineering-electromagnetics-note",
+      "kind": "category",
+      "id": "hayt-engineering-electromagnetics-note",
+      "labels": {
+        "zh": "海特-工程电磁场",
+        "en": "Hayt-Engineering Magnetics",
+        "de": "Hayt-Engineering Magnetics"
+      }
+    },
+    {
       "key": "category:journey",
       "kind": "category",
       "id": "journey",

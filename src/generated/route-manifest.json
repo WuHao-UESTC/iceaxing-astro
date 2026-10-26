@@ -42,6 +42,13 @@
     "sourceFile": "src/content/categories/daily-ramblings.yaml"
   },
   {
+    "pathname": "/daily-ramblings/ramble-happiness-at-fingertip",
+    "kind": "article",
+    "contentId": "ramble-happiness-at-fingertip",
+    "locale": "zh",
+    "sourceFile": "src/content/articles/zh/ramble-happiness-at-fingertip/index.mdoc"
+  },
+  {
     "pathname": "/de/about",
     "kind": "page",
     "contentId": "about-de",
@@ -89,6 +96,13 @@
     "contentId": "filter-design-in-digital-world-note",
     "locale": "de",
     "sourceFile": "src/content/categories/filter-design-in-digital-world-note.yaml"
+  },
+  {
+    "pathname": "/de/hayt-engineering-electromagnetics-note",
+    "kind": "category",
+    "contentId": "hayt-engineering-electromagnetics-note",
+    "locale": "de",
+    "sourceFile": "src/content/categories/hayt-engineering-electromagnetics-note.yaml"
   },
   {
     "pathname": "/de/journey",
@@ -210,6 +224,13 @@
     "sourceFile": "src/content/categories/filter-design-in-digital-world-note.yaml"
   },
   {
+    "pathname": "/en/hayt-engineering-electromagnetics-note",
+    "kind": "category",
+    "contentId": "hayt-engineering-electromagnetics-note",
+    "locale": "en",
+    "sourceFile": "src/content/categories/hayt-engineering-electromagnetics-note.yaml"
+  },
+  {
     "pathname": "/en/journey",
     "kind": "category",
     "contentId": "journey",
@@ -308,6 +329,13 @@
     "sourceFile": "src/content/articles/zh/deep-in-2nd-order-system/index.mdoc"
   },
   {
+    "pathname": "/hayt-engineering-electromagnetics-note",
+    "kind": "category",
+    "contentId": "hayt-engineering-electromagnetics-note",
+    "locale": "zh",
+    "sourceFile": "src/content/categories/hayt-engineering-electromagnetics-note.yaml"
+  },
+  {
     "pathname": "/journey",
     "kind": "category",
     "contentId": "journey",
@@ -383,6 +411,13 @@
     "contentId": "c4-differential-amp",
     "locale": "zh",
     "sourceFile": "src/content/articles/zh/c4-differential-amp/index.mdoc"
+  },
+  {
+    "pathname": "/razavi-cmos-analog-note/razavi-analogic-review",
+    "kind": "article",
+    "contentId": "razavi-analogic-review",
+    "locale": "zh",
+    "sourceFile": "src/content/articles/zh/razavi-analogic-review/index.mdoc"
   },
   {
     "pathname": "/razavi-rf-microelectronics-note",

@@ -4,7 +4,7 @@
     {
       "contentId": "basic-of-passive-filter-design",
       "kind": "article",
-      "versionHash": "066f5fad3b12203243644bfc",
+      "versionHash": "ef031b14009309aae70f0e0c",
       "publishedAt": "2026-10-19T17:01:00.000Z",
       "titles": { "zh": "无源滤波器设计" },
       "urls": { "zh": "/filter-design-in-digital-world-note/basic-of-passive-filter-design" },
@@ -13,7 +13,7 @@
     {
       "contentId": "basic-of-rf-filter-design",
       "kind": "article",
-      "versionHash": "60a85d854884697e0fe0aea9",
+      "versionHash": "264f18d61f10f459b095d814",
       "publishedAt": "2026-10-20T17:19:00.000Z",
       "titles": { "zh": "射频滤波器设计基础" },
       "urls": { "zh": "/filter-design-in-digital-world-note/basic-of-rf-filter-design" },
@@ -22,7 +22,7 @@
     {
       "contentId": "c4-differential-amp",
       "kind": "article",
-      "versionHash": "7c629f5b94d4686c0d4241d1",
+      "versionHash": "0d2e85106a2b69f4e33c7ada",
       "publishedAt": "2026-10-20T21:08:00.000Z",
       "titles": { "zh": "C4-差动放大器" },
       "urls": { "zh": "/razavi-cmos-analog-note/c4-differential-amp" },
@@ -31,7 +31,7 @@
     {
       "contentId": "c9-general-condition-of-ic-manu",
       "kind": "article",
-      "versionHash": "ea58f8dbf2584cb75075f2d6",
+      "versionHash": "c098d572ccc760a328bbc3c4",
       "publishedAt": "2026-10-20T10:06:00.000Z",
       "titles": { "zh": "C9-集成电路制造工艺概况" },
       "urls": {
@@ -42,7 +42,7 @@
     {
       "contentId": "deep-in-2nd-order-system",
       "kind": "article",
-      "versionHash": "6d1f5d61ddb9b0e4dc6fa3ea",
+      "versionHash": "6e22bf0582adba0af957da71",
       "publishedAt": "2026-10-23T01:56:00.000Z",
       "titles": { "zh": "对二阶系统刨根问底" },
       "urls": { "zh": "/filter-design-in-digital-world-note/deep-in-2nd-order-system" },
@@ -51,16 +51,34 @@
     {
       "contentId": "dimension-of-s",
       "kind": "article",
-      "versionHash": "0896986e7d2ba0d0801fa1ea",
+      "versionHash": "7cdd6b509e0783797ad05fa7",
       "publishedAt": "2026-10-23T02:25:00.000Z",
       "titles": { "zh": "为什么‘s’的量纲是1/s？" },
       "urls": { "zh": "/oppenheim-signal-and-system-note/dimension-of-s" },
       "subscriptionKeys": ["category:oppenheim-signal-and-system-note"]
     },
     {
+      "contentId": "ramble-happiness-at-fingertip",
+      "kind": "article",
+      "versionHash": "7df1be6a7377b2037cca82c4",
+      "publishedAt": "2026-10-27T00:14:00.000Z",
+      "titles": { "zh": "指缝间漏出来的幸福" },
+      "urls": { "zh": "/daily-ramblings/ramble-happiness-at-fingertip" },
+      "subscriptionKeys": ["category:daily-ramblings"]
+    },
+    {
+      "contentId": "razavi-analogic-review",
+      "kind": "article",
+      "versionHash": "d506a4dd1e99889ff8bf3dd2",
+      "publishedAt": "2026-11-20T08:00:00.000Z",
+      "titles": { "zh": "期末复习串讲——结论与直觉" },
+      "urls": { "zh": "/razavi-cmos-analog-note/razavi-analogic-review" },
+      "subscriptionKeys": ["category:razavi-cmos-analog-note"]
+    },
+    {
       "contentId": "analog-ic",
       "kind": "category",
-      "versionHash": "5d657c8e41edbeedb20b9cef",
+      "versionHash": "09d2802deca4896fb86bb944",
       "publishedAt": "2026-10-19T15:21:00.000Z",
       "titles": { "zh": "Analog IC", "en": "Analog IC", "de": "Analog IC" },
       "urls": { "zh": "/analog-ic", "de": "/de/analog-ic", "en": "/en/analog-ic" },
@@ -69,7 +87,7 @@
     {
       "contentId": "annual-summaries",
       "kind": "category",
-      "versionHash": "7171df9b0596019b4b8b17d6",
+      "versionHash": "a51d4d07244ba6df512ac0ca",
       "publishedAt": "2026-10-19T15:43:00.000Z",
       "titles": { "zh": "年度总结", "en": "Annual Summary", "de": "Annual Summary" },
       "urls": {
@@ -82,7 +100,7 @@
     {
       "contentId": "daily-ramblings",
       "kind": "category",
-      "versionHash": "7ef00d250d142b517d2415fc",
+      "versionHash": "72cdc55cfd3dba5cd9559d6a",
       "publishedAt": "2026-10-19T00:00:00.000Z",
       "titles": { "zh": "碎碎念", "en": "Ramblings", "de": "Gedanken" },
       "urls": {
@@ -95,7 +113,7 @@
     {
       "contentId": "filter-design-in-digital-world-note",
       "kind": "category",
-      "versionHash": "a02f137d99510c944f58a887",
+      "versionHash": "9299ed754e7718f07af19a2f",
       "publishedAt": "2026-10-19T16:59:00.000Z",
       "titles": {
         "zh": "数字时代的滤波器设计",
@@ -110,9 +128,26 @@
       "subscriptionKeys": ["category:filter-design-in-digital-world-note"]
     },
     {
+      "contentId": "hayt-engineering-electromagnetics-note",
+      "kind": "category",
+      "versionHash": "6a11fad0244e7ca27258f798",
+      "publishedAt": "2026-10-25T05:24:00.000Z",
+      "titles": {
+        "zh": "海特-工程电磁场",
+        "en": "Hayt-Engineering Magnetics",
+        "de": "Hayt-Engineering Magnetics"
+      },
+      "urls": {
+        "de": "/de/hayt-engineering-electromagnetics-note",
+        "en": "/en/hayt-engineering-electromagnetics-note",
+        "zh": "/hayt-engineering-electromagnetics-note"
+      },
+      "subscriptionKeys": ["category:hayt-engineering-electromagnetics-note"]
+    },
+    {
       "contentId": "journey",
       "kind": "category",
-      "versionHash": "87009a3fae42110328ebca7b",
+      "versionHash": "7b7c84bce282c8f1e316ce4a",
       "publishedAt": "2026-10-22T20:40:00.000Z",
       "titles": { "zh": "旅行手记", "en": "Journey", "de": "Journey" },
       "urls": { "de": "/de/journey", "en": "/en/journey", "zh": "/journey" },
@@ -121,7 +156,7 @@
     {
       "contentId": "liuenke-semiconductance-note",
       "kind": "category",
-      "versionHash": "8e3636779223ae744f2910e7",
+      "versionHash": "bb2b6ca1d4be9c15d7ac86a8",
       "publishedAt": "2026-10-19T16:04:00.000Z",
       "titles": {
         "zh": "刘恩科-半导体物理学",
@@ -138,7 +173,7 @@
     {
       "contentId": "oppenheim-signal-and-system-note",
       "kind": "category",
-      "versionHash": "5c95b863a288a01ea5384e44",
+      "versionHash": "223069650ccb29f1d72e4681",
       "publishedAt": "2026-10-19T16:49:00.000Z",
       "titles": {
         "zh": "奥本海姆-信号与系统",
@@ -155,7 +190,7 @@
     {
       "contentId": "photo-book",
       "kind": "category",
-      "versionHash": "03e1c5121159e30677430543",
+      "versionHash": "50ac4c8443ae0aa0b2e471f6",
       "publishedAt": "2026-10-22T11:05:00.000Z",
       "titles": { "zh": "相册", "en": "Photos", "de": "Photos" },
       "urls": { "de": "/de/photo-book", "en": "/en/photo-book", "zh": "/photo-book" },
@@ -164,7 +199,7 @@
     {
       "contentId": "quirk-semiconductor-manufacturing-technology-note",
       "kind": "category",
-      "versionHash": "b75ed2bba3367401f336abe6",
+      "versionHash": "fbe07bec178ab4ac5499a034",
       "publishedAt": "2026-10-20T10:03:00.000Z",
       "titles": {
         "zh": "奎克-半导体制造技术",
@@ -181,7 +216,7 @@
     {
       "contentId": "rabaey-digital-ic-note",
       "kind": "category",
-      "versionHash": "d4dd7c8b8e6fa0507df16cb4",
+      "versionHash": "7b2f99e1f1d712cf29963e1c",
       "publishedAt": "2026-10-19T15:57:00.000Z",
       "titles": {
         "zh": "Rabaey-数字集成电路设计",
@@ -198,7 +233,7 @@
     {
       "contentId": "razavi-cmos-analog-note",
       "kind": "category",
-      "versionHash": "7efa588233ca33c81a02a9f7",
+      "versionHash": "52ac0dd47407f83be8f5db3e",
       "publishedAt": "2026-10-19T15:52:00.000Z",
       "titles": {
         "zh": "拉扎维-模拟CMOS集成电路设计",
@@ -215,7 +250,7 @@
     {
       "contentId": "razavi-rf-microelectronics-note",
       "kind": "category",
-      "versionHash": "aaf709e247e712896dba7dc3",
+      "versionHash": "299abba7f76deaee02e463d5",
       "publishedAt": "2026-10-19T16:54:00.000Z",
       "titles": {
         "zh": "拉扎维-射频微电子",
@@ -232,7 +267,7 @@
     {
       "contentId": "reading",
       "kind": "category",
-      "versionHash": "809f47b7c23ed3244d1c5799",
+      "versionHash": "9ccb382f70bb397476d9ec76",
       "publishedAt": "2026-10-19T23:23:00.000Z",
       "titles": { "zh": "阅读", "en": "Reading", "de": "Reading" },
       "urls": { "de": "/de/reading", "en": "/en/reading", "zh": "/reading" },
@@ -241,7 +276,7 @@
     {
       "contentId": "2026-cicc",
       "kind": "project",
-      "versionHash": "225d870ed391a18d3eecfd61",
+      "versionHash": "ee005cc9beb700801650b82b",
       "publishedAt": "2026-10-19T15:48:00.000Z",
       "titles": { "zh": "2026年集创赛作品合集", "en": "2026 CICC", "de": "2026 CICC" },
       "urls": {
@@ -254,7 +289,7 @@
     {
       "contentId": "two-stage-ota",
       "kind": "project",
-      "versionHash": "e0cb8a04c829d181c679491d",
+      "versionHash": "073eeef30173cb7c13587706",
       "publishedAt": "2026-10-19T15:44:00.000Z",
       "titles": {
         "zh": "二级运放搭建全流程",
