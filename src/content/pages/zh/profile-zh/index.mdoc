@@ -10,9 +10,9 @@ status: published
 updatedAt: 2026-10-30T06:59:00.000Z
 profile:
   displayName: 吴昊
-  headline: 电子科技大学 · 本科在读
+  headline: 电子科技大学 · 本科 · 微电子科学与工程专业 · 在读
   location: Chengdu，China
-  avatar: /media/profile/profile-zh/profile/avatar.jpg
+  avatar: /media/profile/profile-zh/profile/avatar.jpeg
   email: Wuhao_iceaxing@163.com
   qq: '2998308407'
   links: []
@@ -20,26 +20,107 @@ profile:
     - 模拟集成电路设计
     - 业余Web开发
     - 坚持写作与知识分享
-  biography: 我关注技术如何成为可靠、清晰并且值得长期维护的作品。
-  honors: []
+  biography: >-
+    一名忠诚的本科在读电兵，当前的方向是模拟集成电路设计。在这里，与你分享我的学习笔记，项目记录和日常思考。有的时候，感觉自己有些三心二意，但是生活嘛，就是要折腾才有意思！
+  honors:
+    - title: 国家奖学金
+      period: '2025.10'
+      level: 国家级
+    - title: '全国大学生物联网设计竞赛国家一等奖 '
+      period: '2025.08'
+      level: 国家级
+    - title: 全国大学生嵌入式设计竞赛（FPGA赛道）国家二等奖
+      period: '2025.11'
+      level: 国家级
+    - title: 全国大学生电子设计竞赛四川省三等奖
+      period: '2025.08'
+      level: 省部级
+    - title: ARM架构CPU（挑战性课程项目）效率组第二名
+      period: 院级
   education:
     - degree: bachelor
       school: 电子科技大学
       department: 英才实验学院
       major: 微电子科学与工程
       period: 2024.09 — 至今
+      description: >-
+        GPA：3.97/4    |    必修课程均分：92.5    |    学业成绩专业排名：7/115 
+
+        专业核心课程：数学分析、线性代数、电子电路基础、电磁场与波、信号与系统、固体与半导体物理、微电子器件、数字逻辑与微处理器系统设计、模拟集成电路设计
   research:
-    - title: 用于光电流检测的模拟前端
+    - title: 基础二级运放（含带隙基准）搭建
       type: project
-      organization: 2026 年集创赛（研究生组）
-      period: '2026'
-      summary: 2026 年集创赛作品：用于光电流检测的模拟前端。
+      period: 2025.11-2026.02
+      summary: 模拟集成电路学习过程中的第一个小电路
       contributions:
-        - 完成 FDA、PGA、TIA、比较器的相关设计。
-      outcomes:
-        - 项目中积累的设计思路与笔记。
+        - >-
+          为二级运放电路搭建了简单带隙基准电路（不含启动电路）。在1.8 V电源下工作，0～80 ℃范围内输出基 准电压约为1.25
+          V；输出基准电流约为15 μA，温度漂移系数约为200 ppm/℃。
+        - >-
+          基于电流源搭建的简单二级运放电路，开环增益68.4dB、增益带宽28.4MHz、相位裕度75°，输入共模范
+          围0.9V，输出摆幅1.4V，CMRR和PSRR约75dB，压摆率30V/μs，功耗2mW 
+      outcomes: []
+      links: []
+      project: two-stage-ota
+    - title: 2026 集创赛—光电传感器模拟前端设计
+      type: project
+      role: ADC前模拟前端设计
+      period: '2026.03-2026.06 '
+      contributions:
+        - 基于Verilog-A 完成的光电二极管行为级模型搭建，对标还原实际光电二极管的特性曲线
+        - >-
+          完成全差分运放设计（含共模负反馈），开环增益138 dB，增益带宽积130 MHz，相位裕度63°，40 dB闭 环增益下带宽约700
+          kHz，输入共模范围0.4～2.2 V；CMRR大于280 dB，PSRR大于250 dB。
+        - >-
+          完成PGA设计，增益调节范围为1/255～255 V/V，最大增益误差不超过1%，输出共模电压稳定在1.65  V，波动小于0.01
+          mV；驱动40 pF负载时压摆率为200 V/μs。 
+        - '完成CDAC设计，采用14位全差分、7位加7位桥接分段结构，单位电容为50 fF，使用共模电压切换方 式，可减少约87.5%的开关能耗。 '
+        - >-
+          完成比较器设计，采用双尾动态比较器，典型比较时间为919.2 ps，全PVT范围小于1.2 ns；恢复时间 879.2
+          ps，锁存时间常数62.68 ps，单次比较能耗18.87 pJ，功耗1.13 mW，能效优值为109.2 
+      outcomes: []
       links: []
       project: 2026-cicc
+    - title: 基于香橙派的智能纸质文件管理系统
+      type: project
+      role: 硬件负责人
+      summary: |-
+        系统通过摄像头采集资料图像，利用人工智能完成文字识别、分类和检索。系统由网页前端、MySQL数据
+        库、ESP32-S3智能柜及Linux摄像头端组成，可联动控制电控锁、灯带和串口屏。 
+        本人工作：系统整体的硬件架构设计 
+      contributions: []
+      outcomes: []
+      links: []
+    - title: 滤波器自动识别与建模系统
+      type: project
+      role: '硬件架构设计与电路模块设计 '
+      period: '2025.08 '
+      summary: |-
+        2025 年全国大学生电子设计竞赛G题，研制基于STM32F407的电路模型探究装置。系统集成DDS信号
+        源、数据采集、程控放大、峰值检波、相位测量及串口屏，可生成100Hz～1MHz信号，精确调节滤波器
+        输出，并分析未知模型特性。
+      contributions: []
+      outcomes: []
+      links: []
+    - title: '基于麦克风阵列的定向拾音系统 '
+      type: project
+      role: 系统整体的硬件架构设计与波束成形算法仿真
+      period: '2025.11'
+      summary: |-
+        项目以Zynq-7020为核心，结合32通道MEMS麦克风阵列、FPGA并行加速、波束成形算法及
+        AcousticResNet 模型，实现声源的低延迟、高精度定位与热力图可视化。 
+      contributions: []
+      outcomes: []
+      links: []
+    - title: ARM架构CPU（挑战性课程课程设计）
+      type: project
+      period: '2026.06'
+      summary: |-
+        一款面向双调排序的单核MiniARM处理器。系统采用五级流水线架构，支持基础ARM指令，并扩展128位
+        NEON风格SIMD。处理器在200 MHz下完成64个数据的升序排序，需439个周期，且不使用DSP资源。
+      contributions: []
+      outcomes: []
+      links: []
   work:
     - organization: 英才实验学院学生会
       role: 主席团成员
