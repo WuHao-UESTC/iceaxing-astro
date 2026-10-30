@@ -2,5 +2,7 @@ friendId: wuhao-git
 name: WuHao-UESTC
 url: https://github.com/WuHao-UESTC
 description: 站猪的github链接
-order: 100
+tags: []
+links: []
+order: 0
 active: true

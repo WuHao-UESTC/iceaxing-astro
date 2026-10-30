@@ -22,7 +22,10 @@ category: quirk-semiconductor-manufacturing-technology-note
 1. 刻蚀：**选择性**去除材料，把胶图形刻进**膜或衬底（不可逆的）**
 1. 掺杂：把杂质打进硅里，改电学性质
 
-![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+{% articleImage
+   src="../../../../assets/article-images/447d60cd4bc75e081cb38fde3c8b192835b2512a684e5c138268012ccecfb5a4.webp"
+   width=1893
+   height=1471 /%}
 
 ## 硅片制造厂的分区
 
@@ -32,7 +35,10 @@ category: quirk-semiconductor-manufacturing-technology-note
 
 （不要把生产区与四大基本方法搞混，一个生产区可以运用多种方法，一个方法可能也需要多个生产区配合完成）
 
-![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+{% articleImage
+   src="../../../../assets/article-images/6810b0e73d28a7392bfe0e2c1cb3f4aa2e739f2434b864b746a27cea3954a9fe.webp"
+   width=1437
+   height=776 /%}
 
 ### 扩散区
 
@@ -41,7 +47,10 @@ category: quirk-semiconductor-manufacturing-technology-note
 1. 可以完成的工艺：氧化，扩散，退火，淀积，合金
 1. 湿法清洗装置：辅助高温扩散炉——进入高温扩散炉前**必须进行清洗**，去除**表面沾污与自然氧化层**
 
-![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+{% articleImage
+   src="../../../../assets/article-images/25d4bff55e015721f885c6d5682b8d6f613c98d6b3d72ea550682b2943fa844d.webp"
+   width=1805
+   height=1297 /%}
 
 ### 光刻区
 
@@ -51,7 +60,12 @@ category: quirk-semiconductor-manufacturing-technology-note
 1. 主要流程
    1. 预处理：涂胶，甩胶，烘干（**让硅片上面均匀地涂满一层光刻胶**）
    1. 送入对准及曝光设备
-   1. 步进光刻机逐个区域进行对焦与曝光![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+   1. 步进光刻机逐个区域进行对焦与曝光
+
+{% articleImage
+   src="../../../../assets/article-images/ccc74edaddace423d16e1bca17f704bfa2c254e443e157a2bb87a27649a04620.webp"
+   width=1757
+   height=746 /%}
 
 ### 刻蚀区
 
@@ -63,7 +77,10 @@ category: quirk-semiconductor-manufacturing-technology-note
    1. 去胶机用**离化的氧气**去除多余的光刻胶
    1. 化学溶剂彻底清洗硅片
 
-![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+{% articleImage
+   src="../../../../assets/article-images/33388e640b1848e2519cfa385b87dc4969fb83305cc4d81b1efc6ccd3ca1496f.webp"
+   width=1643
+   height=947 /%}
 
 ### 离子注入区域
 
@@ -73,7 +90,10 @@ category: quirk-semiconductor-manufacturing-technology-note
    1. 离子被高压电磁场进行加速
    1. 离子注入完成后，进行除胶与清洗
 
-![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+{% articleImage
+   src="../../../../assets/article-images/4ca2e94bbb57bff1c26a8121307d55970450769067a97263fb46959e9941df3c.webp"
+   width=1787
+   height=1246 /%}
 
 ### 薄膜生长区
 
@@ -82,7 +102,10 @@ category: quirk-semiconductor-manufacturing-technology-note
    1. SOG设备：使硅片表面平坦化
    1. 快速退火装置：修复损伤，金属合金化
 
-![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+{% articleImage
+   src="../../../../assets/article-images/1c55387d368688540bccb7666201f7d5e3fcbefc1f64c488c7413a46b12b1cba.webp"
+   width=1473
+   height=972 /%}
 
 ### 抛光区（化学机械平坦化，CMP）
 
@@ -96,6 +119,95 @@ category: quirk-semiconductor-manufacturing-technology-note
 
 **根本目的**：制作出n阱与p阱
 
-**基本的思想方法**：用光刻胶保护不需要离子注入的部分
+**基本的思想方法**：用光刻胶保护不需要离子注入的部分，其余部分注入相应的离子
 
-### ![](../../../../assets/content/body/c9-general-condition-of-ic-manu/%E5%9B%BE%E7%89%87.png)
+#### N阱制作
+
+1. 扩散区之前：外延生长
+   1. 外延层在进入扩散区前已经具备（在制造硅片的阶段产生）
+   1. 外延层具有与衬底硅片相同的结构，纯度更高，缺陷更少
+   1. 外延层已经进行了轻p掺杂（B）
+1. 扩散区：原氧化生长
+   1. 制作流程：先清洗，再高温氧化
+   1. 氧化层厚度：约150埃，**完全覆盖外延层**
+   1. 氧化层的作用
+      1. 保护外延层免受沾污
+      1. 阻止注入过程中对硅片的损伤
+      1. 控制注入深度
+1. 光刻区：第一层掩膜
+   1. 流程：涂胶->光刻机刻印掩膜图形（决定n阱位置）->显影->检测特征尺寸（CD）
+   1. 返工：检测又缺陷，可以去胶返工——唯一隔离轻易返工的区域
+1. 注入区：高能n阱注入
+   1. 流程：离化杂质->加速获得高能（200KeV）->扫描，均匀注入未被光刻胶保护的区域
+   1. 对共价原子结构造成了损伤，再后续退火中被修复
+1. 扩散区：退火
+   1. 流程：去胶，清洗，移入退火炉
+   1. 退火的结果 ：
+      1. 生成新的阻挡氧化层（再清洗过程中被去除）
+      1. 使得杂质向硅片深处扩散
+      1. 修复硅片的损伤
+      1. 电学激活：激活杂质与硅原子之间的共价键。让杂质成为晶格的一部分
+
+{% articleImage
+   src="../../../../assets/article-images/131fabf91886682ea4849a0dd9e972e4db9c6bbcb83eecc2be8ab31e80e5603f.webp"
+   width=1224
+   height=411 /%}
+
+#### P阱制作
+
+与N阱的流程完全一致，少了前两步（因为再N阱制作中已经完成了，不需要重复完成）
+
+{% articleImage
+   src="../../../../assets/article-images/c82d6ab7a21e9b95522e04da494076a4112233207b0f2a59a23bbe9af0f49546.webp"
+   width=1258
+   height=410 /%}
+
+关键的差异点：注入B的能量只相当于注入P的能量的1/3，因此P阱制作需要的能量比N阱低
+
+### 浅槽隔离（STI）
+
+三个基本步骤：槽刻蚀，氧化物填充，氧化物平坦化
+
+#### 槽刻蚀
+
+1. 扩散区：隔离氧化层
+   1. 流程：与双阱工艺中的原氧化生长相似
+   1. 作用：保护有源区，在去除氮化物的过程中免受沾污
+1. 扩散区：氮化物淀积
+   1. 流程：在高温的低压化学气相淀积设备中，与氨气和二氯硅烷反应，生成氮化硅
+   1. 氮化硅的作用：
+      1. 坚固的掩膜材料，在STI中保护有源区
+      1. 在CMP中充当抛光的阻挡材料
+1. 光刻区：第三层掩膜
+   1. 与双阱工艺中的第一层掩膜类似，将隔离区暴露出来
+   1. 硅片检测的三个方面：特征尺寸（CD），缺陷检测（DI），目检（VI）
+1. STI槽刻蚀
+   1. 流程：干法离子刻蚀机利用大功率射频能量在真空反应腔中将氟基与氯基的气体离化，移走隔离区的硅
+   1. 沟槽的特性：倾斜的侧壁与光滑的底面——提高填充的质量和隔离结构的电学特性
+   1. 刻蚀完成之后需要进行去胶与湿法清洗
+   1. 关键检测：阶梯高度，刻蚀速率，CD，DI
+
+{% articleImage
+   src="../../../../assets/article-images/85aa738e72922b5c8c8502d9dee4280899e1659040bb352acdeb8fb7c2a31ac8.webp"
+   width=1263
+   height=450 /%}
+
+#### 氧化层抛光——氮化物去除
+
+SOG：填充间隙实现平坦化
+
+CMP（抛光）：当前采用的最优化小的平坦化技术
+
+1. 抛光区：化学机械抛光
+   1. 硅片通过真空吸附在载片台，硅片与抛光垫做同向旋转，抛光垫紧贴抛光台
+   1. 抛光液：保持抛光垫与硅片的湿润，并与二氧化硅反应
+   1. 氮化硅：比二氧化硅更坚硬，作为阻挡村，防止过度抛光
+   1. 抛光结束后，对上下表面漂洗烘干检测薄膜后于，颗粒与缺陷
+1. 扩散区：氮化物去除
+   1. 热磷酸槽去除氮化物
+   1. 漂洗烘干，检测隔离氧化层厚度
+
+{% articleImage
+   src="../../../../assets/article-images/489e5ebf8c437384f0b737a4853d2fe7260c69c885f415701f729ac2b27cb18e.webp"
+   width=1169
+   height=391 /%}

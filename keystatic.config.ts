@@ -4,8 +4,10 @@ import { createElement } from 'react';
 import { markdocComponents } from './src/content/markdoc-components';
 import { withMathPersistence } from './src/lib/keystatic-math';
 import { withWikiLinks } from './src/lib/keystatic-wikilinks';
+import { withConcepts } from './src/lib/keystatic-concepts';
 import { tagField } from './src/content/tag-field';
 import { projectProgress } from './src/content/project-progress';
+import { profileFields } from './src/content/profile-fields';
 import { WorkspaceRelationship } from './src/content/workspace-relationship';
 import { publicationField } from './src/content/publication-field';
 
@@ -117,26 +119,28 @@ const localeField = (locale: Locale) =>
   });
 
 const body = withMathPersistence(
-  withWikiLinks(
-    fields.markdoc({
-      label: '正文',
-      extension: 'mdoc',
-      options: {
-        heading: [2, 3, 4, 5, 6],
-        table: true,
-        divider: true,
-        codeBlock: true,
-        image: {
-          directory: 'src/assets/content/body',
-          publicPath: '../../../../assets/content/body/',
-          schema: {
-            alt: fields.text({ label: '替代文本', validation: { isRequired: true } }),
-            title: fields.text({ label: '图片标题' }),
+  withConcepts(
+    withWikiLinks(
+      fields.markdoc({
+        label: '正文',
+        extension: 'mdoc',
+        options: {
+          heading: [2, 3, 4, 5, 6],
+          table: true,
+          divider: true,
+          codeBlock: true,
+          image: {
+            directory: 'src/assets/content/body',
+            publicPath: '../../../../assets/content/body/',
+            schema: {
+              alt: fields.text({ label: '替代文本', validation: { isRequired: true } }),
+              title: fields.text({ label: '图片标题' }),
+            },
           },
         },
-      },
-      components: markdocComponents,
-    }),
+        components: markdocComponents,
+      }),
+    ),
   ),
 );
 
@@ -273,65 +277,7 @@ const pageCollection = (locale: Locale) =>
         ],
       }),
       updatedAt: fields.datetime({ label: '更新时间' }),
-      profile: fields.object(
-        {
-          displayName: fields.text({
-            label: '显示名称',
-            description: '档案页以此名称作为标题；留空时使用站点作者名称。',
-          }),
-          headline: fields.text({ label: '身份与个人介绍', multiline: true }),
-          location: fields.text({ label: '所在地区（可选）' }),
-          avatar: fields.image({
-            label: '头像',
-            directory: 'public/media/profile',
-            publicPath: '/media/profile/',
-            description: '建议上传正方形图片。未上传时使用站点图标。',
-          }),
-          email: fields.text({
-            label: '公开邮箱',
-            validation: {
-              pattern: {
-                regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$|^$/,
-                message: '请输入有效的邮箱地址，或留空。',
-              },
-            },
-          }),
-          qq: fields.text({
-            label: 'QQ',
-            validation: {
-              pattern: { regex: /^\d{5,12}$|^$/, message: '请输入 5–12 位 QQ 号码，或留空。' },
-            },
-          }),
-          experience: fields.array(
-            fields.object({
-              period: fields.text({ label: '时间 / 阶段', description: '例如：2024 — 至今' }),
-              title: fields.text({ label: '经历标题', validation: { isRequired: true } }),
-              organization: fields.text({ label: '学校 / 公司 / 组织（可选）' }),
-              description: fields.text({ label: '经历介绍', multiline: true }),
-            }),
-            {
-              label: '经历时间线',
-              itemLabel: (props) => props.fields.title.value || '新经历',
-              description: '拖动调整展示顺序；可记录教育、工作、项目与其他经历。',
-            },
-          ),
-          links: fields.array(
-            fields.object({
-              label: fields.text({ label: '名称', validation: { isRequired: true } }),
-              url: fields.url({ label: '链接', validation: { isRequired: true } }),
-            }),
-            {
-              label: '其他联系方式 / 社交链接',
-              itemLabel: (props) => props.fields.label.value || '新链接',
-            },
-          ),
-        },
-        {
-          label: '个人资料（仅个人档案页使用）',
-          description:
-            '正文用于自由介绍；头像、基本信息、经历及联系方式在这里编辑。空白联系方式不会公开显示。',
-        },
-      ),
+      profile: profileFields(),
       coverImage: coverImage('../../../../assets/content/covers/'),
       seo,
       body,

@@ -195,13 +195,10 @@ async function defaultGitHubBranch(token: string) {
   return data.default_branch;
 }
 
-export async function loadContentSnapshot(options: {
-  token?: string;
-  branch?: string | null;
-}): Promise<{ snapshot: ContentSnapshot; branch: string | null }> {
+export async function workspaceContentReader(options: { token?: string; branch?: string | null }) {
   if (keystaticConfig.storage.kind === 'local') {
     const reader = createReader(process.cwd(), keystaticConfig) as unknown as ContentReader;
-    return { snapshot: await snapshotFromReader(reader), branch: null };
+    return { reader, branch: null };
   }
 
   const token = options.token;
@@ -213,6 +210,14 @@ export async function loadContentSnapshot(options: {
     ref: branch,
     token,
   }) as unknown as ContentReader;
+  return { reader, branch };
+}
+
+export async function loadContentSnapshot(options: {
+  token?: string;
+  branch?: string | null;
+}): Promise<{ snapshot: ContentSnapshot; branch: string | null }> {
+  const { reader, branch } = await workspaceContentReader(options);
   return { snapshot: await snapshotFromReader(reader), branch };
 }
 

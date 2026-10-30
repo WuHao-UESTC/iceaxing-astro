@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>浮动概念查找 · 精简审阅样稿</title>
+<style>
+:root{color-scheme:light dark;background:light-dark(#f5f7f6,#101716)}
+body{margin:0;padding:20px 12px;max-width:1140px;margin-inline:auto}
+@media(max-width:640px){body{padding:8px}}
+</style>
+</head>
+<body>
+<div id="concept-float" aria-label="写作中的概念查找样稿" data-open="true">
+  <header class="cf-header"><span>ICEAXING <span class="cf-slash">/</span> 内容工作区</span><span class="cf-preview">交互样稿</span></header>
+  <div class="cf-breadcrumb">学习 <span>/</span> 模拟电路 <span>/</span> 复习笔记</div>
+  <aside class="cf-float" aria-label="浮动概念查找">
+    <div class="cf-float-top"><button type="button" class="cf-toggle" aria-expanded="true" aria-controls="cf-picker" id="cf-toggle">概念 <span aria-hidden="true">−</span></button><div class="cf-top-actions"><button type="button" id="cf-new" class="cf-new">新建</button><button type="button" id="cf-insert" class="cf-insert">插入链接 <span aria-hidden="true">↗</span></button></div></div>
+    <div id="cf-picker"><label class="cf-search-label" for="cf-search">查找概念</label><input type="search" id="cf-search" placeholder="搜索概念…" autocomplete="off" spellcheck="false" aria-controls="cf-results"><div id="cf-results" class="cf-results" role="group" aria-label="概念名称"></div><p id="cf-empty" class="cf-empty" hidden>未找到匹配的概念</p></div>
+    <form id="cf-create" hidden novalidate><label for="cf-name" class="cf-name-label">概念名称</label><input id="cf-name" placeholder="为所选文字命名…" autocomplete="off" maxlength="80"><p id="cf-excerpt" class="cf-excerpt"></p><p id="cf-create-error" class="cf-create-error" role="alert" hidden></p><div class="cf-create-actions"><button type="submit">保存</button><button type="button" id="cf-cancel">取消</button></div></form>
+    <p id="cf-create-hint" class="cf-create-hint" role="status" hidden>先选中正文，再点击新建</p>
+  </aside>
+  <article class="cf-article">
+    <div class="cf-eyebrow">模拟电路 · 复习笔记</div><h1>从输入输出理解系统稳定性</h1><div class="cf-meta">中文 <span>·</span> 正在撰写</div>
+    <div class="cf-format"><span>正文　 H₂　 B　 I　 ···</span><span class="cf-format-hint">概念以链接插入</span></div>
+    <div id="cf-editor" class="cf-editor" contenteditable="true" role="textbox" aria-label="笔记正文" aria-multiline="true" spellcheck="false">
+      <p>分析一个电路时，我们常常需要判断它是否稳定。一个直观的出发点，是观察输入与输出之间的关系。</p>
+      <p>当我们说一个系统具有 <a href="#cf-source-bibo" class="cf-concept" data-concept="bibo" contenteditable="false">BIBO 稳定性</a> 时，关注的是有界输入是否始终对应有界输出。</p>
+      <p>对于连续时间线性时不变系统，还可以通过 <a href="#cf-source-impulse" class="cf-concept" data-concept="impulse" contenteditable="false">冲激响应</a> 的绝对可积性来判断这一性质。</p>
+      <p>接下来，我们从系统的传递函数继续讨论。</p>
+    </div>
+    <div class="cf-writing-end"><span>继续写作</span><span>悬浮概念链接，查看定义</span></div>
+    <section id="cf-source" class="cf-source" aria-label="来源原文" hidden></section>
+  </article>
+  <div id="cf-card" class="cf-card" role="region" aria-label="概念卡片" hidden><div class="cf-card-top"><span id="cf-card-name"></span><button type="button" id="cf-card-close" aria-label="关闭概念卡片">×</button></div><p id="cf-card-definition"></p><a id="cf-card-source" href="#cf-source">查看原文 <span aria-hidden="true">↗</span></a></div>
+  <p id="cf-status" class="cf-status" role="status" aria-live="polite"></p>
+</div>
+<style>
+#concept-float{--cf-page:light-dark(#f5f7f6,#101716);--cf-ink:light-dark(#243530,#e1e9e4);--cf-muted:light-dark(#687872,#a1b1a9);--cf-accent:light-dark(#247568,#79cdb5);--cf-highlight:light-dark(#24756812,#79cdb515);--cf-hover:light-dark(#f5f7f6ef,#101716ef);position:relative;isolation:isolate;min-height:830px;background:transparent;border:0;box-shadow:none;color:var(--cf-ink);font:13px/1.7 Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;overflow-wrap:anywhere}
+#concept-float *{box-sizing:border-box}
+#concept-float [hidden]{display:none!important}
+#concept-float button,#concept-float input{font:inherit;color:inherit;border:0;border-radius:0;background:transparent;box-shadow:none}
+#concept-float button{cursor:pointer}
+#concept-float button:focus-visible,#concept-float a:focus-visible,#concept-float input:focus-visible,#concept-float [contenteditable]:focus-visible{outline:2px solid var(--cf-accent);outline-offset:4px}
+#concept-float .cf-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:25px 110px 20px 32px;color:var(--cf-muted);font-size:11px;letter-spacing:.03em}
+#concept-float .cf-slash{margin:0 10px;color:var(--cf-accent)}
+#concept-float .cf-preview{font-size:10px}
+#concept-float .cf-breadcrumb{padding:8px 32px;color:var(--cf-muted);font-size:11px}
+#concept-float .cf-breadcrumb span{margin:0 10px;opacity:.6}
+#concept-float .cf-float{position:absolute;z-index:2;top:170px;left:30px;width:var(--cf-float-width,190px);padding:0;background:transparent;border:0;box-shadow:none}
+#concept-float .cf-float-top{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:32px;margin-bottom:12px}
+#concept-float .cf-top-actions{display:flex;align-items:center;gap:12px}
+#concept-float .cf-new{padding:3px 0;font-size:11px;color:var(--cf-muted)}
+#concept-float .cf-new:hover{color:var(--cf-accent)}
+#concept-float .cf-name-label{display:block;color:var(--cf-muted);font-size:11px;margin:6px 0}
+#concept-float #cf-name{width:100%;min-width:0;padding:5px 0;font-size:13px;color:var(--cf-ink)}
+#concept-float #cf-name:focus-visible{outline:none;box-shadow:inset 0 -1px 0 var(--cf-accent)}
+#concept-float .cf-excerpt{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:12px 0;color:var(--cf-muted);font-size:11px;line-height:1.8;white-space:pre-wrap}
+#concept-float .cf-create-actions{display:flex;gap:18px;margin:12px 0}
+#concept-float .cf-create-actions button{padding:2px 0;color:var(--cf-accent);font-size:12px}
+#concept-float .cf-create-actions #cf-cancel{color:var(--cf-muted)}
+#concept-float .cf-create-error,#concept-float .cf-create-hint{font-size:11px;line-height:1.7;color:var(--cf-muted);margin:8px 0}
+#concept-float .cf-editor::highlight(cf-origin){background:var(--cf-highlight);color:var(--cf-ink)}
+#concept-float .cf-toggle{padding:0;font-size:13px;letter-spacing:.05em;white-space:nowrap}
+#concept-float .cf-toggle>span{margin-left:6px;color:var(--cf-muted);font-size:11px}
+#concept-float .cf-insert{padding:3px 0;font-size:12px;color:var(--cf-accent);white-space:nowrap}
+#concept-float .cf-insert:disabled{color:var(--cf-muted);opacity:.55;cursor:default}
+#concept-float .cf-insert:hover:not(:disabled){text-decoration:underline;text-underline-offset:5px}
+#concept-float .cf-search-label{position:absolute;width:1px;height:1px;clip-path:inset(50%);overflow:hidden;white-space:nowrap}
+#concept-float #cf-search{width:100%;min-width:0;padding:5px 0;margin-bottom:10px;font-size:12px;color:var(--cf-ink);appearance:none}
+#concept-float #cf-search::placeholder{color:var(--cf-muted)}
+#concept-float .cf-results{display:flex;flex-direction:column;gap:0}
+#concept-float .cf-result{position:relative;text-align:left;width:100%;padding:3px 0 3px 12px;min-height:27px;font-size:12px;line-height:21px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+#concept-float .cf-result::before{position:absolute;left:0;top:12px;width:3px;height:3px;content:'';border-radius:50%;background:transparent}
+#concept-float .cf-result[aria-pressed="true"]{color:var(--cf-accent)}
+#concept-float .cf-result[aria-pressed="true"]::before{background:currentColor}
+#concept-float .cf-result:hover{color:var(--cf-accent)}
+#concept-float .cf-empty{font-size:12px;color:var(--cf-muted);padding:4px 0;margin:0}
+#concept-float .cf-article{position:relative;max-width:650px;margin:52px 40px 0 270px;padding-bottom:44px}
+#concept-float .cf-eyebrow{font-size:10px;color:var(--cf-accent);letter-spacing:.1em;margin-bottom:14px}
+#concept-float h1{font:400 29px/1.65 "Iowan Old Style","Noto Serif SC","Songti SC",SimSun,Georgia,serif;letter-spacing:.03em;margin:0 0 12px}
+#concept-float .cf-meta{display:flex;gap:12px;color:var(--cf-muted);font-size:11px}
+#concept-float .cf-format{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--cf-muted);font-size:11px;margin:30px 0 32px;padding:6px 0}
+#concept-float .cf-format-hint{font-size:10px}
+#concept-float .cf-editor{font:16px/2.1 "Iowan Old Style","Noto Serif SC","Songti SC",SimSun,Georgia,serif;min-height:310px;caret-color:var(--cf-accent)}
+#concept-float .cf-editor:focus-visible{outline:none}
+#concept-float .cf-editor p{margin:0 0 23px}
+#concept-float .cf-concept{color:var(--cf-accent);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--cf-accent) 45%,transparent);text-underline-offset:5px;text-decoration-thickness:1px;cursor:pointer}
+#concept-float .cf-concept:hover{text-decoration-color:var(--cf-accent)}
+#concept-float .cf-writing-end{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:28px;font-size:10px;color:var(--cf-muted)}
+#concept-float .cf-card{position:absolute;z-index:5;width:320px;padding:18px 20px;background:var(--cf-hover);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:0;border-radius:0;box-shadow:none;overflow-wrap:anywhere}
+#concept-float .cf-card-top{display:flex;align-items:center;justify-content:space-between;gap:14px;font:400 17px/1.5 "Noto Serif SC",SimSun,Georgia,serif}
+#concept-float #cf-card-close{padding:0 2px;min-width:24px;min-height:24px;font:16px/1 system-ui;color:var(--cf-muted)}
+#concept-float #cf-card-definition{margin:12px 0 14px;font-size:13px;line-height:1.85}
+#concept-float #cf-card-source{font-size:11px;color:var(--cf-accent);text-decoration:none}
+#concept-float #cf-card-source:hover{text-decoration:underline;text-underline-offset:4px}
+#concept-float .cf-source{margin-top:40px;scroll-margin-top:24px}
+#concept-float .cf-source-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--cf-muted);font-size:11px;margin-bottom:16px}
+#concept-float .cf-source h2{font:400 22px/1.5 "Noto Serif SC",SimSun,Georgia,serif;margin:0 0 18px}
+#concept-float .cf-source p{font:15px/1.95 "Noto Serif SC",SimSun,Georgia,serif;margin:15px 0}
+#concept-float .cf-source mark{background:var(--cf-highlight);color:var(--cf-ink);box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:3px 0;scroll-margin-top:24px}
+#concept-float .cf-source button{padding:0;font-size:11px;color:var(--cf-accent)}
+#concept-float .cf-status{margin:0 32px 0 270px;min-height:23px;color:var(--cf-muted);font-size:11px}
+#concept-float[data-open="false"] .cf-float{width:auto}
+#concept-float[data-open="false"] .cf-float-top{margin:0}
+@media(max-width:800px){#concept-float .cf-float{left:24px;width:165px}#concept-float .cf-article{margin-left:225px;margin-right:25px}#concept-float h1{font-size:26px}#concept-float .cf-status{margin-left:225px}}
+@media(max-width:590px){#concept-float{min-height:1050px}#concept-float .cf-header{padding:20px 92px 20px 18px;flex-wrap:wrap;gap:5px}#concept-float .cf-preview{display:none}#concept-float .cf-breadcrumb{padding:7px 18px;font-size:10px}#concept-float .cf-breadcrumb span{margin:0 5px}#concept-float .cf-float{top:117px;left:20px;width:min(210px,calc(100% - 40px))}#concept-float .cf-float-top{margin-bottom:6px}#concept-float .cf-article{margin:318px 20px 0}#concept-float[data-open="false"] .cf-article{margin-top:92px}#concept-float .cf-status{margin-left:20px;margin-right:20px}#concept-float h1{font-size:25px}#concept-float .cf-format{margin:22px 0}#concept-float #cf-search{font-size:16px}}
+@media(pointer:coarse){#concept-float .cf-toggle,#concept-float .cf-insert,#concept-float #cf-card-close,#concept-float #cf-card-source,#concept-float .cf-source button{min-height:44px}#concept-float .cf-result{min-height:36px;padding-block:7px}#concept-float .cf-result::before{top:16px}#concept-float .cf-concept{display:inline-block;min-height:40px}#concept-float #cf-search{font-size:16px}}
+@media(max-width:590px) and (pointer:coarse){#concept-float .cf-article{margin-top:390px}#concept-float[data-open="false"] .cf-article{margin-top:105px}}
+@media(max-width:590px){#concept-float .cf-article,#concept-float[data-open="false"] .cf-article{margin-top:var(--cf-mobile-gap,318px)}#concept-float #cf-name{font-size:16px}}
+@media(pointer:coarse){#concept-float .cf-new,#concept-float .cf-create-actions button{min-height:44px}}
+</style>
+<script>
+(()=>{
+const root=document.getElementById('concept-float'),editor=root.querySelector('#cf-editor'),search=root.querySelector('#cf-search'),results=root.querySelector('#cf-results'),insert=root.querySelector('#cf-insert'),card=root.querySelector('#cf-card'),source=root.querySelector('#cf-source'),toggle=root.querySelector('#cf-toggle');
+const concepts=[
+{id:'bibo',name:'BIBO 稳定性',aliases:'有界输入有界输出 bounded-input bounded-output',definition:'对于任意有界输入，系统的输出也有界，则称系统具有 BIBO 稳定性。',source:'BIBO 稳定性 / 定义与直觉'},
+{id:'impulse',name:'冲激响应',aliases:'impulse response h(t)',definition:'对于线性时不变系统，单位冲激输入所对应的输出称为冲激响应，通常记作 h(t)。',source:'线性时不变系统 / 时域表示'},
+{id:'pole',name:'极点',aliases:'pole',definition:'将传递函数写成互质的分子与分母之比后，使分母为零的复频率称为极点。',source:'系统的传递函数 / 极点与零点'},
+{id:'gm',name:'跨导',aliases:'transconductance gm',definition:'在指定工作点及其他条件固定时，输出电流对输入控制电压的局部变化率称为跨导。',source:'模拟电路复习 / 小信号模型'},
+{id:'feedback',name:'负反馈',aliases:'negative feedback',definition:'负反馈把输出信息送回输入端，使其作用倾向于减小输入与反馈量之间的偏差。',source:'反馈系统 / 基本概念'}
+];
+const previous=window.openai?.widgetState?.privateContent;
+let selected=concepts.some(c=>c.id===previous?.selected)?previous.selected:'bibo',range=null,anchor=null,cardConcept=null,hideTimer=null,returnRange=null,hoverDismissed=false;
+const create=root.querySelector('#cf-create'),newButton=root.querySelector('#cf-new'),nameInput=root.querySelector('#cf-name'),createError=root.querySelector('#cf-create-error');
+let draftRange=null,draftText='',nextConcept=1;
+const get=id=>concepts.find(c=>c.id===id);
+const matches=()=>{const q=search.value.trim().normalize('NFKC').toLowerCase();return concepts.filter(c=>(c.name+' '+c.aliases).normalize('NFKC').toLowerCase().includes(q));};
+function persist(){window.openai?.setWidgetState?.({modelContent:{selectedConcept:get(selected)?.name||null,layout:'左侧浮动 · 仅插入链接'},privateContent:{selected,open:root.dataset.open!=='false'}})?.catch(()=>{});}
+function renderList(){const list=matches();if(!list.some(c=>c.id===selected))selected=list[0]?.id||null;results.replaceChildren(...list.map(c=>{const b=document.createElement('button');b.type='button';b.className='cf-result';b.dataset.id=c.id;b.setAttribute('aria-pressed',String(c.id===selected));b.textContent=c.name;return b;}));insert.disabled=!selected;root.querySelector('#cf-empty').hidden=list.length!==0;insert.setAttribute('aria-label',selected?'插入链接：'+get(selected).name:'插入链接');}
+function rememberRange(){const s=window.getSelection();if(s?.rangeCount&&editor.contains(s.anchorNode)&&editor.contains(s.focusNode))range=s.getRangeAt(0).cloneRange();}
+document.addEventListener('selectionchange',rememberRange);
+root.querySelector('.cf-float').addEventListener('pointerdown',rememberRange);
+function caretAtEnd(){const r=document.createRange();r.selectNodeContents(editor.lastElementChild||editor);r.collapse(false);return r;}
+function closeCard(){clearTimeout(hideTimer);if(anchor)anchor.removeAttribute('aria-controls');card.hidden=true;anchor=null;cardConcept=null;hoverDismissed=true;}
+function insertLink(){const c=get(selected);if(!c)return;const at=range&&editor.contains(range.startContainer)&&editor.contains(range.endContainer)?range.cloneRange():caretAtEnd();at.deleteContents();const link=document.createElement('a');link.className='cf-concept';link.dataset.concept=c.id;link.contentEditable='false';link.href='#cf-source-'+c.id;link.textContent=c.name;at.insertNode(link);const space=document.createTextNode('\u00a0');link.after(space);at.setStartAfter(space);at.collapse(true);editor.focus({preventScroll:true});const s=window.getSelection();s.removeAllRanges();s.addRange(at);range=at.cloneRange();closeCard();root.querySelector('#cf-status').textContent='已插入「'+c.name+'」链接';persist();}
+function setOpen(open){root.dataset.open=String(open);create.hidden=true;root.querySelector('#cf-picker').hidden=!open;insert.hidden=!open;newButton.hidden=!open;root.querySelector('#cf-create-hint').hidden=true;toggle.setAttribute('aria-expanded',String(open));toggle.querySelector('span').textContent=open?'−':'＋';closeCard();}
+function cancelCreate(){create.hidden=true;root.querySelector('#cf-picker').hidden=false;insert.hidden=false;newButton.hidden=false;draftRange=null;draftText='';search.focus({preventScroll:true});}
+newButton.addEventListener('click',()=>{rememberRange();if(!range||range.collapsed||!editor.contains(range.startContainer)||!editor.contains(range.endContainer)||!range.toString().trim()){root.querySelector('#cf-create-hint').hidden=false;return;}draftRange=range.cloneRange();draftText=draftRange.toString().trim();nameInput.value='';createError.hidden=true;root.querySelector('#cf-excerpt').textContent=draftText;root.querySelector('#cf-create-hint').hidden=true;root.querySelector('#cf-picker').hidden=true;insert.hidden=true;newButton.hidden=true;create.hidden=false;closeCard();nameInput.focus({preventScroll:true});});
+root.querySelector('#cf-cancel').addEventListener('click',cancelCreate);
+nameInput.addEventListener('input',()=>{createError.hidden=true;});
+create.addEventListener('submit',e=>{e.preventDefault();const name=nameInput.value.trim();const fail=message=>{createError.textContent=message;createError.hidden=false;};if(!name){fail('请填写概念名称');return;}if(concepts.some(c=>[c.name,...c.aliases.split(/[,，]/)].some(n=>n.normalize('NFKC').trim().toLowerCase()===name.normalize('NFKC').toLowerCase()))){fail('此名称已存在，请换一个名称');return;}if(!draftRange||!editor.contains(draftRange.startContainer)||!editor.contains(draftRange.endContainer)||draftRange.toString().trim()!==draftText){fail('所选文字已变化，请取消后重新选择');return;}const id='new-'+nextConcept++;concepts.push({id,name,aliases:'',definition:draftText,source:'当前笔记 / 所选文字',origin:draftRange.cloneRange()});selected=id;range=draftRange.cloneRange();range.collapse(false);search.value='';cancelCreate();renderList();root.querySelector('#cf-status').textContent='已创建「'+name+'」，原文保留，可继续插入链接';persist();});
+const syncFloatSpacing=()=>{const floating=root.querySelector('.cf-float'),crumb=root.querySelector('.cf-breadcrumb');root.style.setProperty('--cf-mobile-gap',Math.max(0,floating.offsetTop+floating.offsetHeight-crumb.offsetTop-crumb.offsetHeight+36)+'px');};
+const floatObserver=new ResizeObserver(syncFloatSpacing);floatObserver.observe(root.querySelector('.cf-float'));
+function delayHide(){clearTimeout(hideTimer);hideTimer=setTimeout(()=>{if(!card.contains(document.activeElement)&&document.activeElement!==anchor)closeCard();},180);}
+function positionCard(){if(card.hidden||!anchor)return;const parent=root.getBoundingClientRect(),target=anchor.getBoundingClientRect(),width=Math.min(320,parent.width-28);card.style.width=width+'px';const left=Math.max(14,Math.min(target.left-parent.left,parent.width-width-14));let top=target.bottom-parent.top+10;const height=card.offsetHeight;if(top+height>root.offsetHeight-16&&target.top-parent.top-height-10>0)top=target.top-parent.top-height-10;card.style.left=left+'px';card.style.top=top+'px';}
+function showCard(link){clearTimeout(hideTimer);const c=get(link.dataset.concept);if(!c)return;if(anchor&&anchor!==link)anchor.removeAttribute('aria-controls');anchor=link;cardConcept=c;link.setAttribute('aria-controls','cf-card');root.querySelector('#cf-card-name').textContent=c.name;root.querySelector('#cf-card-definition').textContent=c.definition;root.querySelector('#cf-card-source').href='#cf-source-'+c.id;card.hidden=false;positionCard();}
+editor.addEventListener('pointerover',e=>{const link=e.target.closest('[data-concept]');if(link&&!hoverDismissed)showCard(link);});
+editor.addEventListener('pointermove',e=>{if(hoverDismissed){hoverDismissed=false;const link=e.target.closest('[data-concept]');if(link)showCard(link);}});
+editor.addEventListener('pointerout',e=>{const link=e.target.closest('[data-concept]');if(link&&!link.contains(e.relatedTarget)&&!card.contains(e.relatedTarget))delayHide();});
+editor.addEventListener('focusin',e=>{if(e.target.matches('[data-concept]'))showCard(e.target);});
+editor.addEventListener('focusout',e=>{if(e.target.matches('[data-concept]')&&!card.contains(e.relatedTarget))delayHide();});
+editor.addEventListener('click',e=>{const link=e.target.closest('[data-concept]');if(link){e.preventDefault();showCard(link);}});
+card.addEventListener('pointerenter',()=>clearTimeout(hideTimer));card.addEventListener('pointerleave',delayHide);card.addEventListener('focusout',e=>{if(!card.contains(e.relatedTarget)&&e.relatedTarget!==anchor)delayHide();});
+root.querySelector('#cf-card-close').addEventListener('click',closeCard);
+root.querySelector('#cf-card-source').addEventListener('click',e=>{e.preventDefault();if(!cardConcept)return;const c=cardConcept;if(c.origin&&editor.contains(c.origin.startContainer)&&c.origin.toString().trim()===c.definition){const origin=c.origin.cloneRange();closeCard();if(globalThis.CSS?.highlights&&globalThis.Highlight){CSS.highlights.set('cf-origin',new Highlight(origin));}else{const s=window.getSelection();s.removeAllRanges();s.addRange(origin);}const node=origin.startContainer.nodeType===Node.ELEMENT_NODE?origin.startContainer:origin.startContainer.parentElement;node.scrollIntoView({block:'nearest'});root.querySelector('#cf-status').textContent='已定位「'+c.name+'」的原始文字';return;}returnRange=range?.cloneRange()||null;source.replaceChildren();const header=document.createElement('div');header.className='cf-source-heading';const label=document.createElement('span');label.textContent='来源原文 · '+c.source;const back=document.createElement('button');back.type='button';back.textContent='返回写作 ↑';back.addEventListener('click',()=>{source.hidden=true;if(returnRange&&editor.contains(returnRange.startContainer)){editor.focus({preventScroll:true});const s=window.getSelection();s.removeAllRanges();s.addRange(returnRange);range=returnRange.cloneRange();}editor.scrollIntoView({block:'nearest'});});header.append(label,back);const h=document.createElement('h2');h.textContent=c.name;const p=document.createElement('p'),mark=document.createElement('mark');mark.id='cf-source-'+c.id;mark.textContent=c.definition;p.append(mark);const note=document.createElement('p');note.textContent='这一描述给出了分析该概念的基本出发点。';source.append(header,h,p,note);source.hidden=false;closeCard();mark.scrollIntoView({block:'nearest'});});
+search.addEventListener('input',()=>{renderList();persist();});
+search.addEventListener('keydown',e=>{const list=matches();if((e.key==='ArrowDown'||e.key==='ArrowUp')&&list.length){e.preventDefault();const index=list.findIndex(c=>c.id===selected);selected=list[(index+(e.key==='ArrowDown'?1:-1)+list.length)%list.length].id;renderList();persist();}if(e.key==='Enter'&&selected){e.preventDefault();insertLink();}});
+results.addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(!b)return;selected=b.dataset.id;renderList();persist();});
+insert.addEventListener('click',insertLink);toggle.addEventListener('click',()=>{setOpen(root.dataset.open==='false');persist();});
+root.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!card.hidden){e.preventDefault();closeCard();}else if(!create.hidden){e.preventDefault();cancelCreate();}}});
+root.addEventListener('pointerdown',e=>{if(!card.contains(e.target)&&!e.target.closest('[data-concept]'))closeCard();});
+window.addEventListener('resize',positionCard);window.addEventListener('scroll',positionCard,{passive:true});
+window.addEventListener('openai:set_globals',e=>{const saved=e.detail?.globals?.widgetState?.privateContent;if(!saved)return;if(concepts.some(c=>c.id===saved.selected))selected=saved.selected;setOpen(saved.open!==false);renderList();});
+renderList();setOpen(previous?.open!==false);
+if(globalThis.Tweak){const appearance={width:190};const tweak=new Tweak({container:root.querySelector('.cf-float'),onChange:()=>root.style.setProperty('--cf-float-width',appearance.width+'px')});tweak.addSlider(appearance,'width',{label:'浮动面板宽度',min:170,max:210,unit:'px'});}
+})();
+</script>
+
+</body>
+</html>

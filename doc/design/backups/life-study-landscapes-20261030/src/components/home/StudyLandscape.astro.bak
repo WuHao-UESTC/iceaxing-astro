@@ -1,0 +1,15 @@
+---
+import TerrainFacets from './TerrainFacets.astro';
+import { studyMesh } from '../../data/terrain-scenes';
+---
+
+<svg
+  class="study-mountain-lines"
+  viewBox="0 0 1440 320"
+  preserveAspectRatio="none"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <TerrainFacets faces={studyMesh} />
+</svg>

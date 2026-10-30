@@ -1,0 +1,160 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const assert = require('node:assert/strict');
+const { chromium } = require('../../../.tmp/welcome-browser-tools/node_modules/playwright-core');
+
+(async () => {
+  const fragment = fs.readFileSync(path.join(__dirname, 'concept-library.html'), 'utf8');
+  new vm.Script(fragment.match(/<script>([\s\S]*?)<\/script>/)[1]);
+  const browser = await chromium.launch({ executablePath: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', headless: true });
+  const errors = [];
+  try {
+    const page = await browser.newPage({ viewport: { width: 1024, height: 1000 }, colorScheme: 'light' });
+    page.on('pageerror', e => errors.push(e.message));
+    await page.goto('file:///' + path.join(__dirname, 'index.html').replace(/\\/g, '/'));
+    const search = page.locator('#cf-search');
+    const insert = page.locator('#cf-insert');
+    assert.deepEqual(await page.locator('.cf-result').allTextContents(), ['BIBO 稳定性', '冲激响应', '极点', '跨导', '负反馈']);
+    const chrome = await page.locator('.cf-float').evaluate(el => {
+      const s = getComputedStyle(el);
+      return { bg: s.backgroundColor, border: s.borderWidth, shadow: s.boxShadow, pos: s.position };
+    });
+    assert.deepEqual(chrome, { bg: 'rgba(0, 0, 0, 0)', border: '0px', shadow: 'none', pos: 'absolute' });
+    const top = await insert.boundingBox(), list = await page.locator('#cf-results').boundingBox();
+    assert(top.y < list.y, 'insert stays above the list');
+    assert((await page.locator('.cf-result').first().boundingBox()).height <= 30, 'compact result row');
+    await search.fill('BOUNDed-input');
+    assert.deepEqual(await page.locator('.cf-result').allTextContents(), ['BIBO 稳定性']);
+    await search.fill('没有这个概念');
+    assert(await insert.isDisabled());
+    assert(await page.locator('#cf-empty').isVisible());
+    await search.fill('');
+    await page.locator('#cf-editor').evaluate(el => {
+      const r = document.createRange();
+      r.setStart(el.querySelector('p').firstChild, 4);
+      r.collapse(true);
+      el.focus();
+      const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    });
+    await search.fill('gm');
+    await page.locator('[data-id="gm"]').click();
+    await insert.click();
+    assert.equal(await page.locator('#cf-editor p').first().textContent().then(s => s.slice(0, 6)), '分析一个跨导');
+    assert.equal(await page.locator('#cf-editor p').first().locator('a[data-concept="gm"]').count(), 1, 'insert at retained caret');
+    await page.locator('#cf-editor p').first().locator('[data-concept="gm"]').hover();
+    assert(await page.locator('#cf-card').isVisible());
+    assert.equal(await page.locator('#cf-card-name').textContent(), '跨导');
+    await page.locator('#cf-card').hover();
+    await page.waitForTimeout(230);
+    assert(await page.locator('#cf-card').isVisible(), 'pointer can cross into card');
+    await page.keyboard.press('Escape');
+    assert(await page.locator('#cf-card').isHidden());
+    const bibo = page.locator('#cf-editor [data-concept="bibo"]').first();
+    await bibo.focus();
+    assert(await page.locator('#cf-card').isVisible(), 'keyboard preview');
+    await page.locator('#cf-card-source').click();
+    assert(await page.locator('#cf-source-bibo').isVisible(), 'source text highlighted');
+    await page.getByRole('button', { name: '返回写作 ↑' }).click();
+    assert(await page.locator('#cf-source').isHidden());
+    await search.fill('');
+    await page.keyboard.press('ArrowDown');
+    const name = await page.locator('.cf-result[aria-pressed="true"]').textContent();
+    const before = await page.locator('#cf-editor a').count();
+    await page.keyboard.press('Enter');
+    assert.equal(await page.locator('#cf-editor a').count(), before + 1);
+    assert((await page.locator('#cf-status').textContent()).includes(name));
+    await search.fill('');
+    await page.locator('#cf-editor').focus();
+    await page.locator('.cf-header').hover();
+    await page.screenshot({ path: path.join(__dirname, 'floating-desktop.png'), fullPage: true });
+    await bibo.hover();
+    await page.screenshot({ path: path.join(__dirname, 'floating-hover.png'), fullPage: true });
+    for (const width of [320, 390, 736, 1024]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await page.locator('#cf-card-close').click();
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false, 'overflow ' + width);
+      const floatRect = await page.locator('.cf-float').boundingBox(), editorRect = await page.locator('.cf-article').boundingBox();
+      const overlap = floatRect.x < editorRect.x + editorRect.width && floatRect.x + floatRect.width > editorRect.x && floatRect.y < editorRect.y + editorRect.height && floatRect.y + floatRect.height > editorRect.y;
+      assert.equal(overlap, false, 'float does not obscure writing ' + width);
+      await bibo.hover();
+      const rect = await page.locator('#cf-card').boundingBox();
+      assert(rect.x >= 0 && rect.x + rect.width <= width, 'card fits ' + width);
+      await page.locator('#cf-card-close').click();
+      await page.locator('#cf-toggle').click();
+      assert(await page.locator('#cf-picker').isHidden());
+      await page.locator('#cf-toggle').click();
+      await bibo.hover();
+    }
+    await page.locator('#cf-card-close').click();
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.screenshot({ path: path.join(__dirname, 'floating-mobile.png'), fullPage: true });
+    await page.setViewportSize({ width: 1024, height: 1000 });
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await bibo.hover();
+    await page.screenshot({ path: path.join(__dirname, 'floating-dark.png'), fullPage: true });
+    const touch = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const phone = await touch.newPage();
+    phone.on('pageerror', e => errors.push(e.message));
+    await phone.goto('file:///' + path.join(__dirname, 'index.html').replace(/\\/g, '/'));
+    await phone.locator('[data-concept="bibo"]').tap();
+    assert(await phone.locator('#cf-card').isVisible(), 'tap preview');
+    const phoneFloat = await phone.locator('.cf-float').boundingBox(), phoneArticle = await phone.locator('.cf-article').boundingBox();
+    assert(phoneFloat.y + phoneFloat.height < phoneArticle.y, 'touch layout keeps text clear');
+    const maker = await browser.newPage({ viewport: { width: 1024, height: 1000 }, colorScheme: 'light' });
+    maker.on('pageerror', e => errors.push(e.message));
+    await maker.goto('file:///' + path.join(__dirname, 'index.html').replace(/\\/g, '/'));
+    await maker.locator('#cf-new').click();
+    assert(await maker.locator('#cf-create-hint').isVisible(), 'new requires selected text');
+    const definition = await maker.locator('#cf-editor p').first().textContent();
+    async function selectDefinition() {
+      await maker.locator('#cf-editor p').first().evaluate(el => {
+        const r = document.createRange(); r.selectNodeContents(el);
+        el.parentElement.focus();
+        const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      });
+      await maker.locator('#cf-new').click();
+    }
+    await selectDefinition();
+    assert(await maker.locator('#cf-create').isVisible());
+    assert.equal(await maker.locator('#cf-excerpt').textContent(), definition);
+    await maker.locator('#cf-cancel').click();
+    assert.equal(await maker.locator('.cf-result').count(), 5, 'cancel does not create');
+    await selectDefinition();
+    await maker.getByRole('button', { name: '保存', exact: true }).click();
+    assert.equal(await maker.locator('#cf-create-error').textContent(), '请填写概念名称');
+    await maker.locator('#cf-name').fill('BIBO 稳定性');
+    await maker.getByRole('button', { name: '保存', exact: true }).click();
+    assert((await maker.locator('#cf-create-error').textContent()).includes('已存在'));
+    await maker.locator('#cf-name').fill('输入输出观察');
+    assert(await maker.locator('#cf-create-error').isHidden(), 'editing clears stale error');
+    await maker.screenshot({ path: path.join(__dirname, 'create-concept-desktop.png'), fullPage: true });
+    for (const width of [320, 390]) {
+      await maker.setViewportSize({ width, height: 1000 });
+      await maker.waitForTimeout(80);
+      const f = await maker.locator('.cf-float').boundingBox(), a = await maker.locator('.cf-article').boundingBox();
+      assert(f.y + f.height < a.y, 'new concept form keeps writing clear ' + width);
+      assert.equal(await maker.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false);
+    }
+    await maker.screenshot({ path: path.join(__dirname, 'create-concept-mobile.png'), fullPage: true });
+    await maker.setViewportSize({ width: 1024, height: 1000 });
+    await maker.getByRole('button', { name: '保存', exact: true }).click();
+    assert.equal(await maker.locator('#cf-editor p').first().textContent(), definition, 'save preserves original prose');
+    assert.equal(await maker.locator('.cf-result[aria-pressed="true"]').textContent(), '输入输出观察');
+    await maker.locator('#cf-editor p').last().evaluate(el => {
+      const r = document.createRange(); r.selectNodeContents(el); r.collapse(false);
+      el.parentElement.focus(); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    });
+    await maker.locator('#cf-insert').click();
+    const newLink = maker.locator('[data-concept="new-1"]');
+    assert.equal(await newLink.textContent(), '输入输出观察');
+    await newLink.hover();
+    assert.equal(await maker.locator('#cf-card-definition').textContent(), definition);
+    await maker.locator('#cf-card-source').click();
+    assert.equal(await maker.evaluate(() => [...CSS.highlights.get('cf-origin')][0].toString()), definition, 'new source locates original selection');
+    assert.deepEqual(errors, []);
+    console.log(JSON.stringify({ passed: true, errors, checks: ['names only', 'transparent floating surface', 'compact rows', 'top insert', 'alias search', 'empty state', 'caret retained', 'hover bridge', 'keyboard preview/insert', 'source text', 'collapse', 'responsive 320/390/736/1024', 'touch preview', 'light/dark', 'create from selection', 'cancel/required/duplicate', 'save preserves prose', 'new concept hover and original text highlight', 'mobile creation form'] }));
+  } finally {
+    await browser.close();
+  }
+})().catch(e => { console.error(e); process.exit(1); });

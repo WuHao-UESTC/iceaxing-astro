@@ -1,35 +1,24 @@
 ﻿import { createTerrainMesh, type TerrainFace, type TerrainPoint } from '../lib/terrain-mesh';
 
-// Build facets in screen-like proportions, then cut the bank out of that surface.
+import { createTerrainSurface } from '../lib/terrain-mesh';
+import { lifeUpperTerrain } from './life-upper-terrain';
+
+// Build both banks from complete facets with matching proportions and lighting.
 export function snowRiftMeshes(compact = false): {
   upper: TerrainFace[];
   lower: TerrainFace[];
-  upperBoundary: [number, number][];
   lowerBoundary: [number, number][];
 } {
   const noise = (seed: number) => {
     const value = Math.sin(seed * 127.1) * 43758.5453;
     return value - Math.floor(value);
   };
-  const lowerCount = compact ? 17 : 28;
-  const upperBoundary: [number, number][] = Array.from({ length: 18 }, (_, index) => {
-    const y = -60 + index * 45;
-    const tooth = index === 0 || index === 17 ? 0 : (noise(index * 11 + 3) - 0.5) * 55;
-    return [600 + y * 0.9375 + tooth, y];
-  });
-  upperBoundary.push([1450, 780], [1450, -80]);
-  const upperRows = Array.from({ length: compact ? 15 : 12 }, (_, row) =>
-    Array.from({ length: compact ? 8 : 13 }, (_, column): TerrainPoint => {
-      return [
-        470 +
-          column * (compact ? 140 : 80) +
-          (noise(column * 17 + row * 31 + 5) - 0.5) * (compact ? 65 : 35),
-        -80 + row * (compact ? 60 : 80) + (noise(column * 37 + row * 13 + 9) - 0.5) * 28,
-        15 + noise(column * 19 + row * 43 + 2) * 90,
-      ];
-    }),
+  const lowerCount = compact ? 8 : 14;
+  const scene = lifeUpperTerrain[compact ? 1 : 0]!;
+  const upper = createTerrainSurface(
+    scene.triangles.map(([a, b, c]) => [scene.points[a]!, scene.points[b]!, scene.points[c]!]),
   );
-  const lowerRows = [0, 0.2, 0.4, 0.6, 0.8, 1].map((depth, row) =>
+  const lowerRows = [0, 0.33, 0.67, 1].map((depth, row) =>
     Array.from({ length: lowerCount }, (_, column): TerrainPoint => {
       const end = column === 0 || column === lowerCount - 1;
       const t = (column + (end ? 0 : (noise(column + 41) - 0.5) * 0.6)) / (lowerCount - 1);
@@ -37,7 +26,7 @@ export function snowRiftMeshes(compact = false): {
       const edgeY = compact
         ? 515 + 35 * t + 280 * Math.pow(Math.max(0, (t - 0.8) / 0.2), 1.3)
         : 385 + 445 * t;
-      const interior = row > 0 && row < 5;
+      const interior = row > 0 && row < 3;
       return [
         -70 + 1300 * t + (interior ? ((column * 23 + row * 29) % 25) - 12 : 0),
         (edgeY + tooth) * (1 - depth) +
@@ -48,9 +37,8 @@ export function snowRiftMeshes(compact = false): {
     }),
   );
   return {
-    upper: createTerrainMesh(upperRows),
+    upper,
     lower: createTerrainMesh(lowerRows),
-    upperBoundary,
     lowerBoundary: lowerRows[0]!.map(([x, y]) => [x, y]),
   };
 }

@@ -1,0 +1,198 @@
+---
+import { Image } from 'astro:assets';
+import type { Locale } from '../../i18n/config';
+import type { HomeCard } from './types';
+import '../../styles/featured-destinations.css';
+
+interface Props {
+  locale: Locale;
+  cards: HomeCard[];
+  label: string;
+}
+const { locale, cards, label } = Astro.props;
+const translations = {
+  zh: {
+    category: '分类',
+    project: '项目',
+    collection: '合集',
+    close: '关闭详情',
+    open: '查看详情',
+    planned: '计划中',
+    active: '进行中',
+    completed: '已完成',
+    archived: '已归档',
+    hint: '按向下方向键查看详情，按回车打开条目。',
+  },
+  en: {
+    category: 'Category',
+    project: 'Project',
+    collection: 'Collection',
+    close: 'Close preview',
+    open: 'Explore',
+    planned: 'Planned',
+    active: 'In progress',
+    completed: 'Completed',
+    archived: 'Archived',
+    hint: 'Press Arrow Down to explore the preview, or Enter to open the entry.',
+  },
+  de: {
+    category: 'Kategorie',
+    project: 'Projekt',
+    collection: 'Sammlung',
+    close: 'Vorschau schließen',
+    open: 'Entdecken',
+    planned: 'Geplant',
+    active: 'In Arbeit',
+    completed: 'Abgeschlossen',
+    archived: 'Archiviert',
+    hint: 'Pfeil nach unten öffnet die Vorschau, Eingabe öffnet den Eintrag.',
+  },
+};
+const copy = translations[locale];
+const positions = [
+  ['57%', '18%'],
+  ['72%', '35%'],
+  ['53%', '53%'],
+  ['77%', '57%'],
+  ['61%', '70%'],
+  ['79%', '78%'],
+  ['63%', '26%'],
+  ['79%', '45%'],
+];
+const octagon = '50,13 76,24 87,50 76,76 50,87 24,76 13,50 24,24';
+const kindLabel = (card: HomeCard) => copy[card.kind ?? 'category'];
+---
+
+<div class="journey-featured-destinations" data-featured-destinations data-pagefind-ignore>
+  <span id="featured-preview-hint" class="sr-only">
+    {copy.hint}
+  </span>
+  <nav class="featured-map" aria-label={label}>
+    {cards.map((card, index) => (
+      <div
+        class="featured-pin"
+        data-featured-pin
+        style={`--pin-x:${positions[index % positions.length]?.[0]};--pin-y:${positions[index % positions.length]?.[1]}`}
+      >
+        <a
+          class="featured-link"
+          href={card.href}
+          data-featured-trigger
+          aria-controls={`featured-preview-${index}`}
+          aria-describedby="featured-preview-hint"
+          aria-expanded="false"
+        >
+          <span class="featured-node">
+            <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <polygon class="featured-rim" points={octagon} />
+              <polygon class="featured-halo" points={octagon} />
+              <polygon class="featured-halo featured-halo-echo" points={octagon} />
+            </svg>
+            <span class="featured-number">{String(index + 1).padStart(2, '0')}</span>
+            {Array.from({ length: 4 }, (_, particle) => (
+              <i
+                class="featured-particle"
+                aria-hidden="true"
+                style={`--particle-angle:${particle * 90 + index * 17 + 12}deg;--particle-delay:${-particle * 0.8 - index * 0.5}s`}
+              />
+            ))}
+          </span>
+          <span class="featured-label">
+            <strong>{card.title}</strong>
+            <span class="featured-caption">
+              {kindLabel(card)}
+              {card.topic && ` / ${card.topic}`}
+            </span>
+          </span>
+          <span class="featured-arrow" aria-hidden="true">
+            ↗
+          </span>
+        </a>
+      </div>
+    ))}
+  </nav>
+  <div class="featured-preview-home" data-featured-preview-home>
+    {cards.map((card, index) => (
+      <section
+        class="featured-preview"
+        id={`featured-preview-${index}`}
+        data-featured-detail
+        aria-labelledby={`featured-preview-title-${index}`}
+        hidden
+      >
+        <div class="featured-preview-cover">
+          {card.coverImage ? (
+            <Image
+              src={card.coverImage}
+              alt=""
+              widths={[320, 640]}
+              sizes="(max-width: 48rem) calc(100vw - 4rem), 304px"
+              loading="lazy"
+            />
+          ) : (
+            <svg
+              class="featured-placeholder"
+              viewBox="0 0 600 310"
+              preserveAspectRatio="xMidYMid slice"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M0 310 165 100 268 218 408 40 600 280V310Z"
+                class="featured-placeholder-far"
+              />
+              <path d="m408 40-82 270h224Z" class="featured-placeholder-lit" />
+              <path d="m408 40 142 270h50v-30Z" class="featured-placeholder-shadow" />
+              <path d="m165 100-37 210h140Z" class="featured-placeholder-lit" />
+              <path
+                d="M0 310 220 246 346 288 450 224 600 278v32Z"
+                class="featured-placeholder-front"
+              />
+              <path d="m340 310 44-42-12-29 25-36 12-62" class="featured-placeholder-trail" />
+            </svg>
+          )}
+          <span class="featured-preview-overline">
+            FIELD NOTES / {String(index + 1).padStart(2, '0')}
+          </span>
+          <button
+            type="button"
+            class="featured-preview-close"
+            data-featured-close
+            aria-label={copy.close}
+          >
+            ×
+          </button>
+        </div>
+        <div class="featured-preview-copy">
+          <div class="featured-preview-meta">
+            <span>
+              {kindLabel(card)}
+              {card.topic && ` / ${card.topic}`}
+            </span>
+            {card.status && <span class="featured-preview-status">{copy[card.status]}</span>}
+          </div>
+          <h3 id={`featured-preview-title-${index}`}>{card.title}</h3>
+          {card.description.trim() && (
+            <p class="featured-preview-description">{card.description}</p>
+          )}
+          {card.tags && card.tags.length > 0 && (
+            <div class="featured-preview-tags">
+              {card.tags.slice(0, 3).map((tag) => (
+                <span>#{tag}</span>
+              ))}
+            </div>
+          )}
+          <a class="featured-preview-cta" href={card.href}>
+            <span>{copy.open}</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+    ))}
+  </div>
+</div>
+
+<script>
+  import { initFeaturedDestinations } from '../../scripts/featured-destinations';
+  initFeaturedDestinations();
+</script>

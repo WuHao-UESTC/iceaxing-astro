@@ -105,26 +105,26 @@ const copy =
             focusable="false"
           >
             <g class="study-star-network">
-              {edges.map(({ from, to, lit }) => (
-                <line
-                  class:list={{ 'is-lit': lit }}
-                  data-star-edge-from={from.id}
-                  data-star-edge-to={to.id}
-                  x1={from.x * 10}
-                  y1={from.y * 5}
-                  x2={to.x * 10}
-                  y2={to.y * 5}
-                />
-              ))}
+              {edges.map(({ from, to, lit }) => {
+                const dx = (to.x - from.x) * 10;
+                const dy = (to.y - from.y) * 5;
+                const gap = Math.min(0.16, 6 / Math.hypot(dx, dy));
+                return (
+                  <line
+                    class:list={{ 'is-lit': lit }}
+                    data-star-edge-from={from.id}
+                    data-star-edge-to={to.id}
+                    x1={from.x * 10 + dx * gap}
+                    y1={from.y * 5 + dy * gap}
+                    x2={to.x * 10 - dx * gap}
+                    y2={to.y * 5 - dy * gap}
+                  />
+                );
+              })}
             </g>
             <g class="study-dim-stars">
-              {dimStars.map((star, index) => (
-                <circle
-                  cx={star.x * 10}
-                  cy={star.y * 5}
-                  r={star.radius}
-                  style={`--twinkle-delay:${index % 7}s`}
-                />
+              {dimStars.map((star) => (
+                <circle cx={star.x * 10} cy={star.y * 5} r={star.radius} />
               ))}
             </g>
           </svg>
@@ -138,7 +138,10 @@ const copy =
                 data-star-x={x}
                 data-star-y={y}
                 data-star-edge={x < 25 ? 'left' : x > 72 ? 'right' : 'center'}
-                style={`left:${x}%;top:${y}%;--star-delay:${index * 0.7}s`}
+                data-star-caption={
+                  topic.id === 'hayt-engineering-electromagnetics-note' ? 'above' : undefined
+                }
+                style={`left:${x}%;top:${y}%`}
                 aria-label={`${topic.title} · ${topic.noteCount ?? 0} ${labels.studyCount}`}
               >
                 <span class="study-star-core" aria-hidden="true">

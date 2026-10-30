@@ -1,0 +1,1213 @@
+---
+import { getCollection } from 'astro:content';
+import { htmlLanguage, localizedPath, locales, type Locale } from '../i18n/config';
+import { getMessages } from '../i18n/messages';
+import { welcomeMessages } from '../i18n/welcome';
+import { isPublicContent, routeFor } from '../lib/content';
+import ThemeToggle from './ThemeToggle.astro';
+import { welcomeDesktopLayers, welcomeMobileLayers } from '../data/welcome-terrain';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const messages = getMessages(locale);
+const copy = welcomeMessages[locale];
+const pages = await getCollection('pages');
+const profile = pages.find(
+  (entry) =>
+    entry.data.locale === locale &&
+    entry.data.pageKind === 'profile' &&
+    isPublicContent(entry.data),
+);
+const displayName = profile?.data.profile?.displayName || 'Iceaxing';
+const avatar = profile?.data.profile?.avatar || '/media/profile/profile-zh/profile/avatar.jpg';
+const profileHref = profile
+  ? (routeFor(profile.data.contentId, locale, 'page') ?? localizedPath(locale, '/profile'))
+  : localizedPath(locale, '/profile');
+const blogHref = localizedPath(locale, '/blog');
+---
+
+<script is:inline define:vars={{ blogHref }}>
+  // Preserve bookmarks to chapters that used to live on the root homepage.
+  const chapters = [
+    '#base-camp',
+    '#technical-ridge',
+    '#study-terrace',
+    '#snowfield-traverse',
+    '#night-camp',
+    '#selected-notes',
+    '#hero-featured-list',
+  ];
+  function openLegacyChapter() {
+    if (chapters.includes(location.hash))
+      location.replace(blogHref + location.search + location.hash);
+  }
+  openLegacyChapter();
+  window.addEventListener('hashchange', openLegacyChapter);
+</script>
+
+<main class="welcome" id="main-content" data-welcome data-route="" data-pagefind-body tabindex="-1">
+  <div class="welcome-shell">
+    <header class="welcome-header" data-pagefind-ignore>
+      <div class="welcome-brand">
+        <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="m3 30 11-17 7 9 7-15 10 23H3Z" stroke="currentColor" stroke-width="1.2" />
+          <path d="m14 13 3 17h-8Zm14-6 2 23H18Z" fill="currentColor" opacity=".13" />
+          <path d="m25 14 3-7 4 9-4-2-2 2" stroke="currentColor" stroke-width="1.1" />
+        </svg>
+        <div class="wordmark">
+          ICEAXING<small>A PERSONAL EXPEDITION</small>
+        </div>
+      </div>
+      <div class="welcome-actions">
+        <span class="coordinates">CHENGDU / CHINA</span>
+        <nav aria-label={messages.common.language}>
+          {locales.map((item) => (
+            <a
+              href={localizedPath(item)}
+              lang={htmlLanguage[item]}
+              aria-current={locale === item ? 'page' : undefined}
+            >
+              {item.toUpperCase()}
+            </a>
+          ))}
+        </nav>
+        <ThemeToggle label={messages.common.switchTheme} />
+      </div>
+    </header>
+    <section class="welcome-copy" aria-labelledby="welcome-title">
+      <div class="host reveal">
+        <img src={avatar} alt={displayName} width="34" height="34" />
+        <span>
+          {copy.greeting} <strong>{displayName} / Iceaxing</strong>
+        </span>
+        <span class="dot" aria-hidden="true"></span>
+        <span>{copy.welcome}</span>
+      </div>
+      <div class="welcome-intro reveal">
+        <p class="welcome-overline">EVERY JOURNEY BEGINS WITH A HELLO</p>
+        <h1 id="welcome-title">{copy.title}</h1>
+        <p class="lede">
+          {copy.introduction.map((line) => (
+            <span>{line}</span>
+          ))}
+        </p>
+      </div>
+      <div class="divider reveal" aria-hidden="true">
+        {copy.start}
+      </div>
+      <div class="choices">
+        <a class="choice resume reveal" data-choice="resume" href={profileHref}>
+          <span class="choice-top">
+            <svg class="choice-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <path d="M5 6h24l6 6v23H5V6Z" fill="currentColor" opacity=".08" />
+              <path d="M5 6h24l6 6v23H5V6Zm24 0v7h6" stroke="currentColor" />
+              <path d="m10 23 4-8 4 8-4 3-4-3Z" fill="currentColor" opacity=".5" />
+              <path d="M23 18h7m-7 5h7M10 30h20" stroke="currentColor" />
+            </svg>
+            <span class="choice-id">01 / ABOUT ME</span>
+          </span>
+          <h2>{copy.resume}</h2>
+          <p>
+            {copy.resumeDescription.map((line, index) => (
+              <>
+                {index > 0 && <br />}
+                {line}
+              </>
+            ))}
+          </p>
+          <span class="choice-bottom">
+            <span>MEET THE PERSON</span>
+            <span class="choice-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </span>
+        </a>
+        <a class="choice blog reveal" data-choice="blog" href={blogHref}>
+          <span class="choice-top">
+            <svg class="choice-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <path
+                d="m3 9 11-3 12 4 11-3v26l-11 3-12-4-11 3V9Z"
+                fill="currentColor"
+                opacity=".08"
+              />
+              <path
+                d="m3 9 11-3 12 4 11-3v26l-11 3-12-4-11 3V9Zm11-3v26m12-22v26"
+                stroke="currentColor"
+              />
+              <path d="m7 26 8-8 7 6 11-9" stroke="currentColor" stroke-dasharray="2 3" />
+              <path d="m29 15 4-3 2 5-6-2Z" fill="currentColor" />
+            </svg>
+            <span class="choice-id">02 / FIELD NOTES</span>
+          </span>
+          <h2>{copy.blog}</h2>
+          <p>
+            {copy.blogDescription.map((line, index) => (
+              <>
+                {index > 0 && <br />}
+                {line}
+              </>
+            ))}
+          </p>
+          <span class="choice-bottom">
+            <span>EXPLORE THE JOURNAL</span>
+            <span class="choice-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </span>
+        </a>
+      </div>
+      <p class="footnote reveal">{copy.invitation}</p>
+    </section>
+    <footer class="welcome-footer" data-pagefind-ignore>
+      <div>
+        <span class="footer-line"></span>
+        {copy.baseCamp}
+        <br />
+        <small>{copy.curiosity}</small>
+      </div>
+      <div class="right">
+        TWO PATHS. ONE CURIOUS MIND.
+        <br />
+        <small>ICEAXING · PERSONAL SPACE</small>
+      </div>
+    </footer>
+  </div>
+  <svg
+    class="landscape"
+    viewBox="0 0 1440 620"
+    preserveAspectRatio="xMidYMax slice"
+    aria-hidden="true"
+  >
+    <defs>
+      <linearGradient id="sky-wash" x1="0" y1="0" x2="0" y2="1">
+        <stop class="mist-color" offset="0" stop-opacity="1" />
+        <stop class="mist-color" offset=".36" stop-opacity=".75" />
+        <stop class="mist-color" offset=".77" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+    <g class="day-terrain">
+      <circle class="sun" cx="1178" cy="150" r="46" />
+      <g class="night-stars">
+        <path d="m104 70 2-5 2 5 5 2-5 2-2 5-2-5-5-2Zm1140-27 2-5 2 5 5 2-5 2-2 5-2-5-5-2Zm-152 54 2-4 2 4 4 2-4 2-2 4-2-4-4-2Z" />
+      </g>
+      <path
+        class="far"
+        d="M0 300 110 236 210 300 375 166 510 283 660 240 810 310 1017 143 1165 270 1300 201 1440 290V620H0Z"
+      />
+      <path
+        class="ridge"
+        d="M0 347 186 173 355 394 514 313 680 436 885 352 1096 92 1440 393V620H0Z"
+      />
+      <path class="ridge-light" d="m186 173-42 263L0 530V347Z" />
+      <path class="ridge-dark" d="m186 173 169 221 83 226H247Z" />
+      <path class="snow" d="m186 173-55 114 43-25 23 28 16-18 29 38Z" />
+      <path class="peak" d="m1096 92-211 260-91 268h646V393Z" />
+      <path class="ridge-light" d="m1096 92-94 231-208 297 236-132Z" />
+      <path class="peak-dark" d="m1096 92 71 528h273V393Z" />
+      <path class="ridge-dark" d="m1096 92-66 396 137 132Z" />
+      <path class="snow" d="m1096 92-94 116 44-13 19 33 31-48 36 43 28-2 33 54Z" />
+      <path class="ridge-light" d="m1096 92 0 88 36 43Z" />
+      <path
+        class="fore"
+        d="M0 478 204 388 398 493 620 433 804 491 1040 438 1242 491 1440 408V620H0Z"
+      />
+      <path class="ridge-light" d="m204 388 75 232H0V478Z" />
+      <path class="fore-dark" d="m204 388 194 105 119 127H279Z" />
+      <path class="ridge" d="m620 433-103 187h312Z" />
+      <path class="ridge-dark" d="m1040 438-211 182h407Z" />
+      <path class="fore-dark" d="m1440 408-198 83-6 129h204Z" />
+      <path class="route route-left" d="M720 620 560 600 340 570 220 510 190 430 160 340 170 245" />
+      <path
+        class="route route-right"
+        d="M720 620 890 600 1110 570 1240 510 1290 420 1320 340 1300 270"
+      />
+      <path
+        class="route-glow glow-left"
+        d="M720 620 560 600 340 570 220 510 190 430 160 340 170 245"
+      />
+      <path
+        class="route-glow glow-right"
+        d="M720 620 890 600 1110 570 1240 510 1290 420 1320 340 1300 270"
+      />
+      <path class="destination destination-left" d="m165 245 5-8 5 8-5 5Z" />
+      <path class="destination destination-right" d="m1295 270 5-8 5 8-5 5Z" />
+    </g>
+    <g class="night-terrain">
+      <!-- Overlapping ridges share a continuous foreground beneath the two entrances. -->
+      <g class="night-desktop">
+        <circle class="night-moon" cx="1280" cy="145" r="38" />
+        {welcomeDesktopLayers.map((layer) => (
+          <g class={`night-mesh night-layer-${layer.depth}`}>
+            {layer.faces.map((face) => (
+              <polygon class={`night-facet night-facet-${face.tone}`} points={face.points} />
+            ))}
+          </g>
+        ))}
+        <path
+          class="route route-left"
+          d="M720 620 560 600 340 570 220 510 190 430 160 340 170 245"
+        />
+        <path
+          class="route-glow glow-left"
+          d="M720 620 560 600 340 570 220 510 190 430 160 340 170 245"
+        />
+        <path
+          class="route route-right"
+          d="M720 620 890 600 1110 570 1240 510 1290 420 1320 340 1300 270"
+        />
+        <path
+          class="route-glow glow-right"
+          d="M720 620 890 600 1110 570 1240 510 1290 420 1320 340 1300 270"
+        />
+        <path class="destination destination-left" d="m165 245 5-8 5 8-5 5Z" />
+        <path class="destination destination-right" d="m1295 270 5-8 5 8-5 5Z" />
+      </g>
+      <g class="night-mobile">
+        {welcomeMobileLayers.map((layer) => (
+          <g class={`night-mesh night-layer-${layer.depth}`}>
+            {layer.faces.map((face) => (
+              <polygon class={`night-facet night-facet-${face.tone}`} points={face.points} />
+            ))}
+          </g>
+        ))}
+        <path class="route route-left" d="M720 620 610 600 520 565 480 520 470 440 480 320" />
+        <path class="route-glow glow-left" d="M720 620 610 600 520 565 480 520 470 440 480 320" />
+        <path class="route route-right" d="M720 620 830 600 940 565 970 500 980 400 960 300" />
+        <path class="route-glow glow-right" d="M720 620 830 600 940 565 970 500 980 400 960 300" />
+        <path class="destination destination-left" d="m475 320 5-8 5 8-5 5Z" />
+        <path class="destination destination-right" d="m955 300 5-8 5 8-5 5Z" />
+      </g>
+    </g>
+    <rect class="sky-wash" width="1440" height="620" />
+  </svg>
+</main>
+
+<script>
+  const welcome = document.querySelector<HTMLElement>('[data-welcome]');
+  if (welcome) {
+    const updateRoute = () => {
+      const active =
+        welcome.querySelector<HTMLAnchorElement>('[data-choice]:focus-visible') ??
+        welcome.querySelector<HTMLAnchorElement>('[data-choice]:hover');
+      welcome.dataset.route = active?.dataset.choice ?? '';
+    };
+    welcome.querySelectorAll<HTMLAnchorElement>('[data-choice]').forEach((link) => {
+      ['pointerenter', 'pointerleave', 'focus', 'blur'].forEach((event) =>
+        link.addEventListener(event, () => requestAnimationFrame(updateRoute)),
+      );
+    });
+  }
+</script>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  .welcome {
+    color-scheme: light;
+    --sky: var(--page);
+    --ink: #2e4038;
+    --muted: #657267;
+    --line: #c9cdbd;
+    --card: var(--surface);
+    --coral: #a85039;
+    --green: #47705a;
+    --sun: #ead1a0;
+    --far: color-mix(in srgb, var(--accent) 8%, var(--page));
+    --ridge: color-mix(in srgb, var(--accent) 16%, var(--page));
+    --ridge-light: color-mix(in srgb, var(--accent) 9%, var(--page));
+    --ridge-dark: color-mix(in srgb, var(--accent) 22%, var(--page));
+    --peak: color-mix(in srgb, var(--accent) 28%, var(--page));
+    --peak-dark: color-mix(in srgb, var(--accent) 36%, var(--page));
+    --snow: var(--page);
+    --fore: color-mix(in srgb, var(--accent) 18%, var(--page));
+    --fore-dark: color-mix(in srgb, var(--accent) 30%, var(--page));
+    --mist: var(--page);
+    --card-shadow: #344f3d0d;
+  }
+  .welcome {
+    margin: 0;
+    background: var(--sky);
+    color: var(--ink);
+    font:
+      14px/1.65 system-ui,
+      -apple-system,
+      'Segoe UI',
+      sans-serif;
+  }
+  :global(:root[data-theme='dark']) .welcome {
+    color-scheme: dark;
+    --ink: #eeeedd;
+    --muted: #b2beac;
+    --line: #393d34;
+    --coral: #efb397;
+    --green: #b3d0ad;
+    --terrain-gold: #c6ac75;
+    --card-shadow: #00000024;
+    background: var(--sky);
+  }
+  button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--coral);
+    outline-offset: 6px;
+  }
+  button[aria-pressed='true'] {
+    background: var(--ink);
+    color: var(--sky);
+  }
+  .welcome {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    container-type: inline-size;
+    width: 100%;
+    margin: auto;
+    background: var(--sky);
+    box-shadow: 0 12px 55px #23362a0b;
+    transition: max-width 0.35s;
+  }
+
+  .welcome-shell {
+    min-height: 100dvh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(16px, 3.5dvh, 32px) 52px clamp(14px, 2.5dvh, 24px);
+  }
+  .welcome-header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .welcome-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+  .welcome-brand svg {
+    width: 33px;
+    height: 33px;
+    color: var(--coral);
+  }
+  .wordmark {
+    font-size: 13px;
+    letter-spacing: 3px;
+    font-weight: 600;
+  }
+  .wordmark small {
+    display: block;
+    letter-spacing: 1.8px;
+    font-weight: 400;
+    font-size: 8px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .coordinates {
+    font-size: 10px;
+    letter-spacing: 1.6px;
+    color: var(--muted);
+  }
+  .welcome-copy {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 760px;
+    width: 100%;
+    padding: clamp(16px, 4dvh, 68px) 12px clamp(12px, 3dvh, 60px);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .host {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 22px;
+  }
+  .host img {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--card);
+  }
+  .host strong {
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .host .dot {
+    width: 4px;
+    height: 4px;
+    background: var(--coral);
+    rotate: 45deg;
+    margin: 0 3px;
+  }
+  .welcome-overline {
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--coral);
+    margin: 0 0 16px;
+  }
+  h1 {
+    max-width: none;
+    font-family: 'Songti SC', 'Noto Serif CJK SC', 'Source Han Serif SC', 'STSong', 'SimSun', serif;
+    font-size: clamp(35px, 4.1cqw, 60px);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .lede {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--muted);
+    margin: 16px 0 0;
+    letter-spacing: 0.05em;
+  }
+  .lede span {
+    display: block;
+  }
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 2px;
+    margin: 32px auto 20px;
+  }
+  .divider:before,
+  .divider:after {
+    content: '';
+    width: 35px;
+    height: 1px;
+    background: var(--line);
+  }
+  .choices {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(80px, 8cqw, 112px);
+    width: 100%;
+    max-width: 760px;
+    text-align: left;
+  }
+  .choices::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    left: 50%;
+    border-left: 1px dashed color-mix(in srgb, var(--muted) 45%, transparent);
+    pointer-events: none;
+  }
+  .choice {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    column-gap: 18px;
+    align-items: start;
+    color: var(--ink);
+    text-decoration: none;
+    position: relative;
+    border: 0;
+    background: transparent;
+    padding: 16px 0;
+    text-align: left;
+    transition: transform 0.3s;
+  }
+  .choice:hover,
+  .choice:focus-visible {
+    transform: translateY(-3px);
+    color: var(--ink);
+  }
+  .choice:hover h2,
+  .choice:focus-visible h2 {
+    color: var(--choice-color);
+  }
+  .choice.resume {
+    --choice-color: var(--coral);
+    grid-template-columns: minmax(0, 1fr) 36px;
+    text-align: right;
+  }
+  .choice.resume .choice-icon {
+    grid-column: 2;
+  }
+  .choice.resume :is(.choice-id, h2, p, .choice-bottom) {
+    grid-column: 1;
+  }
+  .choice.resume .choice-bottom {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+  }
+  .choice.blog {
+    --choice-color: var(--green);
+  }
+  .choice-top {
+    display: contents;
+    color: var(--choice-color);
+  }
+  .choice-icon {
+    grid-column: 1;
+    grid-row: 1 / 5;
+    width: 36px;
+    height: 36px;
+    overflow: visible;
+  }
+  .choice-id {
+    grid-column: 2;
+    grid-row: 1;
+    margin-bottom: 9px;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+  }
+  .choice h2 {
+    grid-column: 2;
+    grid-row: 2;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: 0.03em;
+    line-height: 1.4;
+    margin: 0 0 9px;
+    transition: color 0.3s;
+  }
+  .choice p {
+    grid-column: 2;
+    grid-row: 3;
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0 0 14px;
+    line-height: 1.8;
+  }
+  .choice-bottom {
+    grid-column: 2;
+    grid-row: 4;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    color: var(--choice-color);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+  .choice-arrow {
+    font-size: 21px;
+    line-height: 1;
+    transition: transform 0.3s;
+  }
+  .choice:hover .choice-arrow,
+  .choice:focus-visible .choice-arrow {
+    transform: translate(3px, -3px);
+  }
+  .footnote {
+    font-family: 'Songti SC', 'STSong', 'SimSun', serif;
+    letter-spacing: 0.12em;
+    font-size: 12px;
+    margin: 25px 0 0;
+    color: var(--muted);
+  }
+  .welcome-footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    color: var(--ink);
+    font-size: 9px;
+    letter-spacing: 1.6px;
+  }
+  .footer-line {
+    width: 28px;
+    height: 1px;
+    background: currentColor;
+    display: block;
+    margin-bottom: 10px;
+    opacity: 0.6;
+  }
+  .welcome-footer small {
+    font-size: 8px;
+    letter-spacing: 1px;
+    opacity: 0.75;
+  }
+  .landscape {
+    position: absolute;
+    inset: auto 0 0;
+    width: 100%;
+    height: 65%;
+    min-height: 430px;
+    z-index: -2;
+    pointer-events: none;
+  }
+  .sun {
+    fill: var(--sun);
+    opacity: 0.5;
+  }
+  .night-stars {
+    opacity: 0;
+  }
+  :global(:root[data-theme='dark']) .night-stars {
+    opacity: 0.55;
+  }
+  .night-stars path {
+    fill: var(--snow);
+  }
+  .far {
+    fill: var(--far);
+  }
+  .ridge {
+    fill: var(--ridge);
+  }
+  .ridge-light {
+    fill: var(--ridge-light);
+  }
+  .ridge-dark {
+    fill: var(--ridge-dark);
+  }
+  .peak {
+    fill: var(--peak);
+  }
+  .peak-dark {
+    fill: var(--peak-dark);
+  }
+  .snow {
+    fill: var(--snow);
+  }
+  .fore {
+    fill: var(--fore);
+  }
+  .fore-dark {
+    fill: var(--fore-dark);
+  }
+  .night-terrain {
+    display: none;
+    fill: none;
+    stroke: var(--terrain-gold);
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+  .night-mobile {
+    display: none;
+  }
+  :global(:root[data-theme='dark']) .day-terrain {
+    display: none;
+  }
+  :global(:root[data-theme='dark']) .night-terrain {
+    display: inline;
+  }
+  .night-terrain path,
+  .night-terrain polygon {
+    vector-effect: non-scaling-stroke;
+  }
+  .night-facet {
+    stroke: var(--terrain-gold);
+    stroke-opacity: var(--facet-line);
+    stroke-width: 0.8;
+  }
+  .night-facet-shadow {
+    fill: var(--facet-shadow);
+  }
+  .night-facet-stone {
+    fill: var(--facet-stone);
+  }
+  .night-facet-light {
+    fill: var(--facet-light);
+  }
+  .night-layer-distant {
+    --facet-line: 0.16;
+    --facet-shadow: #0e1312;
+    --facet-stone: #111713;
+    --facet-light: #171c16;
+  }
+  .night-layer-middle {
+    --facet-line: 0.3;
+    --facet-shadow: #101612;
+    --facet-stone: #171d17;
+    --facet-light: #20251b;
+  }
+  .night-layer-near {
+    --facet-line: 0.46;
+    --facet-shadow: #111612;
+    --facet-stone: #191e17;
+    --facet-light: #272a1e;
+  }
+  .night-moon {
+    fill: none;
+    stroke-width: 0.8;
+    opacity: 0.24;
+  }
+  .route-left,
+  .glow-left,
+  .destination-left {
+    --path-color: var(--coral);
+  }
+  .route-right,
+  .glow-right,
+  .destination-right {
+    --path-color: var(--green);
+  }
+  .sky-wash {
+    fill: url(#sky-wash);
+  }
+  .mist-color {
+    stop-color: var(--mist);
+  }
+  .route {
+    fill: none;
+    stroke: var(--path-color);
+    stroke-width: 1.6;
+    stroke-dasharray: 4 7;
+    opacity: 0.65;
+    transition:
+      stroke 0.3s,
+      opacity 0.3s,
+      stroke-width 0.3s;
+  }
+  .route-glow {
+    fill: none;
+    stroke: var(--path-color);
+    stroke-width: 3;
+    stroke-dasharray: 4 500;
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  .destination {
+    fill: var(--sky);
+    stroke: var(--path-color);
+    stroke-width: 1;
+    transition: fill 0.3s;
+  }
+  .welcome[data-route='resume'] .route-left,
+  .welcome[data-route='blog'] .route-right {
+    opacity: 1;
+    stroke: var(--coral);
+    stroke-width: 2.5;
+  }
+  .welcome[data-route='resume'] .glow-left,
+  .welcome[data-route='blog'] .glow-right {
+    opacity: 1;
+    animation: route-travel 3s linear infinite;
+  }
+  .welcome[data-route='blog'] .route-right,
+  .welcome[data-route='blog'] .glow-right {
+    stroke: var(--green);
+  }
+  .welcome[data-route='resume'] .destination-left {
+    fill: var(--coral);
+  }
+  .welcome[data-route='blog'] .destination-right {
+    fill: var(--green);
+  }
+  .reveal {
+    animation: arrive 0.85s both;
+    animation-delay: var(--delay, 0s);
+  }
+  .choices .resume {
+    --delay: 0.28s;
+  }
+  .choices .blog {
+    --delay: 0.38s;
+  }
+  .host {
+    --delay: 0.05s;
+  }
+  .welcome-intro {
+    width: 100%;
+    --delay: 0.12s;
+  }
+  .divider {
+    --delay: 0.22s;
+  }
+  .footnote {
+    --delay: 0.5s;
+  }
+  @keyframes arrive {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes route-travel {
+    to {
+      stroke-dashoffset: -504;
+    }
+  }
+  @container (max-width:650px) {
+    .night-desktop {
+      display: none;
+    }
+    .night-mobile {
+      display: inline;
+    }
+    .welcome-shell {
+      padding: clamp(14px, 2.8dvh, 24px) 22px clamp(12px, 2.6dvh, 22px);
+    }
+    .coordinates {
+      display: none;
+    }
+    .wordmark {
+      font-size: 11px;
+    }
+    .wordmark small {
+      font-size: 7px;
+    }
+    .welcome-copy {
+      padding: clamp(12px, 3dvh, 32px) 0 clamp(12px, 3dvh, 28px);
+    }
+    .host {
+      margin-bottom: 24px;
+      font-size: 10px;
+    }
+    .host img {
+      width: 30px;
+      height: 30px;
+    }
+    .welcome-overline {
+      font-size: 8px;
+      letter-spacing: 2.5px;
+    }
+    h1 {
+      font-size: 31px;
+      letter-spacing: 0.04em;
+      max-width: 310px;
+    }
+    .lede {
+      font-size: 11px;
+      margin-top: 14px;
+    }
+    .divider {
+      margin: 27px auto 17px;
+    }
+    .choices {
+      grid-template-columns: 1fr;
+      gap: 18px;
+      max-width: 360px;
+      grid-auto-rows: 1fr;
+    }
+    .choices::after {
+      top: 50%;
+      bottom: auto;
+      left: 0;
+      right: 0;
+      border-left: 0;
+      border-top: 1px dashed color-mix(in srgb, var(--muted) 45%, transparent);
+    }
+    .choice {
+      padding: 10px 0;
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      column-gap: 17px;
+      align-items: start;
+    }
+    .choice.resume {
+      grid-template-columns: minmax(0, 1fr) 32px;
+    }
+    .choice-top {
+      grid-row: 1 / 4;
+      grid-column: 1;
+      padding-top: 2px;
+    }
+    .choice-id {
+      display: none;
+    }
+    .choice h2 {
+      grid-column: 2;
+      font-size: 17px;
+      margin: 0 0 5px;
+    }
+    .choice p {
+      grid-column: 2;
+      margin: 0 0 12px;
+      font-size: 11px;
+    }
+    .choice-bottom {
+      grid-column: 2;
+      font-size: 8px;
+    }
+    .choice-icon {
+      width: 32px;
+      height: 32px;
+    }
+    .footnote {
+      font-size: 11px;
+      margin-top: 22px;
+    }
+    .landscape {
+      width: 180%;
+      left: -40%;
+      height: 55%;
+      min-height: 440px;
+    }
+    .welcome-footer {
+      font-size: 8px;
+      letter-spacing: 0.8px;
+    }
+    .welcome-footer small {
+      font-size: 7px;
+    }
+    .welcome-footer .right {
+      text-align: right;
+    }
+    .footer-line {
+      margin-bottom: 6px;
+    }
+  }
+  @media (max-height: 780px) {
+    .host {
+      margin-bottom: 12px;
+    }
+    .welcome-overline {
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: clamp(30px, 4.1cqw, 48px);
+      line-height: 1.25;
+    }
+    .lede {
+      margin-top: 10px;
+    }
+    .divider {
+      margin: 18px auto 14px;
+    }
+    .footnote {
+      margin-top: 14px;
+    }
+    .choice {
+      padding: 12px 0;
+    }
+    .choice h2 {
+      margin-top: 0;
+    }
+    .choice p {
+      margin-bottom: 14px;
+    }
+    @container (max-width: 650px) {
+      h1 {
+        font-size: 28px;
+      }
+      .choice {
+        padding: 8px 0;
+      }
+      .choice h2 {
+        margin-top: 0;
+      }
+      .choice p {
+        margin-bottom: 8px;
+      }
+      .divider {
+        margin: 16px auto 12px;
+      }
+      .footnote {
+        margin-top: 10px;
+      }
+    }
+  }
+  @media (max-height: 700px) {
+    @container (max-width: 650px) {
+      .welcome-shell {
+        padding-block: 12px;
+      }
+      .welcome-copy {
+        padding-block: 12px;
+      }
+      .footnote,
+      .welcome-footer small {
+        display: none;
+      }
+      .choice p {
+        font-size: 10px;
+        line-height: 1.6;
+        margin-bottom: 6px;
+      }
+    }
+  }
+  @media (max-height: 600px) {
+    .welcome-shell {
+      padding-block: 12px;
+    }
+    .welcome-copy {
+      padding-block: 12px;
+    }
+    .host {
+      margin-bottom: 8px;
+    }
+    .welcome-overline,
+    .footnote,
+    .welcome-footer small {
+      display: none;
+    }
+    h1 {
+      font-size: clamp(26px, 3.5cqw, 38px);
+      line-height: 1.2;
+    }
+    .lede {
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+    .divider {
+      margin: 12px auto 10px;
+    }
+    .choice {
+      padding: 10px 0;
+    }
+    .choice h2 {
+      margin-top: 0;
+    }
+    .choice p {
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+    .choice-bottom {
+      padding-top: 0;
+    }
+    .footer-line {
+      margin-bottom: 6px;
+    }
+    @container (max-width: 650px) {
+      h1 {
+        font-size: 26px;
+      }
+      .lede {
+        font-size: 10px;
+      }
+      .choice {
+        padding: 8px 0;
+        column-gap: 12px;
+      }
+      .choice h2 {
+        margin-top: 0;
+        font-size: 16px;
+      }
+      .choice p {
+        font-size: 10px;
+        margin-bottom: 6px;
+      }
+      .choices {
+        gap: 10px;
+      }
+      .divider {
+        margin: 10px auto;
+      }
+    }
+  }
+  @media (max-height: 480px) {
+    @container (min-width: 651px) {
+      .welcome-copy {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        align-content: center;
+        gap: 16px 28px;
+        max-width: 1100px;
+        text-align: left;
+      }
+      .host {
+        grid-column: 1 / -1;
+        justify-self: start;
+        margin-bottom: 0;
+      }
+      .divider {
+        display: none;
+      }
+      .choice {
+        padding: 10px 0;
+        grid-template-columns: 26px minmax(0, 1fr);
+        column-gap: 10px;
+      }
+      .choice.resume {
+        grid-template-columns: minmax(0, 1fr) 26px;
+      }
+      .choices {
+        gap: 52px;
+      }
+      .choice-icon {
+        width: 26px;
+        height: 26px;
+      }
+      .choice-id {
+        display: none;
+      }
+      .choice h2 {
+        font-size: 16px;
+      }
+      .choice p {
+        font-size: 10px;
+      }
+      .choice-bottom {
+        font-size: 8px;
+        letter-spacing: 0.8px;
+      }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *:before,
+    *:after {
+      animation: none !important;
+      transition: none !important;
+    }
+    .route-glow {
+      display: none;
+    }
+  }
+
+  .welcome-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .welcome-actions nav {
+    display: flex;
+    gap: 12px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  .welcome-actions a {
+    text-decoration: none;
+    color: var(--muted);
+    padding-block: 8px;
+  }
+  .welcome-actions a[aria-current='page'] {
+    color: var(--coral);
+  }
+  .welcome-actions :global(.theme-toggle) {
+    border-color: var(--line);
+    color: var(--ink);
+    background: transparent;
+  }
+  .welcome-actions :global(.theme-toggle:hover) {
+    background: var(--card);
+  }
+  @container (max-width:650px) {
+    .welcome-actions {
+      gap: 12px;
+    }
+    .welcome-actions nav {
+      gap: 10px;
+      font-size: 9px;
+    }
+    .welcome-actions :global(.theme-toggle) {
+      width: 30px;
+      height: 30px;
+    }
+  }
+</style>

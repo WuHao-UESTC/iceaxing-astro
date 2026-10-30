@@ -463,8 +463,7 @@ const structuredData = jsonLd ? [jsonLd, breadcrumbLd] : breadcrumbLd;
     pageEntry.data.pageKind === 'profile' ? (
       <ProfilePage
         entry={pageEntry}
-        {Content}
-        {headings}
+        projects={index.projects}
         {locale}
         authorName={index.settings[0]?.data.authorName ?? 'iceaxing'}
       />

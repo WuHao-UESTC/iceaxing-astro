@@ -9,18 +9,11 @@
 .life-library-landscape {
   opacity: 1;
 }
+.snowline-life .life-rift-upper .terrain-face.life-marker-facet {
+  fill: var(--page);
+}
 .life-rift-mobile {
   display: none;
-}
-.life-rift-marker .terrain-face {
-  --terrain-color: color-mix(
-    in srgb,
-    var(--surface) calc(96% - var(--terrain-ink)),
-    var(--scene-accent)
-  );
-}
-:root[data-theme='dark'] .life-rift-marker .terrain-face {
-  --terrain-color: color-mix(in srgb, #101916 calc(96% - var(--terrain-ink)), #4d5036);
 }
 .life-anchor-stone-body {
   fill: var(--scene-accent);

@@ -11,6 +11,7 @@ import {
   routeFor,
 } from '../lib/content';
 import '../styles/home.css';
+import '../styles/chapter-transition.css';
 import ChapterLandscape from './home/ChapterLandscape.astro';
 import JourneyNavigation from './home/JourneyNavigation.astro';
 import NightCamp from './home/NightCamp.astro';
@@ -144,6 +145,8 @@ const categoryCards = Object.groupBy(
       title: localizedLabel(entry, locale).title,
       description: localizedLabel(entry, locale).description,
       tags: entry.data.tags,
+      kind: 'category',
+      coverImage: entry.data.coverImage,
     } satisfies HomeCard,
   })),
   (entry) => entry.group,
@@ -165,6 +168,11 @@ const projectCards: HomeCard[] = byOrder(index.projects).map((entry) => ({
   description: localizedLabel(entry, locale).description,
   meta: entry.data.status.toUpperCase(),
   progress: entry.data.progress,
+  kind: 'project',
+  status: entry.data.status,
+  tags: entry.data.tags,
+  topic: categoryById.get(entry.data.category)?.data.labels[locale].title,
+  coverImage: entry.data.coverImage ?? categoryById.get(entry.data.category)?.data.coverImage,
 }));
 // Homepage placement follows the category's explicit CMS section.
 const studyCategoryIds = new Set(
@@ -205,6 +213,12 @@ const collectionCards: HomeCard[] = byOrder(index.series).map((entry) => ({
   title: localizedLabel(entry, locale).title,
   description: localizedLabel(entry, locale).description,
   tags: entry.data.tags,
+  kind: 'collection',
+  topic: projectById.get(entry.data.project)?.data.labels[locale].title,
+  coverImage:
+    entry.data.coverImage ??
+    projectById.get(entry.data.project)?.data.coverImage ??
+    categoryById.get(projectById.get(entry.data.project)?.data.category ?? '')?.data.coverImage,
 }));
 const entries: HomeCard[] = [
   {

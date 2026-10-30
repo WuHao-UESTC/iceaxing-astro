@@ -1,0 +1,436 @@
+.profile-identity {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  align-items: start;
+  gap: 1.7rem;
+  margin-top: 1.6rem;
+  padding-block: 0.8rem 2rem;
+  border-bottom: 1px solid var(--line);
+}
+.profile-identity.profile-has-biography {
+  grid-template-columns: 7rem minmax(0, 1fr) 20rem;
+}
+.profile-avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  width: 7rem;
+  margin-top: 0.35rem;
+  padding: 0.35rem;
+  border: 1px solid color-mix(in srgb, var(--people-accent) 40%, var(--line));
+  border-radius: 50%;
+  background: var(--surface-subtle);
+}
+.profile-avatar > span {
+  color: var(--people-accent);
+  font: 2rem var(--font-reading);
+}
+.profile-avatar img {
+  position: absolute;
+  inset: 0.35rem;
+  width: calc(100% - 0.7rem);
+  height: calc(100% - 0.7rem);
+  object-fit: cover;
+  border-radius: 50%;
+}
+.profile-avatar img[hidden] {
+  display: none;
+}
+.profile-intro,
+.profile-identity-main {
+  min-width: 0;
+}
+.profile-intro h1 {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.profile-headline {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+.profile-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1.1rem;
+  margin-top: 0.8rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+.profile-contacts > :is(a, span) {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+.profile-contacts :is(i, a > span, span > span) {
+  font-style: normal;
+  color: var(--people-accent);
+}
+.profile-directions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.85rem;
+  margin-top: 1.15rem;
+  font-size: 0.7rem;
+}
+.profile-directions-label {
+  color: var(--muted);
+}
+.profile-directions ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.profile-directions li {
+  border-bottom: 1px solid color-mix(in srgb, var(--people-accent) 25%, var(--line));
+  overflow-wrap: anywhere;
+}
+.profile-biography {
+  min-width: 0;
+  min-height: 10rem;
+  padding: 0 0.25rem;
+  color: var(--muted);
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(2rem - 1px),
+    var(--line) calc(2rem - 1px),
+    var(--line) 2rem
+  );
+  font: 0.83rem/2rem var(--font-reading);
+  overflow-wrap: anywhere;
+}
+.profile-biography p {
+  margin: 0;
+  white-space: pre-line;
+}
+.profile-page .people-layout {
+  padding-top: 2.3rem;
+}
+.profile-body {
+  font-family: var(--font-ui);
+}
+.profile-section {
+  margin-bottom: 2.3rem;
+  padding-bottom: 2.6rem;
+  border-bottom: 1px solid var(--line);
+}
+.profile-section:last-of-type {
+  margin-bottom: 0;
+}
+.profile-section-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+.profile-section-number {
+  color: var(--people-accent);
+  font-size: 0.65rem;
+}
+.profile-section-heading h2 {
+  margin: 0;
+  font: 500 1.4rem/1.5 var(--font-reading);
+  letter-spacing: 0.03em;
+}
+.profile-section-caption {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+}
+.profile-body h3 {
+  margin: 0;
+  font: 550 1rem/1.65 var(--font-reading);
+  overflow-wrap: anywhere;
+}
+.profile-inline-meta {
+  font: inherit;
+  color: inherit;
+}
+.profile-period {
+  padding-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+}
+.profile-organization {
+  margin: 0.3rem 0 0;
+  font-size: 0.8rem;
+}
+.profile-page .profile-description {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.9;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.profile-page .profile-timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.profile-page .profile-timeline > li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: 1.4rem;
+  margin: 0;
+  padding: 0 0 1.9rem 1.25rem;
+  border-left: 1px solid var(--line);
+}
+.profile-page .profile-timeline > li:last-child {
+  padding-bottom: 0;
+  border-left-color: transparent;
+}
+.profile-timeline > li::before {
+  position: absolute;
+  top: 0.5rem;
+  left: -0.2rem;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--people-accent);
+  content: '';
+}
+.profile-page .profile-honors {
+  display: grid;
+  gap: 1.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.profile-page .profile-honors > li {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  gap: 1.4rem;
+  margin: 0;
+}
+.profile-honors h3 {
+  font-size: 0.92rem;
+}
+.profile-research-list {
+  display: grid;
+  gap: 2.4rem;
+}
+.profile-project-type {
+  margin: 0 0 0.4rem;
+  color: var(--people-accent);
+  font-size: 0.65rem;
+}
+.profile-project-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.profile-project-heading .profile-period {
+  flex-shrink: 0;
+}
+.profile-summary {
+  margin: 0.8rem 0 0;
+  font-size: 0.83rem;
+  line-height: 1.95;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.profile-page .profile-bullets {
+  margin: 0.7rem 0 0;
+  padding-left: 1.1rem;
+  list-style: disc;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.9;
+}
+.profile-page .profile-bullets li {
+  margin: 0.3rem 0 0;
+  padding-left: 0.15rem;
+  overflow-wrap: anywhere;
+}
+.profile-page .profile-bullets li::marker {
+  color: var(--people-accent);
+}
+.profile-outcomes {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin-top: 1rem;
+  padding: 0.65rem 0.8rem;
+  border-left: 2px solid var(--people-accent);
+  background: color-mix(in srgb, var(--people-accent) 4%, transparent);
+  font-size: 0.78rem;
+}
+.profile-outcomes > span {
+  flex-shrink: 0;
+  color: var(--people-accent);
+  font-size: 0.65rem;
+}
+.profile-outcomes ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-wrap: anywhere;
+}
+.profile-page .profile-outcomes li {
+  margin: 0;
+}
+.profile-project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+}
+.profile-page .profile-text-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin-top: 0.85rem;
+  font-size: 0.72rem;
+  text-decoration: none;
+}
+.profile-text-link span {
+  color: var(--people-accent);
+}
+.profile-page .profile-project-archive {
+  display: grid;
+  gap: 1.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.profile-page .profile-project-archive li {
+  margin: 0;
+}
+.profile-page .profile-project-archive a {
+  display: grid;
+  grid-template-columns: 1.7rem minmax(0, 1fr) 1.5rem;
+  gap: 0.8rem;
+  color: var(--text);
+  text-decoration: none;
+}
+.profile-project-archive h3 {
+  font-size: 0.92rem;
+}
+.profile-project-archive a:hover h3 {
+  color: var(--people-accent);
+}
+.profile-archive-number,
+.profile-archive-arrow {
+  padding-top: 0.2rem;
+  color: var(--people-accent);
+  font-size: 0.7rem;
+}
+.profile-archive-arrow {
+  text-align: right;
+}
+.profile-archive-meta {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--accent);
+  font-size: 0.65rem;
+}
+.profile-body .people-end {
+  margin-top: 1.5rem;
+  padding-top: 0;
+  border: 0;
+}
+@media (min-width: 56.01rem) and (max-width: 68rem) {
+  .profile-identity.profile-has-biography {
+    grid-template-columns: 6rem minmax(0, 1fr) 15rem;
+    gap: 1.2rem;
+  }
+  .profile-avatar {
+    width: 6rem;
+  }
+  .profile-section-caption {
+    display: none;
+  }
+}
+@media (max-width: 56rem) {
+  .profile-identity,
+  .profile-identity.profile-has-biography {
+    grid-template-columns: 6rem minmax(0, 1fr);
+    gap: 1.2rem;
+  }
+  .profile-avatar {
+    width: 6rem;
+  }
+  .profile-biography {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 40rem) {
+  .profile-identity,
+  .profile-identity.profile-has-biography {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 1rem;
+    margin-top: 1.2rem;
+  }
+  .profile-avatar {
+    width: 4.5rem;
+  }
+  .profile-intro {
+    display: contents;
+  }
+  .profile-identity-main {
+    align-self: center;
+  }
+  .profile-identity .people-kicker {
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+  }
+  .profile-headline {
+    font-size: 0.8rem;
+  }
+  .profile-contacts,
+  .profile-directions {
+    grid-column: 1 / -1;
+    margin-top: 0;
+    font-size: 0.65rem;
+  }
+  .profile-biography {
+    font-size: 0.8rem;
+  }
+  .profile-section {
+    padding-bottom: 1.9rem;
+    margin-bottom: 1.8rem;
+  }
+  .profile-section-heading h2 {
+    font-size: 1.25rem;
+  }
+  .profile-section-caption {
+    display: none;
+  }
+  .profile-page .profile-timeline > li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.3rem;
+  }
+  .profile-page .profile-honors > li {
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: 0.8rem;
+  }
+  .profile-project-heading {
+    display: block;
+  }
+  .profile-project-heading .profile-period {
+    display: block;
+    margin-top: 0.2rem;
+  }
+  .profile-page .profile-project-archive a {
+    grid-template-columns: 1.2rem minmax(0, 1fr) 1rem;
+    gap: 0.6rem;
+  }
+}

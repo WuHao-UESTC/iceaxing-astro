@@ -1,7 +1,6 @@
 ---
 import TerrainFacets from './TerrainFacets.astro';
 import { snowRiftMeshes } from '../../data/chapter-landscapes';
-import type { TerrainFace } from '../../lib/terrain-mesh';
 const desktop = snowRiftMeshes();
 const mobile = snowRiftMeshes(true);
 const rubble: [number, number, number, number][] = [
@@ -19,15 +18,6 @@ const compactRubble: [number, number, number, number][] = [
   [820, 315, 7, -25],
   [930, 390, 9, 110],
 ];
-const nearMarker = (face: TerrainFace, compact = false) => {
-  const x = face.points.reduce((sum, point) => sum + point[0], 0) / face.points.length;
-  const y = face.points.reduce((sum, point) => sum + point[1], 0) / face.points.length;
-  return (
-    ((x - 1090) / (compact ? 70 : 90)) ** 2 +
-      ((y - (compact ? 40 : 78)) / (compact ? 38 : 60)) ** 2 <
-    1
-  );
-};
 ---
 
 <svg
@@ -39,20 +29,9 @@ const nearMarker = (face: TerrainFace, compact = false) => {
   aria-hidden="true"
   focusable="false"
 >
-  <defs>
-    <clipPath id="life-upper-desktop">
-      <polygon points={desktop.upperBoundary.map((point) => point.join(',')).join(' ')} />
-    </clipPath>
-    <clipPath id="life-upper-mobile">
-      <polygon points={mobile.upperBoundary.map((point) => point.join(',')).join(' ')} />
-    </clipPath>
-  </defs>
   <g class="life-rift-desktop">
-    <g class="life-rift-upper" clip-path="url(#life-upper-desktop)">
-      <TerrainFacets faces={desktop.upper.filter((face) => !nearMarker(face))} />
-      <g class="life-rift-marker">
-        <TerrainFacets faces={desktop.upper.filter((face) => nearMarker(face))} />
-      </g>
+    <g class="life-rift-upper">
+      <TerrainFacets faces={desktop.upper} />
     </g>
     <g class="life-rift-rubble">
       {rubble.map(([x, y, size, angle]) => (
@@ -71,11 +50,8 @@ const nearMarker = (face: TerrainFace, compact = false) => {
     </g>
   </g>
   <g class="life-rift-mobile">
-    <g class="life-rift-upper" clip-path="url(#life-upper-mobile)">
-      <TerrainFacets faces={mobile.upper.filter((face) => !nearMarker(face, true))} />
-      <g class="life-rift-marker">
-        <TerrainFacets faces={mobile.upper.filter((face) => nearMarker(face, true))} />
-      </g>
+    <g class="life-rift-upper">
+      <TerrainFacets faces={mobile.upper} />
     </g>
     <g class="life-rift-rubble">
       {compactRubble.map(([x, y, size, angle]) => (

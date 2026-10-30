@@ -57,45 +57,31 @@ interface StarNode {
   lit: boolean;
 }
 
-// A spanning tree guarantees connectivity; local planar edges create a nearby-star mesh.
+// A sparse, non-crossing constellation: connect textbooks first, then attach
+// the unlit stars without adding the old mesh of secondary triangles.
 export function constellationEdges(nodes: StarNode[]) {
   const pairs = nodes.flatMap((from, i) =>
     nodes
       .slice(i + 1)
-      .map((to) => ({ from, to, distance: Math.hypot(from.x - to.x, from.y - to.y) })),
+      .map((to) => ({ from, to, distance: Math.hypot(from.x - to.x, (from.y - to.y) * 0.875) })),
   );
   pairs.sort((a, b) => a.distance - b.distance || a.from.id.localeCompare(b.from.id));
   const parent = new Map(nodes.map((node) => [node.id, node.id]));
   const find = (id: string): string => {
     const next = parent.get(id)!;
-    return next === id ? id : find(next);
+    if (next === id) return id;
+    const root = find(next);
+    parent.set(id, root);
+    return root;
   };
-  const edges = pairs.filter(({ from, to }) => {
-    const a = find(from.id),
-      b = find(to.id);
-    if (a !== b) {
-      parent.set(a, b);
-      return true;
-    }
-    return false;
-  });
-  const degree = new Map(nodes.map((node) => [node.id, 0]));
-  const included = new Set(edges);
-  for (const { from, to } of edges) {
-    degree.set(from.id, degree.get(from.id)! + 1);
-    degree.set(to.id, degree.get(to.id)! + 1);
-  }
-  const nearest = new Map(nodes.map((node) => [node.id, new Set<string>()]));
-  for (const { from, to } of pairs) {
-    if (nearest.get(from.id)!.size < 4) nearest.get(from.id)!.add(to.id);
-    if (nearest.get(to.id)!.size < 4) nearest.get(to.id)!.add(from.id);
-  }
+  const edges: typeof pairs = [];
   const side = (a: StarNode, b: StarNode, c: StarNode) =>
     (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
-  for (const candidate of pairs) {
+  const connect = (candidate: (typeof pairs)[number]) => {
     const { from, to } = candidate;
-    if (included.has(candidate) || (degree.get(from.id)! >= 4 && degree.get(to.id)! >= 4)) continue;
-    if (!nearest.get(from.id)!.has(to.id) && !nearest.get(to.id)!.has(from.id)) continue;
+    const a = find(from.id),
+      b = find(to.id);
+    if (a === b) return;
     const crossing = edges.some((edge) => {
       if ([edge.from.id, edge.to.id].some((id) => id === from.id || id === to.id)) return false;
       return (
@@ -103,11 +89,11 @@ export function constellationEdges(nodes: StarNode[]) {
         side(edge.from, edge.to, from) * side(edge.from, edge.to, to) < 0
       );
     });
-    if (crossing) continue;
+    if (crossing) return;
+    parent.set(a, b);
     edges.push(candidate);
-    included.add(candidate);
-    degree.set(from.id, degree.get(from.id)! + 1);
-    degree.set(to.id, degree.get(to.id)! + 1);
-  }
+  };
+  pairs.filter(({ from, to }) => from.lit && to.lit).forEach(connect);
+  pairs.forEach(connect);
   return edges.map((edge) => ({ ...edge, lit: edge.from.lit || edge.to.lit }));
 }

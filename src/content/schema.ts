@@ -1,4 +1,5 @@
 import { z } from 'astro/zod';
+import { profileSchema } from './profile-schema';
 
 export const locales = ['zh', 'en', 'de'] as const;
 export type Locale = (typeof locales)[number];
@@ -64,31 +65,7 @@ export const pageSchema = baseContentSchema
   })
   .extend({
     pageKind: z.enum(['about', 'profile', 'custom']),
-    profile: z
-      .object({
-        displayName: z.string().default(''),
-        headline: z.string().default(''),
-        location: z.string().default(''),
-        avatar: z.string().default(''),
-        email: z.email().or(z.literal('')).default(''),
-        qq: z
-          .string()
-          .regex(/^\d{5,12}$/)
-          .or(z.literal(''))
-          .default(''),
-        experience: z
-          .array(
-            z.object({
-              period: z.string().default(''),
-              title: z.string().min(1),
-              organization: z.string().default(''),
-              description: z.string().default(''),
-            }),
-          )
-          .default([]),
-        links: z.array(z.object({ label: z.string().min(1), url: z.url() })).default([]),
-      })
-      .optional(),
+    profile: profileSchema.optional(),
   });
 
 export const categorySchema = z.object({

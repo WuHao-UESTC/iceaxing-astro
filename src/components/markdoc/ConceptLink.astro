@@ -1,0 +1,31 @@
+---
+import { publicConcepts } from '../../lib/concepts-public';
+import '../../styles/concepts.css';
+interface Props {
+  target: string;
+  name?: string;
+}
+const { target, name = '' } = Astro.props;
+const matches = (await publicConcepts()).filter((c) => c.id === target);
+const concept = matches.length === 1 ? matches[0] : undefined;
+---
+
+{concept ? (
+  <a
+    class="concept-reference"
+    href={concept.href}
+    data-concept-link={concept.id}
+    data-concept-name={concept.name}
+    data-concept-definition={concept.definition}
+  >
+    {concept.name}
+  </a>
+) : (
+  <span class="wikilink-unresolved" title="概念来源尚未公开或已失效">
+    {name || '概念链接'}
+  </span>
+)}
+<script>
+  import { initConceptReader } from '../../scripts/concept-reader';
+  initConceptReader();
+</script>

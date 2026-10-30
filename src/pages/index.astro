@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 
-import HomePage from '../components/HomePage.astro';
+import WelcomePage from '../components/WelcomePage.astro';
 import { getMessages } from '../i18n/messages';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -21,8 +21,8 @@ const jsonLd = {
   locale={locale}
   title={messages.meta.title}
   description={messages.meta.description}
-  fullViewport
+  standalone
   {jsonLd}
 >
-  <HomePage locale={locale} />
+  <WelcomePage locale={locale} />
 </BaseLayout>

@@ -1,5 +1,6 @@
 ---
 import ChapterMarker from './ChapterMarker.astro';
+import FeaturedDestinations from './FeaturedDestinations.astro';
 import type { HomeCard, HomeLabels } from './types';
 import { localizedPath, type Locale } from '../../i18n/config';
 import { getMessages } from '../../i18n/messages';
@@ -109,20 +110,7 @@ const routes = [
   </div>
 
   {destinations.length > 0 && (
-    <nav class="journey-featured-destinations" aria-label={labels.featured}>
-      {destinations.map((card, index) => (
-        <a
-          href={card.href}
-          style={`--destination-index:${index}`}
-          data-reveal
-          data-step={String(2 + index)}
-        >
-          <span>{String(index + 1).padStart(2, '0')}</span>
-          <strong>{card.title}</strong>
-          <i aria-hidden="true">↗</i>
-        </a>
-      ))}
-    </nav>
+    <FeaturedDestinations {locale} cards={destinations} label={labels.featured} />
   )}
 
   <nav class="journey-ridge-routes" aria-label={labels.route} data-reveal data-step="3">

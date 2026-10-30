@@ -1,59 +1,128 @@
 ---
-import type { RenderResult } from 'astro:content';
-import type { PageEntry } from '../../lib/content';
+import { routeFor, type PageEntry, type ProjectEntry } from '../../lib/content';
 import { localizedPath, type Locale } from '../../i18n/config';
+import { resolveProfileProjects } from '../../lib/profile';
+import ProfileSection from './ProfileSection.astro';
 import TableOfContents from './TableOfContents.astro';
 import '../../styles/reading.css';
 import '../../styles/people.css';
+import '../../styles/profile.css';
 
 interface Props {
   entry: PageEntry;
-  Content: RenderResult['Content'];
-  headings: Array<{ depth: number; slug: string; text: string }>;
+  projects: ProjectEntry[];
   locale: Locale;
   authorName: string;
 }
-const { entry, Content, headings, locale, authorName } = Astro.props;
+const { entry, projects, locale, authorName } = Astro.props;
 const profile = entry.data.profile;
 const name = profile?.displayName || authorName;
-const experience = profile?.experience ?? [];
-const links = profile?.links ?? [];
-const hasContacts = Boolean(profile?.email || profile?.qq || links.length);
-const labels =
-  locale === 'zh'
-    ? {
-        home: '首页',
-        contents: '本页目录',
-        experience: '经历',
-        contact: '联系方式',
-        email: '邮箱',
-        about: '关于这座站点',
-        top: '回到开篇',
-      }
-    : locale === 'de'
-      ? {
-          home: 'Start',
-          contents: 'Auf dieser Seite',
-          experience: 'Stationen',
-          contact: 'Kontakt',
-          email: 'E-Mail',
-          about: 'Über diese Website',
-          top: 'Nach oben',
-        }
-      : {
-          home: 'Home',
-          contents: 'On this page',
-          experience: 'Experience',
-          contact: 'Get in touch',
-          email: 'Email',
-          about: 'About this site',
-          top: 'Back to top',
-        };
-const outline = [
-  ...headings,
-  ...(experience.length ? [{ depth: 2, slug: 'profile-experience', text: labels.experience }] : []),
-  ...(hasContacts ? [{ depth: 2, slug: 'profile-contact', text: labels.contact }] : []),
+const honors = profile?.honors ?? [];
+const education = profile?.education ?? [];
+const research = profile?.research ?? [];
+const work = profile?.work ?? [];
+const completed = resolveProfileProjects(
+  profile?.completedProjects ?? [],
+  projects,
+  locale,
+  (id, language) => routeFor(id, language, 'project'),
+);
+const labels = {
+  zh: {
+    home: '首页',
+    contents: '本页目录',
+    email: '邮箱',
+    contacts: '所在地与联系方式',
+    directions: '当前方向',
+    biography: '个人简介',
+    honors: '所获荣誉',
+    education: '教育背景',
+    research: '重要项目与科研经历',
+    work: '工作经历',
+    completed: '完结项目',
+    bachelor: '本科',
+    master: '硕士',
+    doctor: '博士',
+    project: '重要项目',
+    researchType: '科研经历',
+    outcomes: '成果记录',
+    projectLink: '阅读项目记录',
+    certificate: '查看证书',
+    completedState: '已完成',
+    external: '站外项目',
+    top: '回到开篇',
+  },
+  en: {
+    home: 'Home',
+    contents: 'On this page',
+    email: 'Email',
+    contacts: 'Location and contact',
+    directions: 'Current directions',
+    biography: 'Biography',
+    honors: 'Awards & honors',
+    education: 'Education',
+    research: 'Selected projects & research',
+    work: 'Work experience',
+    completed: 'Completed projects',
+    bachelor: 'Bachelor’s',
+    master: 'Master’s',
+    doctor: 'Doctorate',
+    project: 'Selected project',
+    researchType: 'Research',
+    outcomes: 'Outcomes',
+    projectLink: 'Read project notes',
+    certificate: 'View certificate',
+    completedState: 'Completed',
+    external: 'External project',
+    top: 'Back to top',
+  },
+  de: {
+    home: 'Start',
+    contents: 'Auf dieser Seite',
+    email: 'E-Mail',
+    contacts: 'Standort und Kontakt',
+    directions: 'Aktuelle Schwerpunkte',
+    biography: 'Kurzprofil',
+    honors: 'Auszeichnungen',
+    education: 'Ausbildung',
+    research: 'Ausgewählte Projekte & Forschung',
+    work: 'Berufserfahrung',
+    completed: 'Abgeschlossene Projekte',
+    bachelor: 'Bachelor',
+    master: 'Master',
+    doctor: 'Promotion',
+    project: 'Ausgewähltes Projekt',
+    researchType: 'Forschung',
+    outcomes: 'Ergebnisse',
+    projectLink: 'Projektnotizen lesen',
+    certificate: 'Nachweis ansehen',
+    completedState: 'Abgeschlossen',
+    external: 'Externes Projekt',
+    top: 'Nach oben',
+  },
+}[locale];
+const sections = [
+  { id: 'profile-honors', title: labels.honors, count: honors.length },
+  { id: 'profile-education', title: labels.education, count: education.length },
+  { id: 'profile-research', title: labels.research, count: research.length },
+  { id: 'profile-work', title: labels.work, count: work.length },
+  { id: 'profile-completed', title: labels.completed, count: completed.length },
 ];
+const outline = sections
+  .filter((section) => section.count)
+  .map((section) => ({
+    depth: 2,
+    slug: section.id,
+    text: section.title,
+  }));
+const paragraphs = (profile?.biography ?? '')
+  .trim()
+  .split(/\n\s*\n/)
+  .filter(Boolean);
+const associatedProject = (id: string | null | undefined) =>
+  id && projects.some((project) => project.data.projectId === id)
+    ? routeFor(id, locale, 'project')
+    : undefined;
 ---
 
 <main
@@ -63,11 +132,14 @@ const outline = [
   data-pagefind-body
 >
   <nav class="people-breadcrumb" aria-label={labels.contents} data-pagefind-ignore>
-    <a href={localizedPath(locale)}>{labels.home}</a>
+    <a href={localizedPath(locale, '/blog')}>{labels.home}</a>
     <span aria-hidden="true">/</span>
     <span aria-current="page">{name}</span>
   </nav>
-  <header class="profile-identity" id="reader-top">
+  <header
+    class:list={['profile-identity', { 'profile-has-biography': paragraphs.length > 0 }]}
+    id="reader-top"
+  >
     <div class="profile-avatar">
       <span aria-hidden="true">{name.slice(0, 2).toUpperCase()}</span>
       <img
@@ -80,93 +152,259 @@ const outline = [
       />
     </div>
     <div class="profile-intro">
-      <p class="people-kicker">ICEAXING / FIELD NOTES</p>
-      <h1 data-pagefind-meta="title">{name}</h1>
-      {(profile?.headline || entry.data.excerpt) && (
-        <p class="profile-headline" data-pagefind-meta="description">
-          {profile?.headline || entry.data.excerpt}
-        </p>
-      )}
-      {profile?.location && (
-        <span class="profile-location">
-          <i aria-hidden="true">⌖</i>
-          {profile.location}
-        </span>
-      )}
+      <div class="profile-identity-main">
+        <p class="people-kicker">ICEAXING / FIELD NOTES</p>
+        <h1 data-pagefind-meta="title">{name}</h1>
+        {profile?.headline && (
+          <p class="profile-headline" data-pagefind-meta="description">
+            {profile.headline}
+          </p>
+        )}
+      </div>
+      <div class="profile-contacts" aria-label={labels.contacts}>
+        {profile?.location && (
+          <span class="profile-location">
+            <i aria-hidden="true">⌖</i>
+            {profile.location}
+          </span>
+        )}
+        {profile?.email && (
+          <a href={`mailto:${profile.email}`}>
+            <span>{labels.email}</span>
+            {profile.email}
+          </a>
+        )}
+        {profile?.qq && (
+          <span>
+            <span>QQ</span>
+            {profile.qq}
+          </span>
+        )}
+        {profile?.links.map((link) => (
+          <a href={link.url} rel="me external noopener noreferrer" target="_blank">
+            {link.label}
+            <i aria-hidden="true">↗</i>
+          </a>
+        ))}
+      </div>
+      {profile?.directions.length ? (
+        <div class="profile-directions" aria-label={labels.directions}>
+          <span class="profile-directions-label">{labels.directions}</span>
+          <ul>
+            {profile.directions.map((direction) => (
+              <li>{direction}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </div>
-    <a class="profile-site-link" href={localizedPath(locale, '/about')}>
-      {labels.about}
-      <span aria-hidden="true">↗</span>
-    </a>
+    {paragraphs.length > 0 && (
+      <div class="profile-biography" aria-label={labels.biography}>
+        {paragraphs.map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+    )}
   </header>
   <div class="people-layout">
-    <div class="reader-body prose people-body" data-reader-body>
-      <Content />
-      {experience.length > 0 && (
-        <section class="profile-experience" aria-labelledby="profile-experience">
-          <h2 id="profile-experience">{labels.experience}</h2>
-          <ol class="profile-timeline">
-            {experience.map((item) => (
+    <div class="reader-body people-body profile-body" data-reader-body>
+      {honors.length > 0 && (
+        <ProfileSection id="profile-honors" number="01" title={labels.honors} caption="RECOGNITION">
+          <ul class="profile-honors">
+            {honors.map((item) => (
               <li>
-                {item.period && <span class="profile-period">{item.period}</span>}
+                <span class="profile-period">{item.period}</span>
                 <div>
+                  <h3>
+                    {item.title}
+                    {item.level && (
+                      <span class="profile-inline-meta">
+                        {' | '}
+                        {item.level}
+                      </span>
+                    )}
+                  </h3>
+                  {item.description && <p class="profile-description">{item.description}</p>}
+                  {item.url && (
+                    <a
+                      class="profile-text-link"
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {labels.certificate}
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </ProfileSection>
+      )}
+      {education.length > 0 && (
+        <ProfileSection
+          id="profile-education"
+          number="02"
+          title={labels.education}
+          caption="EDUCATION"
+        >
+          <ol class="profile-timeline">
+            {education.map((item) => (
+              <li>
+                <span class="profile-period">{item.period}</span>
+                <div>
+                  <h3>{item.school}</h3>
+                  <p class="profile-organization">
+                    {[labels[item.degree], item.major].filter(Boolean).join(' · ')}
+                  </p>
+                  {item.department && <p class="profile-description">{item.department}</p>}
+                  {item.description && <p class="profile-description">{item.description}</p>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </ProfileSection>
+      )}
+      {research.length > 0 && (
+        <ProfileSection
+          id="profile-research"
+          number="03"
+          title={labels.research}
+          caption="SELECTED WORK"
+        >
+          <div class="profile-research-list">
+            {research.map((item) => (
+              <article class="profile-research-item">
+                <p class="profile-project-type">
+                  {item.type === 'research' ? labels.researchType : labels.project}
+                </p>
+                <div class="profile-project-heading">
                   <h3>{item.title}</h3>
-                  {item.organization && <p class="profile-organization">{item.organization}</p>}
-                  {item.description && (
-                    <p class="profile-experience-description">{item.description}</p>
+                  {item.period && <span class="profile-period">{item.period}</span>}
+                </div>
+                {(item.organization || item.role) && (
+                  <p class="profile-description">
+                    {[item.organization, item.role].filter(Boolean).join(' · ')}
+                  </p>
+                )}
+                {item.summary && <p class="profile-summary">{item.summary}</p>}
+                {item.contributions.length > 0 && (
+                  <ul class="profile-bullets">
+                    {item.contributions.map((text) => (
+                      <li>{text}</li>
+                    ))}
+                  </ul>
+                )}
+                {item.outcomes.length > 0 && (
+                  <div class="profile-outcomes">
+                    <span>{labels.outcomes}</span>
+                    <ul>
+                      {item.outcomes.map((text) => (
+                        <li>{text}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {(associatedProject(item.project) || item.links.length > 0) && (
+                  <div class="profile-project-links">
+                    {associatedProject(item.project) && (
+                      <a class="profile-text-link" href={associatedProject(item.project)}>
+                        {labels.projectLink}
+                        <span aria-hidden="true">↗</span>
+                      </a>
+                    )}
+                    {item.links.map((link) => (
+                      <a
+                        class="profile-text-link"
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {link.label}
+                        <span aria-hidden="true">↗</span>
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
+        </ProfileSection>
+      )}
+      {work.length > 0 && (
+        <ProfileSection id="profile-work" number="04" title={labels.work} caption="EXPERIENCE">
+          <ol class="profile-timeline">
+            {work.map((item) => (
+              <li>
+                <span class="profile-period">{item.period}</span>
+                <div>
+                  <h3>
+                    {item.organization}
+                    <span class="profile-inline-meta">
+                      {' | '}
+                      {item.role}
+                      {item.employmentType && ` · ${item.employmentType}`}
+                    </span>
+                  </h3>
+                  {item.location && <p class="profile-description">{item.location}</p>}
+                  {item.contributions.length > 0 && (
+                    <ul class="profile-bullets">
+                      {item.contributions.map((text) => (
+                        <li>{text}</li>
+                      ))}
+                    </ul>
                   )}
                 </div>
               </li>
             ))}
           </ol>
-        </section>
+        </ProfileSection>
       )}
-      {hasContacts && (
-        <section class="profile-contact" aria-labelledby="profile-contact">
-          <h2 id="profile-contact">{labels.contact}</h2>
-          <dl class="profile-contact-grid">
-            {profile?.email && (
-              <div>
-                <dt>{labels.email}</dt>
-                <dd>
-                  <a href={`mailto:${profile.email}`}>
-                    {profile.email}
-                    <span aria-hidden="true">↗</span>
-                  </a>
-                </dd>
-              </div>
-            )}
-            {profile?.qq && (
-              <div>
-                <dt>QQ</dt>
-                <dd>{profile.qq}</dd>
-              </div>
-            )}
-            {links.map((link) => (
-              <div>
-                <dt>{link.label}</dt>
-                <dd>
-                  <a href={link.url} rel="me external noopener noreferrer" target="_blank">
-                    {new URL(link.url).hostname +
-                      (new URL(link.url).pathname === '/'
-                        ? ''
-                        : new URL(link.url).pathname.replace(/\/$/, ''))}
-                    <span aria-hidden="true">↗</span>
-                  </a>
-                </dd>
-              </div>
+      {completed.length > 0 && (
+        <ProfileSection
+          id="profile-completed"
+          number="05"
+          title={labels.completed}
+          caption="COMPLETED PROJECTS"
+        >
+          <ol class="profile-project-archive">
+            {completed.map((item, index) => (
+              <li>
+                <a
+                  href={item.href}
+                  target={item.external ? '_blank' : undefined}
+                  rel={item.external ? 'noopener noreferrer' : undefined}
+                >
+                  <span class="profile-archive-number" aria-hidden="true">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div>
+                    <h3>{item.title}</h3>
+                    {item.description && <p class="profile-description">{item.description}</p>}
+                    <span class="profile-archive-meta">
+                      {item.external ? labels.external : labels.completedState}
+                    </span>
+                  </div>
+                  <span class="profile-archive-arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </a>
+              </li>
             ))}
-          </dl>
-        </section>
+          </ol>
+        </ProfileSection>
       )}
       <footer class="people-end" data-pagefind-ignore>
         <span aria-hidden="true">✳</span>
         <a href="#reader-top">{labels.top} ↑</a>
       </footer>
     </div>
-    <aside class="reader-aside people-aside" data-pagefind-ignore>
-      <TableOfContents headings={outline} label={labels.contents} />
-    </aside>
+    {outline.length > 0 && (
+      <aside class="reader-aside people-aside" data-pagefind-ignore>
+        <TableOfContents headings={outline} label={labels.contents} />
+      </aside>
+    )}
   </div>
 </main>
 <script>

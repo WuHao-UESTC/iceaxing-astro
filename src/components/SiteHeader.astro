@@ -10,7 +10,7 @@ interface Props {
 
 const { locale, alternatePaths } = Astro.props;
 const messages = getMessages(locale);
-const homeHref = localizedPath(locale);
+const homeHref = localizedPath(locale, '/blog');
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const navItems = [
   { label: messages.nav.technology, href: `${homeHref}#technical-ridge` },
@@ -29,11 +29,7 @@ const navItems = [
 
 <header class="site-header" data-pagefind-ignore>
   <div class="shell header-inner">
-    <a
-      class="brand"
-      href={localizedPath(locale)}
-      aria-label={`${messages.meta.title} — ${messages.nav.home}`}
-    >
+    <a class="brand" href={homeHref} aria-label={`${messages.meta.title} — ${messages.nav.home}`}>
       iceaxing<span aria-hidden="true">.</span>
     </a>
 

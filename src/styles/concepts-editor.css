@@ -1,0 +1,117 @@
+.concept-float {
+  position: fixed;
+  z-index: 50;
+  width: 174px;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--ws-text, CanvasText);
+  font: 12px/1.7 var(--ws-sans, system-ui);
+}
+.concept-float[hidden],
+.concept-float [hidden] {
+  display: none !important;
+}
+.concept-float header,
+.concept-float-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.concept-float header {
+  margin-bottom: 10px;
+  background: transparent !important;
+  border: 0 !important;
+}
+.concept-float :is(button, input) {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: inherit;
+  font: inherit;
+  padding: 3px 0;
+}
+.concept-float button {
+  cursor: pointer;
+}
+.concept-float button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.concept-float-actions button,
+.concept-create-actions button:first-child {
+  color: var(--ws-accent, currentColor);
+  font-size: 11px;
+}
+.concept-float input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 8px 0;
+}
+.concept-float input::placeholder,
+.concept-float label,
+.concept-float p {
+  color: var(--ws-muted, GrayText);
+  font-size: 11px;
+}
+.concept-float label {
+  display: block;
+  margin-top: 12px;
+}
+.concept-float p {
+  margin: 8px 0;
+}
+.concept-results {
+  max-height: 216px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.concept-results button {
+  display: block;
+  width: 100%;
+  padding: 3px 0 3px 10px;
+  min-height: 27px;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.concept-results button[aria-pressed='true'] {
+  color: var(--ws-accent, currentColor);
+}
+.concept-results button[aria-pressed='true']::before {
+  content: '·';
+  margin-left: -10px;
+  margin-right: 6px;
+}
+.concept-create-actions {
+  display: flex;
+  gap: 18px;
+}
+.concept-excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.ProseMirror[data-concept-editor] {
+  padding-inline-start: var(--concept-gutter, 0px) !important;
+  padding-block-start: var(--concept-top, 0px) !important;
+}
+.concept-float :focus-visible {
+  outline: 1px solid var(--ws-accent, currentColor);
+  outline-offset: 3px;
+}
+@media (pointer: coarse) {
+  .concept-float-actions button,
+  .concept-create-actions button,
+  .concept-float header > button {
+    min-height: 44px;
+  }
+  .concept-float input {
+    font-size: 16px;
+  }
+}

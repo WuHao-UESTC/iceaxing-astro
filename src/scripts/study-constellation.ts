@@ -3,6 +3,7 @@ export function initStudyConstellation() {
     const atlas = root.querySelector<HTMLElement>('[data-atlas]')!;
     const world = root.querySelector<HTMLElement>('[data-star-world]')!;
     const map = root.querySelector<HTMLElement>('.study-star-map')!;
+    const stage = root.querySelector<HTMLElement>('.study-atlas-stage')!;
     const detail = root.querySelector<HTMLElement>('[data-star-detail]')!;
     const reset = root.querySelector<HTMLButtonElement>('[data-star-reset]')!;
     const switcher = root.querySelector<HTMLElement>('[data-star-switch]')!;
@@ -26,13 +27,16 @@ export function initStudyConstellation() {
 
     function updateCrop() {
       // Keep the full canvas independent of the width of its clipping viewport.
-      world.style.width = `${root.clientWidth}px`;
-      world.style.setProperty('--star-world-height', `${root.clientHeight}px`);
-      if (!selected || !atlas.classList.contains('is-focused')) return;
       const compact = matchMedia('(max-width: 48rem)').matches;
+      world.style.width = `${root.clientWidth * (compact ? 1 : 0.88)}px`;
+      world.style.setProperty(
+        '--star-world-height',
+        `${compact ? stage.clientHeight : root.clientHeight}px`,
+      );
+      if (!selected || !atlas.classList.contains('is-focused')) return;
       const width = world.clientWidth;
       const height = world.clientHeight;
-      const viewportWidth = compact ? width : width * 0.45;
+      const viewportWidth = map.clientWidth;
       world.style.setProperty(
         '--star-pan-x',
         `${viewportWidth * 0.5 - (Number(selected.dataset.starX) / 100) * width}px`,
@@ -79,7 +83,7 @@ export function initStudyConstellation() {
     function overview() {
       const restoreScroll = preserveJourneyScroll();
       atlas.classList.remove('is-focused');
-      connections.forEach((line) => line.classList.remove('is-near-selected'));
+      connections.forEach((line) => line.classList.remove('is-near-selected', 'is-hovered'));
       world.style.removeProperty('--star-pan-x');
       world.style.removeProperty('--star-pan-y');
       detail.hidden = true;
@@ -101,6 +105,20 @@ export function initStudyConstellation() {
     }
 
     stars.forEach((star) => {
+      const highlight = (active: boolean) => {
+        connections.forEach((line) => {
+          line.classList.toggle(
+            'is-hovered',
+            active &&
+              (line.dataset.starEdgeFrom === star.dataset.star ||
+                line.dataset.starEdgeTo === star.dataset.star),
+          );
+        });
+      };
+      star.addEventListener('pointerenter', () => highlight(true));
+      star.addEventListener('pointerleave', () => highlight(false));
+      star.addEventListener('focus', () => highlight(true));
+      star.addEventListener('blur', () => highlight(false));
       star.setAttribute('aria-controls', `study-topic-${star.dataset.star}`);
       star.setAttribute('aria-expanded', 'false');
       star.addEventListener('click', (event) => {
@@ -122,14 +140,9 @@ export function initStudyConstellation() {
         overview();
       }
     });
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        root.classList.toggle('is-stargazing', Boolean(entry?.isIntersecting));
-      },
-      { root: root.closest('[data-journey]'), threshold: 0.15 },
-    );
-    observer.observe(root);
-    new ResizeObserver(updateCrop).observe(root);
+    const resizeObserver = new ResizeObserver(updateCrop);
+    resizeObserver.observe(root);
+    resizeObserver.observe(stage);
     updateCrop();
     atlas.classList.add('is-enhanced');
   });

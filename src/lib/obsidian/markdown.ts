@@ -129,6 +129,15 @@ export function obsidianMarkdown(
         return children();
       case 'tag': {
         switch (node.tag) {
+          case 'conceptStart':
+            return `<span id="concept-${String(a.id ?? '')}"></span>`;
+          case 'conceptEnd':
+            return '';
+          case 'conceptLink':
+            warnings.push(
+              `${article.id}：概念链接“${String(a.name ?? '')}”保留为文字；完整标记保存在 .sources 中。`,
+            );
+            return escape(String(a.name || '概念链接'));
           case 'math':
             return `$$\n${String(a.expression ?? '')}\n$$\n\n`;
           case 'inlineMath':

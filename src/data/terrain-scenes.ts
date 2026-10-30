@@ -252,49 +252,38 @@ export const waystationTallRows: TerrainPoint[][] = [
   ],
 ];
 
+const studyCrest: TerrainPoint[] = [
+  [0, 174, 10],
+  [70, 132, 35],
+  [136, 58, 120],
+  [196, 108, 30],
+  [246, 81, 100],
+  [320, 169, 10],
+  [379, 145, 65],
+  [527, 195, 20],
+  [705, 222, 45],
+  [904, 249, 10],
+  [1120, 259, 30],
+  [1440, 292, 0],
+];
+
+// Preserve the original half-enclosing silhouette exactly. Spread the interior
+// and foot vertices across its full width instead of bunching them under peaks.
 export const studyRows: TerrainPoint[][] = [
-  [
-    [0, 174, 10],
-    [70, 132, 35],
-    [136, 58, 120],
-    [196, 108, 30],
-    [246, 81, 100],
-    [320, 169, 10],
-    [379, 145, 65],
-    [527, 195, 20],
-    [705, 222, 45],
-    [904, 249, 10],
-    [1120, 259, 30],
-    [1440, 292, 0],
-  ],
-  [
-    [0, 258.7, 0],
-    [70, 241.0, 40],
-    [136, 210.0, 10],
-    [196, 231.0, 70],
-    [246, 219.6, 0],
-    [320, 256.6, 50],
-    [379, 246.5, 10],
-    [527, 267.5, 45],
-    [705, 278.8, 0],
-    [904, 290.2, 25],
-    [1120, 294.4, 0],
-    [1440, 308.2, 10],
-  ],
-  [
-    [0, 320, 0],
-    [70, 320, 0],
-    [136, 320, 0],
-    [196, 320, 0],
-    [246, 320, 0],
-    [320, 320, 0],
-    [379, 320, 0],
-    [527, 320, 0],
-    [705, 320, 0],
-    [904, 320, 0],
-    [1120, 320, 0],
-    [1440, 320, 0],
-  ],
+  studyCrest,
+  studyCrest.map(([crestX, crestY], column): TerrainPoint => {
+    const regularX = (column * 1440) / (studyCrest.length - 1);
+    return [
+      crestX * 0.85 + regularX * 0.15,
+      crestY * 0.35 + 320 * 0.65,
+      [0, 40, 10, 70, 0, 50, 10, 45, 0, 25, 0, 10][column]!,
+    ];
+  }),
+  studyCrest.map(([x], column): TerrainPoint => [
+    x * 0.7 + ((column * 1440) / (studyCrest.length - 1)) * 0.3,
+    320,
+    0,
+  ]),
 ];
 
 export const coverMesh = createTerrainMesh(coverRows);

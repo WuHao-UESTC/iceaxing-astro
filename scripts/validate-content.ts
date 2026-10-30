@@ -7,6 +7,7 @@ import { parse } from 'yaml';
 import Markdoc from '@markdoc/markdoc';
 import { normalizeDollarMath } from '../src/lib/markdoc-math';
 import { folderIsPublic } from '../src/lib/publication';
+import type { Profile } from '../src/content/profile-schema';
 import { normalizeWikiLinks, resolveWikiTarget, type WikiLinkTarget } from '../src/lib/wikilinks';
 
 import {
@@ -420,6 +421,19 @@ for (const log of logs) {
 }
 
 for (const page of pages) {
+  const profile = page.data.profile as Profile | undefined;
+  const referencedProjects = [
+    ...(profile?.research.map((item) => item.project).filter((id): id is string => Boolean(id)) ??
+      []),
+    ...(profile?.completedProjects.flatMap((item) =>
+      item.discriminant === 'internal' ? [item.value.project] : [],
+    ) ?? []),
+  ];
+  for (const projectId of referencedProjects) {
+    if (!projectById.has(projectId)) {
+      issue(page.sourceFile, `个人档案引用了不存在的项目“${projectId}”`);
+    }
+  }
   if (page.data.status !== 'published') continue;
   const locale = requiredString(page, 'locale') as Locale;
   addRoute({

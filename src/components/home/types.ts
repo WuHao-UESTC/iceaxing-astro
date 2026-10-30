@@ -1,3 +1,5 @@
+import type { ImageMetadata } from 'astro';
+
 export interface HomeCard {
   id: string;
   href: string;
@@ -11,6 +13,9 @@ export interface HomeCard {
   categoryId?: string;
   noteCount?: number;
   group?: 'skill' | 'study' | 'life';
+  kind?: 'category' | 'project' | 'collection';
+  coverImage?: ImageMetadata;
+  status?: 'planned' | 'active' | 'completed' | 'archived';
 }
 
 export interface HomeLabels {

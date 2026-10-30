@@ -1,0 +1,28 @@
+---
+import TerrainFacets from './TerrainFacets.astro';
+import { compactStudyMountainLayers, studyMountainLayers } from '../../data/terrain-scenes';
+---
+
+<svg
+  class="study-mountain-lines"
+  viewBox="0 0 1440 320"
+  preserveAspectRatio="none"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <g class="study-mountains-desktop">
+    {studyMountainLayers.map((layer) => (
+      <g data-study-depth={layer.depth}>
+        <TerrainFacets faces={layer.faces} />
+      </g>
+    ))}
+  </g>
+  <g class="study-mountains-mobile">
+    {compactStudyMountainLayers.map((layer) => (
+      <g data-study-depth={layer.depth}>
+        <TerrainFacets faces={layer.faces} />
+      </g>
+    ))}
+  </g>
+</svg>

@@ -118,7 +118,7 @@ const indexHref = parent?.href ?? localizedPath(locale, kind === 'log' ? '/log' 
     <span data-reader-line></span>
   </div>
   <nav class="reader-breadcrumb" aria-label={labels.back} data-pagefind-ignore>
-    <a href={localizedPath(locale)}>{labels.home}</a>
+    <a href={localizedPath(locale, '/blog')}>{labels.home}</a>
     {breadcrumbs.map((link) => (
       <>
         <span aria-hidden="true">/</span>

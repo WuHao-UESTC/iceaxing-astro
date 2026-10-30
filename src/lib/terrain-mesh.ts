@@ -30,6 +30,18 @@ function face(points: TerrainPoint[], material: TerrainMaterial = 'snow'): Terra
   };
 }
 
+/** Shade an explicitly triangulated surface using the same lighting as row meshes. */
+export function createTerrainSurface(
+  triangles: [TerrainPoint, TerrainPoint, TerrainPoint][],
+): TerrainFace[] {
+  return separateTerrainShades(
+    triangles.map(([a, b, c], facet) => {
+      if (Math.abs(cross(a, b, c)) < 0.001) throw new Error('Degenerate terrain triangle');
+      return { ...face(cross(a, b, c) > 0 ? [a, b, c] : [a, c, b]), facet };
+    }),
+  );
+}
+
 /** Keep the lighting direction while separating adjoining, quantized shade values. */
 export function separateTerrainShades(mesh: TerrainFace[]): TerrainFace[] {
   const neighbors = mesh.map(() => new Set<number>());

@@ -10,6 +10,21 @@ export default defineMarkdocConfig({
     }),
   ],
   tags: {
+    conceptStart: {
+      render: component('./src/components/markdoc/ConceptBoundary.astro'),
+      selfClosing: true,
+      attributes: { id: { type: String, required: true }, name: { type: String, default: '' } },
+    },
+    conceptEnd: {
+      render: component('./src/components/markdoc/ConceptBoundary.astro'),
+      selfClosing: true,
+      attributes: { id: { type: String, required: true }, end: { type: Boolean, default: true } },
+    },
+    conceptLink: {
+      render: component('./src/components/markdoc/ConceptLink.astro'),
+      selfClosing: true,
+      attributes: { target: { type: String, required: true }, name: { type: String, default: '' } },
+    },
     wikiLink: {
       render: component('./src/components/markdoc/WikiLink.astro'),
       selfClosing: true,

@@ -60,7 +60,7 @@ const flights = Array.from({ length: Math.ceil(friends.length / 3) }, (_, index)
 
 <main id="main-content" class="people-page friends-page shell" data-pagefind-body>
   <nav class="people-breadcrumb" aria-label={labels.title} data-pagefind-ignore>
-    <a href={localizedPath(locale)}>{labels.home}</a>
+    <a href={localizedPath(locale, '/blog')}>{labels.home}</a>
     <span aria-hidden="true">/</span>
     <span aria-current="page">{labels.title}</span>
   </nav>

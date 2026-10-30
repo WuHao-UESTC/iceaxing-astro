@@ -1,4 +1,4 @@
-import { useId, type CSSProperties } from 'react';
+import { type CSSProperties } from 'react';
 import { ridgeMesh, studyMesh } from '../../data/terrain-scenes';
 import { snowRiftMeshes, campCliffMesh, screeMesh } from '../../data/chapter-landscapes';
 import type { WorkspaceGroup } from '../../lib/content-tree/types';
@@ -24,7 +24,6 @@ export default function WorkspaceLandscape({
   group: WorkspaceGroup;
   className?: string;
 }) {
-  const clipId = `ws-snow-${useId().replace(/:/g, '')}`;
   const ridge = group === 'skill';
   return (
     <svg
@@ -37,12 +36,7 @@ export default function WorkspaceLandscape({
     >
       {group === 'life' ? (
         <>
-          <defs>
-            <clipPath id={clipId}>
-              <polygon points={snow.upperBoundary.map((p) => p.join(',')).join(' ')} />
-            </clipPath>
-          </defs>
-          <g clipPath={`url(#${clipId})`}>{facets(snow.upper)}</g>
+          <g>{facets(snow.upper)}</g>
           <g>{facets(snow.lower)}</g>
           <polyline points={snow.lowerBoundary.map((p) => p.join(',')).join(' ')} />
           {[

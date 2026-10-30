@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { compareArticleNodes, selectContentGroup } from '../../lib/content-tree/model';
 import { enhanceWorkspaceEditor } from '../../lib/keystatic-workspace';
 import { syncWorkspaceTheme } from '../../lib/keystatic-workspace-theme';
+import { conceptEditorLocation } from '../../lib/concept-location';
 import WorkspaceLandscape from './WorkspaceLandscape';
 import ObsidianSync from './ObsidianSync';
 import type { WorkspaceEditorLocation } from '../../lib/keystatic-workspace-names';
@@ -137,6 +138,10 @@ export default function ContentTreeWorkspace() {
   const [editorLocation, setEditorLocation] = useState<WorkspaceEditorLocation | null>(null);
   const [resizingSidebar, setResizingSidebar] = useState(false);
   const [layoutReady, setLayoutReady] = useState(false);
+  useEffect(() => {
+    const source = conceptEditorLocation(new URLSearchParams(window.location.search).get('editor'));
+    if (source) setEditorUrl(source);
+  }, []);
   useEffect(() => {
     const editor = iframeRef.current?.contentDocument;
     if (editor?.defaultView)

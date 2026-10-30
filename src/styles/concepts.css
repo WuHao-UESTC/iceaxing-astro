@@ -1,0 +1,63 @@
+.concept-hover-card {
+  position: fixed;
+  z-index: 11000;
+  padding: 18px 20px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: color-mix(in srgb, var(--ws-paper, var(--page, Canvas)) 94%, transparent);
+  color: var(--ws-text, var(--text, CanvasText));
+  backdrop-filter: blur(16px);
+  font: 13px/1.85 var(--ws-sans, system-ui);
+  overflow-wrap: anywhere;
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+}
+.concept-hover-card[hidden] {
+  display: none;
+}
+.concept-hover-card strong {
+  font: 400 17px/1.5 var(--ws-serif, Georgia, serif);
+}
+.concept-hover-card p {
+  margin: 12px 0;
+  white-space: pre-wrap;
+}
+.concept-hover-card button {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--ws-accent, var(--accent, currentColor));
+  cursor: pointer;
+  font: inherit;
+  padding: 2px 0;
+}
+.concept-hover-card > button:first-of-type {
+  float: right;
+  margin-inline-start: 14px;
+}
+.concept-hover-card > button:last-child {
+  font-size: 11px;
+}
+.concept-source-start,
+.concept-source-end {
+  display: inline;
+  scroll-margin-top: 120px;
+}
+.concept-reference {
+  color: var(--ws-accent, var(--accent, currentColor));
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+::highlight(concept-source) {
+  background: color-mix(in srgb, var(--ws-accent, var(--accent, #247568)) 18%, transparent);
+}
+.concept-source-highlight {
+  background: color-mix(in srgb, var(--ws-accent, var(--accent, #247568)) 14%, transparent);
+}
+@media (pointer: coarse) {
+  .concept-hover-card button {
+    min-height: 44px;
+  }
+}

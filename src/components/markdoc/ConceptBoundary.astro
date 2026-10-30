@@ -1,0 +1,21 @@
+---
+import '../../styles/concepts.css';
+interface Props {
+  id: string;
+  end?: boolean;
+  name?: string;
+}
+const { id, end = false } = Astro.props;
+---
+
+<span
+  id={end ? undefined : `concept-${id}`}
+  class={end ? 'concept-source-end' : 'concept-source-start'}
+  data-concept-start={end ? undefined : id}
+  data-concept-end={end ? id : undefined}
+  aria-hidden="true"
+></span>
+<script>
+  import { initConceptReader } from '../../scripts/concept-reader';
+  initConceptReader();
+</script>

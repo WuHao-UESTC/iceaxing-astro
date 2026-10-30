@@ -89,15 +89,23 @@ describe('constellation network', () => {
     expect(new Set(edges.map(({ from, to }) => [from.id, to.id].sort().join(':'))).size).toBe(
       edges.length,
     );
-    expect(edges.length).toBeGreaterThan(nodes.length);
-    expect(edges.length).toBeLessThanOrEqual(nodes.length * 3 - 6);
-    const degree = new Map(nodes.map((node) => [node.id, 0]));
-    for (const { from, to } of edges) {
-      degree.set(from.id, degree.get(from.id)! + 1);
-      degree.set(to.id, degree.get(to.id)! + 1);
-    }
-    expect([...degree.values()].filter((value) => value >= 3).length).toBeGreaterThan(
-      nodes.length * 0.8,
+    expect(edges).toHaveLength(nodes.length - 1);
+  });
+
+  it('keeps textbook stars connected without requiring a path through background stars', () => {
+    const nodes = [
+      ...[
+        'filter-design-in-digital-world-note',
+        'razavi-cmos-analog-note',
+        'rabaey-digital-ic-note',
+      ].map((id) => ({ id, ...starPosition(id), lit: true })),
+      ...backgroundStars.map((star, index) => ({ ...star, id: `dark-${index}`, lit: false })),
+    ];
+    const direct = constellationEdges(nodes).filter(({ from, to }) => from.lit && to.lit);
+    expect(direct).toHaveLength(2);
+    expect(new Set(direct.flatMap(({ from, to }) => [from.id, to.id])).size).toBe(3);
+    expect(constellationEdges(nodes.map((node) => ({ ...node, lit: true })))).toHaveLength(
+      nodes.length - 1,
     );
   });
 

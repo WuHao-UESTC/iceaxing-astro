@@ -93,7 +93,7 @@
   pointer-events: none;
 }
 
-/* A flat-shaded tessellation: one material and one light value per triangle. */
+/* Flat-shaded triangles with fine outlines in each chapter's accent color. */
 .terrain-face {
   --terrain-pigment: var(--scene-accent);
   --terrain-color: color-mix(
@@ -101,11 +101,12 @@
     var(--terrain-pigment) var(--terrain-ink),
     var(--terrain-paper)
   );
-  fill: var(--terrain-color);
-  /* Cover subpixel antialiasing seams along the shared mathematical edges. */
-  stroke: var(--terrain-color);
-  stroke-width: 1;
+  --terrain-outline: color-mix(in srgb, var(--scene-accent) 30%, var(--terrain-color));
+  fill: color-mix(in srgb, var(--terrain-color) 94%, black);
+  stroke: color-mix(in srgb, var(--terrain-outline) 92%, white);
+  stroke-width: 0.8;
   stroke-linejoin: round;
+  stroke-linecap: round;
   vector-effect: non-scaling-stroke;
 }
 
@@ -149,6 +150,56 @@
 .terrain-material-track {
   --terrain-ink: 28%;
   --terrain-paper: var(--surface-subtle);
+}
+
+/* Match the welcome page's dark facets in OKLCH lightness and chroma,
+   retaining the chapter hues. Values follow its distant/middle/near palette. */
+:root[data-theme='dark'] .terrain-face {
+  fill: oklch(from var(--terrain-color) var(--terrain-lightness) var(--terrain-chroma) h);
+  stroke: oklch(from var(--scene-accent) 0.754312 0.078441 h);
+  stroke-opacity: var(--terrain-line);
+}
+
+:root[data-theme='dark'] .terrain-shade-0 {
+  /* Welcome distant shadow: #0e1312. */
+  --terrain-lightness: 0.180976;
+  --terrain-chroma: 0.00805;
+  --terrain-line: 0.16;
+}
+:root[data-theme='dark'] .terrain-shade-1 {
+  /* Welcome distant stone: #111713. */
+  --terrain-lightness: 0.196782;
+  --terrain-chroma: 0.012113;
+  --terrain-line: 0.16;
+}
+:root[data-theme='dark'] .terrain-shade-2 {
+  /* Welcome distant light: #171c16. */
+  --terrain-lightness: 0.218984;
+  --terrain-chroma: 0.013724;
+  --terrain-line: 0.3;
+}
+:root[data-theme='dark'] .terrain-shade-3 {
+  /* Welcome middle stone: #171d17. */
+  --terrain-lightness: 0.222338;
+  --terrain-chroma: 0.014546;
+  --terrain-line: 0.3;
+}
+:root[data-theme='dark'] .terrain-shade-4 {
+  /* Welcome middle light: #20251b. */
+  --terrain-lightness: 0.255929;
+  --terrain-chroma: 0.019594;
+  --terrain-line: 0.46;
+}
+:root[data-theme='dark'] .terrain-shade-5 {
+  /* Welcome near light: #272a1e. */
+  --terrain-lightness: 0.277957;
+  --terrain-chroma: 0.021607;
+  --terrain-line: 0.46;
+}
+
+/* Avoid dimming the calibrated palette again on desktop or mobile. */
+:root[data-theme='dark'] .journey-landscape {
+  opacity: 1;
 }
 
 .journey-landscape path,
@@ -505,99 +556,6 @@
   width: min(100%, 38rem);
   max-width: 38rem;
   container-type: inline-size;
-}
-
-.journey-featured-destinations {
-  position: absolute;
-  z-index: 3;
-  inset: 0;
-  pointer-events: none;
-}
-
-.journey-featured-destinations a {
-  position: absolute;
-  display: inline-grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.45rem;
-  max-width: 13rem;
-  padding: 0.48rem 0.65rem;
-  border: 1px solid color-mix(in srgb, var(--scene-accent) 52%, var(--line));
-  border-radius: 999px;
-  color: var(--text);
-  background: color-mix(in srgb, var(--page) 80%, transparent);
-  box-shadow: 0 0.75rem 2rem color-mix(in srgb, var(--page) 44%, transparent);
-  font-size: 0.72rem;
-  text-decoration: none;
-  backdrop-filter: blur(8px);
-  pointer-events: auto;
-  transition:
-    transform 180ms ease,
-    border-color 180ms ease,
-    background 180ms ease;
-}
-
-.journey-featured-destinations a:nth-child(1) {
-  top: 16%;
-  left: 57%;
-}
-.journey-featured-destinations a:nth-child(2) {
-  top: 31%;
-  left: 73%;
-}
-.journey-featured-destinations a:nth-child(3) {
-  top: 45%;
-  left: 51%;
-}
-.journey-featured-destinations a:nth-child(4) {
-  top: 54%;
-  left: 79%;
-}
-.journey-featured-destinations a:nth-child(5) {
-  top: 65%;
-  left: 62%;
-}
-.journey-featured-destinations a:nth-child(6) {
-  top: 73%;
-  left: 84%;
-}
-.journey-featured-destinations a:nth-child(7) {
-  top: 24%;
-  left: 65%;
-}
-.journey-featured-destinations a:nth-child(8) {
-  top: 40%;
-  left: 84%;
-}
-.journey-featured-destinations a:nth-child(n + 9) {
-  top: 61%;
-  left: 72%;
-}
-
-.journey-featured-destinations a:hover,
-.journey-featured-destinations a:focus-visible {
-  border-color: var(--scene-accent);
-  background: color-mix(in srgb, var(--page) 92%, var(--scene-accent) 8%);
-  transform: translateY(-2px);
-}
-
-.journey-featured-destinations span {
-  color: var(--scene-accent);
-  font-size: 0.55rem;
-  font-weight: 780;
-}
-
-.journey-featured-destinations strong {
-  overflow: hidden;
-  font-family: var(--font-reading);
-  font-weight: 620;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.journey-featured-destinations i {
-  color: var(--scene-accent);
-  font-style: normal;
 }
 
 .journey-hero-copy h1 {
@@ -1543,21 +1501,6 @@
     min-height: 0;
     align-items: stretch;
     padding-top: 0;
-  }
-
-  .journey-featured-destinations {
-    position: static;
-    display: flex;
-    width: 100%;
-    gap: 0.55rem;
-    overflow-x: auto;
-    padding-bottom: 0.2rem;
-  }
-
-  .journey-featured-destinations a,
-  .journey-featured-destinations a:nth-child(n) {
-    position: static;
-    min-width: max-content;
   }
 
   .journey-hero-copy h1 {

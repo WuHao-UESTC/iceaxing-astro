@@ -142,7 +142,7 @@ const statistics = archiveStatistics(kind, cards).map((statistic) => ({
   data-pagefind-body
 >
   <nav class="archive-breadcrumb" aria-label={labels.overview}>
-    <a href={localizedPath(locale)}>{labels.home}</a>
+    <a href={localizedPath(locale, '/blog')}>{labels.home}</a>
     {parent && (
       <>
         <span aria-hidden="true">/</span>

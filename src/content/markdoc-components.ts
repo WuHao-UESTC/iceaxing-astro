@@ -4,6 +4,7 @@ import { createElement } from 'react';
 import { articleImage } from './article-image';
 import { normalizeDollarMath } from '../lib/markdoc-math';
 import { wikiLink } from './wiki-link';
+import { conceptStart, conceptEnd, conceptLink } from './concept';
 import { EditorMath } from './editor-math';
 
 const requiredText = (label: string, description?: string) =>
@@ -15,6 +16,9 @@ const requiredText = (label: string, description?: string) =>
 
 export const markdocComponents = {
   wikiLink,
+  conceptStart,
+  conceptEnd,
+  conceptLink,
   articleImage,
   callout: wrapper({
     label: '提示框',

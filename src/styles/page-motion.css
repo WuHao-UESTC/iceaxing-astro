@@ -1,0 +1,15 @@
+/* The document background stays painted while independent content layers move. */
+html[data-page-enter-pending] #main-content {
+  opacity: 0;
+}
+html[data-page-motion] .welcome .reveal {
+  animation: none;
+}
+html[data-page-leaving] #main-content {
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-page-enter-pending] #main-content {
+    opacity: 1;
+  }
+}

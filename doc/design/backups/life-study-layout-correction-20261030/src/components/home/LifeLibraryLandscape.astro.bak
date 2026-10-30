@@ -1,0 +1,80 @@
+---
+import TerrainFacets from './TerrainFacets.astro';
+import { snowRiftMeshes } from '../../data/chapter-landscapes';
+const desktop = snowRiftMeshes();
+const mobile = snowRiftMeshes(true);
+const rubble: [number, number, number, number][] = [
+  [495, 55, 12, -18],
+  [600, 95, 7, 50],
+  [530, 145, 9, 100],
+  [700, 145, 18, 20],
+  [735, 230, 6, -35],
+  [810, 290, 11, 75],
+  [860, 360, 8, 130],
+  [950, 450, 10, -80],
+];
+const compactRubble: [number, number, number, number][] = [
+  [680, 190, 8, 50],
+  [820, 315, 7, -25],
+  [930, 390, 9, 110],
+];
+---
+
+<svg
+  class="journey-landscape life-library-landscape"
+  data-reveal="landscape"
+  viewBox="0 0 1200 800"
+  preserveAspectRatio="none"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <clipPath id="life-upper-desktop">
+      <polygon points={desktop.upperBoundary.map((point) => point.join(',')).join(' ')} />
+    </clipPath>
+    <clipPath id="life-upper-mobile">
+      <polygon points={mobile.upperBoundary.map((point) => point.join(',')).join(' ')} />
+    </clipPath>
+  </defs>
+  <g class="life-rift-desktop">
+    <g class="life-rift-upper" clip-path="url(#life-upper-desktop)">
+      <TerrainFacets faces={desktop.upper} />
+    </g>
+    <g class="life-rift-rubble">
+      {rubble.map(([x, y, size, angle]) => (
+        <g transform={`translate(${x} ${y}) rotate(${angle}) scale(${size / 12})`}>
+          <path class="terrain-face terrain-shade-3" d="M-8 7L-2-10L10 5Z" />
+          <path class="terrain-face terrain-shade-1" d="M-8 7L-2-10L1 3Z" />
+        </g>
+      ))}
+    </g>
+    <g class="life-rift-lower">
+      <TerrainFacets faces={desktop.lower} />
+      <polyline
+        data-rift-edge="desktop"
+        points={desktop.lowerBoundary.map((point) => point.join(',')).join(' ')}
+      />
+    </g>
+  </g>
+  <g class="life-rift-mobile">
+    <g class="life-rift-upper" clip-path="url(#life-upper-mobile)">
+      <TerrainFacets faces={mobile.upper} />
+    </g>
+    <g class="life-rift-rubble">
+      {compactRubble.map(([x, y, size, angle]) => (
+        <g transform={`translate(${x} ${y}) rotate(${angle}) scale(${size / 12})`}>
+          <path class="terrain-face terrain-shade-3" d="M-8 7L-2-10L10 5Z" />
+          <path class="terrain-face terrain-shade-1" d="M-8 7L-2-10L1 3Z" />
+        </g>
+      ))}
+    </g>
+    <g class="life-rift-lower">
+      <TerrainFacets faces={mobile.lower} />
+      <polyline
+        data-rift-edge="mobile"
+        points={mobile.lowerBoundary.map((point) => point.join(',')).join(' ')}
+      />
+    </g>
+  </g>
+</svg>

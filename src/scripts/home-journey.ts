@@ -1,3 +1,7 @@
+import { createChapterTransition } from './chapter-transition';
+import { updateLifeMarkerFacets } from './life-marker-facets';
+import { createWheelGesture } from './wheel-gesture';
+
 const chapterIds = [
   'base-camp',
   'technical-ridge',
@@ -16,7 +20,7 @@ export function initHomeJourney() {
   const hero = document.querySelector<HTMLElement>('.snowline-hero');
   const heroRoutes = [...document.querySelectorAll<HTMLAnchorElement>('[data-hero-route]')];
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  const visited = new WeakSet<HTMLElement>();
+  let activePanel: HTMLElement | null = null;
   document.documentElement.classList.add('journey-enhanced');
 
   home.querySelectorAll<HTMLElement>('[data-life-carousel]').forEach((carousel) => {
@@ -32,6 +36,7 @@ export function initHomeJourney() {
       .closest('.snowline-panel')
       ?.querySelector<SVGSVGElement>('.life-library-landscape');
     const drawTethers = () => {
+      if (landscape) updateLifeMarkerFacets(landscape, mobile.matches);
       if (!tethers || !landscape) return;
       const edge = landscape.querySelector<SVGPolylineElement>(
         `[data-rift-edge="${mobile.matches ? 'mobile' : 'desktop'}"]`,
@@ -197,9 +202,9 @@ export function initHomeJourney() {
     });
   });
 
-  function activate(panel: HTMLElement, animate = true) {
-    const firstVisit = !visited.has(panel);
-    visited.add(panel);
+  function activate(panel: HTMLElement) {
+    if (activePanel === panel) return;
+    activePanel = panel;
     panels.forEach((item) => item.classList.toggle('is-active', item === panel));
     links.forEach((link) => {
       const active = link.dataset.journeyLink === panel.id;
@@ -208,34 +213,16 @@ export function initHomeJourney() {
       else link.removeAttribute('aria-current');
     });
     if (location.hash !== `#${panel.id}`) history.replaceState(history.state, '', `#${panel.id}`);
-    if (animate && firstVisit && !reducedMotion.matches) {
-      panel.querySelectorAll<HTMLElement>('[data-reveal]').forEach((element) => {
-        const animation = element.animate(
-          [
-            { opacity: 0, transform: 'translateY(10px)' },
-            { opacity: 1, transform: 'translateY(0)' },
-          ],
-          {
-            duration: element.dataset.reveal === 'landscape' ? 680 : 440,
-            delay: Math.min(Number(element.dataset.step ?? 0) * 55, 280),
-            easing: 'cubic-bezier(.22,1,.36,1)',
-          },
-        );
-        if (element.dataset.reveal === 'landscape') {
-          void animation.finished
-            .then(() => panel.dispatchEvent(new Event('journey:revealed')))
-            .catch(() => {});
-        }
-      });
-      panel.querySelector<SVGPathElement>('.landscape-line')?.animate(
-        [
-          { strokeDasharray: '1', strokeDashoffset: '1' },
-          { strokeDasharray: '1', strokeDashoffset: '0' },
-        ],
-        { duration: 750, easing: 'ease-out' },
-      );
-    }
   }
+  const chapterTransition = createChapterTransition(
+    home,
+    panels,
+    () => activePanel,
+    (panel) => {
+      home.scrollTo({ top: panel.offsetTop, behavior: 'instant' });
+      activate(panel);
+    },
+  );
 
   // A chapter taller than the viewport must fall back to proximity snapping,
   // otherwise readers get stuck at its first screen.
@@ -250,22 +237,10 @@ export function initHomeJourney() {
   panelObserver.observe(home);
   panels.forEach((panel) => panelObserver.observe(panel));
 
-  // CSS mandatory snapping swallows a wheel notch while it pulls the page back
-  // to the current chapter. Drive pointer scrolling here instead: the distance
-  // travelled by a gesture decides how many chapters to move, nested scrollers
-  // keep their own scrolling, and chapters taller than the viewport scroll
-  // normally until their edge.
-  const WHEEL_MIN_INTENT = 16;
-  const WHEEL_REARM_GAP = 180;
-  const wheelState = {
-    active: false,
-    startIndex: 0,
-    targetIndex: 0,
-    direction: 0,
-    distance: 0,
-    lastWheel: 0,
-    releaseTimer: 0,
-  };
+  // One gesture turns one chapter. Ignore its inertia and any wheel input
+  // during the reveal, while preserving native scrolling inside long lists.
+  const wheelGesture = createWheelGesture();
+  const releaseWheel = wheelGesture.reset;
   const wheelDistance = (event: WheelEvent) => {
     if (event.deltaMode === 1) return event.deltaY * 16;
     if (event.deltaMode === 2) return event.deltaY * home.clientHeight;
@@ -310,47 +285,6 @@ export function initHomeJourney() {
     }
     return true;
   };
-  const wheelPageStep = () => Math.max(100, home.clientHeight * 0.1);
-  const pagesFor = (distance: number) =>
-    Math.max(1, Math.round(Math.abs(distance) / wheelPageStep()));
-  const releaseWheel = () => {
-    wheelState.active = false;
-    wheelState.startIndex = wheelState.targetIndex;
-    wheelState.direction = 0;
-    wheelState.distance = 0;
-    window.clearTimeout(wheelState.releaseTimer);
-  };
-  const settleWheel = (delay: number) => {
-    window.clearTimeout(wheelState.releaseTimer);
-    wheelState.releaseTimer = window.setTimeout(releaseWheel, delay);
-  };
-  const resetUncommittedWheel = () => {
-    if (wheelState.active) return;
-    wheelState.direction = 0;
-    wheelState.distance = 0;
-  };
-  const commitWheel = () => {
-    if (!wheelState.direction) return;
-    const target = Math.max(
-      0,
-      Math.min(
-        panels.length - 1,
-        wheelState.startIndex + wheelState.direction * pagesFor(wheelState.distance),
-      ),
-    );
-    if (target === wheelState.targetIndex && wheelState.active) return;
-    if (target === wheelState.startIndex) {
-      resetUncommittedWheel();
-      return;
-    }
-    wheelState.targetIndex = target;
-    wheelState.active = true;
-    home.scrollTo({
-      top: panels[target]?.offsetTop ?? 0,
-      behavior: reducedMotion.matches ? 'instant' : 'smooth',
-    });
-    settleWheel(700);
-  };
   window.addEventListener(
     'wheel',
     (event) => {
@@ -375,84 +309,179 @@ export function initHomeJourney() {
       const direction = distance > 0 ? 1 : -1;
       const now = performance.now();
 
-      if (!wheelState.active && scrollableChild(event.target, direction)) {
-        resetUncommittedWheel();
-        return;
-      }
-      if (!home.classList.contains('is-wheel-driven')) home.classList.add('is-wheel-driven');
-
-      if (!wheelState.active) {
-        const stale = wheelState.direction !== 0 && now - wheelState.lastWheel > WHEEL_REARM_GAP;
-        if (wheelState.direction === 0 || stale || direction !== wheelState.direction) {
-          if (!canTurnFrom(direction)) {
-            resetUncommittedWheel();
-            return;
-          }
-          wheelState.startIndex = chapterIndexAt(home.scrollTop);
-          wheelState.targetIndex = wheelState.startIndex;
-          wheelState.direction = direction;
-          wheelState.distance = distance;
-        } else {
-          wheelState.distance += distance;
-        }
-        wheelState.lastWheel = now;
-        if (Math.abs(wheelState.distance) < WHEEL_MIN_INTENT) return;
+      if (chapterTransition.running || wheelGesture.active(now)) {
         event.preventDefault();
-        commitWheel();
+        wheelGesture.consume(distance, now, true);
         return;
       }
-
-      event.preventDefault();
-      if (direction !== wheelState.direction) {
-        wheelState.startIndex = wheelState.targetIndex;
-        wheelState.direction = direction;
-        wheelState.distance = distance;
-      } else {
-        wheelState.distance += distance;
+      if (scrollableChild(event.target, direction) || !canTurnFrom(direction)) {
+        releaseWheel();
+        return;
       }
-      wheelState.lastWheel = now;
-      commitWheel();
-      settleWheel(500);
+      home.classList.add('is-wheel-driven');
+      event.preventDefault();
+      const step = wheelGesture.consume(distance, now);
+      if (step) {
+        const next = panels[chapterIndexAt(home.scrollTop) + step];
+        if (next) chapterTransition.request(next);
+      }
     },
     { passive: false },
   );
+
+  let activationFrame = 0;
   home.addEventListener(
-    'scrollend',
+    'scroll',
     () => {
-      if (wheelState.active) settleWheel(260);
+      if (activationFrame || chapterTransition.running) return;
+      activationFrame = requestAnimationFrame(() => {
+        activationFrame = 0;
+        if (chapterTransition.running) return;
+        const top = home.scrollTop;
+        const bottom = top + home.clientHeight;
+        const visible = panels
+          .map((panel) => ({
+            panel,
+            overlap: Math.max(
+              0,
+              Math.min(bottom, panel.offsetTop + panel.offsetHeight) -
+                Math.max(top, panel.offsetTop),
+            ),
+          }))
+          .sort((a, b) => b.overlap - a.overlap)[0];
+        if (visible && visible.overlap > 0) activate(visible.panel);
+      });
     },
     { passive: true },
   );
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible) activate(visible.target as HTMLElement);
-    },
-    { root: home, threshold: [0.45, 0.65] },
-  );
-  panels.forEach((panel) => observer.observe(panel));
-
-  function navigate(hash: string, smooth: boolean) {
+  const navigate = (hash: string, smooth: boolean) => {
     releaseWheel();
     const target = document.getElementById(hash);
-    if (!target) return;
-    target.scrollIntoView({ behavior: smooth && !reducedMotion.matches ? 'smooth' : 'instant' });
+    if (!target || !home.contains(target)) return;
     const panel = target.closest<HTMLElement>('.snowline-panel');
-    if (panel) activate(panel, smooth);
+    if (panel && smooth && (panel !== activePanel || chapterTransition.running)) {
+      chapterTransition.request(panel);
+    } else {
+      target.scrollIntoView({ behavior: 'instant' });
+      if (panel) activate(panel);
+    }
     target.querySelector<HTMLElement>('h1, h2')?.focus({ preventScroll: true });
-  }
+  };
 
-  home.addEventListener('click', (event) => {
-    const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
-    if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-    const hash = decodeURIComponent(link.hash.slice(1));
-    if (!document.getElementById(hash)) return;
+  document.addEventListener('click', (event) => {
+    const link =
+      event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
+    if (
+      !link ||
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey ||
+      event.altKey ||
+      link.hasAttribute('download') ||
+      (link.target && link.target !== '_self')
+    )
+      return;
+    const url = new URL(link.href, location.href);
+    if (
+      url.origin !== location.origin ||
+      url.pathname !== location.pathname ||
+      url.search !== location.search ||
+      !url.hash
+    )
+      return;
+    let hash: string;
+    try {
+      hash = decodeURIComponent(url.hash.slice(1));
+    } catch {
+      return;
+    }
+    const target = document.getElementById(hash);
+    if (!target || !home.contains(target)) return;
     event.preventDefault();
     history.pushState(history.state, '', `#${hash}`);
     navigate(hash, true);
+  });
+
+  // Keep native scrolling inside lists and tall chapters; only turn at their edges.
+  let touchStart: { x: number; y: number; turned: boolean } | null = null;
+  const editable = (target: EventTarget | null) =>
+    target instanceof Element &&
+    Boolean(target.closest('input, textarea, select, [contenteditable="true"], dialog[open]'));
+  home.addEventListener(
+    'touchstart',
+    (event) => {
+      const touch = event.touches[0];
+      touchStart =
+        event.touches.length === 1 && touch && !editable(event.target)
+          ? { x: touch.clientX, y: touch.clientY, turned: false }
+          : null;
+    },
+    { passive: true },
+  );
+  home.addEventListener(
+    'touchmove',
+    (event) => {
+      const touch = event.touches[0];
+      if (!touchStart || !touch || event.touches.length !== 1) return;
+      const distance = touchStart.y - touch.clientY;
+      if (Math.abs(distance) <= Math.abs(touchStart.x - touch.clientX) || Math.abs(distance) < 6)
+        return;
+      if (touchStart.turned || chapterTransition.running) {
+        event.preventDefault();
+        return;
+      }
+      const direction = Math.sign(distance);
+      if (scrollableChild(event.target, direction) || !canTurnFrom(direction)) return;
+      event.preventDefault();
+      if (Math.abs(distance) < 48) return;
+      const next = panels[chapterIndexAt(home.scrollTop) + direction];
+      if (next) {
+        releaseWheel();
+        chapterTransition.request(next);
+        touchStart.turned = true;
+      }
+    },
+    { passive: false },
+  );
+  home.addEventListener(
+    'touchend',
+    () => {
+      touchStart = null;
+    },
+    { passive: true },
+  );
+  home.addEventListener(
+    'touchcancel',
+    () => {
+      touchStart = null;
+    },
+    { passive: true },
+  );
+  document.addEventListener('keydown', (event) => {
+    if (
+      event.defaultPrevented ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.altKey ||
+      event.shiftKey ||
+      editable(event.target)
+    )
+      return;
+    const direction = ['PageDown', 'ArrowDown'].includes(event.key)
+      ? 1
+      : ['PageUp', 'ArrowUp'].includes(event.key)
+        ? -1
+        : 0;
+    if (!direction || scrollableChild(event.target, direction) || !canTurnFrom(direction)) return;
+    const next = panels[chapterIndexAt(home.scrollTop) + direction];
+    if (next) {
+      event.preventDefault();
+      releaseWheel();
+      chapterTransition.request(next);
+    }
   });
 
   heroRoutes.forEach((link) => {
@@ -470,5 +499,5 @@ export function initHomeJourney() {
   const initial = location.hash.slice(1);
   if (initial && document.getElementById(initial))
     requestAnimationFrame(() => navigate(initial, false));
-  else if (panels[0]) activate(panels[0], false);
+  else if (panels[0]) activate(panels[0]);
 }

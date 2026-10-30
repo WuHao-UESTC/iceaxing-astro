@@ -1,0 +1,51 @@
+/* Scrolling still works for tall chapters and nested reading lists. */
+.snowline-home.has-facet-transitions {
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+}
+.snowline-home[data-chapter-transition] .snowline-panel {
+  pointer-events: none;
+}
+.journey-facet-turn [data-journey] {
+  view-transition-name: journey-canvas;
+}
+.journey-facet-turn .journey-navigation {
+  view-transition-name: journey-nav;
+}
+.journey-facet-turn .journey-navigation a > span:last-child {
+  transition: none;
+}
+.journey-facet-seam {
+  position: fixed;
+  pointer-events: none;
+  view-transition-name: journey-seam;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.5;
+}
+.journey-facet-turn::view-transition {
+  pointer-events: none;
+}
+.journey-facet-turn::view-transition-group(*),
+.journey-facet-turn::view-transition-old(*),
+.journey-facet-turn::view-transition-new(*) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+.journey-facet-turn::view-transition-old(root),
+.journey-facet-turn::view-transition-old(journey-nav) {
+  opacity: 0;
+}
+.journey-facet-turn::view-transition-group(root) {
+  z-index: 0;
+}
+.journey-facet-turn::view-transition-group(journey-canvas) {
+  z-index: 1;
+}
+.journey-facet-turn::view-transition-group(journey-seam) {
+  z-index: 4;
+}
+.journey-facet-turn::view-transition-group(journey-nav) {
+  z-index: 10;
+}

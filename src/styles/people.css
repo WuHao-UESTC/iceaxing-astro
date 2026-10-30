@@ -62,156 +62,8 @@
   color: var(--muted);
   text-decoration: none;
 }
-.profile-identity {
-  display: grid;
-  grid-template-columns: 7rem minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 1.7rem;
-  margin-top: 1.6rem;
-  padding-block: 0.8rem 1.8rem;
-  border-bottom: 1px solid var(--line);
-}
-.profile-avatar {
-  position: relative;
-  display: grid;
-  place-items: center;
-  aspect-ratio: 1;
-  width: 7rem;
-  padding: 0.35rem;
-  border: 1px solid color-mix(in srgb, var(--people-accent) 40%, var(--line));
-  border-radius: 50%;
-  background: var(--surface-subtle);
-}
-.profile-avatar > span {
-  color: var(--people-accent);
-  font-family: var(--font-reading);
-  font-size: 2rem;
-}
-.profile-avatar img {
-  position: absolute;
-  inset: 0.35rem;
-  width: calc(100% - 0.7rem);
-  height: calc(100% - 0.7rem);
-  object-fit: cover;
-  border-radius: 50%;
-}
-.profile-avatar img[hidden],
 .friend-avatar img[hidden] {
   display: none;
-}
-.profile-intro {
-  min-width: 0;
-}
-.profile-intro h1 {
-  overflow-wrap: anywhere;
-}
-.profile-headline {
-  max-width: 65ch;
-  margin: 0.45rem 0 0;
-  color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.8;
-  white-space: pre-line;
-}
-.profile-location {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.55rem;
-  color: var(--muted);
-  font-size: 0.72rem;
-}
-.profile-location i {
-  font-style: normal;
-  color: var(--people-accent);
-}
-.profile-site-link {
-  display: flex;
-  gap: 0.75rem;
-  align-self: end;
-  padding-bottom: 0.3rem;
-  text-decoration: none;
-  font-size: 0.72rem;
-  color: var(--muted);
-}
-.profile-site-link span {
-  color: var(--people-accent);
-}
-.people-page.profile-page .profile-timeline {
-  list-style: none;
-  margin: 1.25rem 0 0;
-  padding: 0;
-  font-family: var(--font-ui);
-}
-.people-page.profile-page .profile-timeline > li {
-  position: relative;
-  display: grid;
-  grid-template-columns: 8rem minmax(0, 1fr);
-  gap: 1.4rem;
-  margin: 0;
-  padding: 0 0 1.7rem 1.25rem;
-  border-left: 1px solid var(--line);
-}
-.profile-timeline > li::before {
-  position: absolute;
-  top: 0.45rem;
-  left: -0.24rem;
-  width: 0.4rem;
-  height: 0.4rem;
-  border-radius: 50%;
-  background: var(--people-accent);
-  content: '';
-}
-.people-page.profile-page .profile-timeline h3 {
-  margin: 0;
-  font-family: var(--font-reading);
-  font-size: 1.05rem;
-}
-.profile-period {
-  padding-top: 0.2rem;
-  color: var(--people-accent);
-  font-size: 0.72rem;
-}
-.profile-page .profile-timeline .profile-organization {
-  margin: 0.25rem 0 0;
-  color: var(--text);
-  font-size: 0.8rem;
-}
-.profile-page .profile-timeline .profile-experience-description {
-  margin: 0.4rem 0 0;
-  color: var(--muted);
-  font-size: 0.82rem;
-  line-height: 1.8;
-  white-space: pre-line;
-}
-.profile-contact-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 1.5rem;
-  margin: 0;
-  font-family: var(--font-ui);
-}
-.profile-contact-grid > div {
-  padding: 0.8rem 0;
-  border-bottom: 1px solid var(--line);
-}
-.profile-contact-grid dt {
-  color: var(--muted);
-  font-size: 0.68rem;
-}
-.profile-contact-grid dd {
-  margin: 0.3rem 0 0;
-  font-size: 0.87rem;
-  overflow-wrap: anywhere;
-}
-.profile-contact-grid a {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  text-decoration: none;
-}
-.profile-contact-grid a span {
-  color: var(--people-accent);
 }
 .about-heading {
   position: relative;
@@ -493,17 +345,6 @@
   .people-aside {
     grid-row: 1;
   }
-  .profile-identity {
-    grid-template-columns: 6rem minmax(0, 1fr);
-    gap: 1.2rem;
-  }
-  .profile-avatar {
-    width: 6rem;
-  }
-  .profile-site-link {
-    grid-column: 2;
-    justify-self: start;
-  }
   .about-guide {
     display: flex;
     flex-wrap: wrap;
@@ -532,28 +373,6 @@
   }
   .people-page h1 {
     font-size: 1.75rem;
-  }
-  .profile-identity {
-    grid-template-columns: 4.5rem minmax(0, 1fr);
-    gap: 0.9rem;
-    margin-top: 1.2rem;
-  }
-  .profile-avatar {
-    width: 4.5rem;
-  }
-  .profile-identity .people-kicker {
-    font-size: 0.55rem;
-    letter-spacing: 0.06em;
-  }
-  .profile-headline {
-    font-size: 0.82rem;
-  }
-  .people-page.profile-page .profile-timeline > li {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.35rem;
-  }
-  .profile-contact-grid {
-    grid-template-columns: minmax(0, 1fr);
   }
   .friends-heading {
     align-items: start;
