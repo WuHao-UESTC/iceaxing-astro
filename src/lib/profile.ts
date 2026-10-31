@@ -9,6 +9,7 @@ type ProfileProject = {
     publicationStatus?: string;
     publishedAt?: string | Date | null;
     labels: Record<Locale, { title: string; description?: string }>;
+    coverImage?: string | { src: string };
   };
 };
 export type ProfileProjectLink = {
@@ -16,7 +17,9 @@ export type ProfileProjectLink = {
   description: string;
   href: string;
   external: boolean;
+  image: string;
 };
+const placeholder = '/media/profile/project-placeholder.svg';
 
 /** The caller passes projects whose parent category is public as well. */
 export function resolveProfileProjects(
@@ -33,6 +36,7 @@ export function resolveProfileProjects(
           description: selection.value.description,
           href: selection.value.url,
           external: true,
+          image: selection.value.image || placeholder,
         },
       ];
     }
@@ -41,6 +45,11 @@ export function resolveProfileProjects(
     const href = projectRoute(project.data.projectId, locale);
     if (!href) return [];
     const label = project.data.labels[locale];
-    return [{ title: label.title, description: label.description ?? '', href, external: false }];
+    const cover = project.data.coverImage;
+    const image =
+      selection.value.image || (typeof cover === 'string' ? cover : cover?.src) || placeholder;
+    return [
+      { title: label.title, description: label.description ?? '', href, external: false, image },
+    ];
   });
 }

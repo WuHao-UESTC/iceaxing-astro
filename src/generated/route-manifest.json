@@ -399,6 +399,13 @@
     "sourceFile": "src/content/categories/rabaey-digital-ic-note.yaml"
   },
   {
+    "pathname": "/rabaey-digital-ic-note/electrical-wire",
+    "kind": "article",
+    "contentId": "electrical-wire",
+    "locale": "zh",
+    "sourceFile": "src/content/articles/zh/electrical-wire/index.mdoc"
+  },
+  {
     "pathname": "/razavi-cmos-analog-note",
     "kind": "category",
     "contentId": "razavi-cmos-analog-note",

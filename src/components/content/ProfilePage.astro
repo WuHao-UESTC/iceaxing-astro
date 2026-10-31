@@ -3,6 +3,9 @@ import { routeFor, type PageEntry, type ProjectEntry } from '../../lib/content';
 import { localizedPath, type Locale } from '../../i18n/config';
 import { resolveProfileProjects } from '../../lib/profile';
 import ProfileSection from './ProfileSection.astro';
+import ProfileAwards from './ProfileAwards.astro';
+import ProfilePostcardMedia from './ProfilePostcardMedia.astro';
+import ProfilePostmark from './ProfilePostmark.astro';
 import TableOfContents from './TableOfContents.astro';
 import '../../styles/reading.css';
 import '../../styles/people.css';
@@ -210,36 +213,7 @@ const associatedProject = (id: string | null | undefined) =>
     <div class="reader-body people-body profile-body" data-reader-body>
       {honors.length > 0 && (
         <ProfileSection id="profile-honors" number="01" title={labels.honors} caption="RECOGNITION">
-          <ul class="profile-honors">
-            {honors.map((item) => (
-              <li>
-                <span class="profile-period">{item.period}</span>
-                <div>
-                  <h3>
-                    {item.title}
-                    {item.level && (
-                      <span class="profile-inline-meta">
-                        {' | '}
-                        {item.level}
-                      </span>
-                    )}
-                  </h3>
-                  {item.description && <p class="profile-description">{item.description}</p>}
-                  {item.url && (
-                    <a
-                      class="profile-text-link"
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {labels.certificate}
-                      <span aria-hidden="true">↗</span>
-                    </a>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
+          <ProfileAwards honors={honors} locale={locale} />
         </ProfileSection>
       )}
       {education.length > 0 && (
@@ -274,59 +248,72 @@ const associatedProject = (id: string | null | undefined) =>
           caption="SELECTED WORK"
         >
           <div class="profile-research-list">
-            {research.map((item) => (
+            {research.map((item, index) => (
               <article class="profile-research-item">
-                <p class="profile-project-type">
-                  {item.type === 'research' ? labels.researchType : labels.project}
-                </p>
-                <div class="profile-project-heading">
-                  <h3>{item.title}</h3>
-                  {item.period && <span class="profile-period">{item.period}</span>}
-                </div>
-                {(item.organization || item.role) && (
-                  <p class="profile-description">
-                    {[item.organization, item.role].filter(Boolean).join(' · ')}
+                <ProfilePostcardMedia
+                  image={
+                    item.image ||
+                    projects.find((project) => project.data.projectId === item.project)?.data
+                      .coverImage
+                  }
+                  title={item.title}
+                  index={index}
+                  type={item.type}
+                />
+                <ProfilePostmark index={index} />
+                <div class="profile-postcard-content">
+                  <p class="profile-project-type">
+                    {item.type === 'research' ? labels.researchType : labels.project}
                   </p>
-                )}
-                {item.summary && <p class="profile-summary">{item.summary}</p>}
-                {item.contributions.length > 0 && (
-                  <ul class="profile-bullets">
-                    {item.contributions.map((text) => (
-                      <li>{text}</li>
-                    ))}
-                  </ul>
-                )}
-                {item.outcomes.length > 0 && (
-                  <div class="profile-outcomes">
-                    <span>{labels.outcomes}</span>
-                    <ul>
-                      {item.outcomes.map((text) => (
+                  <div class="profile-project-heading">
+                    <h3>{item.title}</h3>
+                    {item.period && <span class="profile-period">{item.period}</span>}
+                  </div>
+                  {(item.organization || item.role) && (
+                    <p class="profile-description">
+                      {[item.organization, item.role].filter(Boolean).join(' · ')}
+                    </p>
+                  )}
+                  {item.summary && <p class="profile-summary">{item.summary}</p>}
+                  {item.contributions.length > 0 && (
+                    <ul class="profile-bullets">
+                      {item.contributions.map((text) => (
                         <li>{text}</li>
                       ))}
                     </ul>
-                  </div>
-                )}
-                {(associatedProject(item.project) || item.links.length > 0) && (
-                  <div class="profile-project-links">
-                    {associatedProject(item.project) && (
-                      <a class="profile-text-link" href={associatedProject(item.project)}>
-                        {labels.projectLink}
-                        <span aria-hidden="true">↗</span>
-                      </a>
-                    )}
-                    {item.links.map((link) => (
-                      <a
-                        class="profile-text-link"
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {link.label}
-                        <span aria-hidden="true">↗</span>
-                      </a>
-                    ))}
-                  </div>
-                )}
+                  )}
+                  {item.outcomes.length > 0 && (
+                    <div class="profile-outcomes">
+                      <span>{labels.outcomes}</span>
+                      <ul>
+                        {item.outcomes.map((text) => (
+                          <li>{text}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {(associatedProject(item.project) || item.links.length > 0) && (
+                    <div class="profile-project-links">
+                      {associatedProject(item.project) && (
+                        <a class="profile-text-link" href={associatedProject(item.project)}>
+                          {labels.projectLink}
+                          <span aria-hidden="true">↗</span>
+                        </a>
+                      )}
+                      {item.links.map((link) => (
+                        <a
+                          class="profile-text-link"
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {link.label}
+                          <span aria-hidden="true">↗</span>
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </article>
             ))}
           </div>
@@ -376,6 +363,17 @@ const associatedProject = (id: string | null | undefined) =>
                   target={item.external ? '_blank' : undefined}
                   rel={item.external ? 'noopener noreferrer' : undefined}
                 >
+                  <span class="profile-archive-background" aria-hidden="true">
+                    <img
+                      src={item.image}
+                      alt=""
+                      width="480"
+                      height="320"
+                      loading="lazy"
+                      decoding="async"
+                      data-profile-image
+                    />
+                  </span>
                   <span class="profile-archive-number" aria-hidden="true">
                     {String(index + 1).padStart(2, '0')}
                   </span>

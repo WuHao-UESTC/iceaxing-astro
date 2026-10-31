@@ -3,6 +3,14 @@ import { fields } from '@keystatic/core';
 const requiredText = (label: string) => fields.text({ label, validation: { isRequired: true } });
 const optionalText = (label: string) => fields.text({ label });
 const longText = (label: string) => fields.text({ label, multiline: true });
+const completedProjectImage = () =>
+  fields.image({
+    label: '卡片背景图片（可选）',
+    directory: 'public/media/profile',
+    publicPath: '/media/profile/',
+    description:
+      '作为深色毛玻璃下的虚化背景。站内项目留空时复用项目封面，均未设置时使用默认低多边形占位图。',
+  });
 const period = (label: string) =>
   fields.text({ label, description: '例如：2024.09 — 至今，或 2026.06。' });
 const textList = (label: string) =>
@@ -84,11 +92,17 @@ export const profileFields = () =>
           level: optionalText('获奖等级（可选）'),
           description: longText('补充说明（可选）'),
           url: optionalWebUrl('证书链接（可选）'),
+          certificateImage: fields.image({
+            label: '获奖证书图片（可选）',
+            directory: 'public/media/profile',
+            publicPath: '/media/profile/',
+            description: '画廊中等比完整展示，不裁切；获奖时间与等级叠在左上角。',
+          }),
         }),
         {
           label: '01 所获荣誉',
           itemLabel: (props) => props.fields.title.value || '新荣誉',
-          description: '正文第一项。名称与等级以 | 连接；等级留空时省略分隔符。',
+          description: '证书画廊，每页三张。日期与等级显示在图片左上角，名称在下方居中。',
         },
       ),
       education: fields.array(
@@ -129,6 +143,12 @@ export const profileFields = () =>
           organization: optionalText('机构 / 团队（可选）'),
           period: period('时间范围'),
           summary: longText('概述'),
+          image: fields.image({
+            label: '明信片图片（可选）',
+            directory: 'public/media/profile',
+            publicPath: '/media/profile/',
+            description: '优先使用此图片，留空时复用关联站内项目的封面；均未设置则显示线稿。',
+          }),
           contributions: textList('个人贡献'),
           outcomes: textList('成果记录（可选）'),
           links: links('相关链接（可选）'),
@@ -166,6 +186,7 @@ export const profileFields = () =>
           }),
           {
             internal: fields.object({
+              image: completedProjectImage(),
               project: fields.relationship({
                 label: '站内项目',
                 collection: 'projects',
@@ -174,6 +195,7 @@ export const profileFields = () =>
               }),
             }),
             external: fields.object({
+              image: completedProjectImage(),
               title: requiredText('项目名称'),
               description: fields.text({
                 label: '项目简介',
@@ -190,7 +212,7 @@ export const profileFields = () =>
             props.discriminant === 'internal'
               ? props.value.fields.project.value || '选择站内项目'
               : props.value.fields.title.value || '自行填写项目',
-          description: '两种来源可混排、拖动排序。整行可点击；外部链接在新标签页打开。',
+          description: '两种来源可混排、拖动排序。三列卡片展示；外部链接在新标签页打开。',
         },
       ),
     },

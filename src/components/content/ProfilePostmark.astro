@@ -1,0 +1,85 @@
+---
+interface Props {
+  index: number;
+}
+const { index } = Astro.props;
+// Small, monochrome drawings share the same 50 × 45 coordinate system.
+const designs = [
+  // Alpine ridge
+  'M4 35 18 9 30 29 38 17 47 35ZM18 9 21 35 30 29M4 35h43',
+  // Compass
+  'M25 5V1m0 42v-4M7 22H3m44 0h-4M25 7a15 15 0 1 0 0 30 15 15 0 0 0 0-30ZM31 14l-3 12-10 5 4-12ZM22 19l6 7',
+  // Snow crystal
+  'M25 4v36M9 13l32 18M9 31l32-18M20 8l5 5 5-5M20 36l5-5 5 5M10 19l7-1-2-7M35 33l-2-7 7-1M10 25l7 1-2 7M35 11l-2 7 7 1',
+  // Circuit and chip
+  'M15 12h20v20H15ZM20 17h10v10H20ZM20 5v7m10-7v7M20 32v7m10-7v7M8 17h7m-7 10h7M35 17h7m-7 10h7',
+  // Orbital paths
+  'M25 18a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM8 12c6-8 38 11 34 20S2 21 8 12ZM8 32c-6-9 30-28 34-20S14 40 8 32ZM25 4c12 0 12 36 0 36S13 4 25 4Z',
+  // Botanical sprig
+  'M15 39 32 8M20 30C5 31 7 19 12 19s10 5 8 11ZM25 21C27 7 40 9 39 14s-7 9-14 7ZM29 13C20 8 23 1 28 4s5 5 1 9M19 32c8-8 20-3 15 2s-10 3-15-2',
+  // Waves and rising sun
+  'M15 17a10 10 0 0 1 20 0M25 2V0M11 7 7 4m32 3 4-3M5 23q5-6 10 0t10 0 10 0 10 0M5 31q5-6 10 0t10 0 10 0 10 0M5 39q5-6 10 0t10 0 10 0 10 0',
+  // Faceted crystal
+  'M25 3 41 14 36 32 25 41 12 31 9 14ZM9 14h32M25 3l-7 11 7 27 8-27ZM12 31l13-9 11 10M18 14l7 8 8-8',
+  // Paper airplane
+  'M4 20 46 4 32 40 23 26 4 20ZM23 26 46 4 16 23l2 14 5-11M18 37l8-6M5 32l6-2m-8 9 9-3',
+  // Tent beneath stars
+  'M4 37 24 10 45 37ZM24 10v27M15 37l9-15 10 15M2 40h46M36 3v8m-4-4h8M10 5v6m-3-3h6',
+];
+---
+
+<profile-postmark data-variant={index % designs.length} aria-hidden="true">
+  <div class="profile-postcard-stamp">
+    <svg
+      viewBox="0 0 50 45"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="0.9"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      {designs.map((drawing, variant) => (
+        <g
+          data-postmark-variant={variant}
+          data-postmark-hidden={variant !== index % designs.length}
+        >
+          <path d={drawing} />
+        </g>
+      ))}
+    </svg>
+    <span>FIELD NOTES</span>
+  </div>
+  <span class="profile-postcard-postmark">ARCHIVE · {String(index + 1).padStart(2, '0')}</span>
+</profile-postmark>
+
+<script>
+  // Shuffle a deck instead of sampling each card independently, so ten consecutive
+  // postcards use ten different illustrations. No layout changes or animation.
+  function initProfilePostmarks() {
+    const marks = [...document.querySelectorAll<HTMLElement>('profile-postmark:not([data-ready])')];
+    let deck: number[] = [];
+    let last = -1;
+    for (const mark of marks) {
+      const drawings = [...mark.querySelectorAll<SVGGElement>('[data-postmark-variant]')];
+      if (!deck.length) {
+        deck = drawings.map((_, index) => index);
+        for (let i = deck.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [deck[i], deck[j]] = [deck[j]!, deck[i]!];
+        }
+        if (deck.length > 1 && deck[deck.length - 1] === last) {
+          [deck[0], deck[deck.length - 1]] = [deck[deck.length - 1]!, deck[0]!];
+        }
+      }
+      const selected = deck.pop()!;
+      drawings.forEach(
+        (drawing, index) => (drawing.dataset.postmarkHidden = String(index !== selected)),
+      );
+      mark.dataset.variant = String(selected);
+      mark.dataset.ready = 'true';
+      last = selected;
+    }
+  }
+  initProfilePostmarks();
+  document.addEventListener('astro:page-load', initProfilePostmarks);
+</script>

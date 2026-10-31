@@ -11,7 +11,10 @@ const profileLinkSchema = z.object({ label: z.string().trim().min(1), url: profi
 export const completedProjectSchema = z.discriminatedUnion('discriminant', [
   z.object({
     discriminant: z.literal('internal'),
-    value: z.object({ project: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/) }),
+    value: z.object({
+      project: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+      image: z.string().nullish(),
+    }),
   }),
   z.object({
     discriminant: z.literal('external'),
@@ -19,6 +22,7 @@ export const completedProjectSchema = z.discriminatedUnion('discriminant', [
       title: z.string().trim().min(1),
       description: z.string().trim().min(1),
       url: profileUrlSchema,
+      image: z.string().nullish(),
     }),
   }),
 ]);
@@ -45,6 +49,10 @@ export const profileSchema = z.object({
         level: text(),
         description: text(),
         url: optionalUrl,
+        certificateImage: z
+          .string()
+          .nullish()
+          .transform((value) => value ?? ''),
       }),
     )
     .default([]),
@@ -69,6 +77,10 @@ export const profileSchema = z.object({
         organization: text(),
         period: text(),
         summary: text(),
+        image: z
+          .string()
+          .nullish()
+          .transform((value) => value ?? ''),
         contributions: textList(),
         outcomes: textList(),
         links: z.array(profileLinkSchema).default([]),

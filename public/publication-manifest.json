@@ -31,7 +31,7 @@
     {
       "contentId": "c9-general-condition-of-ic-manu",
       "kind": "article",
-      "versionHash": "49e0b5ee1a919ee32966d353",
+      "versionHash": "01c98bbcbb3ef05f0ee7f6f1",
       "publishedAt": "2026-10-20T10:06:00.000Z",
       "titles": { "zh": "C9-集成电路制造工艺概况" },
       "urls": {
@@ -58,9 +58,18 @@
       "subscriptionKeys": ["category:oppenheim-signal-and-system-note"]
     },
     {
+      "contentId": "electrical-wire",
+      "kind": "article",
+      "versionHash": "a06e47a03fe9657552f6deae",
+      "publishedAt": "2026-10-31T07:32:00.000Z",
+      "titles": { "zh": "C4-导线" },
+      "urls": { "zh": "/rabaey-digital-ic-note/electrical-wire" },
+      "subscriptionKeys": ["category:rabaey-digital-ic-note"]
+    },
+    {
       "contentId": "ramble-happiness-at-fingertip",
       "kind": "article",
-      "versionHash": "4190a46d7006a687fb04ec26",
+      "versionHash": "8e32f22b1cd99d814ba2a9cd",
       "publishedAt": "2026-10-27T00:14:00.000Z",
       "titles": { "zh": "指缝间漏出来的幸福" },
       "urls": { "zh": "/daily-ramblings/ramble-happiness-at-fingertip" },
@@ -69,7 +78,7 @@
     {
       "contentId": "razavi-analogic-review",
       "kind": "article",
-      "versionHash": "4ab3e3ae3c3ea799c010e962",
+      "versionHash": "3ed47f170bac20bb0883e10e",
       "publishedAt": "2026-11-20T08:00:00.000Z",
       "titles": { "zh": "期末复习串讲——结论与直觉" },
       "urls": { "zh": "/razavi-cmos-analog-note/razavi-analogic-review" },

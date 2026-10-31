@@ -28,6 +28,27 @@ const project = (id: string, status = 'completed', publicationStatus = 'publishe
 });
 
 describe('profile project links', () => {
+  it('uses a card upload before the internal project cover, and falls back to the placeholder', () => {
+    const covered = {
+      ...project('ota'),
+      data: { ...project('ota').data, coverImage: { src: '/cover.jpg' } },
+    };
+    const selected: CompletedProject[] = [
+      { discriminant: 'internal', value: { project: 'ota', image: '/card.jpg' } },
+      { discriminant: 'internal', value: { project: 'ota', image: null } },
+      { ...external, value: { ...external.value, image: '/external.jpg' } },
+      external,
+    ];
+    expect(
+      resolveProfileProjects(selected, [covered], 'zh', () => '/ota').map((item) => item.image),
+    ).toEqual([
+      '/card.jpg',
+      '/cover.jpg',
+      '/external.jpg',
+      '/media/profile/project-placeholder.svg',
+    ]);
+    expect(completedProjectSchema.safeParse(selected[1]).success).toBe(true);
+  });
   it('mixes internal and self-entered projects in editorial order and uses localized routes', () => {
     expect(
       resolveProfileProjects(
@@ -42,12 +63,14 @@ describe('profile project links', () => {
         description: 'Project notes',
         href: external.value.url,
         external: true,
+        image: '/media/profile/project-placeholder.svg',
       },
       {
         title: 'Deutsches Projekt',
         description: 'Deutsche Beschreibung',
         href: '/de/analog/ota',
         external: false,
+        image: '/media/profile/project-placeholder.svg',
       },
     ]);
   });
@@ -77,6 +100,30 @@ describe('profile project links', () => {
 });
 
 describe('profile content and CMS values', () => {
+  it('accepts uploaded images and empty CMS image values without breaking existing profiles', () => {
+    const value = profileSchema.parse({
+      honors: [
+        { title: 'Certificate', certificateImage: '/media/profile/certificate.jpg' },
+        { title: 'No upload', certificateImage: null },
+        { title: 'Legacy award' },
+      ],
+      research: [
+        { title: 'With photo', type: 'project', image: '/media/profile/project.jpg' },
+        { title: 'No upload', type: 'research', image: null },
+        { title: 'Legacy experience', type: 'project' },
+      ],
+    });
+    expect(value.honors.map((item) => item.certificateImage)).toEqual([
+      '/media/profile/certificate.jpg',
+      '',
+      '',
+    ]);
+    expect(value.research.map((item) => item.image)).toEqual([
+      '/media/profile/project.jpg',
+      '',
+      '',
+    ]);
+  });
   it('accepts omitted optional sections and blank optional certificate links', () => {
     const value = profileSchema.parse({ honors: [{ title: 'Award', url: '' }] });
     expect(value.honors[0]?.level).toBe('');

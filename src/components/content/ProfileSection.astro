@@ -9,6 +9,26 @@ const { id, number, title, caption } = Astro.props;
 ---
 
 <section class="profile-section" aria-labelledby={id}>
+  <svg
+    class="profile-section-ridge"
+    viewBox="0 0 180 38"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="0.65"
+    aria-hidden="true"
+  >
+    <path d="M4 30 22 8 35 27 51 14 67 32 83 3 101 27 117 12 136 31 150 7 176 33" />
+    <path
+      fill="currentColor"
+      fill-opacity="0.09"
+      d="m4 30 18-22 4 24Zm31-3 16-13 16 18Zm32 5L83 3l5 31Zm34-5 16-15 19 19Zm35 4 14-24 26 26Z"
+    />
+    <path
+      fill="currentColor"
+      fill-opacity="0.17"
+      d="m22 8 13 19-9 5Zm61-5 18 24-13 7Zm67 4 6 27 20-1Z"
+    />
+  </svg>
   <div class="profile-section-heading">
     <span class="profile-section-number" aria-hidden="true">
       {number}

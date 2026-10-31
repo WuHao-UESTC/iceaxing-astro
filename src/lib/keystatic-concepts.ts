@@ -230,17 +230,12 @@ function mountConceptPanel(view: EditorView) {
     const rect = view.dom.getBoundingClientRect(),
       wide = rect.width >= 600;
     panel.hidden = rect.bottom < 80 || rect.top >= win.innerHeight;
-    panel.style.left = `${Math.max(8, rect.left + 12)}px`;
+    panel.style.left = `${Math.max(8, rect.left - 242)}px`;
     panel.style.top = `${Math.max(76, rect.top + 8)}px`;
     picker.hidden = !expanded || !form.hidden;
     actions.hidden = !expanded;
     toggle.textContent = expanded ? '概念 −' : '概念 ＋';
     toggle.setAttribute('aria-expanded', String(expanded));
-    view.dom.style.setProperty('--concept-gutter', wide && expanded ? '202px' : '0px');
-    view.dom.style.setProperty(
-      '--concept-top',
-      wide ? '38px' : `${expanded ? panel.offsetHeight + 26 : 44}px`,
-    );
   }
   const refresh = () => {
     loading = true;

@@ -1,0 +1,158 @@
+/* Match the original profile biography's baseline grid. */
+.revision .bio {
+  min-height: 10rem;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(2rem - 1px),
+    var(--line) calc(2rem - 1px),
+    var(--line) 2rem
+  );
+}
+
+.gallery-page {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  align-items: start;
+}
+.gallery-page[hidden] { display: none; }
+.certificate-card { min-width: 0; }
+.certificate-card .certificate {
+  width: min(320px, 100%);
+  height: 220px;
+  margin: 0 auto;
+}
+.certificate-card .award {
+  position: relative;
+  padding: 17px 28px 0 0;
+}
+.certificate-card h3 { margin: 7px 0 0; font-size: .92rem; }
+.certificate-index {
+  position: absolute;
+  right: 0;
+  top: 17px;
+  color: var(--muted);
+  font-size: .65rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Transparent postcards: illustrated address panel, perforated stamp, archival postmark. */
+.revision .projects { gap: 32px; }
+.revision .project.postcard {
+  grid-template-columns: 166px minmax(0, 1fr);
+  column-gap: 30px;
+  padding: 29px 32px 28px 25px;
+  background: transparent;
+  box-shadow: 3px 4px 0 -1px var(--page), 3px 4px 0 0 var(--line);
+  border-color: color-mix(in srgb, var(--accent) 25%, var(--line));
+  transition: border-color .2s, box-shadow .2s;
+}
+.revision .project.postcard::after {
+  content: '';
+  top: auto;
+  bottom: 0;
+  right: 0;
+  width: 17px;
+  height: 17px;
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  background: linear-gradient(135deg, transparent 47%, var(--line) 49%, var(--line) 51%, var(--page) 53%);
+  opacity: 1;
+}
+.postcard-aside {
+  grid-column: 1;
+  grid-row: 1 / span 6;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  padding-right: 25px;
+  border-right: 1px dashed var(--line);
+  color: var(--accent);
+}
+.postcard-aside .serial { font: .65rem/1.8 var(--font-ui); color: var(--accent); }
+.postcard-sketch { width: 130px; max-width: 100%; height: 105px; margin: 22px 0 17px; opacity: .7; }
+.postcard-sketch text { font-size: 13px; stroke: none; fill: currentColor; }
+.postcard-address { font-size: .55rem; letter-spacing: .09em; line-height: 1.9; color: var(--muted); }
+.postcard-rule { margin-top: 12px; width: 100%; border-bottom: 1px solid var(--line); }
+.postcard-rule.short { width: 70%; }
+.postcard-stamp {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 59px;
+  height: 70px;
+  top: 18px;
+  right: 23px;
+  outline: 1px dashed color-mix(in srgb, var(--accent) 40%, var(--line));
+  outline-offset: 3px;
+  border: 1px solid var(--line);
+  color: var(--accent);
+  opacity: .75;
+  pointer-events: none;
+}
+.postcard-stamp svg { width: 43px; height: 41px; }
+.postcard-stamp span { font-size: 6px; letter-spacing: .06em; }
+.postmark {
+  position: absolute;
+  top: 46px;
+  right: 69px;
+  padding: 4px 9px;
+  border-block: 1px solid var(--accent);
+  border-radius: 50%;
+  font-size: 8px;
+  letter-spacing: .09em;
+  color: var(--accent);
+  opacity: .4;
+  transform: rotate(-15deg);
+  pointer-events: none;
+}
+.revision .postcard > h3,
+.revision .postcard:first-child > h3 { margin-right: 130px; }
+.revision .postcard > .meta { padding-right: 105px; min-height: 32px; }
+.revision .postcard > h3,
+.revision .postcard > .meta,
+.revision .postcard > p,
+.revision .postcard > details { grid-column: 2; }
+.revision .postcard:hover {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+  box-shadow: 4px 5px 0 -1px var(--page), 4px 5px 0 0 var(--line);
+}
+@media (max-width: 850px) {
+  .gallery-page { gap: 16px; }
+  .certificate-card .certificate { height: 180px; }
+  .certificate-card .certificate small { font-size: .55rem; }
+  .revision .project.postcard { grid-template-columns: 126px minmax(0, 1fr); column-gap: 22px; }
+  .postcard-aside { padding-right: 18px; }
+}
+@media (max-width: 600px) {
+  /* Keep three certificates per gallery page on phones with horizontal scrolling. */
+  .slides { overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory; }
+  .gallery-page { grid-template-columns: repeat(3, 260px); width: max-content; gap: 18px; }
+  .certificate-card { scroll-snap-align: start; }
+  .certificate-card .certificate { height: 190px; }
+  .revision .project.postcard { grid-template-columns: 1fr; padding: 22px; }
+  .postcard-aside {
+    grid-column: 1;
+    grid-row: auto;
+    padding: 0 75px 16px 0;
+    margin-bottom: 16px;
+    min-height: 96px;
+    border-right: 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .postcard-sketch { width: 70px; height: 56px; margin: 8px 0 0; }
+  .postcard-address, .postcard-rule { display: none; }
+  .revision .postcard > h3,
+  .revision .postcard:first-child > h3,
+  .revision .postcard > .meta,
+  .revision .postcard > p,
+  .revision .postcard > details { grid-column: 1; margin-right: 0; padding-right: 0; }
+  .postcard-stamp { top: 24px; right: 25px; }
+  .postmark { top: 66px; right: 63px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .revision .project.postcard { transition: none; }
+}
