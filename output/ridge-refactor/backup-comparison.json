@@ -1,0 +1,23 @@
+{
+  "backup": "E:/repo_iceaxing-astro/backups/ridge-editorial-20261102-185607",
+  "files": 979,
+  "bytes": 84911774,
+  "modified": [
+    "keystatic.config.ts",
+    "src\\components\\home\\FeaturedDestinations.astro",
+    "src\\components\\home\\JourneyNavigation.astro",
+    "src\\components\\home\\SnowlineHero.astro",
+    "src\\components\\home\\types.ts",
+    "src\\components\\HomePage.astro",
+    "src\\components\\islands\\ContentTreeWorkspace.tsx",
+    "src\\content\\schema.ts",
+    "src\\lib\\content-tree\\server.ts",
+    "src\\lib\\keystatic-article-form.ts",
+    "src\\lib\\keystatic-folder-form.ts",
+    "src\\pages\\blog.astro",
+    "src\\pages\\[locale]\\blog.astro",
+    "src\\scripts\\home-journey.ts",
+    "src\\scripts\\study-constellation.ts"
+  ],
+  "missing": []
+}

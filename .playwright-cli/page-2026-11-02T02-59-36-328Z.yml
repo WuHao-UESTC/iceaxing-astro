@@ -1,0 +1,311 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "home" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: Home
+    - navigation "Main" [ref=e12]:
+      - generic [ref=e13]:
+        - link "The Garden" [ref=e14] [cursor=pointer]:
+          - /url: /garden
+        - button "Toggle Garden menu" [ref=e15]
+      - generic [ref=e18]:
+        - link "Now" [ref=e20] [cursor=pointer]:
+          - /url: /now
+        - link "About" [ref=e23] [cursor=pointer]:
+          - /url: /about
+  - main [ref=e25]:
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - heading "Maggie makes visual essays about programming, design, and anthropology." [level=1] [ref=e28]
+        - heading [level=2] [ref=e29]:
+          - text: Designer, anthropologist, and mediocre developer Currently exploring AI & software engineering at
+          - link "GitHub Next" [ref=e32] [cursor=pointer]:
+            - /url: https://githubnext.com
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - link [ref=e37] [cursor=pointer]:
+            - /url: /garden
+            - heading "The Garden" [level=2] [ref=e38]
+          - generic [ref=e39]:
+            - text: A digital garden is a collection of imperfect notes, essays, and ideas growing slowly over time.
+            - link "Learn more" [ref=e40] [cursor=pointer]:
+              - /url: /garden-history
+        - generic [ref=e43]:
+          - generic [ref=e44]:
+            - link [ref=e45] [cursor=pointer]:
+              - /url: /essays
+              - heading "Essays" [level=3] [ref=e46]
+            - generic [ref=e49]: Opinionated, longform narrative writing with an agenda
+            - generic [ref=e50]:
+              - link "A Treatise on AI Chatbots Undermining the Enlightenment A Treatise on AI Chatbots Undermining the Enlightenment On chatbot sycophancy, passivity, and the case for more intellectually challenging companions Essay about 1 year ago" [ref=e51] [cursor=pointer]:
+                - /url: /ai-enlightenment
+                - generic [ref=e52]:
+                  - img "A Treatise on AI Chatbots Undermining the Enlightenment" [ref=e54]
+                  - heading "A Treatise on AI Chatbots Undermining the Enlightenment" [level=3] [ref=e55]
+                  - paragraph [ref=e56]: On chatbot sycophancy, passivity, and the case for more intellectually challenging companions
+                  - generic [ref=e57]:
+                    - text: Essay
+                    - generic [ref=e60]: about 1 year ago
+              - 'link "Growing a Human: The First 30 Weeks Growing a Human: The First 30 Weeks Reflections on the strange experience of growing a human from scratch, without any conscious understanding of how you are doing it Essay almost 2 years ago" [ref=e61] [cursor=pointer]':
+                - /url: /growing-a-human
+                - generic [ref=e62]:
+                  - 'img "Growing a Human: The First 30 Weeks" [ref=e64]'
+                  - 'heading "Growing a Human: The First 30 Weeks" [level=3] [ref=e65]'
+                  - paragraph [ref=e66]: Reflections on the strange experience of growing a human from scratch, without any conscious understanding of how you are doing it
+                  - generic [ref=e67]:
+                    - text: Essay
+                    - generic [ref=e70]: almost 2 years ago
+              - link "The Dark Forest and Generative AI The Dark Forest and Generative AI Proving you're a human on a web flooded with generative AI content Essay almost 4 years ago" [ref=e71] [cursor=pointer]:
+                - /url: /ai-dark-forest
+                - generic [ref=e72]:
+                  - img "The Dark Forest and Generative AI" [ref=e74]
+                  - heading "The Dark Forest and Generative AI" [level=3] [ref=e75]
+                  - paragraph [ref=e76]: Proving you're a human on a web flooded with generative AI content
+                  - generic [ref=e77]:
+                    - text: Essay
+                    - generic [ref=e80]: almost 4 years ago
+              - link "Tools for Thought as Cultural Practices, not Computational Objects Tools for Thought as Cultural Practices, not Computational Objects On seeing tools for thought through a historical and anthropological lens Essay almost 4 years ago" [ref=e81] [cursor=pointer]:
+                - /url: /tools-for-thought
+                - generic [ref=e82]:
+                  - img "Tools for Thought as Cultural Practices, not Computational Objects" [ref=e84]
+                  - heading "Tools for Thought as Cultural Practices, not Computational Objects" [level=3] [ref=e85]
+                  - paragraph [ref=e86]: On seeing tools for thought through a historical and anthropological lens
+                  - generic [ref=e87]:
+                    - text: Essay
+                    - generic [ref=e90]: almost 4 years ago
+          - generic [ref=e91]:
+            - link [ref=e92] [cursor=pointer]:
+              - /url: /notes
+              - heading "Notes" [level=3] [ref=e93]
+            - generic [ref=e96]: Loose, unopinionated notes on things I don't entirely understand yet.
+            - link [ref=e97] [cursor=pointer]:
+              - /url: /in-memoriam
+              - heading "In Memoriam, Encountering World War I, and Thinkable Horrors" [level=3] [ref=e102]
+            - link [ref=e103] [cursor=pointer]:
+              - /url: /gastown
+              - heading "Gas Town’s Agent Patterns, Design Bottlenecks, and Vibecoding at Scale" [level=3] [ref=e108]
+            - link [ref=e109] [cursor=pointer]:
+              - /url: /birth-probability
+              - heading "Statistically, When Will My Baby Be Born?" [level=3] [ref=e114]
+            - link [ref=e115] [cursor=pointer]:
+              - /url: /tana-zotero
+              - heading "How to Import Academic Papers from Zotero into Tana" [level=3] [ref=e120]
+            - link [ref=e121] [cursor=pointer]:
+              - /url: /aesthetic-commands
+              - heading "Aesthetic Command Lines with Hyper, Spaceship, and Oh My Zsh" [level=3] [ref=e126]
+            - link [ref=e127] [cursor=pointer]:
+              - /url: /leaving-elicit
+              - heading "Leaving Elicit" [level=3] [ref=e132]
+            - link [ref=e133] [cursor=pointer]:
+              - /url: /generative-forgery
+              - heading "Faking William Morris, Generative Forgery, and the Erosion of Art History" [level=3] [ref=e138]
+            - link [ref=e139] [cursor=pointer]:
+              - /url: /openings
+              - heading "On Opening Essays, Conference Talks, and Jam Jars" [level=3] [ref=e144]
+            - link [ref=e145] [cursor=pointer]:
+              - /url: /narrative-essays
+              - heading "The Finest Narrative Non-Fiction Essays" [level=3] [ref=e150]
+            - link [ref=e151] [cursor=pointer]:
+              - /url: /spinning
+              - heading "Spinning Worlds, Seasickness, and Dealing with Vestibular Neuritis" [level=3] [ref=e156]
+            - link [ref=e157] [cursor=pointer]:
+              - /url: /design-engineers
+              - heading "A Collection of Design Engineers" [level=3] [ref=e162]
+            - link [ref=e163] [cursor=pointer]:
+              - /url: /gathering-structures
+              - heading "Gathering Structures" [level=3] [ref=e168]
+          - generic [ref=e169]:
+            - link [ref=e170] [cursor=pointer]:
+              - /url: /patterns
+              - heading "Patterns" [level=3] [ref=e171]
+            - generic [ref=e174]: Design patterns gathered from my own observations and research.
+            - generic [ref=e175]:
+              - link "Ambient Co-presence Creating a subtle, peripheral, and synchronous sense of shared space and context on the web Pattern almost 3 years ago" [ref=e176] [cursor=pointer]:
+                - /url: /ambient-copresence
+                - generic [ref=e185]:
+                  - heading "Ambient Co-presence" [level=3] [ref=e186]
+                  - paragraph [ref=e187]: Creating a subtle, peripheral, and synchronous sense of shared space and context on the web
+                  - generic [ref=e188]:
+                    - generic [ref=e189]: Pattern
+                    - generic [ref=e192]: almost 3 years ago
+              - link "Historical Trails Giving people a visible, useful trail of where they've been over the course of an exploratory journey Pattern almost 3 years ago" [ref=e193] [cursor=pointer]:
+                - /url: /historical-trails
+                - generic [ref=e202]:
+                  - heading "Historical Trails" [level=3] [ref=e203]
+                  - paragraph [ref=e204]: Giving people a visible, useful trail of where they've been over the course of an exploratory journey
+                  - generic [ref=e205]:
+                    - generic [ref=e206]: Pattern
+                    - generic [ref=e209]: almost 3 years ago
+              - link "Computational Notebooks Shareable, browser-based documents that can compile and run code Pattern over 3 years ago" [ref=e210] [cursor=pointer]:
+                - /url: /computational-notebooks
+                - generic [ref=e219]:
+                  - heading "Computational Notebooks" [level=3] [ref=e220]
+                  - paragraph [ref=e221]: Shareable, browser-based documents that can compile and run code
+                  - generic [ref=e222]:
+                    - generic [ref=e223]: Pattern
+                    - generic [ref=e226]: over 3 years ago
+              - link "Command K Bars Command line bars you can quickly summon with a keyboard shortcut Pattern almost 4 years ago" [ref=e227] [cursor=pointer]:
+                - /url: /command-bar
+                - generic [ref=e236]:
+                  - heading "Command K Bars" [level=3] [ref=e237]
+                  - paragraph [ref=e238]: Command line bars you can quickly summon with a keyboard shortcut
+                  - generic [ref=e239]:
+                    - generic [ref=e240]: Pattern
+                    - generic [ref=e243]: almost 4 years ago
+              - link "Programming Portals Small, scoped areas within a graphical interface that allow users to read and write simple programmes Pattern almost 4 years ago" [ref=e244] [cursor=pointer]:
+                - /url: /programming-portals
+                - generic [ref=e253]:
+                  - heading "Programming Portals" [level=3] [ref=e254]
+                  - paragraph [ref=e255]: Small, scoped areas within a graphical interface that allow users to read and write simple programmes
+                  - generic [ref=e256]:
+                    - generic [ref=e257]: Pattern
+                    - generic [ref=e260]: almost 4 years ago
+              - link "Folk Interfaces People reappropriating existing software to solve their own unique problems Pattern about 4 years ago" [ref=e261] [cursor=pointer]:
+                - /url: /folk-interfaces
+                - generic [ref=e270]:
+                  - heading "Folk Interfaces" [level=3] [ref=e271]
+                  - paragraph [ref=e272]: People reappropriating existing software to solve their own unique problems
+                  - generic [ref=e273]:
+                    - generic [ref=e274]: Pattern
+                    - generic [ref=e277]: about 4 years ago
+              - link "Daily Notes Pages Daily notes as a frictionless default input for personal knowledge management systems Pattern over 4 years ago" [ref=e278] [cursor=pointer]:
+                - /url: /daily-notes
+                - generic [ref=e287]:
+                  - heading "Daily Notes Pages" [level=3] [ref=e288]
+                  - paragraph [ref=e289]: Daily notes as a frictionless default input for personal knowledge management systems
+                  - generic [ref=e290]:
+                    - generic [ref=e291]: Pattern
+                    - generic [ref=e294]: over 4 years ago
+              - link "Programmable Notes Agent-based note-taking systems that can prompt and facilitate custom workflows Pattern over 4 years ago" [ref=e295] [cursor=pointer]:
+                - /url: /programmatic-notes
+                - generic [ref=e304]:
+                  - heading "Programmable Notes" [level=3] [ref=e305]
+                  - paragraph [ref=e306]: Agent-based note-taking systems that can prompt and facilitate custom workflows
+                  - generic [ref=e307]:
+                    - generic [ref=e308]: Pattern
+                    - generic [ref=e311]: over 4 years ago
+          - generic [ref=e312]:
+            - link [ref=e313] [cursor=pointer]:
+              - /url: /library
+              - heading "Library" [level=3] [ref=e314]
+            - generic [ref=e317]: Books I've read and books I like the idea of having read.
+            - generic [ref=e318]:
+              - link [ref=e319] [cursor=pointer]:
+                - /url: https://www.google.co.uk/books/edition/Rain/hjDTCwAAQBAJ
+                - generic [ref=e320]:
+                  - generic [ref=e321]: View on Google
+                  - 'img "Rain: A Natural and Cultural History" [ref=e325]'
+                  - generic [ref=e326]:
+                    - paragraph [ref=e327]: "Rain: A Natural and Cultural History"
+                    - text: Cynthia Barnett
+              - link [ref=e328] [cursor=pointer]:
+                - /url: https://www.google.co.uk/books/edition/Age_of_Ambition/8DPvAgAAQBAJ
+                - generic [ref=e329]:
+                  - generic [ref=e330]: View on Google
+                  - 'img "Age of Ambition: Chasing Fortune, Truth, and Faith in the New China" [ref=e334]'
+                  - generic [ref=e335]:
+                    - paragraph [ref=e336]: "Age of Ambition: Chasing Fortune, Truth, and Faith in the New China"
+                    - text: Evan Osnos
+              - link [ref=e337] [cursor=pointer]:
+                - /url: https://www.google.co.uk/books/edition/Cue_the_Sun/GObnEAAAQBAJ
+                - generic [ref=e338]:
+                  - generic [ref=e339]: View on Google
+                  - img "Cue the Sun! The Invention of Reality TV" [ref=e343]
+                  - generic [ref=e344]:
+                    - paragraph [ref=e345]: Cue the Sun! The Invention of Reality TV
+                    - text: Emily Nussbaum
+              - link [ref=e346] [cursor=pointer]:
+                - /url: https://www.goodreads.com/book/show/59948520-in-memoriam
+                - generic [ref=e347]:
+                  - generic [ref=e348]: View on Google
+                  - img "In Memoriam" [ref=e352]
+                  - generic [ref=e353]:
+                    - paragraph [ref=e354]: In Memoriam
+                    - text: Alice Winn
+              - link [ref=e355] [cursor=pointer]:
+                - /url: https://www.goodreads.com/book/show/238226942-yesteryear
+                - generic [ref=e356]:
+                  - generic [ref=e357]: View on Google
+                  - img "Yesteryear" [ref=e361]
+                  - generic [ref=e362]:
+                    - paragraph [ref=e363]: Yesteryear
+                    - text: Caro Claire Burke
+              - link [ref=e364] [cursor=pointer]:
+                - /url: https://www.google.co.uk/books/edition/Soldiers_and_Kings/EzPBEAAAQBAJ
+                - generic [ref=e365]:
+                  - generic [ref=e366]: View on Google
+                  - 'img "Soldiers and Kings: Survival and Hope in the World of Human Smuggling" [ref=e370]'
+                  - generic [ref=e371]:
+                    - paragraph [ref=e372]: "Soldiers and Kings: Survival and Hope in the World of Human Smuggling"
+                    - text: Jason De Leon
+              - link [ref=e373] [cursor=pointer]:
+                - /url: https://www.goodreads.com/book/show/211003829-the-good-mother-myth
+                - generic [ref=e374]:
+                  - generic [ref=e375]: View on Google
+                  - img "The Good Mother Myth" [ref=e379]
+                  - generic [ref=e380]:
+                    - paragraph [ref=e381]: The Good Mother Myth
+                    - text: Nancy Reddy
+              - link [ref=e382] [cursor=pointer]:
+                - /url: https://www.google.co.uk/books/edition/Empire_of_Pain/tN8OEAAAQBAJ?hl=en&gbpv=0
+                - generic [ref=e383]:
+                  - generic [ref=e384]: View on Google
+                  - 'img "Empire of Pain: The Secret History of the Sackler Dynasty" [ref=e388]'
+                  - generic [ref=e389]:
+                    - paragraph [ref=e390]: "Empire of Pain: The Secret History of the Sackler Dynasty"
+                    - text: Patrick Radden Keefe
+  - contentinfo [ref=e391]:
+    - generic [ref=e392]:
+      - generic [ref=e393]:
+        - heading "Want to stay up to date?" [level=3] [ref=e394]
+        - link [ref=e395] [cursor=pointer]:
+          - /url: /rss.xml
+          - button "Subscribe via RSS Feed" [ref=e396]
+        - generic [ref=e399]:
+          - link "Bluesky" [ref=e400] [cursor=pointer]:
+            - /url: https://bsky.app/profile/maggieappleton.com
+          - link "GitHub" [ref=e403] [cursor=pointer]:
+            - /url: https://github.com/MaggieAppleton
+          - link "LinkedIn" [ref=e406] [cursor=pointer]:
+            - /url: https://uk.linkedin.com/in/maggieappleton
+          - link "Dribbble" [ref=e409] [cursor=pointer]:
+            - /url: https://dribbble.com/mappleton
+          - link "Twitter" [ref=e412] [cursor=pointer]:
+            - /url: https://x.com/Mappletons
+          - link "Mastodon" [ref=e415] [cursor=pointer]:
+            - /url: https://indieweb.social/@maggie
+        - text: © 2026 Maggie Appleton
+      - list [ref=e418]:
+        - listitem [ref=e419]:
+          - link "The Garden" [ref=e422] [cursor=pointer]:
+            - /url: /garden
+        - listitem [ref=e424]:
+          - link "Essays" [ref=e427] [cursor=pointer]:
+            - /url: /essays
+        - listitem [ref=e429]:
+          - link "About" [ref=e432] [cursor=pointer]:
+            - /url: /about
+        - listitem [ref=e434]:
+          - link "Notes" [ref=e437] [cursor=pointer]:
+            - /url: /notes
+        - listitem [ref=e439]:
+          - link "Now" [ref=e442] [cursor=pointer]:
+            - /url: /now
+        - listitem [ref=e444]:
+          - link "Patterns" [ref=e447] [cursor=pointer]:
+            - /url: /patterns
+        - listitem [ref=e449]:
+          - link "Podcasts" [ref=e452] [cursor=pointer]:
+            - /url: /podcasts
+        - listitem [ref=e454]:
+          - link "Talks" [ref=e457] [cursor=pointer]:
+            - /url: /talks
+        - listitem [ref=e459]:
+          - link "Smidgeons" [ref=e462] [cursor=pointer]:
+            - /url: /smidgeons
+        - listitem [ref=e464]:
+          - link "Colophon" [ref=e467] [cursor=pointer]:
+            - /url: /colophon
+        - listitem [ref=e469]:
+          - link "Library" [ref=e472] [cursor=pointer]:
+            - /url: /library

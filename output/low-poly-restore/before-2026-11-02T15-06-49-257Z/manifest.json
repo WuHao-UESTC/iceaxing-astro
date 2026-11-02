@@ -1,0 +1,135 @@
+{
+  "backup": "E:/repo_iceaxing-astro/backups/snowline-pre-refactor-20261102-162824",
+  "files": [
+    {
+      "file": "src\\components\\content\\FolderLandscape.astro",
+      "before": "482f00065c81a4a1b8002a9b05424f7c9211bb087a3adbbbcbba637f302e2616",
+      "restored": "7a2e320f5614a5da9006ae915d43df169a035755ad6ee63e8957035c7b6e7b8f"
+    },
+    {
+      "file": "src\\components\\home\\ChapterMarker.astro",
+      "before": "5b3e05b54ebae182ca09589acc4e305ff4067125d77ad9c24f0f12fa9eb2660a",
+      "restored": "01ce921dcaeb53f5cad943821480936f6ddc2e1a172aa01bba4edf16d7c4a98a"
+    },
+    {
+      "file": "src\\components\\home\\FeaturedDestinations.astro",
+      "before": "fbed5b30e9d09cb95078c3d13e9d4971d770592439a6a31535e12a491b4386f9",
+      "restored": "479ddb1941d3611a598429f7d282171d0346fc95260a5ae02208b6725df67dbf"
+    },
+    {
+      "file": "src\\components\\home\\JourneyNavigation.astro",
+      "before": "644fd443027ae4057a0bfd1b69e787b8bf319fa50a8d58f10725ee9a4e2638a3",
+      "restored": "23e2d04d78aceb3d5a55bbb98aa08d09004b656c4ba46a32309b3f284f2b7f92"
+    },
+    {
+      "file": "src\\components\\home\\NightCamp.astro",
+      "before": "5239ddb910b12365f13a41f32bf523b5cef1e04bf6f87b432ad3e8316bcd6abd",
+      "restored": "822898f49ef78bbf048344b40af82e5f4945c7b15b34bbebf60885a83a3c4bfb"
+    },
+    {
+      "file": "src\\components\\home\\SnowfieldTraverse.astro",
+      "before": "4793f3327fb6ff2d8d992d798d3738c934c21ac3436003b7b0c473f85a6e0456",
+      "restored": "ddf2f9f48bd71281995ed9d6d3f7418c1621e3a284685e80e107e44d4a64635c"
+    },
+    {
+      "file": "src\\components\\home\\SnowlineHero.astro",
+      "before": "b8ace811e68215a09352df0d0d423c55a7d8d6113483131712f0bf66a10f7e3b",
+      "restored": "dde21866e76136e5e3a586423cf150cef1a72eca32cd6c5de3acdc0c2b146dcd"
+    },
+    {
+      "file": "src\\components\\home\\StudyTerrace.astro",
+      "before": "2bc144fe04cb697966951613700d436be1badcc83a4277659920eaf5185fd42f",
+      "restored": "68fc78aaad783d7caa78a7c51391b008d47819851d3b27e91cbd3422ab5db37d"
+    },
+    {
+      "file": "src\\components\\home\\TechnicalRidge.astro",
+      "before": "4892b74ea80508c8a03c6e8793918d742bfbb74521732273ca4974b825d5793f",
+      "restored": "ebc1f38e893df9dc7054ea8fc1f763635f8d500ce75fc5a415fd9998ec5a8b62"
+    },
+    {
+      "file": "src\\components\\HomePage.astro",
+      "before": "5a2d1c8e084f504d065aeb2681023e93eff691138d7c91c39d8c448f143c1a54",
+      "restored": "ed37953b4805f5612963f3a354c9544b876eb5056166cae5ad29a5280137130a"
+    },
+    {
+      "file": "src\\components\\tools\\ToolPage.astro",
+      "before": "fb6dee76b80f9e64e0cb0c07d62ede66c30d6236b9392a3e94b864f68b7082d5",
+      "restored": "9ea6702b16bf7b5cc3557ba201375438aab188ab312e0ada3319a6a7e4737c36"
+    },
+    {
+      "file": "src\\components\\WelcomePage.astro",
+      "before": "19a1b451ddae88fe453898094003a5e2c9679d505db78b075f162e6ac2e06f55",
+      "restored": "18da9b6b67fbdfd618aecd9ef4406bed51de92632bccb502e74dd9053168849f"
+    },
+    {
+      "file": "src\\i18n\\welcome.ts",
+      "before": "b24089c03f5e4cd5541c25d7bcdaf606530c5cb18703b59d4680d17667932808",
+      "restored": "84c3406d02f867a48be194940cef4063a87b0fe08ad638e4c272b9280ee3da92"
+    },
+    {
+      "file": "src\\pages\\blog.astro",
+      "before": "5cb1c5fab1f6b0c0c522f522cbd91927718c451d25e499413927d9575d453a6f",
+      "restored": "f7bf7444d2f34abb97d2b881de5503ee08b1e93b21ac14295ea9cd9571dab86f"
+    },
+    {
+      "file": "src\\pages\\[locale]\\blog.astro",
+      "before": "b318bd0f2ecd9d164008c63b69ecbaa8d063164931af0ef67245f74eede2746d",
+      "restored": "19cb32fed337c4a8d8554ac69faa5205faa766c9c6da0863aa99ebc985d46e5c"
+    },
+    {
+      "file": "src\\scripts\\home-journey.ts",
+      "before": "cae3404540fdd4ea0858e6cd18968dbc17558a7942ded4d16cbce87a6c339a76",
+      "restored": "17469f7ecd8da22da90408d870b866acfc82981fb8e1565824dadf8141d7a5d7"
+    },
+    {
+      "file": "src\\scripts\\motion.ts",
+      "before": "36b5d3985726995d54a48df0e1366bd282763fd2a68e5ba143908f5aca8fd261",
+      "restored": "ea1a54bda659c6817d8ad867530835b477f2c530c5ad0d3990fd58b6376c941d"
+    },
+    {
+      "file": "src\\scripts\\page-motion.ts",
+      "before": "b6d8bc36b69ef992018cdaafb1ed1ab4d778cb1ee02ad1d40880c9a87f237834",
+      "restored": "885831a6e55ce30e0096ab97298b7a4d376b70ae51f6c59ab0e4d7ead2acde2b"
+    },
+    {
+      "file": "src\\scripts\\study-constellation.ts",
+      "before": "8ed887ffb9de6b12aa0d1bcf305107566dcf4933f099b234c3c50165144b9fad",
+      "restored": "c80b8ae9383d0fa60a9896ae869fc8d9990978884971a56fcf90cd7a8513964a"
+    },
+    {
+      "file": "src\\styles\\global.css",
+      "before": "41061f04209652eaeb81aea45367347ac78c17f71a54391781b091cf191dc41c",
+      "restored": "199f7fb1acaab3acb1cac072b439a21cd31dd2d69f9af2665ffd9f5310b7edf7"
+    },
+    {
+      "file": "src\\styles\\home.css",
+      "before": "7f83d36f617b5363e707092b3a9e8dfb2d06aaa4a006e064ce989ace49bad47f",
+      "restored": "7c2929e3b3aca978083215e7f205fe5a97fd038e808017435cdfc7f4322013aa"
+    },
+    {
+      "file": "src\\styles\\listing.css",
+      "before": "e0af6286a712b20a387c1fe68676b11e3e65e5c88babfd4624da51e5fdccb818",
+      "restored": "5378b5c71b59dd011402681c0ca2d426a9b64582565739f09629fa7254bd9323"
+    },
+    {
+      "file": "src\\styles\\people.css",
+      "before": "51afed07e446da99d0916267db47579c0b8cce20afcb3417799a0fcbfc22a8ef",
+      "restored": "8680996ddf3f200e1405248f2ab6f52599b758434bff489b1f2a719e9f394ecc"
+    },
+    {
+      "file": "src\\styles\\reading.css",
+      "before": "fb3cb345932b5969d659f326c4ee88e5614eb69d581f44c038a0ac62f3bf7307",
+      "restored": "e0553745aeb272f1cc1cb527faf3955565992b5a06b8cd5c56a33574ca89a5a9"
+    },
+    {
+      "file": "src/components/home/types.ts",
+      "before": "7dca66f21e26a7601f7d55fefe9e816f91de29376f9695e095f54f6fd446f11f",
+      "restored": "2e07c25e9f9fe215601c23bea4c3ac6f735d416e96aa5cd35026961890049488"
+    },
+    {
+      "file": "src/layouts/BaseLayout.astro",
+      "before": "8fc7ac31a6ed2224adb1a3657fd9befa177bf96449756db9f4825acb1c6535c6",
+      "restored": "c05119421509ea169fc2f688cf13d148449b1ef3211288867e8bceee9ab215e4"
+    }
+  ]
+}

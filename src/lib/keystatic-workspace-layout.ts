@@ -29,7 +29,7 @@ export function attachWorkspaceLayout(document: Document, propertiesControls: HT
   outline.setAttribute('aria-label', '文章大纲');
   outline.open = false;
   const summary = document.createElement('summary');
-  summary.textContent = '大纲';
+  summary.textContent = '文章大纲';
   const navigation = document.createElement('nav');
   navigation.setAttribute('aria-label', '跳转到文章标题');
   outline.append(summary, navigation);
@@ -57,6 +57,15 @@ export function attachWorkspaceLayout(document: Document, propertiesControls: HT
     /* Optional preferences. */
   }
   const resizeObserver = new win.ResizeObserver(() => schedule());
+  const releaseWritingHost = () => {
+    resizeObserver.disconnect();
+    if (writingHost) {
+      delete writingHost.dataset.wsOutlineHost;
+      for (const child of writingHost.children) child.removeAttribute('data-ws-writing-content');
+    }
+    writingHost = null;
+    outlineMode = '';
+  };
   summary.addEventListener('click', () => {
     win.requestAnimationFrame(() => {
       outlinePreferences[outlineMode] = outline.open;
@@ -89,7 +98,7 @@ export function attachWorkspaceLayout(document: Document, propertiesControls: HT
     toggle.title = focused ? '退出专注模式后可展开属性' : '展开或收起文稿属性';
     toggle.setAttribute('aria-expanded', String(!hidden));
     resize?.setAttribute('aria-valuenow', String(width));
-    outline.hidden = focused;
+    outline.hidden = false;
   };
   toggle.addEventListener('click', () => {
     collapsed = !collapsed;
@@ -112,12 +121,14 @@ export function attachWorkspaceLayout(document: Document, propertiesControls: HT
     frame = 0;
     const next = document.querySelector<HTMLElement>('.ProseMirror');
     if (!next) {
+      releaseWritingHost();
       outline.remove();
       toggle.remove();
       resize?.remove();
       editor = null;
       split = null;
       properties = null;
+      headings = [];
       headingSignature = '\0';
       return;
     }
@@ -213,13 +224,12 @@ export function attachWorkspaceLayout(document: Document, propertiesControls: HT
       : primary?.querySelector<HTMLElement>(':scope > [data-scrollable]');
     if (nextHost) {
       if (writingHost !== nextHost) {
-        if (writingHost) delete writingHost.dataset.wsOutlineHost;
-        resizeObserver.disconnect();
+        releaseWritingHost();
         writingHost = nextHost;
         resizeObserver.observe(writingHost);
       }
       if (outline.parentElement !== writingHost) writingHost.prepend(outline);
-      const mode = !compact && !focused && writingHost.clientWidth >= 900 ? 'docked' : 'compact';
+      const mode = !compact && writingHost.clientWidth >= 800 ? 'docked' : 'compact';
       writingHost.dataset.wsOutlineHost = mode;
       for (const child of writingHost.children) {
         if (child !== outline) child.setAttribute('data-ws-writing-content', 'true');
@@ -232,6 +242,8 @@ export function attachWorkspaceLayout(document: Document, propertiesControls: HT
     if (properties && !toggle.isConnected) propertiesControls.append(toggle);
     apply();
     headings = Array.from(editor.querySelectorAll<HTMLElement>('h1, h2, h3, h4, h5, h6'));
+    const summaryText = headings.length ? `文章大纲 · ${headings.length}` : '文章大纲';
+    if (summary.textContent !== summaryText) summary.textContent = summaryText;
     const signature = headings
       .map((heading) => `${heading.tagName}:${heading.textContent}`)
       .join('\n');
@@ -302,14 +314,10 @@ export function attachWorkspaceLayout(document: Document, propertiesControls: HT
   refresh();
   return () => {
     observer.disconnect();
-    resizeObserver.disconnect();
+    releaseWritingHost();
     document.removeEventListener('workspace:focus', onFocus);
     document.removeEventListener('keydown', onKeyDown);
     delete document.documentElement.dataset.wsFocus;
-    if (writingHost) {
-      delete writingHost.dataset.wsOutlineHost;
-      for (const child of writingHost.children) child.removeAttribute('data-ws-writing-content');
-    }
     if (frame) win.cancelAnimationFrame(frame);
     document.removeEventListener('scroll', activeHeading, true);
     win.removeEventListener('resize', schedule);

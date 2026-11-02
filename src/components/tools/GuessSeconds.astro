@@ -1,0 +1,207 @@
+---
+import type { Locale } from '../../i18n/config';
+import '../../styles/guess-seconds.css';
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const copy = {
+  zh: {
+    title: '猜秒数',
+    intro: '闭上时间的刻度，相信自己的感觉。',
+    choose: '选择目标秒数',
+    custom: '自定义秒数',
+    range: '支持 0.1–3600 秒',
+    invalid: '请输入 0.1–3600 之间的秒数，最多两位小数。',
+    start: '开始',
+    stop: '停止',
+    retry: '再试一次',
+    change: '更换秒数',
+    ready: '准备好，就开始。',
+    running: '时间藏起来了。',
+    trust: '凭感觉，在你认为时间到了时停止。',
+    hint: '点击按钮或按空格键开始 / 停止',
+    target: '目标',
+    actual: '实际用时',
+    seconds: '秒',
+    difference: '时间差',
+    percent: '偏差比例',
+    early: '提前',
+    late: '晚了',
+    exact: '分秒不差',
+    attempts: '已完成挑战',
+    best: '本目标最佳偏差',
+    empty: '等待第一笔成绩',
+    session: '仅记录本次页面内的成绩 · 最佳成绩按目标秒数分别计算',
+    interrupted: '挑战已中断',
+    interruptedNote: '检测到切换标签页或应用。本次不计成绩，请重新开始。',
+  },
+  en: {
+    title: 'Guess the Seconds',
+    intro: 'Hide the clock. Trust your sense of time.',
+    choose: 'Choose a target',
+    custom: 'Custom seconds',
+    range: '0.1–3600 seconds',
+    invalid: 'Enter 0.1–3600 seconds, with at most two decimal places.',
+    start: 'Start',
+    stop: 'Stop',
+    retry: 'Try again',
+    change: 'Change target',
+    ready: 'Ready when you are.',
+    running: 'The clock is hidden.',
+    trust: 'Stop when you feel the time is up.',
+    hint: 'Click the button or press Space to start / stop',
+    target: 'Target',
+    actual: 'Actual time',
+    seconds: 's',
+    difference: 'Time difference',
+    percent: 'Relative error',
+    early: 'Early by',
+    late: 'Late by',
+    exact: 'Right on time',
+    attempts: 'Completed attempts',
+    best: 'Best error for this target',
+    empty: 'Your first result awaits',
+    session: 'Results last for this page visit · Personal bests are tracked per target',
+    interrupted: 'Challenge interrupted',
+    interruptedNote: 'You switched tabs or apps. This attempt was discarded. Please start again.',
+  },
+  de: {
+    title: 'Sekunden schätzen',
+    intro: 'Verstecke die Uhr. Vertraue deinem Zeitgefühl.',
+    choose: 'Zielzeit wählen',
+    custom: 'Eigene Sekunden',
+    range: '0,1–3600 Sekunden',
+    invalid: 'Gib 0,1–3600 Sekunden mit höchstens zwei Nachkommastellen ein.',
+    start: 'Start',
+    stop: 'Stopp',
+    retry: 'Noch einmal',
+    change: 'Zielzeit ändern',
+    ready: 'Bereit, wenn du es bist.',
+    running: 'Die Uhr ist verborgen.',
+    trust: 'Stoppe, wenn du glaubst, dass die Zeit um ist.',
+    hint: 'Klicken oder Leertaste zum Starten / Stoppen',
+    target: 'Ziel',
+    actual: 'Tatsächliche Zeit',
+    seconds: 's',
+    difference: 'Zeitabweichung',
+    percent: 'Relative Abweichung',
+    early: 'Zu früh um',
+    late: 'Zu spät um',
+    exact: 'Genau getroffen',
+    attempts: 'Abgeschlossene Versuche',
+    best: 'Beste Abweichung für dieses Ziel',
+    empty: 'Dein erstes Ergebnis wartet',
+    session: 'Ergebnisse gelten für diesen Seitenbesuch · Bestwerte werden pro Zielzeit erfasst',
+    interrupted: 'Versuch unterbrochen',
+    interruptedNote:
+      'Du hast den Tab oder die App gewechselt. Dieser Versuch zählt nicht. Bitte starte erneut.',
+  },
+}[locale];
+---
+
+<guess-seconds data-copy={JSON.stringify(copy)} data-locale={locale} data-phase="ready">
+  <header class="guess-heading">
+    <span>PLAY / TIME</span>
+    <h1>{copy.title}</h1>
+    <p>{copy.intro}</p>
+  </header>
+  <section class="guess-experience" aria-label={copy.title}>
+    <div class="guess-setup" data-setup>
+      <h2>{copy.choose}</h2>
+      <div class="guess-presets" role="group" aria-label={copy.choose}>
+        {[5, 10, 20, 30, 60].map((seconds) => (
+          <button
+            type="button"
+            data-seconds={seconds}
+            aria-pressed={seconds === 10 ? 'true' : 'false'}
+          >
+            {seconds}
+            <small>{copy.seconds}</small>
+          </button>
+        ))}
+      </div>
+      <label class="guess-custom">
+        {copy.custom}
+        <span>
+          <input
+            type="number"
+            min="0.1"
+            max="3600"
+            step="0.01"
+            value="10"
+            inputmode="decimal"
+            aria-describedby="guess-range guess-error"
+          />
+          <small>{copy.seconds}</small>
+        </span>
+      </label>
+      <p id="guess-range" class="guess-note">
+        {copy.range}
+      </p>
+      <p id="guess-error" class="guess-error" role="alert" hidden>
+        {copy.invalid}
+      </p>
+    </div>
+    <div class="guess-running" data-running hidden>
+      <span aria-hidden="true">∗</span>
+      <h2>{copy.running}</h2>
+      <p>{copy.trust}</p>
+    </div>
+    <div class="guess-result" data-result hidden>
+      <p class="guess-note">{copy.actual}</p>
+      <p class="guess-actual">
+        <strong data-actual></strong>
+        <span>{copy.seconds}</span>
+      </p>
+      <p class="guess-verdict" data-verdict></p>
+      <dl class="guess-comparison">
+        <div>
+          <dt>{copy.target}</dt>
+          <dd data-target></dd>
+        </div>
+        <div>
+          <dt>{copy.difference}</dt>
+          <dd data-difference></dd>
+        </div>
+        <div>
+          <dt>{copy.percent}</dt>
+          <dd data-percent></dd>
+        </div>
+      </dl>
+    </div>
+    <div class="guess-interrupted" data-interrupted hidden>
+      <h2>{copy.interrupted}</h2>
+      <p>{copy.interruptedNote}</p>
+    </div>
+    <div class="guess-controls">
+      <button class="guess-primary" type="button" data-primary>
+        {copy.start}
+      </button>
+      <button type="button" data-change hidden>
+        {copy.change}
+      </button>
+    </div>
+    <p class="guess-note guess-key-hint">{copy.hint}</p>
+    <p class="sr-only" role="status" aria-live="polite" data-announcement>
+      {copy.ready}
+    </p>
+  </section>
+  <footer class="guess-summary" data-summary>
+    <dl>
+      <div>
+        <dt>{copy.attempts}</dt>
+        <dd data-attempts>0</dd>
+      </div>
+      <div>
+        <dt>{copy.best}</dt>
+        <dd data-best>—</dd>
+      </div>
+    </dl>
+    <p>{copy.session}</p>
+  </footer>
+</guess-seconds>
+
+<script>
+  import '../../scripts/guess-seconds';
+</script>

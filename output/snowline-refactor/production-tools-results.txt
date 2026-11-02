@@ -1,0 +1,20 @@
+﻿### Result
+{"results":[{"route":"/tools/pomodoro","status":200,"islands":0,"buttons":14},{"route":"/tools/smith-chart","status":200,"islands":0,"buttons":40}],"errors":[]}
+### Ran Playwright code
+```js
+await (﻿async (page) => {
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.emulateMedia({reducedMotion:'reduce'});
+ const results=[];
+ for(const route of ['/tools/pomodoro','/tools/smith-chart']) {
+  const response=await page.goto('http://127.0.0.1:4323'+route);await page.waitForTimeout(1000);
+  results.push({route,status:response.status(),islands:await page.locator('astro-island[ssr]').count(),buttons:await page.locator('main button').count()});
+ }
+ return {results,errors};
+}
+)(page);
+```
+### Page
+- Page URL: http://127.0.0.1:4323/tools/smith-chart
+- Page Title: 在线史密斯圆图 · iceaxing
+### Events
+- New console entries: .playwright-cli\console-2026-11-02T08-37-28-487Z.log#L82-L84

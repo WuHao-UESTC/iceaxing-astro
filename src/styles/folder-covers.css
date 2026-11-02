@@ -1,0 +1,388 @@
+/* Group landscapes and a clear cover window on the transparent page background. */
+.archive-page.archive-folder-group-skill {
+  --archive-accent: var(--archive-blue);
+}
+.archive-page.archive-folder-group-study {
+  --archive-accent: var(--archive-study);
+}
+.archive-page.archive-folder-group-life {
+  --archive-accent: var(--archive-gold);
+}
+.archive-page.archive-folder-group-camp {
+  --archive-accent: var(--archive-violet);
+}
+.archive-heading.archive-folder-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 0.8rem 2rem;
+  min-height: 19rem;
+  margin-top: 0.7rem;
+  padding: 1.3rem 1.6rem 1.5rem;
+}
+.archive-folder-landscape {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  color: var(--archive-accent);
+  pointer-events: none;
+}
+.landscape-study .folder-terrain {
+  opacity: 0.35;
+}
+.landscape-life .folder-terrain {
+  opacity: 0.3;
+}
+.landscape-camp .folder-terrain {
+  display: none;
+}
+.archive-folder-hero .archive-heading-copy {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  align-self: end;
+}
+.archive-folder-hero .archive-description {
+  font-size: 0.83rem;
+}
+.archive-folder-marker {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+}
+.archive-folder-marker > span {
+  width: 0.3rem;
+  height: 0.3rem;
+  border-radius: 50%;
+  background: var(--archive-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--archive-accent) 10%, transparent);
+}
+.archive-folder-cover {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  width: 100%;
+  height: auto;
+  margin: 0.25rem 0;
+  align-self: stretch;
+  justify-self: center;
+  min-width: 0;
+  min-height: 0;
+}
+.archive-folder-cover img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0;
+  background: color-mix(in srgb, var(--page) 35%, transparent);
+  clip-path: polygon(0 0, 94% 0, 100% 12%, 100% 100%, 6% 100%, 0 88%);
+}
+.archive-folder-cover figcaption {
+  position: absolute;
+  inset: auto 0 -1.1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.65rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.48rem;
+  line-height: 1.6;
+  letter-spacing: 0.09em;
+}
+.archive-folder-cover figcaption > span {
+  display: block;
+}
+.archive-folder-group-life .archive-folder-cover {
+  transform: rotate(2deg);
+}
+.archive-folder-group-life .archive-folder-cover img {
+  clip-path: polygon(6% 0, 100% 8%, 94% 94%, 40% 100%, 0 82%);
+}
+.archive-folder-hero .archive-statistics {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: start;
+  justify-content: start;
+  gap: 0.25rem;
+}
+.archive-folder-hero .archive-statistic {
+  width: 5rem;
+  aspect-ratio: 100 / 88;
+}
+.archive-folder-hero .archive-statistic-copy {
+  inset: 0.35rem 0.2rem 0.5rem;
+}
+.archive-folder-hero .archive-statistic-copy strong {
+  font-size: 2rem;
+}
+.archive-folder-hero .archive-statistic-copy span {
+  font-size: 0.56rem;
+}
+.archive-folder-progress {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+.archive-folder-progress progress {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  height: 0.2rem;
+  border: 0;
+  background: var(--line);
+  accent-color: var(--archive-accent);
+}
+.archive-folder-progress progress::-webkit-progress-bar {
+  background: var(--line);
+}
+.archive-folder-progress progress::-webkit-progress-value {
+  background: var(--archive-accent);
+}
+.archive-folder-progress progress::-moz-progress-bar {
+  background: var(--archive-accent);
+}
+.archive-folder-progress strong {
+  color: var(--archive-accent);
+  font-weight: 500;
+}
+.archive-folder-progress small {
+  font-size: 0.65rem;
+}
+.archive-folder-chapters {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+.archive-folder-chapters a {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-top: 1px solid var(--line);
+  padding-top: 0.65rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  text-decoration: none;
+}
+.archive-folder-chapters span {
+  margin-right: 0.55rem;
+  color: var(--archive-accent);
+  font-size: 0.6rem;
+}
+.archive-folder-chapters a:hover {
+  color: var(--archive-accent);
+}
+
+/* Folder entries have their own layout; article rows remain compact and equal-height. */
+.archive-page .archive-group-project .archive-entries {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  padding-top: 0.8rem;
+}
+.archive-page .archive-folder-entry {
+  --folder-card-accent: var(--archive-accent);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  grid-template-columns: 1.4rem minmax(0, 1fr) 40%;
+  gap: 0.8rem 1rem;
+  align-items: start;
+  min-height: 11rem;
+  padding: 1.25rem;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+}
+.archive-page .archive-folder-entry[data-cover-group='study'] {
+  --folder-card-accent: var(--archive-study);
+}
+.archive-page .archive-folder-entry[data-cover-group='skill'] {
+  --folder-card-accent: var(--archive-blue);
+}
+.archive-page .archive-folder-entry[data-cover-group='life'] {
+  --folder-card-accent: var(--archive-gold);
+}
+.archive-page .archive-folder-entry[data-cover-group='camp'] {
+  --folder-card-accent: var(--archive-violet);
+}
+.archive-folder-entry::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--folder-card-accent) 10%, var(--page)),
+    transparent
+  );
+  pointer-events: none;
+}
+.archive-folder-entry .archive-number {
+  grid-column: 1;
+  grid-row: 1;
+  color: var(--folder-card-accent);
+}
+.archive-folder-entry .archive-entry-copy {
+  grid-column: 2;
+  grid-row: 1;
+}
+.archive-folder-entry .archive-entry-end {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: end;
+  justify-self: end;
+}
+.archive-folder-entry .archive-entry-state {
+  color: var(--folder-card-accent);
+}
+.archive-folder-entry p {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.archive-folder-entry-cover {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  display: block;
+  min-width: 0;
+  height: 9rem;
+  width: 100%;
+  align-self: center;
+  background: color-mix(in srgb, var(--folder-card-accent) 6%, var(--page));
+  clip-path: polygon(6% 0, 100% 0, 100% 100%, 0 94%);
+}
+.archive-folder-entry-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0.3rem;
+  object-fit: contain;
+  transition: transform 200ms ease;
+}
+.archive-folder-entry:hover .archive-folder-entry-cover img {
+  transform: translateY(-2px);
+}
+.archive-folder-entry:hover h3 {
+  color: var(--folder-card-accent);
+}
+.archive-page .archive-group-collection .archive-entries {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem;
+  padding-top: 0.8rem;
+}
+.archive-page .archive-group-collection .archive-folder-entry {
+  grid-template-columns: 1.4rem minmax(0, 1fr) 1rem;
+  padding: 0 0 1rem;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+}
+.archive-folder-collection::before {
+  display: none;
+}
+.archive-folder-collection .archive-folder-entry-cover {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  height: 9rem;
+  clip-path: polygon(0 0, 94% 0, 100% 16%, 100% 100%, 0 100%);
+}
+.archive-folder-collection .archive-entry-copy {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+.archive-folder-collection .archive-number {
+  grid-column: 1;
+  grid-row: 3;
+}
+.archive-folder-collection .archive-entry-end {
+  grid-column: 3;
+  grid-row: 3;
+}
+
+@media (max-width: 56rem) {
+  .archive-heading.archive-folder-hero {
+    gap: 0.8rem 1.3rem;
+    min-height: 17.5rem;
+    padding: 1.2rem;
+  }
+  .archive-page .archive-folder-entry {
+    grid-template-columns: 1.2rem minmax(0, 1fr) 37%;
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+}
+@media (max-width: 40rem) {
+  .archive-heading.archive-folder-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    min-height: 0;
+    padding: 1.1rem 1rem 1.2rem;
+  }
+  .archive-folder-hero .archive-heading-copy {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .archive-folder-cover {
+    grid-column: 1;
+    grid-row: 2;
+    height: 10.5rem;
+    width: 100%;
+    max-width: 22rem;
+  }
+  .archive-folder-hero .archive-statistics {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .archive-folder-chapters {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.6rem;
+  }
+  .archive-folder-progress {
+    gap: 0.5rem;
+    font-size: 0.65rem;
+  }
+  .archive-folder-progress small {
+    font-size: 0.58rem;
+  }
+  .archive-page .archive-group-collection .archive-entries {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .archive-page .archive-folder-entry {
+    grid-template-columns: 1rem minmax(0, 1fr) 35%;
+    column-gap: 0.6rem;
+    padding: 1rem 0.7rem;
+  }
+  .archive-folder-entry-cover {
+    height: 8rem;
+  }
+  .archive-folder-entry h3 {
+    font-size: 0.96rem;
+  }
+  .archive-folder-entry p {
+    font-size: 0.73rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .archive-folder-entry-cover img {
+    transition: none;
+  }
+}

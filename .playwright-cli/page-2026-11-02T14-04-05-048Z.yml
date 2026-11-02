@@ -1,0 +1,438 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - navigation "主导航" [ref=e4]:
+      - generic [ref=e5]:
+        - link "iceaxing — 首页" [ref=e6] [cursor=pointer]:
+          - /url: /blog
+          - text: ICEAXING.
+        - generic [ref=e7]: THE ASCENT / 01—05
+      - generic [ref=e8]:
+        - generic [ref=e9]:
+          - link "文章" [ref=e10] [cursor=pointer]:
+            - /url: /articles
+            - generic [aria-hidden] [ref=e11]: "01"
+          - link "项目" [ref=e13] [cursor=pointer]:
+            - /url: /projects
+            - generic [aria-hidden] [ref=e14]: "02"
+          - link "个人档案" [ref=e16] [cursor=pointer]:
+            - /url: /profile
+            - generic [aria-hidden] [ref=e17]: "03"
+          - link "碎碎念" [ref=e19] [cursor=pointer]:
+            - /url: /daily-ramblings
+            - generic [aria-hidden] [ref=e20]: "04"
+        - generic [ref=e22]:
+          - button "搜索" [ref=e23] [cursor=pointer]:
+            - generic [aria-hidden] [ref=e24]: ⌕
+          - button "切换明暗模式" [ref=e26] [cursor=pointer]
+      - list "海拔路线" [ref=e30]:
+        - listitem [ref=e31]:
+          - link "封面" [ref=e32] [cursor=pointer]:
+            - /url: "#base-camp"
+            - generic [aria-hidden] [ref=e33]: "01"
+        - listitem [ref=e35]:
+          - link "技术栈" [ref=e36] [cursor=pointer]:
+            - /url: "#technical-ridge"
+            - generic [aria-hidden] [ref=e37]: "02"
+        - listitem [ref=e39]:
+          - link "学习笔记" [ref=e40] [cursor=pointer]:
+            - /url: "#study-terrace"
+            - generic [aria-hidden] [ref=e41]: "03"
+        - listitem [ref=e43]:
+          - link "生活日常" [ref=e44] [cursor=pointer]:
+            - /url: "#snowfield-traverse"
+            - generic [aria-hidden] [ref=e45]: "04"
+        - listitem [ref=e47]:
+          - link "沿途随记" [ref=e48] [cursor=pointer]:
+            - /url: "#night-camp"
+            - generic [aria-hidden] [ref=e49]: "05"
+      - generic [ref=e51]:
+        - group "语言" [ref=e52]:
+          - link "中文" [ref=e53] [cursor=pointer]:
+            - /url: http://127.0.0.1:4321/blog#base-camp
+          - link "EN" [ref=e54] [cursor=pointer]:
+            - /url: http://127.0.0.1:4321/en/blog#base-camp
+          - link "DE" [ref=e55] [cursor=pointer]:
+            - /url: http://127.0.0.1:4321/de/blog#base-camp
+        - generic [ref=e56]:
+          - link "关于" [ref=e57] [cursor=pointer]:
+            - /url: /about
+          - link "工具" [ref=e58] [cursor=pointer]:
+            - /url: /tools
+          - link "友链" [ref=e59] [cursor=pointer]:
+            - /url: /friends
+          - link "RSS" [ref=e60] [cursor=pointer]:
+            - /url: /rss.xml
+    - generic [ref=e61]:
+      - navigation "章节翻页":
+        - button "技术栈" [ref=e62] [cursor=pointer]:
+          - generic [aria-hidden] [ref=e63]: →
+      - region [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - paragraph [ref=e68]: 雪线之上 · 个人远征记录
+              - heading "ICEAXING." [level=1] [ref=e69]
+              - paragraph [ref=e70]: 关于技术、项目与生活的个人博客。
+            - figure [aria-hidden] [ref=e72]:
+              - img [ref=e73]:
+                - generic [ref=e113]:
+                  - generic [ref=e114]: FIG. 01 — A PERSONAL EXPEDITION
+                  - generic [ref=e115]: KEEP EXPLORING ↗
+                  - generic [ref=e116]: SNOWLINE
+              - generic [ref=e117]:
+                - generic [ref=e118]: 循着好奇，向雪线之上。
+                - generic [ref=e119]: EXPEDITION / ICEAXING
+          - region [ref=e120]:
+            - heading "精选内容" [level=2] [ref=e121]
+            - region "精选内容" [ref=e122]:
+              - generic [ref=e123]:
+                - generic [ref=e124]:
+                  - article [ref=e125]:
+                    - link "01 / 文章 2026年10月20日 无源滤波器设计 继续阅读" [ref=e126] [cursor=pointer]:
+                      - /url: /filter-design-in-digital-world-note/basic-of-passive-filter-design
+                      - generic [ref=e127]:
+                        - generic [ref=e128]: 01 / 文章
+                        - generic [ref=e129]: 2026年10月20日
+                      - heading "无源滤波器设计" [level=3] [ref=e130]
+                      - generic [ref=e131]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e132]: ↗
+                  - article [ref=e133]:
+                    - link "02 / 文章 2026年10月21日 射频滤波器设计基础 继续阅读" [ref=e134] [cursor=pointer]:
+                      - /url: /filter-design-in-digital-world-note/basic-of-rf-filter-design
+                      - generic [ref=e135]:
+                        - generic [ref=e136]: 02 / 文章
+                        - generic [ref=e137]: 2026年10月21日
+                      - heading "射频滤波器设计基础" [level=3] [ref=e138]
+                      - generic [ref=e139]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e140]: ↗
+                  - article [ref=e141]:
+                    - link "03 / 文章 2026年10月23日 对二阶系统刨根问底 继续阅读" [ref=e142] [cursor=pointer]:
+                      - /url: /filter-design-in-digital-world-note/deep-in-2nd-order-system
+                      - generic [ref=e143]:
+                        - generic [ref=e144]: 03 / 文章
+                        - generic [ref=e145]: 2026年10月23日
+                      - heading "对二阶系统刨根问底" [level=3] [ref=e146]
+                      - generic [ref=e147]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e148]: ↗
+                - generic [ref=e149]:
+                  - article [ref=e150]:
+                    - link "04 / 文章 2026年10月23日 为什么‘s’的量纲是1/s？ 继续阅读" [ref=e151] [cursor=pointer]:
+                      - /url: /oppenheim-signal-and-system-note/dimension-of-s
+                      - generic [ref=e152]:
+                        - generic [ref=e153]: 04 / 文章
+                        - generic [ref=e154]: 2026年10月23日
+                      - heading "为什么‘s’的量纲是1/s？" [level=3] [ref=e155]
+                      - generic [ref=e156]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e157]: ↗
+                  - article [ref=e158]:
+                    - link "05 / 文章 2026年10月27日 指缝间漏出来的幸福 有的时候，我感觉我在做任何事情时，都过于追求完整的体系。明明收获了许多，却总是为失去的那一点而着急…… 继续阅读" [ref=e159] [cursor=pointer]:
+                      - /url: /daily-ramblings/ramble-happiness-at-fingertip
+                      - generic [ref=e160]:
+                        - generic [ref=e161]: 05 / 文章
+                        - generic [ref=e162]: 2026年10月27日
+                      - heading "指缝间漏出来的幸福" [level=3] [ref=e163]
+                      - paragraph [ref=e164]: 有的时候，我感觉我在做任何事情时，都过于追求完整的体系。明明收获了许多，却总是为失去的那一点而着急……
+                      - generic [ref=e165]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e166]: ↗
+                  - article [ref=e167]:
+                    - link "06 / 文章 2026年11月20日 期末复习串讲——结论与直觉 这是一篇针对模拟集成电路期末复习知识点的文章。在这篇文章中，我们会更加注重结论的记忆，直觉的分析，以及课本整体知识脉络的梳理。减少冗杂计算。 继续阅读" [ref=e168] [cursor=pointer]:
+                      - /url: /razavi-cmos-analog-note/razavi-analogic-review
+                      - generic [ref=e169]:
+                        - generic [ref=e170]: 06 / 文章
+                        - generic [ref=e171]: 2026年11月20日
+                      - heading "期末复习串讲——结论与直觉" [level=3] [ref=e172]
+                      - paragraph [ref=e173]: 这是一篇针对模拟集成电路期末复习知识点的文章。在这篇文章中，我们会更加注重结论的记忆，直觉的分析，以及课本整体知识脉络的梳理。减少冗杂计算。
+                      - generic [ref=e174]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e175]: ↗
+                - generic [ref=e176]:
+                  - article [ref=e177]:
+                    - 'link "07 / 分类 碎碎念 记下偶然闪过的念头、日常片段与路上的所见所想。 #daily-ramblings 继续阅读" [ref=e178] [cursor=pointer]':
+                      - /url: /daily-ramblings
+                      - generic [ref=e179]: 07 / 分类
+                      - heading "碎碎念" [level=3] [ref=e181]
+                      - paragraph [ref=e182]: 记下偶然闪过的念头、日常片段与路上的所见所想。
+                      - generic [ref=e183]: "#daily-ramblings"
+                      - generic [ref=e185]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e186]: ↗
+                  - article [ref=e187]:
+                    - link "08 / 分类 Rabaey-数字集成电路设计 继续阅读" [ref=e188] [cursor=pointer]:
+                      - /url: /rabaey-digital-ic-note
+                      - generic [ref=e189]: 08 / 分类
+                      - heading "Rabaey-数字集成电路设计" [level=3] [ref=e191]
+                      - generic [ref=e192]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e193]: ↗
+                  - article [ref=e194]:
+                    - 'link "09 / 项目 已完成 2026年集创赛作品合集 2026年集创赛作品：用于光电流检测的模拟前端（研究生组）。本人完成FDA,PGA,TIA,比较器的相关设计。虽然没能取得一个理想的奖项，但是也收获颇丰。这里展示一些设计的思路与笔记。 100% #competition 继续阅读" [ref=e195] [cursor=pointer]':
+                      - /url: /analog-ic/2026-cicc
+                      - generic [ref=e196]:
+                        - generic [ref=e197]: 09 / 项目
+                        - generic [ref=e198]: 已完成
+                      - heading "2026年集创赛作品合集" [level=3] [ref=e200]
+                      - paragraph [ref=e201]: 2026年集创赛作品：用于光电流检测的模拟前端（研究生组）。本人完成FDA,PGA,TIA,比较器的相关设计。虽然没能取得一个理想的奖项，但是也收获颇丰。这里展示一些设计的思路与笔记。
+                      - generic [ref=e202]: 100%
+                      - generic [ref=e205]: "#competition"
+                      - generic [ref=e207]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e208]: ↗
+                - article [ref=e210]:
+                  - 'link "10 / 项目 已完成 二级运放搭建全流程 从0到1，第一次搭建出一个能用的二级运放对于我而言是很不容易的，希望这一篇文章可以帮助到更多刚刚IC入门的小白 100% #basic 继续阅读" [ref=e211] [cursor=pointer]':
+                    - /url: /analog-ic/two-stage-ota
+                    - generic [ref=e212]:
+                      - generic [ref=e213]: 10 / 项目
+                      - generic [ref=e214]: 已完成
+                    - heading "二级运放搭建全流程" [level=3] [ref=e216]
+                    - paragraph [ref=e217]: 从0到1，第一次搭建出一个能用的二级运放对于我而言是很不容易的，希望这一篇文章可以帮助到更多刚刚IC入门的小白
+                    - generic [ref=e218]: 100%
+                    - generic [ref=e221]: "#basic"
+                    - generic [ref=e223]:
+                      - text: 继续阅读
+                      - generic [aria-hidden] [ref=e224]: ↗
+              - generic [aria-hidden] [ref=e225]:
+                - generic [ref=e226]:
+                  - article [ref=e227]:
+                    - link [ref=e228] [cursor=pointer]:
+                      - /url: /filter-design-in-digital-world-note/basic-of-passive-filter-design
+                      - generic [ref=e229]:
+                        - generic [ref=e230]: 01 / 文章
+                        - generic [ref=e231]: 2026年10月20日
+                      - heading [level=3] [ref=e232]: 无源滤波器设计
+                      - generic [ref=e233]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e234]: ↗
+                  - article [ref=e235]:
+                    - link [ref=e236] [cursor=pointer]:
+                      - /url: /filter-design-in-digital-world-note/basic-of-rf-filter-design
+                      - generic [ref=e237]:
+                        - generic [ref=e238]: 02 / 文章
+                        - generic [ref=e239]: 2026年10月21日
+                      - heading [level=3] [ref=e240]: 射频滤波器设计基础
+                      - generic [ref=e241]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e242]: ↗
+                  - article [ref=e243]:
+                    - link [ref=e244] [cursor=pointer]:
+                      - /url: /filter-design-in-digital-world-note/deep-in-2nd-order-system
+                      - generic [ref=e245]:
+                        - generic [ref=e246]: 03 / 文章
+                        - generic [ref=e247]: 2026年10月23日
+                      - heading [level=3] [ref=e248]: 对二阶系统刨根问底
+                      - generic [ref=e249]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e250]: ↗
+                - generic [ref=e251]:
+                  - article [ref=e252]:
+                    - link [ref=e253] [cursor=pointer]:
+                      - /url: /oppenheim-signal-and-system-note/dimension-of-s
+                      - generic [ref=e254]:
+                        - generic [ref=e255]: 04 / 文章
+                        - generic [ref=e256]: 2026年10月23日
+                      - heading [level=3] [ref=e257]: 为什么‘s’的量纲是1/s？
+                      - generic [ref=e258]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e259]: ↗
+                  - article [ref=e260]:
+                    - link [ref=e261] [cursor=pointer]:
+                      - /url: /daily-ramblings/ramble-happiness-at-fingertip
+                      - generic [ref=e262]:
+                        - generic [ref=e263]: 05 / 文章
+                        - generic [ref=e264]: 2026年10月27日
+                      - heading [level=3] [ref=e265]: 指缝间漏出来的幸福
+                      - paragraph [ref=e266]: 有的时候，我感觉我在做任何事情时，都过于追求完整的体系。明明收获了许多，却总是为失去的那一点而着急……
+                      - generic [ref=e267]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e268]: ↗
+                  - article [ref=e269]:
+                    - link [ref=e270] [cursor=pointer]:
+                      - /url: /razavi-cmos-analog-note/razavi-analogic-review
+                      - generic [ref=e271]:
+                        - generic [ref=e272]: 06 / 文章
+                        - generic [ref=e273]: 2026年11月20日
+                      - heading [level=3] [ref=e274]: 期末复习串讲——结论与直觉
+                      - paragraph [ref=e275]: 这是一篇针对模拟集成电路期末复习知识点的文章。在这篇文章中，我们会更加注重结论的记忆，直觉的分析，以及课本整体知识脉络的梳理。减少冗杂计算。
+                      - generic [ref=e276]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e277]: ↗
+                - generic [ref=e278]:
+                  - article [ref=e279]:
+                    - link [ref=e280] [cursor=pointer]:
+                      - /url: /daily-ramblings
+                      - generic [ref=e281]: 07 / 分类
+                      - heading [level=3] [ref=e283]: 碎碎念
+                      - paragraph [ref=e284]: 记下偶然闪过的念头、日常片段与路上的所见所想。
+                      - generic [ref=e285]: "#daily-ramblings"
+                      - generic [ref=e287]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e288]: ↗
+                  - article [ref=e289]:
+                    - link [ref=e290] [cursor=pointer]:
+                      - /url: /rabaey-digital-ic-note
+                      - generic [ref=e291]: 08 / 分类
+                      - heading [level=3] [ref=e293]: Rabaey-数字集成电路设计
+                      - generic [ref=e294]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e295]: ↗
+                  - article [ref=e296]:
+                    - link [ref=e297] [cursor=pointer]:
+                      - /url: /analog-ic/2026-cicc
+                      - generic [ref=e298]:
+                        - generic [ref=e299]: 09 / 项目
+                        - generic [ref=e300]: 已完成
+                      - heading [level=3] [ref=e302]: 2026年集创赛作品合集
+                      - paragraph [ref=e303]: 2026年集创赛作品：用于光电流检测的模拟前端（研究生组）。本人完成FDA,PGA,TIA,比较器的相关设计。虽然没能取得一个理想的奖项，但是也收获颇丰。这里展示一些设计的思路与笔记。
+                      - generic [ref=e304]: 100%
+                      - generic [ref=e307]: "#competition"
+                      - generic [ref=e309]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e310]: ↗
+                - article [ref=e312]:
+                  - link [ref=e313] [cursor=pointer]:
+                    - /url: /analog-ic/two-stage-ota
+                    - generic [ref=e314]:
+                      - generic [ref=e315]: 10 / 项目
+                      - generic [ref=e316]: 已完成
+                    - heading [level=3] [ref=e318]: 二级运放搭建全流程
+                    - paragraph [ref=e319]: 从0到1，第一次搭建出一个能用的二级运放对于我而言是很不容易的，希望这一篇文章可以帮助到更多刚刚IC入门的小白
+                    - generic [ref=e320]: 100%
+                    - generic [ref=e323]: "#basic"
+                    - generic [ref=e325]:
+                      - text: 继续阅读
+                      - generic [aria-hidden] [ref=e326]: ↗
+              - generic [aria-hidden] [ref=e327]:
+                - generic [ref=e328]:
+                  - article [ref=e329]:
+                    - link [ref=e330] [cursor=pointer]:
+                      - /url: /filter-design-in-digital-world-note/basic-of-passive-filter-design
+                      - generic [ref=e331]:
+                        - generic [ref=e332]: 01 / 文章
+                        - generic [ref=e333]: 2026年10月20日
+                      - heading [level=3] [ref=e334]: 无源滤波器设计
+                      - generic [ref=e335]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e336]: ↗
+                  - article [ref=e337]:
+                    - link [ref=e338] [cursor=pointer]:
+                      - /url: /filter-design-in-digital-world-note/basic-of-rf-filter-design
+                      - generic [ref=e339]:
+                        - generic [ref=e340]: 02 / 文章
+                        - generic [ref=e341]: 2026年10月21日
+                      - heading [level=3] [ref=e342]: 射频滤波器设计基础
+                      - generic [ref=e343]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e344]: ↗
+                  - article [ref=e345]:
+                    - link [ref=e346] [cursor=pointer]:
+                      - /url: /filter-design-in-digital-world-note/deep-in-2nd-order-system
+                      - generic [ref=e347]:
+                        - generic [ref=e348]: 03 / 文章
+                        - generic [ref=e349]: 2026年10月23日
+                      - heading [level=3] [ref=e350]: 对二阶系统刨根问底
+                      - generic [ref=e351]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e352]: ↗
+                - generic [ref=e353]:
+                  - article [ref=e354]:
+                    - link [ref=e355] [cursor=pointer]:
+                      - /url: /oppenheim-signal-and-system-note/dimension-of-s
+                      - generic [ref=e356]:
+                        - generic [ref=e357]: 04 / 文章
+                        - generic [ref=e358]: 2026年10月23日
+                      - heading [level=3] [ref=e359]: 为什么‘s’的量纲是1/s？
+                      - generic [ref=e360]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e361]: ↗
+                  - article [ref=e362]:
+                    - link [ref=e363] [cursor=pointer]:
+                      - /url: /daily-ramblings/ramble-happiness-at-fingertip
+                      - generic [ref=e364]:
+                        - generic [ref=e365]: 05 / 文章
+                        - generic [ref=e366]: 2026年10月27日
+                      - heading [level=3] [ref=e367]: 指缝间漏出来的幸福
+                      - paragraph [ref=e368]: 有的时候，我感觉我在做任何事情时，都过于追求完整的体系。明明收获了许多，却总是为失去的那一点而着急……
+                      - generic [ref=e369]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e370]: ↗
+                  - article [ref=e371]:
+                    - link [ref=e372] [cursor=pointer]:
+                      - /url: /razavi-cmos-analog-note/razavi-analogic-review
+                      - generic [ref=e373]:
+                        - generic [ref=e374]: 06 / 文章
+                        - generic [ref=e375]: 2026年11月20日
+                      - heading [level=3] [ref=e376]: 期末复习串讲——结论与直觉
+                      - paragraph [ref=e377]: 这是一篇针对模拟集成电路期末复习知识点的文章。在这篇文章中，我们会更加注重结论的记忆，直觉的分析，以及课本整体知识脉络的梳理。减少冗杂计算。
+                      - generic [ref=e378]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e379]: ↗
+                - generic [ref=e380]:
+                  - article [ref=e381]:
+                    - link [ref=e382] [cursor=pointer]:
+                      - /url: /daily-ramblings
+                      - generic [ref=e383]: 07 / 分类
+                      - heading [level=3] [ref=e385]: 碎碎念
+                      - paragraph [ref=e386]: 记下偶然闪过的念头、日常片段与路上的所见所想。
+                      - generic [ref=e387]: "#daily-ramblings"
+                      - generic [ref=e389]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e390]: ↗
+                  - article [ref=e391]:
+                    - link [ref=e392] [cursor=pointer]:
+                      - /url: /rabaey-digital-ic-note
+                      - generic [ref=e393]: 08 / 分类
+                      - heading [level=3] [ref=e395]: Rabaey-数字集成电路设计
+                      - generic [ref=e396]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e397]: ↗
+                  - article [ref=e398]:
+                    - link [ref=e399] [cursor=pointer]:
+                      - /url: /analog-ic/2026-cicc
+                      - generic [ref=e400]:
+                        - generic [ref=e401]: 09 / 项目
+                        - generic [ref=e402]: 已完成
+                      - heading [level=3] [ref=e404]: 2026年集创赛作品合集
+                      - paragraph [ref=e405]: 2026年集创赛作品：用于光电流检测的模拟前端（研究生组）。本人完成FDA,PGA,TIA,比较器的相关设计。虽然没能取得一个理想的奖项，但是也收获颇丰。这里展示一些设计的思路与笔记。
+                      - generic [ref=e406]: 100%
+                      - generic [ref=e409]: "#competition"
+                      - generic [ref=e411]:
+                        - text: 继续阅读
+                        - generic [aria-hidden] [ref=e412]: ↗
+                - article [ref=e414]:
+                  - link [ref=e415] [cursor=pointer]:
+                    - /url: /analog-ic/two-stage-ota
+                    - generic [ref=e416]:
+                      - generic [ref=e417]: 10 / 项目
+                      - generic [ref=e418]: 已完成
+                    - heading [level=3] [ref=e420]: 二级运放搭建全流程
+                    - paragraph [ref=e421]: 从0到1，第一次搭建出一个能用的二级运放对于我而言是很不容易的，希望这一篇文章可以帮助到更多刚刚IC入门的小白
+                    - generic [ref=e422]: 100%
+                    - generic [ref=e425]: "#basic"
+                    - generic [ref=e427]:
+                      - text: 继续阅读
+                      - generic [aria-hidden] [ref=e428]: ↗
+          - generic [ref=e429]:
+            - generic [ref=e430]:
+              - paragraph [ref=e431]: 循着好奇，向雪线之上。
+              - generic [ref=e432]: 为阅读而构建，而不是为框架而构建。 — Astro 重构原则
+            - navigation "文章 / 项目" [ref=e433]:
+              - link "认识我 ↗" [ref=e434] [cursor=pointer]:
+                - /url: /profile
+              - link "文章 ↗" [ref=e435] [cursor=pointer]:
+                - /url: /articles
+              - link "项目 ↗" [ref=e436] [cursor=pointer]:
+                - /url: /projects
+              - link "RSS ↗" [ref=e437] [cursor=pointer]:
+                - /url: /rss.xml
+            - generic [ref=e438]: 向下浏览精选 ↓
+  - generic [ref=e441]:
+    - button "Menu" [ref=e442]
+    - button "Inspect" [ref=e448]
+    - button "Audit" [ref=e452]
+    - button "Settings" [ref=e460]

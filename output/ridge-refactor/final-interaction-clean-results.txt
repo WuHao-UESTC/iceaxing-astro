@@ -1,0 +1,19 @@
+﻿### Result
+{"results":[{"name":"detail editor shares featured order","passed":true},{"name":"detail editor has unified featured label","passed":true},{"name":"legacy selected anchor stays in cover","passed":true},{"name":"mobile ridge expands","passed":true},{"name":"mobile direct jump collapses menu","passed":true},{"name":"short window can read chapter overflow","passed":true}]}
+### Ran Playwright code
+```js
+await (﻿async(page)=>{
+ const results=[];const base='http://127.0.0.1:4321';await page.emulateMedia({reducedMotion:'reduce'});await page.setViewportSize({width:1440,height:1000});await page.goto(base+'/keystatic/workspace');await page.getByRole('button',{name:'首页精选 · 编排'}).click();await page.locator('[data-featured-key]').first().waitFor();
+ await page.locator('[data-featured-key]').nth(1).getByRole('button',{name:'编辑',exact:true}).click();const editor=page.frameLocator('iframe[title="Keystatic 内容编辑器"]');await editor.getByLabel('精选顺序',{exact:true}).waitFor({state:'attached'});results.push({name:'detail editor shares featured order',passed:await editor.getByLabel('精选顺序',{exact:true}).count()>0});results.push({name:'detail editor has unified featured label',passed:await editor.getByText('是否精选',{exact:true}).count()>0});
+ await page.goto(base+'/blog#technical-ridge');await page.locator('[data-journey-link="base-camp"]').click();await page.waitForTimeout(100);await page.goto(base+'/blog#hero-featured-list');results.push({name:'legacy selected anchor stays in cover',passed:await page.locator('#base-camp').isVisible()&&await page.evaluate(()=>document.querySelector('.snowline-home').scrollLeft===0)});
+ await page.setViewportSize({width:390,height:844});await page.locator('[data-ridge-expand]').click();results.push({name:'mobile ridge expands',passed:await page.locator('[data-journey-nav][data-expanded]').count()===1});await page.locator('[data-journey-link="night-camp"]').click();results.push({name:'mobile direct jump collapses menu',passed:await page.locator('#night-camp').isVisible()&&await page.locator('[data-journey-nav][data-expanded]').count()===0});
+ await page.setViewportSize({width:1440,height:500});await page.goto(base+'/blog');results.push({name:'short window can read chapter overflow',passed:await page.locator('#base-camp').evaluate(e=>e.scrollHeight>e.clientHeight)});
+ return {results};
+}
+)(page);
+```
+### Page
+- Page URL: http://127.0.0.1:4321/blog
+- Page Title: iceaxing
+### Events
+- New console entries: .playwright-cli\console-2026-11-02T11-09-05-999Z.log#L7-L8

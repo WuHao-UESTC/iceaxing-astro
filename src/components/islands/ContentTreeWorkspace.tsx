@@ -6,6 +6,7 @@ import { syncWorkspaceTheme } from '../../lib/keystatic-workspace-theme';
 import { conceptEditorLocation } from '../../lib/concept-location';
 import WorkspaceLandscape from './WorkspaceLandscape';
 import ObsidianSync from './ObsidianSync';
+import FeaturedManager from './FeaturedManager';
 import type { WorkspaceEditorLocation } from '../../lib/keystatic-workspace-names';
 import type {
   ArticleNode,
@@ -126,6 +127,11 @@ export default function ContentTreeWorkspace() {
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [selectedLocale, setSelectedLocale] = useState<ContentLocale>('zh');
   const [editorUrl, setEditorUrl] = useState('/keystatic');
+  const [featuredOpen, setFeaturedOpen] = useState(false);
+  const [featuredMounted, setFeaturedMounted] = useState(false);
+  useEffect(() => {
+    if (featuredOpen) setFeaturedMounted(true);
+  }, [featuredOpen]);
   const [deleteTarget, setDeleteTarget] = useState<FolderNode | null>(null);
   const [createArticleTarget, setCreateArticleTarget] = useState<CreateArticleTarget | null>(null);
   const [deleting, setDeleting] = useState(false);
@@ -214,6 +220,7 @@ export default function ContentTreeWorkspace() {
   useEffect(() => () => stopEditorEnhancement.current?.(), []);
 
   const navigateEditor = useCallback((url: string) => {
+    setFeaturedOpen(false);
     setEditorUrl(url);
   }, []);
 
@@ -693,6 +700,10 @@ export default function ContentTreeWorkspace() {
   };
 
   const openUtilityCollection = (value: string) => {
+    if (value === 'featured') {
+      setFeaturedOpen(true);
+      return;
+    }
     if (!value || !tree) return;
     if (value === 'dashboard') navigateEditor(editorBase(tree));
     else if (value === 'settings') navigateEditor(`${editorBase(tree)}/singleton/siteSettings`);
@@ -852,6 +863,7 @@ export default function ContentTreeWorkspace() {
               选择原有管理入口…
             </option>
             <option value="dashboard">Keystatic 总览</option>
+            <option value="featured">首页精选 · 统一排序</option>
             <optgroup label="日志">
               <option value="logsZh">日志 · 中文</option>
               <option value="logsEn">日志 · English</option>
@@ -930,7 +942,7 @@ export default function ContentTreeWorkspace() {
             type="button"
             className="native-navigation-toggle workspace-focus-toggle"
             aria-pressed={focusMode}
-            title="专注时收起目录和属性；按 Esc 恢复原布局"
+            title="专注时收起文件树和属性；按 Esc 恢复原布局"
             onClick={() => setFocusMode((value) => !value)}
           >
             {focusMode ? '退出专注' : '专注写作'}
@@ -987,8 +999,29 @@ export default function ContentTreeWorkspace() {
               {refreshingPreview ? '正在刷新…' : '刷新预览'}
             </button>
           )}
+          <button
+            className="workspace-featured-entry"
+            type="button"
+            onClick={() => setFeaturedOpen((open) => !open)}
+          >
+            {featuredOpen ? '返回内容编辑' : '首页精选 · 编排'}
+          </button>
         </header>
+        {(featuredOpen || featuredMounted) && (
+          <div className="workspace-featured-pane" hidden={!featuredOpen}>
+            <FeaturedManager
+              active={featuredOpen}
+              branch={tree?.branch ?? null}
+              onEdit={(collection, slug) => {
+                const url = collectionUrl(editorBase(tree), collection, slug);
+                if (url === editorUrl) iframeRef.current?.contentWindow?.location.reload();
+                navigateEditor(url);
+              }}
+            />
+          </div>
+        )}
         <iframe
+          style={featuredOpen ? { display: 'none' } : undefined}
           ref={iframeRef}
           src={editorUrl}
           title="Keystatic 内容编辑器"

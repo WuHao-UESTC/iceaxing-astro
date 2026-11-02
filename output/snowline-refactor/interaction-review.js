@@ -1,0 +1,29 @@
+﻿async (page) => {
+ const results=[];const errors=[];page.on('pageerror',e=>errors.push(e.message));const base='http://127.0.0.1:4323';
+ await page.emulateMedia({reducedMotion:'reduce'});await page.setViewportSize({width:390,height:844});
+ await page.goto(base+'/blog');
+ await page.locator('[data-life-direction="1"]').click();await page.waitForFunction(()=>document.querySelector('[data-life-status]').textContent==='2 / 2');
+ results.push({check:'life next group',passed:await page.locator('[data-life-direction="1"]').isDisabled()});
+ await page.locator('[data-life-direction="-1"]').click();await page.waitForFunction(()=>document.querySelector('[data-life-status]').textContent==='1 / 2');
+ results.push({check:'life previous group',passed:await page.locator('[data-life-direction="-1"]').isDisabled()});
+ await page.locator('[data-star-select]').selectOption('razavi-cmos-analog-note');await page.getByRole('button',{name:'切换明暗模式'}).click();
+ results.push({check:'theme preserves textbook',passed:await page.locator('[data-star-select]').inputValue()==='razavi-cmos-analog-note'&&await page.locator('[data-topic="razavi-cmos-analog-note"]').isVisible()});
+ await page.locator('[data-star-select]').focus();await page.keyboard.press('Escape');
+ results.push({check:'keyboard textbook reset',passed:!(await page.locator('[data-star-detail]').isVisible())});
+ await page.locator('.site-menu > summary').click();results.push({check:'mobile menu opens',passed:await page.locator('.site-menu[open]').count()===1});await page.keyboard.press('Escape');
+ results.push({check:'mobile menu escape',passed:await page.locator('.site-menu[open]').count()===0});
+ await page.keyboard.press('Control+k');await page.locator('#site-search-query').fill('二阶');await page.locator('#site-search-results a[href]').first().waitFor();
+ results.push({check:'production search results',passed:await page.locator('#site-search-results a[href]').count()>0});await page.keyboard.press('Escape');
+ await page.setViewportSize({width:1440,height:1000});await page.goto(base+'/tools/pomodoro');await page.waitForSelector('.pomodoro-workbench[data-ready="true"]');
+ await page.locator('.pomodoro-actions .tool-primary').click();await page.waitForSelector('.pomodoro-workbench[data-status="running"]');
+ results.push({check:'timer starts',passed:true});await page.locator('.pomodoro-actions .tool-primary').click();await page.waitForSelector('.pomodoro-workbench[data-status="paused"]');
+ results.push({check:'timer pauses',passed:true});await page.getByRole('button',{name:'重置',exact:true}).click();await page.waitForSelector('.pomodoro-workbench[data-status="idle"]');results.push({check:'timer resets',passed:true});
+ for(const route of ['/en','/de','/en/blog','/de/blog']){
+  await page.setViewportSize({width:320,height:844});await page.goto(base+route);
+  const dimensions=await page.evaluate(()=>({width:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
+  results.push({check:'translated narrow '+route,passed:dimensions.scroll<=dimensions.width+1});
+ }
+ await page.goto(base+'/');await page.setViewportSize({width:1440,height:1000});
+ return {results,errors};
+}
+

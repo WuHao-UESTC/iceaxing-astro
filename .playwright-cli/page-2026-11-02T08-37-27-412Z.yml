@@ -1,0 +1,73 @@
+- generic [ref=f5e1]:
+  - link "Skip to content" [ref=f5e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=f5e3]:
+    - generic [ref=f5e4]:
+      - generic [ref=f5e5]:
+        - generic [ref=f5e11]:
+          - text: ICEAXING
+          - generic [ref=f5e12]: A PERSONAL EXPEDITION
+        - generic [ref=f5e13]:
+          - generic [ref=f5e14]: CHENGDU / CHINA
+          - navigation "语言" [ref=f5e15]:
+            - link "ZH" [ref=f5e16] [cursor=pointer]:
+              - /url: /
+            - link "EN" [ref=f5e17] [cursor=pointer]:
+              - /url: /en
+            - link "DE" [ref=f5e18] [cursor=pointer]:
+              - /url: /de
+          - button "切换明暗模式" [active] [ref=f5e19] [cursor=pointer]
+      - generic [ref=f5e22]:
+        - region [ref=f5e23]:
+          - generic [ref=f5e24]:
+            - img "吴昊" [ref=f5e25]
+            - generic [ref=f5e26]:
+              - text: 你好，我是
+              - strong [ref=f5e27]: 吴昊 / Iceaxing
+            - generic [ref=f5e29]: 欢迎来访
+          - generic [ref=f5e30]:
+            - paragraph [ref=f5e31]: EVERY JOURNEY BEGINS WITH A HELLO
+            - heading "很高兴，在雪线之上遇见你。" [level=1] [ref=f5e32]
+            - paragraph [ref=f5e33]:
+              - generic [ref=f5e34]: 一边是我的经历，一边是沿途的记录。
+              - generic [ref=f5e35]: 选一条感兴趣的路，我们慢慢认识。
+          - generic [aria-hidden] [ref=f5e36]: 从这里出发
+          - generic [ref=f5e37]:
+            - link "01 / ABOUT ME 看看我的个人简历 认识我，以及我正在做的事。 经历、方向与项目，一起展开。 MEET THE PERSON" [ref=f5e38] [cursor=pointer]:
+              - /url: /profile
+              - generic [ref=f5e39]: 01 / ABOUT ME
+              - heading "看看我的个人简历" [level=2] [ref=f5e46]
+              - paragraph [ref=f5e47]: 认识我，以及我正在做的事。经历、方向与项目，一起展开。
+              - generic [ref=f5e48]:
+                - generic [ref=f5e49]: MEET THE PERSON
+                - generic [aria-hidden] [ref=f5e50]: ↗
+            - link "02 / FIELD NOTES 逛逛我的博客 翻翻笔记，也看看生活。 技术、学习、日常与沿途随记。 EXPLORE THE JOURNAL" [ref=f5e51] [cursor=pointer]:
+              - /url: /blog
+              - generic [ref=f5e52]: 02 / FIELD NOTES
+              - heading "逛逛我的博客" [level=2] [ref=f5e59]
+              - paragraph [ref=f5e60]: 翻翻笔记，也看看生活。技术、学习、日常与沿途随记。
+              - generic [ref=f5e61]:
+                - generic [ref=f5e62]: EXPLORE THE JOURNAL
+                - generic [aria-hidden] [ref=f5e63]: ↗
+          - paragraph [ref=f5e64]: 不必赶路，随意逛逛。
+        - complementary [ref=f5e65]:
+          - figure [aria-hidden] [ref=f5e66]:
+            - generic [ref=f5e67]:
+              - generic [ref=f5e68]: ICEAXING / FIELD OBSERVATIONS
+              - generic [ref=f5e69]: ABOVE THE SNOWLINE
+            - img [ref=f5e70]:
+              - generic [ref=f5e110]:
+                - generic [ref=f5e111]: FIG. 01 — A PERSONAL EXPEDITION
+                - generic [ref=f5e112]: KEEP EXPLORING ↗
+                - generic [ref=f5e113]: SNOWLINE
+            - generic [ref=f5e114]:
+              - generic [ref=f5e115]: 循着好奇，向雪线之上。
+              - generic [ref=f5e116]: EXPEDITION / ICEAXING
+      - generic [ref=f5e117]:
+        - generic [ref=f5e118]: BASE CAMP / 旅程的起点慢慢探索，保持好奇。
+        - generic [ref=f5e119]: TWO PATHS. ONE CURIOUS MIND.ICEAXING · PERSONAL SPACE
+  - generic [ref=f5e122]:
+    - button "Menu" [ref=f5e123]
+    - button "Inspect" [ref=f5e129]
+    - button "Audit" [ref=f5e133]
+    - button "Settings" [ref=f5e141]

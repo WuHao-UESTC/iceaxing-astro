@@ -1,0 +1,15 @@
+---
+export const prerender = true;
+import ToolPage from '../../../components/tools/ToolPage.astro';
+import { playIds, isPlayTool } from '../../../lib/tools/play-catalog';
+import { prefixedLocales, isPrefixedLocale } from '../../../i18n/config';
+export function getStaticPaths() {
+  return prefixedLocales.flatMap((locale) => playIds.map((play) => ({ params: { locale, play } })));
+}
+const locale = Astro.params.locale,
+  tool = Astro.params.play;
+if (!isPrefixedLocale(locale) || !tool || !isPlayTool(tool))
+  throw new Error('Unsupported play tool route');
+---
+
+<ToolPage {locale} {tool} />

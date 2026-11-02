@@ -1,0 +1,165 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - navigation "主导航" [ref=e4]:
+      - generic [ref=e5]:
+        - link "iceaxing — 首页" [ref=e6] [cursor=pointer]:
+          - /url: /blog
+          - text: ICEAXING
+          - generic [aria-hidden] [ref=e7]: .
+        - generic [ref=e8]: THE ASCENT / 01—05
+      - list "海拔路线" [ref=e9]:
+        - listitem [ref=e10]:
+          - link "封面" [ref=e11] [cursor=pointer]:
+            - /url: "#base-camp"
+            - generic [aria-hidden] [ref=e12]: "01"
+        - listitem [ref=e14]:
+          - link "技术栈" [ref=e15] [cursor=pointer]:
+            - /url: "#technical-ridge"
+            - generic [aria-hidden] [ref=e16]: "02"
+        - listitem [ref=e18]:
+          - link "学习笔记" [ref=e19] [cursor=pointer]:
+            - /url: "#study-terrace"
+            - generic [aria-hidden] [ref=e20]: "03"
+        - listitem [ref=e22]:
+          - link "生活日常" [ref=e23] [cursor=pointer]:
+            - /url: "#snowfield-traverse"
+            - generic [aria-hidden] [ref=e24]: "04"
+        - listitem [ref=e26]:
+          - link "沿途随记" [ref=e27] [cursor=pointer]:
+            - /url: "#night-camp"
+            - generic [aria-hidden] [ref=e28]: "05"
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - link "文章" [ref=e32] [cursor=pointer]:
+            - /url: /articles
+            - text: 文章
+            - generic [aria-hidden] [ref=e33]: ↗
+          - link "项目" [ref=e34] [cursor=pointer]:
+            - /url: /projects
+            - text: 项目
+            - generic [aria-hidden] [ref=e35]: ↗
+          - link "碎碎念" [ref=e36] [cursor=pointer]:
+            - /url: /daily-ramblings
+            - text: 碎碎念
+            - generic [aria-hidden] [ref=e37]: ↗
+          - link "工具" [ref=e38] [cursor=pointer]:
+            - /url: /tools
+            - text: 工具
+            - generic [aria-hidden] [ref=e39]: ↗
+          - link "关于" [ref=e40] [cursor=pointer]:
+            - /url: /about
+            - text: 关于
+            - generic [aria-hidden] [ref=e41]: ↗
+          - link "个人档案" [ref=e42] [cursor=pointer]:
+            - /url: /profile
+            - text: 个人档案
+            - generic [aria-hidden] [ref=e43]: ↗
+          - link "友链" [ref=e44] [cursor=pointer]:
+            - /url: /friends
+            - text: 友链
+            - generic [aria-hidden] [ref=e45]: ↗
+          - link "RSS" [ref=e46] [cursor=pointer]:
+            - /url: /rss.xml
+            - text: RSS
+            - generic [aria-hidden] [ref=e47]: ↗
+        - generic [ref=e48]:
+          - button "搜索" [ref=e49] [cursor=pointer]:
+            - generic [aria-hidden] [ref=e50]: ⌕
+          - button "切换明暗模式" [ref=e52] [cursor=pointer]
+        - group "语言" [ref=e55]:
+          - link "ZH" [ref=e56] [cursor=pointer]:
+            - /url: http://127.0.0.1:4321/blog#base-camp
+          - link "EN" [ref=e57] [cursor=pointer]:
+            - /url: http://127.0.0.1:4321/en/blog#base-camp
+          - link "DE" [ref=e58] [cursor=pointer]:
+            - /url: http://127.0.0.1:4321/de/blog#base-camp
+    - generic [ref=e59]:
+      - navigation "章节翻页" [ref=e60]:
+        - button "上一章" [disabled] [ref=e61] [cursor=pointer]: ←
+        - generic [ref=e62]: 01 / 05
+        - button "技术栈" [ref=e63] [cursor=pointer]:
+          - generic [aria-hidden] [ref=e65]: →
+      - region [ref=e66]:
+        - generic [ref=e67]:
+          - generic [ref=e68]:
+            - generic [ref=e69]:
+              - paragraph [ref=e70]: 雪线之上 · 个人远征记录
+              - heading "ICEAXING." [level=1] [ref=e71]
+              - paragraph [ref=e72]: 关于技术、项目与生活的个人博客。
+            - figure [aria-hidden] [ref=e74]:
+              - img [ref=e75]:
+                - generic [ref=e115]:
+                  - generic [ref=e116]: FIG. 01 — A PERSONAL EXPEDITION
+                  - generic [ref=e117]: KEEP EXPLORING ↗
+                  - generic [ref=e118]: SNOWLINE
+              - generic [ref=e119]:
+                - generic [ref=e120]: 循着好奇，向雪线之上。
+                - generic [ref=e121]: EXPEDITION / ICEAXING
+          - region [ref=e122]:
+            - generic [ref=e123]:
+              - heading "精选内容" [level=2] [ref=e124]
+              - generic [ref=e125]: SELECTED / 04
+            - region "精选内容" [ref=e126]:
+              - generic [ref=e127]:
+                - article [ref=e128]:
+                  - link "01 / 文章 2026年10月23日 为什么‘s’的量纲是1/s？ 继续阅读" [ref=e129] [cursor=pointer]:
+                    - /url: /oppenheim-signal-and-system-note/dimension-of-s
+                    - generic [ref=e130]:
+                      - generic [ref=e131]: 01 / 文章
+                      - generic [ref=e132]: 2026年10月23日
+                    - heading "为什么‘s’的量纲是1/s？" [level=3] [ref=e133]
+                    - generic [ref=e134]:
+                      - text: 继续阅读
+                      - generic [aria-hidden] [ref=e135]: ↗
+                - article [ref=e136]:
+                  - 'link "02 / 分类 碎碎念 记下偶然闪过的念头、日常片段与路上的所见所想。 #daily-ramblings 继续阅读" [ref=e137] [cursor=pointer]':
+                    - /url: /daily-ramblings
+                    - generic [ref=e138]: 02 / 分类
+                    - heading "碎碎念" [level=3] [ref=e140]
+                    - paragraph [ref=e141]: 记下偶然闪过的念头、日常片段与路上的所见所想。
+                    - generic [ref=e142]: "#daily-ramblings"
+                    - generic [ref=e144]:
+                      - text: 继续阅读
+                      - generic [aria-hidden] [ref=e145]: ↗
+                - article [ref=e146]:
+                  - 'link "03 / 项目 已完成 2026年集创赛作品合集 2026年集创赛作品：用于光电流检测的模拟前端（研究生组）。本人完成FDA,PGA,TIA,比较器的相关设计。虽然没能取得一个理想的奖项，但是也收获颇丰。这里展示一些设计的思路与笔记。 100% #competition 继续阅读" [ref=e147] [cursor=pointer]':
+                    - /url: /analog-ic/2026-cicc
+                    - generic [ref=e148]:
+                      - generic [ref=e149]: 03 / 项目
+                      - generic [ref=e150]: 已完成
+                    - heading "2026年集创赛作品合集" [level=3] [ref=e152]
+                    - paragraph [ref=e153]: 2026年集创赛作品：用于光电流检测的模拟前端（研究生组）。本人完成FDA,PGA,TIA,比较器的相关设计。虽然没能取得一个理想的奖项，但是也收获颇丰。这里展示一些设计的思路与笔记。
+                    - generic [ref=e154]: 100%
+                    - generic [ref=e157]: "#competition"
+                    - generic [ref=e159]:
+                      - text: 继续阅读
+                      - generic [aria-hidden] [ref=e160]: ↗
+                - article [ref=e161]:
+                  - 'link "04 / 项目 已完成 二级运放搭建全流程 从0到1，第一次搭建出一个能用的二级运放对于我而言是很不容易的，希望这一篇文章可以帮助到更多刚刚IC入门的小白 100% #basic 继续阅读" [ref=e162] [cursor=pointer]':
+                    - /url: /analog-ic/two-stage-ota
+                    - generic [ref=e163]:
+                      - generic [ref=e164]: 04 / 项目
+                      - generic [ref=e165]: 已完成
+                    - heading "二级运放搭建全流程" [level=3] [ref=e167]
+                    - paragraph [ref=e168]: 从0到1，第一次搭建出一个能用的二级运放对于我而言是很不容易的，希望这一篇文章可以帮助到更多刚刚IC入门的小白
+                    - generic [ref=e169]: 100%
+                    - generic [ref=e172]: "#basic"
+                    - generic [ref=e174]:
+                      - text: 继续阅读
+                      - generic [aria-hidden] [ref=e175]: ↗
+          - generic [ref=e176]:
+            - generic [ref=e177]:
+              - paragraph [ref=e178]: 循着好奇，向雪线之上。
+              - generic [ref=e179]: 为阅读而构建，而不是为框架而构建。 — Astro 重构原则
+            - navigation "文章 / 项目" [ref=e180]:
+              - link "认识我 ↗" [ref=e181] [cursor=pointer]:
+                - /url: /profile
+              - link "文章 ↗" [ref=e182] [cursor=pointer]:
+                - /url: /articles
+              - link "项目 ↗" [ref=e183] [cursor=pointer]:
+                - /url: /projects
+              - link "RSS ↗" [ref=e184] [cursor=pointer]:
+                - /url: /rss.xml
+            - generic [ref=e185]: 向下浏览精选 ↓

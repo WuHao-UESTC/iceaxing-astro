@@ -1,0 +1,40 @@
+---
+import type { FolderTheme } from '../../lib/folder-cover';
+interface Props {
+  group: FolderTheme;
+}
+const { group } = Astro.props;
+---
+
+<svg
+  class={`archive-folder-landscape landscape-${group}`}
+  viewBox="0 0 1000 340"
+  fill="none"
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+>
+  <g stroke="currentColor" stroke-width=".8" opacity=".35">
+    {Array.from({ length: 12 }, (_, i) => (
+      <path
+        d={`M-40 ${255 + i * 13}C100 ${225 + i * 13} 142 ${90 + i * 13} 275 ${167 + i * 13}S438 ${270 + i * 8} 548 ${113 + i * 13}S730 ${150 + i * 13} 1040 ${210 + i * 13}`}
+      />
+    ))}
+  </g>
+  <circle cx="828" cy="79" r="45" stroke="currentColor" opacity=".4" />
+  <path
+    d="M56 290C196 250 251 281 369 245S525 206 614 234S790 275 951 224"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-dasharray="3 7"
+  />
+  <g fill="currentColor">
+    {[
+      [196, 267],
+      [369, 245],
+      [614, 234],
+      [790, 252],
+    ].map(([x, y]) => (
+      <rect x={x} y={y} width="5" height="5" />
+    ))}
+  </g>
+</svg>

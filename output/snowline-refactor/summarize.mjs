@@ -1,0 +1,2 @@
+﻿import fs from 'node:fs';
+const text=fs.readFileSync('output/snowline-refactor/production-review-results.txt','utf8');const line=text.split(/\r?\n/).find(l=>l.startsWith('{"results"'));if(!line)throw new Error('No result yet');const result=JSON.parse(line);fs.writeFileSync('output/snowline-refactor/verification-summary.json',JSON.stringify(result,null,2));console.log(JSON.stringify({checks:result.results.length,failed:result.results.filter(r=>!r.passed),runtimeErrors:result.errors}));

@@ -1,0 +1,413 @@
+import { createSnowWind } from './snow-wind';
+const chapterIds = [
+  'base-camp',
+  'technical-ridge',
+  'study-terrace',
+  'snowfield-traverse',
+  'night-camp',
+];
+export function initHomeJourney() {
+  const element = document.querySelector<HTMLElement>('[data-journey]');
+  if (!element) return;
+  const home: HTMLElement = element;
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const panels = chapterIds
+    .map((id) => document.getElementById(id))
+    .filter((p): p is HTMLElement => Boolean(p));
+  const links = [...home.querySelectorAll<HTMLAnchorElement>('[data-journey-link]')];
+  const nav = home.querySelector<HTMLElement>('[data-journey-nav]');
+  const controls = home.querySelector<HTMLElement>('.journey-chapter-controls');
+  const prev = home.querySelector<HTMLButtonElement>('[data-chapter-prev]');
+  const next = home.querySelector<HTMLButtonElement>('[data-chapter-next]');
+  const prevLabel = home.querySelector<HTMLElement>('[data-chapter-prev-label]');
+  const nextLabel = home.querySelector<HTMLElement>('[data-chapter-next-label]');
+  const currentLabel = home.querySelector<HTMLElement>('[data-ridge-current]');
+  const expand = home.querySelector<HTMLButtonElement>('[data-ridge-expand]');
+  const locale = home.dataset.locale ?? 'zh';
+  const names = links.map((a) => a.querySelector('.ridge-node-label')?.textContent ?? '');
+  const returnLabel =
+    locale === 'zh' ? '返回起点' : locale === 'de' ? 'Zum Ausgangspunkt' : 'Back to the start';
+  const wind = createSnowWind(home, reducedMotion);
+  let active = 0;
+  function updateNavigation() {
+    links.forEach((link, i) => {
+      link.parentElement?.classList.toggle('is-active', i === active);
+      if (i === active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+    nav?.style.setProperty('--ridge-progress', String(active / (panels.length - 1)));
+    home.querySelectorAll<HTMLAnchorElement>('[data-sidebar-language]').forEach((link) => {
+      link.hash = panels[active]?.id ?? '';
+    });
+    if (prev) prev.disabled = active === 0;
+    if (prevLabel) prevLabel.textContent = names[Math.max(0, active - 1)] ?? '';
+    if (prev)
+      prev.setAttribute(
+        'aria-label',
+        `${locale === 'zh' ? '上一章' : locale === 'de' ? 'Zurück' : 'Previous'}: ${names[Math.max(0, active - 1)] ?? ''}`,
+      );
+    if (nextLabel)
+      nextLabel.textContent =
+        active === panels.length - 1 ? returnLabel : (names[active + 1] ?? '');
+    if (currentLabel) currentLabel.textContent = names[active] ?? '';
+  }
+  // Route geometry comes from the actual node centers, including wrapped translations.
+  const route = nav?.querySelector<HTMLElement>('.ridge-route');
+  const routeSvg = route?.querySelector<SVGSVGElement>('svg');
+  const drawRoute = () => {
+    if (!route || !routeSvg) return;
+    const bounds = route.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    const points = [...route.querySelectorAll<HTMLElement>('.ridge-node')].map((node) => {
+      const box = node.getBoundingClientRect();
+      return {
+        x: box.left + box.width / 2 - bounds.left,
+        y: box.top + box.height / 2 - bounds.top,
+      };
+    });
+    routeSvg.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
+    const routePoints = points.length
+      ? [{ x: bounds.width / 2, y: 0 }, ...points, { x: bounds.width / 2, y: bounds.height }]
+      : [];
+    const path = routePoints
+      .map((point, i) => {
+        if (!i) return `M${point.x} ${point.y}`;
+        const previous = routePoints[i - 1]!;
+        const middle = (previous.y + point.y) / 2;
+        const bend = i % 2 ? 10 : -10;
+        return `C${previous.x + bend} ${middle} ${point.x + bend} ${middle} ${point.x} ${point.y}`;
+      })
+      .join(' ');
+    routeSvg.querySelectorAll('path').forEach((p) => p.setAttribute('d', path));
+    // Chapter spacing can vary with text wrapping; progress follows real path distance.
+    const pathElement = routeSvg.querySelector('path');
+    if (pathElement && points.length > 1) {
+      const total = pathElement.getTotalLength();
+      let low = 0;
+      let high = total;
+      const targetY = points[active]?.y ?? 0;
+      for (let i = 0; i < 24; i++) {
+        const middle = (low + high) / 2;
+        if (pathElement.getPointAtLength(middle).y < targetY) low = middle;
+        else high = middle;
+      }
+      nav?.style.setProperty('--ridge-progress', String((low + high) / 2 / Math.max(1, total)));
+    }
+  };
+  if (route) new ResizeObserver(drawRoute).observe(route);
+  home.addEventListener('journey:chapter', drawRoute);
+  document.fonts.ready.then(drawRoute);
+  function closeNav() {
+    nav?.removeAttribute('data-expanded');
+    expand?.setAttribute('aria-expanded', 'false');
+  }
+  function go(index: number, animate = true, focus = true) {
+    if (index < 0 || index >= panels.length) return;
+    const from = panels[active];
+    const to = panels[index];
+    if (!from || !to) return;
+    const direction = index >= active ? 1 : -1;
+    const changed = index !== active;
+    active = index;
+    updateNavigation();
+    closeNav();
+    wind.show(from, to, panels, direction, animate && changed);
+    if (focus) to.querySelector<HTMLElement>('h1,h2')?.focus({ preventScroll: true });
+    home.dispatchEvent(new CustomEvent('journey:chapter', { detail: { id: to.id } }));
+  }
+  function openHash(animate = false, focus = false) {
+    let id: string;
+    try {
+      id = decodeURIComponent(location.hash.slice(1));
+    } catch {
+      return;
+    }
+    const target = document.getElementById(id);
+    const panel = target?.closest<HTMLElement>('.snowline-panel');
+    const index = panel ? panels.indexOf(panel) : 0;
+    if (index < 0) return;
+    go(index, animate, focus);
+    if (target && panel && target !== panel) {
+      requestAnimationFrame(() => {
+        const box = target.getBoundingClientRect();
+        const viewport = panel.getBoundingClientRect();
+        if (box.top < viewport.top || box.bottom > viewport.bottom)
+          panel.scrollTo({
+            top: Math.max(0, panel.scrollTop + box.top - viewport.top - 8),
+            behavior: 'instant',
+          });
+      });
+    }
+  }
+  function select(index: number) {
+    const panel = panels[index];
+    if (!panel) return;
+    history.pushState(history.state, '', '#' + panel.id);
+    go(index);
+  }
+  prev?.addEventListener('click', () => select(Math.max(0, active - 1)));
+  next?.addEventListener('click', () => select(active === panels.length - 1 ? 0 : active + 1));
+  expand?.addEventListener('click', () => {
+    const open = !nav?.hasAttribute('data-expanded');
+    nav?.toggleAttribute('data-expanded', open);
+    expand.setAttribute('aria-expanded', String(open));
+  });
+  nav?.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeNav();
+      expand?.focus();
+    }
+  });
+  document.addEventListener('click', (event) => {
+    const link =
+      event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
+    if (
+      !link ||
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey ||
+      event.altKey ||
+      link.hasAttribute('download') ||
+      (link.target && link.target !== '_self')
+    )
+      return;
+    const url = new URL(link.href, location.href);
+    if (
+      url.origin !== location.origin ||
+      url.pathname !== location.pathname ||
+      url.search !== location.search ||
+      !url.hash
+    )
+      return;
+    let id: string;
+    try {
+      id = decodeURIComponent(url.hash.slice(1));
+    } catch {
+      return;
+    }
+    const target = document.getElementById(id);
+    if (!target || !home.contains(target)) return;
+    event.preventDefault();
+    history.pushState(history.state, '', url.hash);
+    openHash(true, true);
+  });
+  window.addEventListener('hashchange', () => openHash(true));
+  window.addEventListener('popstate', () => openHash(false));
+  home.dataset.expeditionReady = 'true';
+  if (controls) controls.hidden = false;
+  openHash(false);
+  const scrollLists = [...home.querySelectorAll<HTMLElement>('[data-scroll-list]')];
+  const updateScrollList = (list: HTMLElement) => {
+    const controlButton = home.querySelector<HTMLButtonElement>(
+      `[data-scroll-target="${CSS.escape(list.id)}"]`,
+    );
+    const controls = controlButton?.closest<HTMLElement>('[data-scroll-controls]');
+    const horizontal = list.dataset.scrollAxis === 'x';
+    const overflowing = horizontal
+      ? list.scrollWidth > list.clientWidth + 2
+      : list.scrollHeight > list.clientHeight + 2;
+    if (controls) controls.hidden = !overflowing;
+    controls?.querySelectorAll<HTMLButtonElement>('[data-scroll-direction]').forEach((button) => {
+      const atStart = horizontal ? list.scrollLeft <= 1 : list.scrollTop <= 1;
+      const atEnd = horizontal
+        ? list.scrollLeft + list.clientWidth >= list.scrollWidth - 1
+        : list.scrollTop + list.clientHeight >= list.scrollHeight - 1;
+      button.disabled = ['up', 'left'].includes(button.dataset.scrollDirection ?? '')
+        ? atStart
+        : atEnd;
+    });
+  };
+
+  scrollLists.forEach((list) => {
+    if (!list.id) return;
+    updateScrollList(list);
+    list.addEventListener('scroll', () => updateScrollList(list), { passive: true });
+    new ResizeObserver(() => updateScrollList(list)).observe(list);
+  });
+
+  home.querySelectorAll<HTMLButtonElement>('[data-scroll-target]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const list = document.getElementById(button.dataset.scrollTarget ?? '');
+      if (!list) return;
+      const horizontal = list.dataset.scrollAxis === 'x';
+      const direction = ['up', 'left'].includes(button.dataset.scrollDirection ?? '') ? -1 : 1;
+      list.scrollBy({
+        left: horizontal ? direction * Math.max(160, list.clientWidth * 0.82) : 0,
+        top: horizontal ? 0 : direction * Math.max(80, list.clientHeight * 0.72),
+        behavior: reducedMotion.matches ? 'auto' : 'smooth',
+      });
+    });
+  });
+
+  home.querySelectorAll<HTMLElement>('[data-life-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>('.life-landings');
+    const landings = [...carousel.querySelectorAll<HTMLElement>('.life-landing')];
+    const controls = carousel.querySelector<HTMLElement>('[data-life-controls]');
+    const compact = matchMedia('(max-width:48rem)');
+    let pages: HTMLElement[] = [];
+    let page = 0;
+    if (!track) return;
+    const update = () => {
+      page = Math.max(
+        0,
+        Math.min(pages.length - 1, Math.round(track.scrollLeft / Math.max(1, track.clientWidth))),
+      );
+      pages.forEach((p, i) => {
+        p.inert = i !== page;
+      });
+      const status = carousel.querySelector<HTMLElement>('[data-life-status]');
+      if (status) status.textContent = page + 1 + ' / ' + pages.length;
+      controls?.querySelectorAll<HTMLButtonElement>('[data-life-direction]').forEach((button) => {
+        button.disabled =
+          Number(button.dataset.lifeDirection) < 0 ? page === 0 : page === pages.length - 1;
+      });
+    };
+    const regroup = () => {
+      const first = page * (pages[0]?.children.length || 4);
+      const size = compact.matches ? 2 : 4;
+      pages = [];
+      track.replaceChildren();
+      for (let i = 0; i < landings.length; i += size) {
+        const p = document.createElement('div');
+        p.className = 'life-landing-page';
+        p.dataset.lifePage = '';
+        p.append(...landings.slice(i, i + size));
+        track.append(p);
+        pages.push(p);
+      }
+      page = Math.min(Math.floor(first / size), Math.max(0, pages.length - 1));
+      if (controls) controls.hidden = pages.length < 2;
+      track.scrollTo({ left: page * track.clientWidth, behavior: 'instant' });
+      update();
+    };
+    regroup();
+    compact.addEventListener('change', regroup);
+    controls?.querySelectorAll<HTMLButtonElement>('[data-life-direction]').forEach((button) =>
+      button.addEventListener('click', () => {
+        const next = Math.max(
+          0,
+          Math.min(pages.length - 1, page + Number(button.dataset.lifeDirection)),
+        );
+        track.scrollTo({
+          left: next * track.clientWidth,
+          behavior: reducedMotion.matches ? 'instant' : 'smooth',
+        });
+      }),
+    );
+    track.addEventListener('scroll', update, { passive: true });
+    new ResizeObserver(() => {
+      track.scrollTo({ left: page * track.clientWidth, behavior: 'instant' });
+      update();
+    }).observe(track);
+  });
+
+  const editorial = home.querySelector<HTMLElement>('[data-editorial-scroll]');
+  if (editorial) {
+    const key = 'iceaxing-editorial:' + location.pathname;
+    let manual = false;
+    let hover = false;
+    let focus = false;
+    let frame = 0;
+    let last = 0;
+    let startAt = performance.now() + 2200;
+    const save = () => {
+      try {
+        sessionStorage.setItem(key, JSON.stringify({ top: editorial.scrollTop, manual }));
+      } catch {
+        /* optional */
+      }
+    };
+    const restore = () => {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(key) ?? 'null');
+        if (saved && Number.isFinite(saved.top)) {
+          editorial.scrollTop = saved.top;
+          manual = Boolean(saved.manual);
+        }
+      } catch {
+        /* optional */
+      }
+    };
+    restore();
+    window.addEventListener('pageshow', restore);
+    window.addEventListener('pagehide', save);
+    document.addEventListener('page:leaving-start', save);
+    const stopManual = () => {
+      manual = true;
+      save();
+    };
+    editorial.addEventListener('wheel', stopManual, { passive: true });
+    editorial.addEventListener('touchstart', stopManual, { passive: true });
+    editorial.addEventListener('pointerdown', stopManual);
+    editorial.addEventListener('keydown', (event) => {
+      if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key))
+        stopManual();
+    });
+    editorial.addEventListener('pointerenter', () => {
+      hover = true;
+    });
+    editorial.addEventListener('pointerleave', () => {
+      hover = false;
+      startAt = performance.now() + 1800;
+    });
+    editorial.addEventListener('focusin', () => {
+      focus = true;
+    });
+    editorial.addEventListener('focusout', () => {
+      queueMicrotask(() => {
+        focus = editorial.contains(document.activeElement);
+        startAt = performance.now() + 1800;
+      });
+    });
+    editorial.addEventListener('scroll', save, { passive: true });
+    const desktop = matchMedia('(min-width:49rem) and (hover:hover) and (pointer:fine)');
+    const canPlay = () =>
+      !manual &&
+      !hover &&
+      !focus &&
+      !reducedMotion.matches &&
+      desktop.matches &&
+      !document.hidden &&
+      active === 0 &&
+      editorial.scrollHeight > editorial.clientHeight + 2 &&
+      editorial.scrollTop + editorial.clientHeight < editorial.scrollHeight - 1;
+    let accumulated = 0;
+    const tick = (time: number) => {
+      frame = 0;
+      const delta = last ? Math.min(time - last, 80) : 0;
+      last = time;
+      if (canPlay()) {
+        if (time > startAt) {
+          accumulated += delta * 0.009;
+          if (accumulated >= 1) {
+            const step = Math.floor(accumulated);
+            editorial.scrollTop += step;
+            accumulated -= step;
+          }
+        }
+        frame = requestAnimationFrame(tick);
+      }
+    };
+    const resume = () => {
+      if (!frame && canPlay()) {
+        last = 0;
+        frame = requestAnimationFrame(tick);
+      }
+    };
+    editorial.addEventListener('pointerleave', resume);
+    editorial.addEventListener('focusout', () => queueMicrotask(resume));
+    home.addEventListener('journey:chapter', resume);
+    document.addEventListener('visibilitychange', resume);
+    desktop.addEventListener('change', resume);
+    reducedMotion.addEventListener('change', resume);
+    new ResizeObserver(resume).observe(editorial);
+    resume();
+    window.addEventListener('pagehide', () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+    });
+    window.addEventListener('pageshow', resume);
+  }
+}

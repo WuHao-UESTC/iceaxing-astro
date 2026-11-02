@@ -1,0 +1,223 @@
+---
+import { playTools, playLabels, type PlayToolId } from '../../lib/tools/play-catalog';
+import type { Locale } from '../../i18n/config';
+import '../../styles/play-workbench.css';
+interface Props {
+  locale: Locale;
+  tool: PlayToolId;
+}
+const { locale, tool } = Astro.props;
+const detail = playTools[tool][locale];
+const t = playLabels(locale);
+---
+
+<play-workbench data-tool={tool} data-labels={JSON.stringify(t)} data-locale={locale}>
+  <header class="play-heading">
+    <div>
+      <p class="play-eyebrow">PLAY / {tool.toUpperCase().replaceAll('-', ' ')}</p>
+      <h1>{detail.title}</h1>
+      <p class="play-description">{detail.description}</p>
+    </div>
+    <div class="play-actions">
+      {['blind-circle', 'reaction', 'visual-memory', 'color-sense'].includes(tool) && (
+        <button type="button" data-action="start">
+          {t.start}
+        </button>
+      )}
+      {['gravity', 'ripples', 'stack-stones', 'snow-trails'].includes(tool) && (
+        <button type="button" data-action="pause">
+          {t.pause}
+        </button>
+      )}
+      {tool === 'stack-stones' && (
+        <>
+          <button type="button" data-action="next-stone">
+            {t.nextStone}
+          </button>
+          <label>
+            {t.friction}
+            <input type="range" data-friction min="0.1" max="1" step="0.05" value="0.65" />
+          </label>
+        </>
+      )}
+      {['stack-stones', 'refraction'].includes(tool) && (
+        <>
+          <button type="button" data-action="rotate-left">
+            {t.rotateLeft}
+          </button>
+          <button type="button" data-action="rotate-right">
+            {t.rotateRight}
+          </button>
+        </>
+      )}
+      {tool === 'color-sense' && (
+        <select data-playmode aria-label={detail.title}>
+          <option value="quiet">{t.quietMode}</option>
+          <option value="timed">{t.timedMode}</option>
+        </select>
+      )}
+      {tool === 'refraction' && (
+        <>
+          <select data-playmode aria-label={detail.title}>
+            <option value="free">{t.freeMode}</option>
+            <option value="challenge">{t.challengeMode}</option>
+          </select>
+          <button type="button" data-action="add-prism">
+            {t.addPrism}
+          </button>
+          <button type="button" data-action="add-mirror">
+            {t.addMirror}
+          </button>
+          <button type="button" data-action="add-light">
+            {t.addLight}
+          </button>
+          <select data-light-color aria-label={t.lightColor}>
+            <option value="white">{t.white}</option>
+            <option value="red">{t.red}</option>
+            <option value="green">{t.green}</option>
+            <option value="blue">{t.blue}</option>
+          </select>
+          <button type="button" data-action="delete-object">
+            {t.deleteObject}
+          </button>
+          <button type="button" data-action="next-level" hidden>
+            {t.nextLevel}
+          </button>
+        </>
+      )}
+      {tool === 'snow-trails' && (
+        <>
+          <label>
+            {t.wind}
+            <input type="range" data-wind min="-1" max="1" step="0.05" value="0.2" />
+          </label>
+          <label>
+            {t.snowfall}
+            <input type="range" data-snowfall min="0" max="1" step="0.05" value="0.4" />
+          </label>
+        </>
+      )}
+      {tool === 'constellation' && (
+        <>
+          <label>
+            {t.name}
+            <input type="text" data-star-name maxlength="40" />
+          </label>
+          <label>
+            {t.note}
+            <input type="text" data-star-note maxlength="100" />
+          </label>
+          <label>
+            {t.seed}
+            <input type="text" data-seed maxlength="64" />
+          </label>
+          <button type="button" data-action="apply-seed">
+            {t.applySeed}
+          </button>
+          <button type="button" data-action="new-sky">
+            {t.newSky}
+          </button>
+          <button type="button" data-action="undo">
+            {t.undo}
+          </button>
+          <button type="button" data-action="finish-card">
+            {t.finishCard}
+          </button>
+        </>
+      )}
+      {tool === 'gravity' && (
+        <>
+          <label>
+            <input type="checkbox" data-trails checked />
+            {t.trails}
+          </label>
+          <label>
+            {t.strength}
+            <input type="range" data-strength min="0.2" max="3" step="0.1" value="1" disabled />
+          </label>
+          <button type="button" data-action="remove" disabled>
+            {t.remove}
+          </button>
+        </>
+      )}
+      {tool === 'ripples' && (
+        <select data-intensity aria-label={detail.title}>
+          <option value="gentle">{t.gentle}</option>
+          <option value="vivid">{t.vivid}</option>
+        </select>
+      )}
+      {tool === 'color-music' && (
+        <>
+          <button type="button" data-action="record">
+            {t.record}
+          </button>
+          <button type="button" data-action="loop">
+            {t.play}
+          </button>
+          <label>
+            {t.volume}
+            <input type="range" data-volume min="0" max="1" step="0.01" value="0.2" />
+          </label>
+          <button type="button" data-action="mute" aria-pressed="false">
+            {t.mute}
+          </button>
+        </>
+      )}
+      {tool === 'fading-words' && (
+        <>
+          <button type="button" data-action="keep" aria-pressed="false">
+            {t.keep}
+          </button>
+          <button type="button" data-action="release">
+            {t.release}
+          </button>
+          <button type="button" data-action="edit" hidden>
+            {t.edit}
+          </button>
+        </>
+      )}
+      {tool !== 'reaction' && (
+        <button type="button" data-action="clear">
+          {tool === 'ripples' ? t.calm : t.clear}
+        </button>
+      )}
+      {!['reaction', 'visual-memory', 'color-sense'].includes(tool) && (
+        <button type="button" data-action="save">
+          {t.save} ↗
+        </button>
+      )}
+    </div>
+  </header>
+  <div class="play-stage">
+    <canvas tabindex="0" aria-label={`${detail.title}. ${detail.hint}`}>
+      {detail.hint}
+    </canvas>
+    {tool === 'fading-words' && <textarea
+      data-words
+      aria-label={detail.title}
+      placeholder={t.placeholder}
+      maxlength="600"
+      spellcheck="false"
+    ></textarea>}
+    {tool === 'reaction' && (
+      <div class="play-reaction-prompt" aria-hidden="true">
+        <strong data-prompt>{t.start}</strong>
+        <span data-round>1 / 5</span>
+      </div>
+    )}
+    <span class="play-signature" aria-hidden="true">
+      {detail.title} / ICEAXING
+    </span>
+    {tool === 'color-music' && (
+      <progress data-progress max="8" value="0" aria-label={t.recording} hidden></progress>
+    )}
+  </div>
+  <footer class="play-footer">
+    <p data-status role="status" aria-live="polite"></p>
+    <p data-metrics></p>
+    <p class="play-hint">{detail.hint}</p>
+  </footer>
+</play-workbench>
+<script>
+  import '../../scripts/play-workbench';
+</script>

@@ -1,0 +1,207 @@
+.tool-page.tool-page-guess-seconds {
+  overflow-y: auto;
+  padding: clamp(1.5rem, 4vh, 3rem) 1.25rem;
+}
+guess-seconds {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 54rem);
+  min-height: 100%;
+  margin-inline: auto;
+  text-align: center;
+}
+.guess-heading > span {
+  color: var(--tool-coral);
+  font:
+    0.65rem ui-monospace,
+    monospace;
+  letter-spacing: 0.16em;
+}
+.guess-heading h1 {
+  margin: 0.5rem 0;
+  font: 500 clamp(1.7rem, 4vw, 2.4rem) var(--font-reading);
+}
+.guess-heading > p,
+.guess-note,
+.guess-summary > p {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.8;
+}
+.guess-heading > p {
+  margin: 0.5rem 0 0;
+}
+.guess-experience {
+  width: 100%;
+  margin: auto 0;
+  padding: 2rem 0;
+}
+.guess-experience h2 {
+  font-size: 0.9rem;
+  font-weight: 400;
+  margin: 0 0 1.3rem;
+}
+.guess-presets {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(1rem, 4vw, 3rem);
+}
+.tool-page-guess-seconds .guess-presets button {
+  font:
+    300 clamp(1.8rem, 5vw, 2.8rem) ui-monospace,
+    monospace;
+  padding-block: 0.5rem 1rem;
+  min-width: 2.75rem;
+}
+.guess-presets small {
+  margin-left: 0.3rem;
+  font: 0.65rem var(--font-ui);
+}
+.guess-custom {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  margin-top: 1.8rem;
+}
+.guess-custom > span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.tool-page-guess-seconds .guess-custom input {
+  width: 6rem;
+  border-bottom: 1px solid var(--line);
+  padding: 0.4rem;
+  text-align: center;
+  font:
+    1rem ui-monospace,
+    monospace;
+  color: var(--text);
+}
+.guess-custom small {
+  font-size: 0.75rem;
+}
+.guess-note {
+  margin: 0.5rem 0;
+}
+.guess-error {
+  color: var(--tool-coral);
+  font-size: 0.8rem;
+}
+.guess-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.7rem;
+}
+.tool-page-guess-seconds .guess-primary {
+  min-width: 13rem;
+  min-height: 3.75rem;
+  padding: 0.8rem 2rem;
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+}
+.tool-page-guess-seconds .guess-primary:hover {
+  color: var(--tool-coral);
+}
+.guess-key-hint {
+  margin-top: 1rem;
+}
+.guess-running {
+  padding: 1.5rem 0;
+}
+.guess-running > span {
+  display: block;
+  font: 4rem var(--font-reading);
+  color: var(--tool-coral);
+  line-height: 1;
+  margin-bottom: 2rem;
+}
+.guess-running > p,
+.guess-interrupted > p {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.guess-actual {
+  margin: 0.4rem 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.75rem;
+}
+.guess-actual strong {
+  font:
+    200 clamp(3.5rem, 12vw, 6rem) ui-monospace,
+    monospace;
+  letter-spacing: -0.07em;
+  font-variant-numeric: tabular-nums;
+}
+.guess-actual > span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.guess-verdict {
+  color: var(--tool-coral);
+  font-size: 1rem;
+}
+.guess-comparison,
+.guess-summary dl {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem 3rem;
+  margin: 1.5rem 0 0;
+}
+.guess-comparison dt,
+.guess-summary dt {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.guess-comparison dd,
+.guess-summary dd {
+  margin: 0.5rem 0 0;
+  font:
+    1rem ui-monospace,
+    monospace;
+}
+.guess-summary {
+  width: 100%;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.guess-summary dl {
+  margin-top: 0;
+}
+.guess-summary > p {
+  font-size: 0.65rem;
+  margin: 1rem 0 0;
+}
+guess-seconds[data-phase='running'] .guess-key-hint {
+  visibility: hidden;
+}
+@media (max-width: 480px) {
+  .guess-experience {
+    padding-block: 1.5rem;
+  }
+  .guess-comparison,
+  .guess-summary dl {
+    gap: 1rem 1.5rem;
+  }
+  .guess-summary > p {
+    max-width: 19rem;
+    margin-inline: auto;
+  }
+  .tool-page-guess-seconds .guess-primary {
+    width: min(100%, 20rem);
+    min-height: 4rem;
+  }
+}

@@ -1,0 +1,3 @@
+﻿import fs from 'node:fs';
+const p='src/components/HomePage.astro';let s=fs.readFileSync(p,'utf8').replace(/^import .*chapter-transition\.css.*\r?\n/m,'').replace(/^import ChapterLandscape .*\r?\n/m,'');fs.writeFileSync(p,s);
+const q='src/scripts/study-constellation.ts';s=fs.readFileSync(q,'utf8').replaceAll('\r\n','\n').replace("      const journey = root.closest<HTMLElement>('[data-journey]');\n",'').replace("if (!journey || top === undefined) return;\n        journey.scrollTo({ top, behavior: 'instant' });\n        requestAnimationFrame(() => journey.scrollTo({ top, behavior: 'instant' }));", "window.scrollTo({ top, behavior: 'instant' });\n        requestAnimationFrame(() => window.scrollTo({ top, behavior: 'instant' }));");fs.writeFileSync(q,s);

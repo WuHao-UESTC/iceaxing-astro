@@ -19,11 +19,15 @@ import {
   type RouteEntry,
 } from '../lib/content';
 import { localizedPath, type Locale } from '../i18n/config';
+import ToolsGallery from './tools/ToolsGallery.astro';
 import ArticlePage from './content/ArticlePage.astro';
 import ContentPage from './content/ContentPage.astro';
 import ProfilePage from './content/ProfilePage.astro';
 import FriendsPage from './content/FriendsPage.astro';
 import ListingPage from './content/ListingPage.astro';
+import { getArticleCover } from '../lib/article-cover-assets';
+import type { ArticleCover } from '../lib/article-cover';
+import { folderThemeForScene, type FolderGroup, type FolderTheme } from '../lib/folder-cover';
 
 type SpecialRoute = 'articles' | 'projects' | 'log-index' | 'friends' | 'tools';
 
@@ -71,6 +75,8 @@ let listing:
         tags?: string[];
         kind?: 'project' | 'collection' | 'article';
         standalone?: boolean;
+        cover?: ArticleCover;
+        coverGroup?: FolderTheme;
       }>;
     }
   | undefined;
@@ -78,6 +84,8 @@ let listingScene: 'cover' | 'ridge' | 'study' | 'field' | 'camp' = 'cover';
 let listingParent: { title: string; href: string } | undefined;
 let listingProgress: number | undefined;
 let listingStatus: string | undefined;
+let listingCover: ArticleCover | undefined;
+let listingGroup: FolderGroup | undefined;
 let showFriends = false;
 let pagefindType = route?.kind ?? 'page';
 let pagefindCategory: string | undefined;
@@ -109,6 +117,8 @@ if (special === 'articles') {
     title,
     description,
     cards: publicArticles.map((entry) => ({
+      kind: 'article' as const,
+      cover: getArticleCover(entry),
       href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
       title: entry.data.title,
       description: entry.data.excerpt,
@@ -128,6 +138,12 @@ if (special === 'articles') {
     title,
     description,
     cards: byOrder(index.projects).map((entry) => ({
+      cover: entry.data.coverImage,
+      coverGroup: folderThemeForScene(
+        categoryScene(
+          index.categories.find((category) => category.data.categoryId === entry.data.category),
+        ),
+      ),
       kind: 'project',
       href: routeFor(entry.data.projectId, locale, 'project') ?? '#',
       title: localizedLabel(entry, locale).title,
@@ -165,31 +181,14 @@ if (special === 'articles') {
   title = locale === 'zh' ? '在线工具' : locale === 'de' ? 'Werkzeuge' : 'Tools';
   description =
     locale === 'zh'
-      ? '工程计算和专注工具将在后续阶段迁入。'
-      : 'Engineering and focus tools will return in a later phase.';
-  listing = {
-    title,
-    description,
-    cards: [
-      {
-        href: localizedPath(locale, '/tools/pomodoro'),
-        title: locale === 'zh' ? '番茄钟' : 'Pomodoro Timer',
-        description:
-          locale === 'zh'
-            ? '本地保存、后台校时、循环统计和完成提醒。'
-            : 'Local persistence, background correction, cycle statistics, and alerts.',
-        eyebrow: 'FOCUS / TIMER',
-      },
-      {
-        href: localizedPath(locale, '/tools/smith-chart'),
-        title: locale === 'zh' ? '史密斯圆图' : 'Smith Chart',
-        description:
-          locale === 'zh'
-            ? '阻抗与导纳、传输线变换、标记、匹配计算和导出。'
-            : 'Impedance, admittance, transmission lines, matching, markers, and export.',
-        eyebrow: 'RF / ENGINEERING',
-      },
-    ],
+      ? '工程计算、专注计时，也留一点时间给感知、偶然和创造。'
+      : locale === 'de'
+        ? 'Werkzeuge für Technik, Konzentration, Wahrnehmung und Kreativität.'
+        : 'Tools for engineering, focus, perception, and a little creativity.';
+  alternatePaths = {
+    zh: localizedPath('zh', '/tools'),
+    en: localizedPath('en', '/tools'),
+    de: localizedPath('de', '/tools'),
   };
 } else if (route?.kind === 'article' || route?.kind === 'log') {
   articleEntry =
@@ -286,6 +285,8 @@ if (special === 'articles') {
   const label = localizedLabel(category, locale);
   listingScene = categoryScene(category);
   title = label.title;
+  listingCover = category.data.coverImage;
+  listingGroup = category.data.group;
   description = label.description;
   alternatePaths = Object.fromEntries(
     routes
@@ -307,6 +308,8 @@ if (special === 'articles') {
     eyebrow: 'ICEAXING / CATEGORY',
     cards: [
       ...projects.map((entry) => ({
+        cover: entry.data.coverImage,
+        coverGroup: folderThemeForScene(listingScene),
         kind: 'project' as const,
         href: routeFor(entry.data.projectId, locale, 'project') ?? '#',
         title: localizedLabel(entry, locale).title,
@@ -315,6 +318,7 @@ if (special === 'articles') {
         tags: entry.data.tags,
       })),
       ...articles.map((entry) => ({
+        cover: getArticleCover(entry),
         kind: 'article' as const,
         standalone: !entry.data.project && !entry.data.collection,
         href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
@@ -336,6 +340,8 @@ if (special === 'articles') {
   );
   listingScene = categoryScene(category);
   listingProgress = project.data.progress;
+  listingCover = project.data.coverImage;
+  listingGroup = category?.data.group;
   listingStatus = project.data.status;
   if (category)
     listingParent = {
@@ -359,6 +365,8 @@ if (special === 'articles') {
     eyebrow: `ICEAXING / PROJECT · ${project.data.progress}%`,
     cards: [
       ...collections.map((entry) => ({
+        cover: entry.data.coverImage,
+        coverGroup: folderThemeForScene(listingScene),
         kind: 'collection' as const,
         href: routeFor(entry.data.collectionId, locale, 'collection') ?? '#',
         title: localizedLabel(entry, locale).title,
@@ -367,6 +375,7 @@ if (special === 'articles') {
         tags: entry.data.tags,
       })),
       ...articles.map((entry) => ({
+        cover: getArticleCover(entry),
         kind: 'article' as const,
         standalone: !entry.data.collection,
         href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
@@ -390,6 +399,8 @@ if (special === 'articles') {
     (entry) => entry.data.categoryId === project?.data.category,
   );
   listingScene = categoryScene(category);
+  listingCover = collection.data.coverImage;
+  listingGroup = category?.data.group;
   if (project)
     listingParent = {
       title: localizedLabel(project, locale).title,
@@ -409,6 +420,8 @@ if (special === 'articles') {
     cards: byOrder(
       publicArticles.filter((entry) => entry.data.collection === collection.data.collectionId),
     ).map((entry) => ({
+      kind: 'article' as const,
+      cover: getArticleCover(entry),
       href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
       title: entry.data.title,
       description: entry.data.excerpt,
@@ -472,6 +485,8 @@ const structuredData = jsonLd ? [jsonLd, breadcrumbLd] : breadcrumbLd;
     )
   ) : showFriends ? (
     <FriendsPage {locale} friends={byOrder(index.friends.filter((entry) => entry.data.active))} />
+  ) : special === 'tools' ? (
+    <ToolsGallery {locale} />
   ) : listing ? (
     <ListingPage
       {...listing}
@@ -485,6 +500,8 @@ const structuredData = jsonLd ? [jsonLd, breadcrumbLd] : breadcrumbLd;
       parent={listingParent}
       progress={listingProgress}
       status={listingStatus}
+      cover={listingCover}
+      folderGroup={listingGroup}
       {emptyLabel}
     />
   ) : null}

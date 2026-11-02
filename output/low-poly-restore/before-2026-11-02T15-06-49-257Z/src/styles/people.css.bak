@@ -1,0 +1,417 @@
+.people-page {
+  --people-accent: var(--expedition-red);
+  --reader-accent: var(--people-accent);
+  min-height: 75vh;
+  padding-block: 1.4rem 4rem;
+}
+:root[data-theme='dark'] .people-page {
+  --people-accent: var(--expedition-red);
+}
+.people-page.reading-page {
+  --reader-accent: var(--people-accent);
+}
+.people-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.6rem;
+  color: var(--muted);
+  font-size: 0.73rem;
+}
+.people-breadcrumb a {
+  text-decoration: none;
+}
+.people-kicker {
+  margin: 0 0 0.5rem;
+  color: var(--people-accent);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+}
+.people-page h1 {
+  max-width: none;
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  line-height: 1.4;
+}
+.people-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 13rem;
+  align-items: start;
+  gap: 3rem;
+  padding-top: 1.7rem;
+}
+.people-body {
+  min-width: 0;
+}
+.people-aside {
+  color: var(--muted);
+}
+.people-end {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.3rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+}
+.people-end > span {
+  color: var(--people-accent);
+}
+.people-end a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.friend-avatar img[hidden] {
+  display: none;
+}
+.about-heading {
+  position: relative;
+  overflow: hidden;
+  margin-top: 1.8rem;
+  padding: 0.5rem 6rem 1.7rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.about-heading > p:last-of-type {
+  max-width: 65ch;
+  margin: 0.55rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.about-mark {
+  position: absolute;
+  right: 0.4rem;
+  bottom: -1.4rem;
+  color: var(--people-accent);
+  font-family: var(--font-reading);
+  font-size: 7rem;
+  font-style: italic;
+  line-height: 1;
+  opacity: 0.2;
+}
+.about-guide {
+  margin-top: 1.7rem;
+}
+.about-guide strong {
+  display: block;
+  margin-bottom: 0.6rem;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 550;
+}
+.about-guide a {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--text);
+  font-size: 0.76rem;
+  text-decoration: none;
+}
+.about-guide a span {
+  color: var(--people-accent);
+}
+
+.friends-page {
+  --people-accent: var(--expedition-red);
+}
+:root[data-theme='dark'] .friends-page {
+  --people-accent: var(--expedition-red);
+}
+.friends-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 2rem;
+  margin-top: 1.8rem;
+}
+.friends-heading > div > p:last-child {
+  max-width: 60ch;
+  margin: 0.65rem 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.friends-count {
+  display: grid;
+  justify-items: end;
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 0.65rem;
+}
+.friends-count strong {
+  font-family: var(--font-reading);
+  font-size: 2rem;
+  line-height: 1.35;
+  font-weight: 450;
+  color: var(--people-accent);
+}
+.friends-ascent {
+  margin-top: 2rem;
+}
+.friends-steps {
+  --rise: 2.75rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.friends-steps + .friends-steps {
+  margin-top: 1.3rem;
+}
+.friend-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-top: calc((2 - var(--step)) * var(--rise));
+  padding-bottom: calc(var(--step) * var(--rise));
+}
+.friend-stop-card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-width: 0;
+  min-height: 15rem;
+  padding: 1.1rem 1.25rem 1rem;
+  border-bottom: 2px solid var(--people-accent);
+  background: linear-gradient(
+    0deg,
+    color-mix(in srgb, var(--people-accent) 5%, transparent),
+    transparent 65%
+  );
+}
+.friend-step:not(:last-child)::after {
+  position: absolute;
+  right: 0;
+  bottom: calc(var(--step) * var(--rise));
+  height: var(--rise);
+  border-right: 1px solid var(--people-accent);
+  opacity: 0.6;
+  content: '';
+}
+.friend-stop-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.7rem;
+}
+.friend-stop-number {
+  color: var(--people-accent);
+  font-size: 0.65rem;
+  font-variant-numeric: tabular-nums;
+}
+.friend-domain {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.6rem;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.friend-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-width: 0;
+}
+.friend-avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--people-accent);
+  font-family: var(--font-reading);
+  font-size: 1.3rem;
+}
+.friend-avatar img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+.friend-identity h2 {
+  min-width: 0;
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 550;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.friend-identity a {
+  text-decoration: none;
+}
+.friend-description {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+.friend-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.65rem;
+  margin: 0;
+  padding: 0;
+  color: var(--people-accent);
+  font-size: 0.64rem;
+  list-style: none;
+}
+.friend-facts {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  font-size: 0.71rem;
+}
+.friend-facts > div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.7rem;
+}
+.friend-facts dt {
+  color: var(--muted);
+}
+.friend-facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.friend-related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.85rem;
+  font-size: 0.68rem;
+}
+.friend-related a {
+  color: var(--people-accent);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.friend-visit {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 0.65rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  text-decoration: none;
+}
+.friend-visit i {
+  color: var(--people-accent);
+  font-size: 1rem;
+  font-style: normal;
+  transition: transform 160ms ease;
+}
+.friend-visit:hover i {
+  transform: translate(2px, -2px);
+}
+.friend-step-empty > span {
+  position: relative;
+  flex: 1;
+  min-height: 15rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--people-accent) 45%, var(--line));
+}
+.friend-step-empty > span::after {
+  position: absolute;
+  right: 1rem;
+  bottom: -0.2rem;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--people-accent);
+  content: '';
+}
+.friends-empty {
+  padding: 2rem 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 56rem) {
+  .people-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.4rem;
+  }
+  .people-aside {
+    grid-row: 1;
+  }
+  .about-guide {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 1rem;
+    margin-top: 1rem;
+  }
+  .about-guide strong {
+    margin: 0;
+  }
+  .about-guide a {
+    gap: 0.6rem;
+    padding-block: 0.3rem;
+  }
+  .friend-stop-card {
+    padding-inline: 0.85rem;
+  }
+  .friend-identity {
+    flex-direction: column;
+    align-items: start;
+  }
+}
+@media (max-width: 40rem) {
+  .people-page {
+    padding-top: 1rem;
+  }
+  .people-page h1 {
+    font-size: 1.75rem;
+  }
+  .friends-heading {
+    align-items: start;
+    gap: 1rem;
+  }
+  .friends-count {
+    padding-top: 1.2rem;
+  }
+  .friends-steps {
+    display: block;
+  }
+  .friend-step {
+    padding: 0;
+    margin-left: calc(var(--step) * 0.65rem);
+  }
+  .friend-step + .friend-step {
+    margin-top: 1.1rem;
+  }
+  .friend-step::after {
+    display: none;
+  }
+  .friend-stop-card {
+    min-height: 0;
+    padding: 0.9rem 1rem;
+    border-left: 1px solid var(--line);
+  }
+  .friend-identity {
+    flex-direction: row;
+    align-items: center;
+  }
+  .friend-step-empty {
+    display: none;
+  }
+  .friends-ascent {
+    margin-top: 1.4rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .friend-visit i {
+    transition: none;
+  }
+}

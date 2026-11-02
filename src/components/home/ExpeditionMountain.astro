@@ -1,0 +1,98 @@
+---
+interface Props {
+  id: string;
+  compact?: boolean;
+}
+const { id, compact = false } = Astro.props;
+const ridge =
+  'M34 416C90 406 100 359 155 349S215 309 252 282S292 250 320 226S359 199 384 153S419 105 444 63C462 110 482 126 502 159S534 191 555 229S589 244 619 285S663 308 699 348S740 383 776 412';
+---
+
+<figure class:list={['expedition-art', { 'expedition-art-compact': compact }]} aria-hidden="true">
+  <div class="expedition-art-meta">
+    <span>ICEAXING / FIELD OBSERVATIONS</span>
+    <span>ABOVE THE SNOWLINE</span>
+  </div>
+  <svg viewBox="0 0 820 540" fill="none" focusable="false">
+    <defs>
+      <pattern id={`${id}-dots`} width="5" height="5" patternUnits="userSpaceOnUse">
+        <circle cx="1.5" cy="1.5" r="1.05" fill="currentColor" />
+      </pattern>
+      <clipPath id={`${id}-clip`}>
+        <path d={`${ridge}L776 461H34Z`} />
+      </clipPath>
+    </defs>
+    <g class="expedition-plate-grid" stroke="currentColor" stroke-width=".6">
+      {[100, 200, 300, 400, 500, 600, 700].map((x) => (
+        <path d={`M${x} 32V470`} />
+      ))}
+      {[100, 200, 300, 400].map((y) => (
+        <path d={`M25 ${y}H792`} />
+      ))}
+    </g>
+    <circle class="expedition-sun" cx="635" cy="138" r="85" />
+    <circle class="expedition-sun-outline" cx="645" cy="132" r="85" stroke="currentColor" />
+    <path class="expedition-mass" d={`${ridge}L776 461H34Z`} fill={`url(#${id}-dots)`} />
+    <g
+      class="expedition-contours"
+      clip-path={`url(#${id}-clip)`}
+      stroke="currentColor"
+      stroke-width="1"
+    >
+      {Array.from({ length: 15 }, (_, i) => (
+        <path
+          d={ridge}
+          transform={`translate(${i * 4 - 18} ${i * 20 + 12}) scale(${1 - i * 0.009} 1)`}
+        />
+      ))}
+    </g>
+    <path
+      class="expedition-snow"
+      d="M320 226C359 199 384 153 404 124L444 63C462 110 482 126 502 159S534 191 555 229C528 217 517 225 496 212S473 198 455 211S433 196 417 207S391 199 376 216S343 218 320 226Z"
+    />
+    <path class="expedition-ridgeline" d={ridge} stroke="currentColor" stroke-width="1.6" />
+    <path
+      class="expedition-snowline"
+      d="M313 233C362 241 374 216 411 219S444 224 469 219S518 234 561 239"
+      stroke="currentColor"
+      stroke-dasharray="3 5"
+    />
+    <path
+      class="expedition-trail"
+      pathLength="1"
+      d="M191 452C207 422 279 423 311 390S354 369 375 337S419 310 428 275S462 238 453 207S447 161 444 122"
+    />
+    <g class="expedition-checkpoints">
+      {[
+        [191, 452],
+        [311, 390],
+        [375, 337],
+        [428, 275],
+      ].map(([x, y]) => (
+        <g>
+          <rect x={x! - 5} y={y! - 5} width="10" height="10" />
+          <circle cx={x} cy={y} r="2" />
+        </g>
+      ))}
+    </g>
+    <g stroke="currentColor" stroke-width="1">
+      <path d="M25 45V26H51M769 26H795V45M25 448V472H51M769 472H795V448M430 63H459M444 49V77" />
+    </g>
+    <g class="expedition-notations" fill="currentColor">
+      <text x="35" y="498">
+        FIG. 01 — A PERSONAL EXPEDITION
+      </text>
+      <text x="568" y="498">
+        KEEP EXPLORING ↗
+      </text>
+      <text x="577" y="247">
+        SNOWLINE
+      </text>
+    </g>
+    <path class="expedition-scan" d="M30 32H790" stroke="currentColor" />
+  </svg>
+  <figcaption>
+    <span>循着好奇，向雪线之上。</span>
+    <span>EXPEDITION / ICEAXING</span>
+  </figcaption>
+</figure>

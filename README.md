@@ -53,11 +53,11 @@ src/content/
 
 ## WikiLink 文章引用
 
-在 Keystatic 正文输入 `[[`，即可搜索标题或稳定内容 ID 并选择目标文章。支持自定义显示文字和标题锚点；链接按最新路由生成，使用方法见 [WikiLink 说明](doc/WIKILINKS.md)。
+在 Keystatic 正文输入 `[[`，即可搜索标题或稳定内容 ID 并选择目标文章。支持自定义显示文字和标题锚点；链接按最新路由生成，使用方法见 [WikiLink 说明](doc/features/editor/WIKILINKS.md)。
 
 ## Keystatic 存储模式
 
-正文图片存入 Git：粘贴、拖入或选图后，浏览器自动压缩为 WebP 并以 SHA-256 命名，统一保存到 `src/assets/article-images/`。同一压缩结果跨文章复用，保存文章时一并写入仓库，无需对象存储账户或密钥。使用与兼容说明见 [图片存储说明](doc/IMAGE_STORAGE.md)。
+正文图片存入 Git：粘贴、拖入或选图后，浏览器自动压缩为 WebP 并以 SHA-256 命名，统一保存到 `src/assets/article-images/`。同一压缩结果跨文章复用，保存文章时一并写入仓库，无需对象存储账户或密钥。使用与兼容说明见 [图片存储说明](doc/features/editor/IMAGE_STORAGE.md)。
 
 默认使用 local mode，适合本地直接编辑仓库文件。部署 GitHub mode 时设置：
 

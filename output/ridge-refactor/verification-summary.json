@@ -1,0 +1,337 @@
+{
+  "checks": 66,
+  "failed": [],
+  "runtimeErrors": [],
+  "results": [
+    {
+      "name": "one chapter visible",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "desktop fits one viewport",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "idle auto scroll",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "hover pauses",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "manual remains stopped",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "wheel never turns chapter",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "return restores selection position",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "no horizontal overflow light 1440",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "no horizontal overflow light 768",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "no horizontal overflow light 390",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "no horizontal overflow light 320",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "no horizontal overflow dark 1440",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "no horizontal overflow dark 768",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "no horizontal overflow dark 390",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "no horizontal overflow dark 320",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "chapter technical-ridge",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "chapter study-terrace",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "chapter snowfield-traverse",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "chapter night-camp",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "last chapter has explicit return",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "return to start",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "rapid navigation latest target",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "textbook selection",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "theme retains textbook",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "search opens",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "history previous chapter",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "legacy hash query",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "reduced motion immediate",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "en narrow layout",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "en navigation",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "de narrow layout",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "de navigation",
+      "passed": true,
+      "source": "browser-results.txt"
+    },
+    {
+      "name": "draft visible in manager",
+      "passed": true,
+      "source": "manager-results.txt"
+    },
+    {
+      "name": "save shared editorial order",
+      "passed": true,
+      "source": "manager-results.txt"
+    },
+    {
+      "name": "reject stale revision",
+      "passed": true,
+      "source": "manager-results.txt"
+    },
+    {
+      "name": "reject foreign origin",
+      "passed": true,
+      "source": "manager-results.txt"
+    },
+    {
+      "name": "reject unknown key",
+      "passed": true,
+      "source": "manager-results.txt"
+    },
+    {
+      "name": "reject negative rank",
+      "passed": true,
+      "source": "manager-results.txt"
+    },
+    {
+      "name": "reject duplicate keys",
+      "passed": true,
+      "source": "manager-results.txt"
+    },
+    {
+      "name": "invalid writes leave content unchanged",
+      "passed": true,
+      "source": "manager-results.txt"
+    },
+    {
+      "name": "all four kinds supported",
+      "passed": true,
+      "source": "manager-results.txt"
+    },
+    {
+      "name": "homepage uses manager order",
+      "passed": true,
+      "source": "manager-results.txt"
+    },
+    {
+      "name": "detail editor shares featured order",
+      "passed": true,
+      "source": "final-interaction-clean-results.txt"
+    },
+    {
+      "name": "detail editor has unified featured label",
+      "passed": true,
+      "source": "final-interaction-clean-results.txt"
+    },
+    {
+      "name": "legacy selected anchor stays in cover",
+      "passed": true,
+      "source": "final-interaction-clean-results.txt"
+    },
+    {
+      "name": "mobile ridge expands",
+      "passed": true,
+      "source": "final-interaction-clean-results.txt"
+    },
+    {
+      "name": "mobile direct jump collapses menu",
+      "passed": true,
+      "source": "final-interaction-clean-results.txt"
+    },
+    {
+      "name": "short window can read chapter overflow",
+      "passed": true,
+      "source": "final-interaction-clean-results.txt"
+    },
+    {
+      "name": "production light 1440",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production light 390",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production light 320",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production dark 1440",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production dark 390",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production dark 320",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production next chapter",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production textbook selection",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production search results",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production route /",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production route /en/blog",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production route /de/blog",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production route /articles",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production route /projects",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production route /profile",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production route /tools",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production route /daily-ramblings",
+      "passed": true,
+      "source": "production-results.txt"
+    },
+    {
+      "name": "production snow-wind finishes",
+      "passed": true,
+      "source": "production-results.txt"
+    }
+  ]
+}

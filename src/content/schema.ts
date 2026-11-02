@@ -37,6 +37,7 @@ export const baseContentSchema = z.object({
   tags: z.array(z.string().min(1)).default([]),
   authorName: z.string().min(1).default('iceaxing'),
   featured: z.boolean().default(false),
+  featuredOrder: z.number().int().min(0).default(1000000),
   order: z.number().int().min(0).default(0),
   seo: seoSchema,
 });
@@ -76,6 +77,7 @@ export const categorySchema = z.object({
   labels: localizedTextSchema,
   tags: z.array(z.string()).default([]),
   featured: z.boolean().default(false),
+  featuredOrder: z.number().int().min(0).default(1000000),
   order: z.number().int().min(0).default(0),
   icon: z.string().default(''),
   createdAt: dateTimeSchema,
@@ -91,6 +93,7 @@ export const projectSchema = z.object({
   progress: z.number().int().min(0).max(100),
   tags: z.array(z.string()).default([]),
   featured: z.boolean().default(false),
+  featuredOrder: z.number().int().min(0).default(1000000),
   order: z.number().int().min(0).default(0),
   createdAt: dateTimeSchema,
 });
@@ -103,6 +106,7 @@ export const seriesSchema = z.object({
   labels: localizedTextSchema,
   tags: z.array(z.string()).default([]),
   featured: z.boolean().default(false),
+  featuredOrder: z.number().int().min(0).default(1000000),
   order: z.number().int().min(0).default(0),
   createdAt: dateTimeSchema,
 });

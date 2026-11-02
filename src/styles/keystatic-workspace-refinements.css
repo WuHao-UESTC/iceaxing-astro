@@ -97,15 +97,15 @@ html[data-workspace-editor] [data-ws-readable-name]::after {
   content: attr(data-ws-readable-name);
   font: 450 13px/1.6 var(--ws-sans);
 }
-/* The outline reserves real space. It never floats over the text or toolbar. */
+/* A right-hand outline on wide panes, and a persistent disclosure on narrow panes. */
 html[data-workspace-editor] [data-ws-outline-host='docked'] {
   display: grid !important;
-  grid-template-columns: 168px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 168px;
   align-items: start;
-  column-gap: 0;
+  column-gap: 12px;
 }
 html[data-workspace-editor] [data-ws-outline-host='docked'] > [data-ws-writing-content] {
-  grid-column: 2;
+  grid-column: 1;
   grid-row: 1;
   min-width: 0;
 }
@@ -127,14 +127,14 @@ html[data-workspace-editor] [data-ws-outline-host] > [data-ws-outline] {
   z-index: 2;
 }
 html[data-workspace-editor] [data-ws-outline-host='docked'] > [data-ws-outline] {
-  grid-column: 1;
+  grid-column: 2;
   grid-row: 1;
   position: sticky;
   top: 0;
-  margin: 20px 0 20px 12px;
+  margin: 20px 12px 20px 0;
   border: 0;
-  border-right: 1px solid var(--ws-line);
-  padding-right: 10px;
+  border-left: 1px solid var(--ws-line);
+  padding-left: 10px;
 }
 html[data-workspace-editor] [data-ws-outline] nav {
   width: auto;
@@ -143,11 +143,30 @@ html[data-workspace-editor] [data-ws-outline] nav {
 }
 html[data-workspace-editor] [data-ws-outline-host='compact'] > [data-ws-outline] summary {
   font-size: 11px;
-  padding: 9px 24px;
+  padding: 8px 12px;
+}
+html[data-workspace-editor] [data-ws-outline-host='compact'] > [data-ws-outline] {
+  position: sticky;
+  top: 0;
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  border: 1px solid var(--ws-line);
+  z-index: 8;
 }
 html[data-workspace-editor] [data-ws-outline-host='compact'] > [data-ws-outline] nav {
-  max-height: 200px;
-  padding-inline: 16px;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: min(240px, calc(100vw - 32px));
+  max-height: min(50vh, 400px);
+  padding: 8px;
+  border: 1px solid var(--ws-line);
+  background: var(--ws-paper);
+  box-shadow: 0 8px 24px #0002;
+}
+html[data-workspace-editor] [data-ws-outline]:not([open]) nav {
+  display: none;
 }
 html[data-workspace-editor] [data-ws-outline-host='docked'] > [data-ws-outline] summary {
   font: 11px/1.7 var(--ws-serif);

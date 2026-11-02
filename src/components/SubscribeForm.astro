@@ -99,104 +99,127 @@ const bands = (['skill', 'study', 'life'] as const).map((group, index) => ({
 }));
 ---
 
-<section
+<details
   id={`subscribe-${locale}`}
   class="subscribe-panel"
   aria-labelledby={`subscribe-title-${locale}`}
   tabindex="-1"
   data-pagefind-ignore
 >
-  <header class="subscribe-heading">
-    <p class="content-kicker">ICEAXING / LETTERS</p>
+  <summary class="subscribe-toggle">
+    <span class="content-kicker">ICEAXING / LETTERS</span>
     <h2 id={`subscribe-title-${locale}`}>{copy.title}</h2>
-    <label class="subscribe-email">
-      <span>{copy.email}</span>
-      <input
-        form={formId}
-        name="email"
-        type="email"
-        required
-        maxlength="254"
-        autocomplete="email"
-        placeholder="you@example.com"
-      />
-    </label>
-    <p>{copy.description}</p>
-  </header>
-  <form
-    id={formId}
-    action="/api/subscribe"
-    method="post"
-    data-subscribe-form
-    data-network-error={copy.networkError}
-  >
-    <input type="hidden" name="locale" value={locale} />
-    <label class="subscribe-honeypot" aria-hidden="true">
-      Website
-      <input name="website" type="text" tabindex="-1" autocomplete="off" />
-    </label>
-    <fieldset class="subscribe-scopes" aria-describedby={`subscribe-rule-${locale}`}>
-      <legend>{copy.scope}</legend>
-      <p class="subscribe-rule" id={`subscribe-rule-${locale}`}>
-        {copy.rule}
-      </p>
-      <div class="subscribe-bands">
-        {bands.map((band, index) => (
-          <fieldset class="subscribe-band" data-group={band.group}>
-            <legend class="subscribe-band-title">
-              <span aria-hidden="true">0{index + 1} / </span>
-              {band.title}
-            </legend>
-            <SubscriptionRibbon group={band.group} />
-            <p class="subscribe-band-trail">{band.trail}</p>
-            <ul class="subscribe-clusters">
-              {band.categories.map((category) => (
-                <li class="subscribe-cluster">
-                  <SubscriptionChoice option={category.option} {locale} included={copy.included} />
-                  {category.projects.length > 0 && (
-                    <ul class="subscribe-projects">
-                      {category.projects.map((project) => (
-                        <li class="subscribe-project">
-                          <SubscriptionChoice
-                            option={project.option}
-                            {locale}
-                            included={copy.included}
-                            kindLabel={copy.project}
-                          />
-                          {project.collections.length > 0 && (
-                            <ul class="subscribe-collections">
-                              {project.collections.map((option) => (
-                                <li>
-                                  <SubscriptionChoice
-                                    {option}
-                                    {locale}
-                                    included={copy.included}
-                                    kindLabel={copy.collection}
-                                  />
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </fieldset>
-        ))}
-      </div>
-    </fieldset>
-    <button class="button" type="submit" data-label={copy.submit} data-pending={copy.pending}>
-      {copy.submit}
-    </button>
-    <p class="subscribe-result" data-subscribe-result aria-live="polite"></p>
-  </form>
-</section>
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      aria-hidden="true"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  </summary>
+  <div class="subscribe-content">
+    <header class="subscribe-heading">
+      <label class="subscribe-email">
+        <span>{copy.email}</span>
+        <input
+          form={formId}
+          name="email"
+          type="email"
+          required
+          maxlength="254"
+          autocomplete="email"
+          placeholder="you@example.com"
+        />
+      </label>
+      <p>{copy.description}</p>
+    </header>
+    <form
+      id={formId}
+      action="/api/subscribe"
+      method="post"
+      data-subscribe-form
+      data-network-error={copy.networkError}
+    >
+      <input type="hidden" name="locale" value={locale} />
+      <label class="subscribe-honeypot" aria-hidden="true">
+        Website
+        <input name="website" type="text" tabindex="-1" autocomplete="off" />
+      </label>
+      <fieldset class="subscribe-scopes" aria-describedby={`subscribe-rule-${locale}`}>
+        <legend>{copy.scope}</legend>
+        <p class="subscribe-rule" id={`subscribe-rule-${locale}`}>
+          {copy.rule}
+        </p>
+        <div class="subscribe-bands">
+          {bands.map((band, index) => (
+            <fieldset class="subscribe-band" data-group={band.group}>
+              <legend class="subscribe-band-title">
+                <span aria-hidden="true">0{index + 1} / </span>
+                {band.title}
+              </legend>
+              <SubscriptionRibbon group={band.group} />
+              <p class="subscribe-band-trail">{band.trail}</p>
+              <ul class="subscribe-clusters">
+                {band.categories.map((category) => (
+                  <li class="subscribe-cluster">
+                    <SubscriptionChoice
+                      option={category.option}
+                      {locale}
+                      included={copy.included}
+                    />
+                    {category.projects.length > 0 && (
+                      <ul class="subscribe-projects">
+                        {category.projects.map((project) => (
+                          <li class="subscribe-project">
+                            <SubscriptionChoice
+                              option={project.option}
+                              {locale}
+                              included={copy.included}
+                              kindLabel={copy.project}
+                            />
+                            {project.collections.length > 0 && (
+                              <ul class="subscribe-collections">
+                                {project.collections.map((option) => (
+                                  <li>
+                                    <SubscriptionChoice
+                                      {option}
+                                      {locale}
+                                      included={copy.included}
+                                      kindLabel={copy.collection}
+                                    />
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </fieldset>
+          ))}
+        </div>
+      </fieldset>
+      <button class="button" type="submit" data-label={copy.submit} data-pending={copy.pending}>
+        {copy.submit}
+      </button>
+      <p class="subscribe-result" data-subscribe-result aria-live="polite"></p>
+    </form>
+  </div>
+</details>
 
 <script>
+  function openSubscriptionTarget() {
+    const panel = document.getElementById(location.hash.slice(1));
+    if (panel instanceof HTMLDetailsElement && panel.classList.contains('subscribe-panel'))
+      panel.open = true;
+  }
   function initSubscriptions() {
+    openSubscriptionTarget();
     document.querySelectorAll<HTMLFormElement>('[data-subscribe-form]').forEach((form) => {
       if (form.dataset.ready) return;
       form.dataset.ready = 'true';
@@ -257,4 +280,12 @@ const bands = (['skill', 'study', 'life'] as const).map((group, index) => ({
   }
   initSubscriptions();
   document.addEventListener('astro:page-load', initSubscriptions);
+  window.addEventListener('hashchange', openSubscriptionTarget);
+  document.addEventListener('click', (event) => {
+    const link = (event.target as Element).closest<HTMLAnchorElement>('a[href^="#subscribe-"]');
+    if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    const panel = document.getElementById(link.hash.slice(1));
+    if (panel instanceof HTMLDetailsElement && panel.classList.contains('subscribe-panel'))
+      panel.open = true;
+  });
 </script>

@@ -1,0 +1,414 @@
+---
+import { getMessages } from '../i18n/messages';
+import { localizedPath, type Locale } from '../i18n/config';
+import {
+  byOrder,
+  formatDate,
+  getContentIndex,
+  isPublicContent,
+  localizedLabel,
+  newestFirst,
+  routeFor,
+} from '../lib/content';
+import '../styles/home.css';
+import '../styles/ridge-editorial.css';
+import { compareFeatured } from '../lib/featured';
+import { getArticleCover } from '../lib/article-cover-assets';
+import JourneyNavigation from './home/JourneyNavigation.astro';
+import NightCamp from './home/NightCamp.astro';
+import SnowfieldTraverse from './home/SnowfieldTraverse.astro';
+import SnowlineHero from './home/SnowlineHero.astro';
+import TechnicalRidge from './home/TechnicalRidge.astro';
+import StudyTerrace from './home/StudyTerrace.astro';
+import type { HomeCard, HomeLabels } from './home/types';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = getMessages(locale);
+const index = await getContentIndex();
+const settings = index.settings[0]?.data;
+const articles = newestFirst(
+  index.articles.filter((entry) => entry.data.locale === locale && isPublicContent(entry.data)),
+);
+const labels: HomeLabels =
+  locale === 'zh'
+    ? {
+        heroTitle: 'ICEAXING',
+        intro: settings?.descriptions.zh ?? messages.home.introduction,
+        read: '阅读精选',
+        meet: '认识我',
+        featured: '精选内容',
+        chapters: ['封面', '技术栈', '学习笔记', '生活日常', '沿途随记'],
+        chapterIntros: [
+          '从原理出发，把想法一步步做成现实。',
+          '把读过的书、推过的公式与想明白的问题，慢慢整理成路。',
+          '在阅读、远行与寻常日子里，收集世界的细节。',
+          '记下偶然的念头，也留住一路相遇的人。',
+        ],
+        projects: '项目进展',
+        studyTopics: '学习专题',
+        studyLatest: '最近整理',
+        studyCount: '篇笔记',
+        emptyStudy: '笔记正在整理，先从左侧专题开始探索。',
+        completed: '已经抵达',
+        latest: '最近，过得怎样',
+        fieldNotes: '碎碎念',
+        emptyRamblings: '还没有碎碎念，先去路上走走。',
+        directory: '此间与同行',
+        next: '继续向上',
+        back: '回到山脚',
+        route: '海拔路线',
+      }
+    : locale === 'de'
+      ? {
+          heroTitle: 'ICEAXING',
+          intro: settings?.descriptions.de ?? messages.home.introduction,
+          read: 'Notizen lesen',
+          meet: 'Über mich',
+          featured: 'Ausgewählte Inhalte',
+          chapters: ['Start', 'Technik', 'Lernnotizen', 'Alltag', 'Unterwegs'],
+          chapterIntros: [
+            'Von den Grundlagen zu Ideen, die Wirklichkeit werden.',
+            'Bücher, Herleitungen und neue Erkenntnisse werden Schritt für Schritt zu einem Weg.',
+            'Kleine Entdeckungen beim Lesen, Reisen und im Alltag.',
+            'Gedanken und Begegnungen unterwegs.',
+          ],
+          projects: 'Projekte',
+          studyTopics: 'Lernthemen',
+          studyLatest: 'Neue Notizen',
+          studyCount: 'Notizen',
+          emptyStudy: 'Notizen entstehen gerade. Entdecke inzwischen die Lernthemen.',
+          completed: 'Abgeschlossen',
+          latest: 'In letzter Zeit',
+          fieldNotes: 'Lose Gedanken',
+          emptyRamblings: 'Noch keine losen Gedanken.',
+          directory: 'Menschen & Wege',
+          next: 'Weiter aufsteigen',
+          back: 'Zum Basislager',
+          route: 'Höhenroute',
+        }
+      : {
+          heroTitle: 'ICEAXING',
+          intro: settings?.descriptions.en ?? messages.home.introduction,
+          read: 'Read the notes',
+          meet: 'About me',
+          featured: 'Selected work',
+          chapters: ['Cover', 'Technology', 'Study Notes', 'Everyday Life', 'Along the Way'],
+          chapterIntros: [
+            'From first principles to ideas made real.',
+            'Books read, formulas worked through, and questions understood, one step at a time.',
+            'Small discoveries in books, journeys, and ordinary days.',
+            'Passing thoughts and people met along the way.',
+          ],
+          projects: 'Projects',
+          studyTopics: 'Study topics',
+          studyLatest: 'Recent notes',
+          studyCount: 'notes',
+          emptyStudy: 'Notes are taking shape. Explore the study topics in the meantime.',
+          completed: 'Finished',
+          latest: 'Lately in life',
+          fieldNotes: 'Ramblings',
+          emptyRamblings: 'No ramblings yet.',
+          directory: 'People & places',
+          next: 'Continue the ascent',
+          back: 'Back to base camp',
+          route: 'Altitude route',
+        };
+
+const categoryById = new Map(index.categories.map((entry) => [entry.data.categoryId, entry]));
+const projectById = new Map(index.projects.map((entry) => [entry.data.projectId, entry]));
+const collectionById = new Map(index.series.map((entry) => [entry.data.collectionId, entry]));
+const articleCards: HomeCard[] = articles.map((entry) => {
+  const collection = entry.data.collection ? collectionById.get(entry.data.collection) : undefined;
+  const projectId = entry.data.project ?? collection?.data.project;
+  const project = projectId ? projectById.get(projectId) : undefined;
+  const categoryId = entry.data.category ?? project?.data.category;
+  const cover = getArticleCover(entry);
+  return {
+    id: entry.data.contentId,
+    href: routeFor(entry.data.contentId, locale, 'article') ?? '#',
+    title: entry.data.title,
+    description: entry.data.excerpt,
+    meta: formatDate(entry.data.publishedAt, locale),
+    publishedAt: entry.data.publishedAt.toISOString(),
+    tags: entry.data.tags,
+    group: categoryId ? categoryById.get(categoryId)?.data.group : undefined,
+    kind: 'article',
+    featured: entry.data.featured,
+    featuredOrder: entry.data.featuredOrder,
+    coverImage: typeof cover === 'string' ? undefined : cover,
+    coverUrl: typeof cover === 'string' ? cover : undefined,
+  };
+});
+const categoryCards = Object.groupBy(
+  byOrder(index.categories).map((entry) => ({
+    group: entry.data.group,
+    card: {
+      id: entry.data.categoryId,
+      href: routeFor(entry.data.categoryId, locale, 'category') ?? '#',
+      title: localizedLabel(entry, locale).title,
+      description: localizedLabel(entry, locale).description,
+      tags: entry.data.tags,
+      kind: 'category',
+      featured: entry.data.featured,
+      featuredOrder: entry.data.featuredOrder,
+      coverImage: entry.data.coverImage,
+    } satisfies HomeCard,
+  })),
+  (entry) => entry.group,
+);
+const skillCategoryCards = categoryCards.skill?.map((entry) => entry.card) ?? [];
+const lifeCategoryCards =
+  categoryCards.life
+    ?.filter(
+      (entry) =>
+        !index.categories
+          .find((category) => category.data.categoryId === entry.card.id)
+          ?.data.tags.includes('daily-ramblings'),
+    )
+    .map((entry) => entry.card) ?? [];
+const projectCards: HomeCard[] = byOrder(index.projects).map((entry) => ({
+  id: entry.data.projectId,
+  href: routeFor(entry.data.projectId, locale, 'project') ?? '#',
+  title: localizedLabel(entry, locale).title,
+  description: localizedLabel(entry, locale).description,
+  meta: entry.data.status.toUpperCase(),
+  progress: entry.data.progress,
+  kind: 'project',
+  featured: entry.data.featured,
+  featuredOrder: entry.data.featuredOrder,
+  status: entry.data.status,
+  tags: entry.data.tags,
+  topic: categoryById.get(entry.data.category)?.data.labels[locale].title,
+  coverImage: entry.data.coverImage ?? categoryById.get(entry.data.category)?.data.coverImage,
+}));
+// Homepage placement follows the category's explicit CMS section.
+const studyCategoryIds = new Set(
+  index.categories
+    .filter((entry) => entry.data.group === 'study')
+    .map((entry) => entry.data.categoryId),
+);
+const studyArticles = articles.filter(
+  (entry) => entry.data.category && studyCategoryIds.has(entry.data.category),
+);
+const studyArticleIds = new Set(studyArticles.map((entry) => entry.data.contentId));
+const studyTopics = (categoryCards.study?.map((entry) => entry.card) ?? []).map((card) => ({
+  ...card,
+  noteCount: studyArticles.filter((entry) => entry.data.category === card.id).length,
+}));
+const studyCards = articleCards
+  .filter((card) => studyArticleIds.has(card.id))
+  .map((card) => {
+    const article = studyArticles.find((entry) => entry.data.contentId === card.id)!;
+    return {
+      ...card,
+      categoryId: article.data.category ?? undefined,
+      topic: studyTopics.find((topic) => topic.id === article.data.category)?.title,
+    };
+  });
+const practiceProjectCards = projectCards.filter((card) => {
+  const project = index.projects.find((entry) => entry.data.projectId === card.id);
+  return index.categories.some(
+    (category) =>
+      category.data.categoryId === project?.data.category &&
+      category.data.group === 'skill' &&
+      !studyCategoryIds.has(category.data.categoryId),
+  );
+});
+const collectionCards: HomeCard[] = byOrder(index.series).map((entry) => ({
+  id: entry.data.collectionId,
+  href: routeFor(entry.data.collectionId, locale, 'collection') ?? '#',
+  title: localizedLabel(entry, locale).title,
+  description: localizedLabel(entry, locale).description,
+  tags: entry.data.tags,
+  kind: 'collection',
+  featured: entry.data.featured,
+  featuredOrder: entry.data.featuredOrder,
+  topic: projectById.get(entry.data.project)?.data.labels[locale].title,
+  coverImage:
+    entry.data.coverImage ??
+    projectById.get(entry.data.project)?.data.coverImage ??
+    categoryById.get(projectById.get(entry.data.project)?.data.category ?? '')?.data.coverImage,
+}));
+const entries: HomeCard[] = [
+  {
+    id: 'log',
+    href: localizedPath(locale, '/log'),
+    title: locale === 'zh' ? '日志' : 'Log',
+    description: '',
+  },
+  {
+    id: 'about',
+    href: localizedPath(locale, '/about'),
+    title: messages.nav.about,
+    description: '',
+  },
+  {
+    id: 'profile',
+    href: localizedPath(locale, '/profile'),
+    title: locale === 'zh' ? '个人档案' : 'Profile',
+    description: '',
+  },
+  {
+    id: 'friends',
+    href: localizedPath(locale, '/friends'),
+    title: locale === 'zh' ? '友链' : 'Friends',
+    description: '',
+  },
+];
+const mottoEntry = byOrder(
+  index.mottos.filter((entry) => entry.data.locale === locale && entry.data.active),
+)[0];
+const motto = mottoEntry
+  ? { text: mottoEntry.data.text, source: mottoEntry.data.source }
+  : undefined;
+const featuredCards: HomeCard[] = [
+  ...articleCards,
+  ...Object.values(categoryCards).flatMap((items) => items?.map((item) => item.card) ?? []),
+  ...projectCards,
+  ...collectionCards,
+]
+  .filter((card) => card.featured && card.href !== '#')
+  .sort(compareFeatured);
+const lifeArticles = articleCards
+  .filter((card) => {
+    const article = articles.find((entry) => entry.data.contentId === card.id);
+    if (!article) return false;
+    if (article.data.category) {
+      const category = index.categories.find(
+        (entry) => entry.data.categoryId === article.data.category,
+      );
+      if (category)
+        return category.data.group === 'life' && !category.data.tags.includes('daily-ramblings');
+    }
+    const project = index.projects.find((entry) => entry.data.projectId === article.data.project);
+    const category = index.categories.find(
+      (entry) => entry.data.categoryId === project?.data.category,
+    );
+    return category?.data.group === 'life' && !category.data.tags.includes('daily-ramblings');
+  })
+  .map((card) => {
+    const article = articles.find((entry) => entry.data.contentId === card.id)!;
+    const direct = index.categories.find(
+      (entry) => entry.data.categoryId === article.data.category,
+    );
+    const project = index.projects.find((entry) => entry.data.projectId === article.data.project);
+    return { ...card, categoryId: direct?.data.categoryId ?? project?.data.category };
+  });
+const ramblingsCategory = index.categories.find(
+  (entry) =>
+    entry.data.categoryId === 'daily-ramblings' || entry.data.tags.includes('daily-ramblings'),
+);
+const ramblingCards = articleCards.filter((card) => {
+  const article = articles.find((entry) => entry.data.contentId === card.id);
+  if (!article || !ramblingsCategory) return false;
+  if (article.data.tags.includes('daily-ramblings')) return true;
+  if (article.data.category === ramblingsCategory.data.categoryId) return true;
+  const directCategory = index.categories.find(
+    (entry) => entry.data.categoryId === article.data.category,
+  );
+  if (directCategory?.data.tags.includes('daily-ramblings')) return true;
+  const project = index.projects.find((entry) => entry.data.projectId === article.data.project);
+  if (project?.data.category === ramblingsCategory.data.categoryId) return true;
+  return index.categories.some(
+    (entry) =>
+      entry.data.categoryId === project?.data.category &&
+      entry.data.tags.includes('daily-ramblings'),
+  );
+});
+const ramblingsHref = ramblingsCategory
+  ? (routeFor(ramblingsCategory.data.categoryId, locale, 'category') ??
+    localizedPath(locale, '/daily-ramblings'))
+  : localizedPath(locale, '/daily-ramblings');
+---
+
+<main
+  id="main-content"
+  class="snowline-home"
+  data-journey
+  data-locale={locale}
+  data-pagefind-body
+  tabindex="-1"
+>
+  <JourneyNavigation {labels} {locale} />
+  <div class="journey-deck">
+    <nav
+      class="journey-chapter-controls"
+      aria-label={
+        locale === 'zh' ? '章节翻页' : locale === 'de' ? 'Kapitel wechseln' : 'Chapter navigation'
+      }
+      hidden
+    >
+      <button
+        type="button"
+        data-chapter-prev
+        aria-label={
+          locale === 'zh' ? '上一章' : locale === 'de' ? 'Vorheriges Kapitel' : 'Previous chapter'
+        }
+      >
+        <span aria-hidden="true">←</span>
+        <span data-chapter-prev-label></span>
+      </button>
+      <button type="button" data-chapter-next>
+        <span data-chapter-next-label></span> <span aria-hidden="true">→</span>
+      </button>
+    </nav>
+    <div class="snow-wind" data-snow-wind aria-hidden="true">
+      {Array.from({ length: 28 }, (_, i) => (
+        <i
+          style={`--snow-y:${(i * 37) % 100}%;--snow-x:${(i * 23) % 100}%;--snow-delay:${(i % 7) * 18}ms;--snow-length:${6 + (i % 5) * 8}px`}
+        />
+      ))}
+    </div>
+    <section id="base-camp" class="snowline-panel snowline-hero" aria-labelledby="base-camp-title">
+      <SnowlineHero
+        {locale}
+        {labels}
+        {motto}
+        featured={featuredCards}
+        profileHref={localizedPath(locale, '/profile')}
+      />
+    </section>
+    <section
+      id="technical-ridge"
+      class="snowline-panel snowline-technical"
+      aria-labelledby="technical-ridge-title"
+    >
+      <TechnicalRidge
+        {labels}
+        categories={skillCategoryCards.filter((card) => !studyCategoryIds.has(card.id))}
+        projects={practiceProjectCards}
+      />
+    </section>
+    <section
+      id="study-terrace"
+      class="snowline-panel snowline-study"
+      aria-labelledby="study-terrace-title"
+    >
+      <StudyTerrace {labels} {locale} topics={studyTopics} latest={studyCards} />
+    </section>
+    <section
+      id="snowfield-traverse"
+      class="snowline-panel snowline-life"
+      aria-labelledby="snowfield-traverse-title"
+    >
+      <SnowfieldTraverse {labels} {locale} categories={lifeCategoryCards} latest={lifeArticles} />
+    </section>
+    <section
+      id="night-camp"
+      class="snowline-panel snowline-night"
+      aria-labelledby="night-camp-title"
+    >
+      <NightCamp {labels} {locale} notes={ramblingCards} {entries} {ramblingsHref} />
+    </section>
+  </div>
+</main>
+
+<script>
+  import { initHomeJourney } from '../scripts/home-journey';
+
+  initHomeJourney();
+</script>

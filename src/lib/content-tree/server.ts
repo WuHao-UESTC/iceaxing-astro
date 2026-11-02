@@ -156,7 +156,7 @@ async function snapshotFromReader(reader: ContentReader): Promise<ContentSnapsho
   };
 }
 
-function githubRepo(): GitHubRepo {
+export function githubRepo(): GitHubRepo {
   if (keystaticConfig.storage.kind !== 'github') {
     throw new Error('GitHub storage is not configured.');
   }
@@ -169,7 +169,7 @@ function githubRepo(): GitHubRepo {
   return repo;
 }
 
-async function githubJson<T>(url: string, token: string, init?: RequestInit): Promise<T> {
+export async function githubJson<T>(url: string, token: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     ...init,
     headers: {
@@ -243,7 +243,7 @@ function assertDeletePath(candidate: string) {
   return normalized;
 }
 
-function pathPrefix() {
+export function pathPrefix() {
   if (keystaticConfig.storage.kind !== 'github' || !keystaticConfig.storage.pathPrefix) return '';
   return `${keystaticConfig.storage.pathPrefix.replace(/^\/+|\/+$/g, '')}/`;
 }

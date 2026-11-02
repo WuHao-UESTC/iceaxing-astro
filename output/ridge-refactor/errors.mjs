@@ -1,0 +1,1 @@
+﻿import fs from 'node:fs';const lines=fs.readFileSync('output/ridge-refactor/check.log','utf8').replace(/\u001b\[[0-9;]*m/g,'').split('\n');for(let i=0;i<lines.length;i++){if(lines[i].includes('error')&&!lines[i].includes('0 errors'))console.log(lines.slice(i,i+4).join('\n'));}

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" fill="none">
+  <path fill="#252333" d="M0 0h900v600H0z"/>
+  <g stroke="#c4b0ea" stroke-width="1" stroke-opacity=".2">
+    <path fill="#51485f" d="M0 40 160 0 125 140 175 250 90 390 190 535 0 600Z"/>
+    <path fill="#6d5c7e" d="M160 0 125 140 0 225V40Zm15 250L90 390 0 470V225ZM90 390 190 535 0 600Z"/>
+    <path d="M125 140 0 225m175 25L0 335m90 55L0 470"/>
+    <path fill="#3d374c" d="M0 600 280 460 420 540 600 485 900 575v25Z"/>
+    <path fill="#52465f" d="m280 460 50 140h185L420 540Zm320 25 35 115h265v-25Z"/>
+  </g>
+  <path d="m240 435 95-85 125 35 110-125 130 35 100-95" stroke="#c4b0ea" stroke-opacity=".55" stroke-width="2" stroke-dasharray="5 9"/>
+  <g stroke="#c4b0ea" stroke-opacity=".6">
+    <path d="M335 350v-30h24m211-60v-30h24m206-30v-30h24M450 108h10m-5-5v10m249 16h8m-4-4v8"/>
+    <g fill="#c4b0ea"><circle cx="335" cy="350" r="4"/><circle cx="570" cy="260" r="4"/><circle cx="800" cy="200" r="4"/></g>
+  </g>
+  <g transform="translate(700 466)" stroke="#c4b0ea" stroke-opacity=".45">
+    <path fill="#6d5c7e" d="m-50 40 35-75 55 15 37 70-70 13Z"/>
+    <path fill="#9180a5" d="m-50 40 35-75 22 98Z"/>
+    <path fill="#322c40" d="m-28 43 14-48 10 55Z"/>
+    <path d="M-15-35-87 55M40-20l62 80"/>
+  </g>
+  <text x="245" y="78" fill="#c4b0ea" font-family="Consolas,monospace" font-size="13" letter-spacing="3">TRAIL WAYSTATION</text>
+  <path d="M245 100h45" stroke="#c4b0ea" stroke-opacity=".6"/>
+</svg>

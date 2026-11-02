@@ -1,0 +1,293 @@
+[
+  {
+    "id": "01",
+    "round": 1,
+    "key": "voxel",
+    "name": "等距体素世界",
+    "en": "A LITTLE WORLD OF IDEAS",
+    "theme": "一座持续建设的探索基地",
+    "art": "等距方块 · 微缩模型 · 定向光照",
+    "layout": "空间节点与浮动信息牌",
+    "motion": "场景平移，信息牌展开",
+    "colors": [
+      "#e9f0e8",
+      "#253e36",
+      "#ce7951"
+    ],
+    "refs": [
+      "https://www.craftz.dog/",
+      "https://www.craftz.dog/works"
+    ]
+  },
+  {
+    "id": "02",
+    "round": 1,
+    "key": "specimen",
+    "name": "自然博物图鉴",
+    "en": "THE CABINET OF CURIOSITY",
+    "theme": "观察知识，也观察日常",
+    "art": "植物线描 · 标本编号 · 水彩色块",
+    "layout": "标本大图与窄幅索引牌",
+    "motion": "图版揭示，标注依次出现",
+    "colors": [
+      "#f3f1e6",
+      "#354b3a",
+      "#a56e47"
+    ],
+    "refs": [
+      "https://maggieappleton.com/",
+      "https://maggieappleton.com/garden"
+    ]
+  },
+  {
+    "id": "03",
+    "round": 1,
+    "key": "comic",
+    "name": "漫画分镜旅程",
+    "en": "ONE MORE ADVENTURE!",
+    "theme": "技术与生活的个人连载",
+    "art": "粗轮廓 · 平涂色 · 角色与分镜",
+    "layout": "不等大分镜、气泡与宽项目格",
+    "motion": "分镜擦入，标题弹入",
+    "colors": [
+      "#fff8dc",
+      "#242630",
+      "#f56c4d"
+    ],
+    "refs": [
+      "https://ncase.me/",
+      "https://blog.ncase.me/parable-of-the-hill-climber/"
+    ]
+  },
+  {
+    "id": "04",
+    "round": 1,
+    "key": "riso",
+    "name": "双色网点刊物",
+    "en": "THE EVERYDAY OBSERVER",
+    "theme": "思想与生活，每日见刊",
+    "art": "半色调 · 套印偏移 · 刊物大字",
+    "layout": "跨栏头条、图文多栏与短讯",
+    "motion": "版面滑移，栏目推入",
+    "colors": [
+      "#f3e9ce",
+      "#243b68",
+      "#d24f3f"
+    ],
+    "refs": [
+      "https://solar.lowtechmagazine.com/",
+      "https://henry.codes/"
+    ]
+  },
+  {
+    "id": "05",
+    "round": 1,
+    "key": "engraving",
+    "name": "古典雕版书册",
+    "en": "THE BOOK OF WANDERINGS",
+    "theme": "写给好奇心的一部五卷书",
+    "art": "雕版排线 · 藏书票 · 书页边饰",
+    "layout": "对开书页、图版与页边注",
+    "motion": "书页遮罩，卷标切换",
+    "colors": [
+      "#eee4ce",
+      "#403b2d",
+      "#8c523b"
+    ],
+    "refs": [
+      "https://lynnandtonic.com/",
+      "https://maggieappleton.com/"
+    ]
+  },
+  {
+    "id": "06",
+    "round": 2,
+    "key": "deco",
+    "name": "装饰艺术远征",
+    "en": "THE EXPLORERS SOCIETY",
+    "theme": "思想与生活的私人沙龙",
+    "art": "阶梯拱门 · 黄铜线条 · 放射纹",
+    "layout": "对称展柜与细框票券",
+    "motion": "帷幕开启，轴线展开",
+    "colors": [
+      "#102b2c",
+      "#ead8a4",
+      "#c69d5d"
+    ],
+    "refs": [
+      "https://www.vam.ac.uk/articles/an-introduction-to-art-deco"
+    ]
+  },
+  {
+    "id": "07",
+    "round": 2,
+    "key": "bauhaus",
+    "name": "包豪斯实验场",
+    "en": "FORM / THINK / MAKE",
+    "theme": "让好奇心成为一种构造",
+    "art": "原色几何 · 四分之一圆 · 非对称",
+    "layout": "跨行色块与拼接卡片",
+    "motion": "几何块分向滑入",
+    "colors": [
+      "#f0eee2",
+      "#222323",
+      "#d84632"
+    ],
+    "refs": [
+      "https://bauhauskooperation.de/"
+    ]
+  },
+  {
+    "id": "08",
+    "round": 2,
+    "key": "swiss",
+    "name": "瑞士图形档案",
+    "en": "A SYSTEM FOR IDEAS",
+    "theme": "清楚地思考，准确地表达",
+    "art": "大字排版 · 严格网格 · 红色锚点",
+    "layout": "开放索引、超大编号与对齐线",
+    "motion": "网格对齐，短距平移",
+    "colors": [
+      "#f5f4ee",
+      "#171918",
+      "#dd3c28"
+    ],
+    "refs": [
+      "https://www.swissted.com/"
+    ]
+  },
+  {
+    "id": "09",
+    "round": 2,
+    "key": "cyanotype",
+    "name": "蓝晒知识图纸",
+    "en": "EXPOSURES OF A CURIOUS MIND",
+    "theme": "把思考，晒成一张清晰的图纸",
+    "art": "普鲁士蓝 · 负片轮廓 · 曝光边缘",
+    "layout": "晒印图版与透明标注纸",
+    "motion": "曝光显影，图纸揭示",
+    "colors": [
+      "#133e77",
+      "#ecf2e9",
+      "#b8d8e7"
+    ],
+    "refs": [
+      "https://www.metmuseum.org/art/collection/search/291498"
+    ]
+  },
+  {
+    "id": "10",
+    "round": 2,
+    "key": "papercut",
+    "name": "层叠纸雕地形",
+    "en": "A WORLD IN LAYERS",
+    "theme": "一层一层，走近世界",
+    "art": "切纸轮廓 · 叠层遮挡 · 方向投影",
+    "layout": "地形纸签、折页与抽屉卡",
+    "motion": "纸层错位，标签展开",
+    "colors": [
+      "#f4eee0",
+      "#3d5954",
+      "#cf775c"
+    ],
+    "refs": [
+      "https://www.paperholm.com/work/threecolour-houses"
+    ]
+  },
+  {
+    "id": "11",
+    "round": 3,
+    "key": "stainedglass",
+    "name": "彩窗思想馆",
+    "en": "A WINDOW INTO MY WORLD",
+    "theme": "让每一片好奇，透出自己的光",
+    "art": "彩色拼片 · 铅线分隔 · 透光拱窗",
+    "layout": "嵌接窗格、厚边界与实色文字区",
+    "motion": "光线显现，窗格依次点亮",
+    "colors": [
+      "#eae2d4",
+      "#303e43",
+      "#ac6947"
+    ],
+    "refs": [
+      "https://www.vam.ac.uk/articles/stained-glass-an-introduction"
+    ]
+  },
+  {
+    "id": "12",
+    "round": 3,
+    "key": "clay",
+    "name": "柔软陶土工作室",
+    "en": "MAKE ROOM FOR PLAY",
+    "theme": "把严肃的思考，放进柔软的世界",
+    "art": "哑光膨胀体 · 柔软凹槽 · 漫反射",
+    "layout": "圆润托盘、胶囊索引与内凹卡片",
+    "motion": "轻柔回弹，托盘浮起",
+    "colors": [
+      "#eee7f4",
+      "#514662",
+      "#b47b6c"
+    ],
+    "refs": [
+      "https://petertarka.artstation.com/projects/YKn6v6"
+    ]
+  },
+  {
+    "id": "13",
+    "round": 3,
+    "key": "pixel",
+    "name": "像素山谷日记",
+    "en": "SAVE POINT / ICEAXING",
+    "theme": "今天，也为好奇心增加一点经验",
+    "art": "二维像素 · 阶梯边框 · 场景物品",
+    "layout": "任务面板、背包格与收藏栏",
+    "motion": "像素阶梯擦入，章节跳转",
+    "colors": [
+      "#e9e0ba",
+      "#344b42",
+      "#aa653f"
+    ],
+    "refs": [
+      "https://www.stardewvalley.net/"
+    ]
+  },
+  {
+    "id": "14",
+    "round": 3,
+    "key": "ukiyoe",
+    "name": "木版山海手记",
+    "en": "RECORDS OF MOUNTAINS & SEAS",
+    "theme": "所思如山，所经如海",
+    "art": "靛蓝套色 · 流线波纹 · 竖签印记",
+    "layout": "横卷、竖签与平面图文条",
+    "motion": "卷轴横展，印记显现",
+    "colors": [
+      "#ece4cd",
+      "#284e60",
+      "#a14e3e"
+    ],
+    "refs": [
+      "https://www.metmuseum.org/art/collection/search/45434"
+    ]
+  },
+  {
+    "id": "15",
+    "round": 3,
+    "key": "terminal",
+    "name": "复古未来终端",
+    "en": "CURIOSITY MISSION CONTROL",
+    "theme": "在知识的宇宙里，保持信号在线",
+    "art": "琥珀荧光 · CRT 扫描线 · 矢量轨道",
+    "layout": "硬边分舱、仪表刻度与日志窗",
+    "motion": "短幅扫描揭示，状态光更新",
+    "colors": [
+      "#151c1c",
+      "#e0c79a",
+      "#dca66b"
+    ],
+    "refs": [
+      "https://www.masswerk.at/termlib/",
+      "https://www.masswerk.at/termlib/sample_chrome.html"
+    ]
+  }
+]

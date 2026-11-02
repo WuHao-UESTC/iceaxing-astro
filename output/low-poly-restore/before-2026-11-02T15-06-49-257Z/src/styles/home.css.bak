@@ -1,0 +1,1017 @@
+﻿/* Snowline V8: editorial daylight / alpine observation terminal. */
+.snowline-home {
+  --scene-accent: var(--accent);
+  --study-green: var(--accent);
+  --journey-height: auto;
+  background: var(--page);
+}
+.snowline-home [hidden] {
+  display: none !important;
+}
+.snowline-panel {
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100dvh - 8rem);
+  border-bottom: 1px solid var(--text);
+  scroll-margin-top: 8rem;
+}
+.journey-panel-inner {
+  position: relative;
+  width: min(calc(100% - 6rem), 80rem);
+  margin: auto;
+  padding: 3rem 0 4rem;
+}
+.journey-chapter-marker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--text);
+  padding-top: 0.8rem;
+  margin-bottom: 1.6rem;
+  font-family: var(--font-mono);
+}
+.journey-chapter-marker > span {
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.08em;
+  color: var(--accent);
+}
+.journey-chapter-marker > div {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+.journey-chapter-marker strong,
+.journey-chapter-marker small {
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+.journey-chapter-marker small {
+  color: var(--muted);
+}
+.journey-eyebrow {
+  margin: 0 0 0.8rem;
+  font: 0.6rem/1.8 var(--font-mono);
+  color: var(--muted);
+  letter-spacing: 0.13em;
+}
+.journey-chapter-heading {
+  margin-bottom: 2.5rem;
+  max-width: 48rem;
+}
+.journey-chapter-heading h2 {
+  margin: 0;
+  font: 600 clamp(2.6rem, 5vw, 4.8rem)/1.25 var(--font-reading);
+  letter-spacing: -0.06em;
+}
+.journey-chapter-heading > p:last-child {
+  color: var(--muted);
+  margin: 1rem 0 0;
+  font-size: 0.95rem;
+}
+.journey-section-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  border-block: 1px solid var(--text);
+  margin-bottom: 1rem;
+  padding-block: 0.75rem;
+}
+.journey-section-label h3 {
+  margin: 0;
+  font: 0.7rem var(--font-mono);
+  letter-spacing: 0.06em;
+}
+.journey-navigation {
+  position: sticky;
+  z-index: 15;
+  top: 4rem;
+  width: min(calc(100% - 6rem), 80rem);
+  margin: auto;
+  background: var(--page);
+  border-bottom: 1px solid var(--text);
+}
+.journey-navigation ol {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.journey-navigation li + li {
+  border-left: 1px solid var(--line);
+}
+.journey-navigation a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 0.6rem;
+  min-height: 52px;
+  text-decoration: none;
+  font-size: 0.75rem;
+}
+.journey-navigation a > span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.journey-navigation b {
+  font: 0.55rem var(--font-mono);
+}
+.journey-navigation small {
+  font-size: 0.75rem;
+}
+.journey-nav-dot {
+  display: none;
+}
+.journey-navigation .is-active {
+  color: var(--page);
+  background: var(--accent);
+}
+.journey-navigation .is-active a:hover {
+  color: var(--page);
+}
+.expedition-masthead {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  border-bottom: 3px solid var(--text);
+  padding-bottom: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+.expedition-masthead > span {
+  font: 0.58rem/1.8 var(--font-mono);
+  letter-spacing: 0.12em;
+}
+.expedition-masthead > span:last-child {
+  text-align: right;
+}
+.expedition-masthead > strong {
+  grid-column: 1/-1;
+  grid-row: 2;
+  text-align: center;
+  font:
+    700 clamp(3.8rem, 13.5vw, 12rem)/1.05 Georgia,
+    serif;
+  letter-spacing: -0.075em;
+  padding-top: 0.8rem;
+}
+.expedition-masthead > strong span {
+  color: var(--expedition-red);
+}
+.journey-hero-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 3rem;
+  align-items: start;
+}
+.journey-hero-copy {
+  min-width: 0;
+}
+.journey-hero-copy h1 {
+  margin: 0.8rem 0 1.25rem;
+  font: 600 clamp(2rem, 3.8vw, 3.5rem)/1.4 var(--font-reading);
+  letter-spacing: -0.055em;
+  max-width: 14ch;
+  text-wrap: balance;
+}
+.journey-intro {
+  font-size: 0.9rem;
+  color: var(--muted);
+  max-width: 40rem;
+  line-height: 1.9;
+}
+.journey-motto {
+  margin: 1.25rem 0;
+  font: 0.85rem/1.8 var(--font-reading);
+}
+.journey-motto blockquote {
+  margin: 0;
+}
+.journey-motto figcaption {
+  color: var(--muted);
+  font-size: 0.65rem;
+  margin-top: 0.3rem;
+}
+.expedition-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 3rem;
+  min-height: 48px;
+  margin: 0.75rem 0;
+  padding: 0.8rem 1.2rem;
+  background: var(--accent);
+  color: var(--page);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+.expedition-primary:hover {
+  color: var(--page);
+  background: var(--accent-strong);
+}
+.journey-hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 0.75rem 0 2rem;
+  font-size: 0.7rem;
+}
+.journey-hero-archives {
+  display: flex;
+  gap: 1rem;
+}
+.journey-hero-links a {
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding: 0.35rem 0;
+}
+.journey-featured {
+  border-top: 1px solid var(--text);
+  padding-top: 1rem;
+  scroll-margin-top: 9rem;
+}
+.journey-featured > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.journey-featured h2 {
+  font-size: 0.8rem;
+  margin: 0;
+}
+.journey-featured .journey-eyebrow {
+  font-size: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+.journey-featured > header > a {
+  font-size: 0.65rem;
+  text-decoration: none;
+}
+.journey-featured-track {
+  margin-top: 1rem;
+  min-height: 8.75rem;
+  scroll-margin-top: 9rem;
+}
+.journey-featured-card {
+  position: relative;
+  display: block;
+  padding: 0.75rem 1.5rem 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+.journey-featured-card > small {
+  display: block;
+  color: var(--muted);
+  font: 0.55rem var(--font-mono);
+  margin-bottom: 0.5rem;
+}
+.journey-featured-card strong {
+  font: 600 1.25rem/1.5 var(--font-reading);
+}
+.journey-featured-card p {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.8;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.journey-featured-card i {
+  position: absolute;
+  right: 0;
+  top: 1rem;
+  color: var(--accent);
+  font-style: normal;
+}
+.edition-controls,
+.life-page-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+  font: 0.65rem var(--font-mono);
+}
+.edition-controls button,
+.life-page-controls button,
+.journey-scroll-controls button {
+  min-width: 44px;
+  min-height: 44px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text);
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.journey-ridge-routes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-block: 1px solid var(--text);
+  margin-top: 2rem;
+}
+.journey-ridge-routes a {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.2rem;
+  text-decoration: none;
+  min-width: 0;
+}
+.journey-ridge-routes a + a {
+  border-left: 1px solid var(--line);
+}
+.journey-ridge-routes span {
+  font: 0.6rem var(--font-mono);
+  color: var(--accent);
+}
+.journey-ridge-routes strong {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.journey-ridge-routes small {
+  margin-left: auto;
+}
+.journey-ridge-routes i {
+  display: none;
+}
+.journey-technical-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 3rem;
+}
+.journey-category-route a {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+.journey-category-route a > span {
+  font: 0.6rem var(--font-mono);
+  padding-top: 0.4rem;
+  color: var(--accent);
+}
+.journey-category-route h4,
+.journey-project-card h4 {
+  margin: 0;
+  font: 600 1.3rem/1.5 var(--font-reading);
+}
+.journey-category-route p,
+.journey-project-card p {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.journey-category-route i {
+  font-style: normal;
+}
+.journey-project-card {
+  display: block;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  margin-bottom: 1rem;
+  text-decoration: none;
+}
+.journey-project-title small {
+  font: 0.6rem var(--font-mono);
+  color: var(--accent);
+}
+.journey-progress {
+  display: block;
+  height: 5px;
+  margin-top: 1.5rem;
+  background: var(--line);
+}
+.journey-progress i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.journey-scroll-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+/* Life entries remain regular content columns, never pinned to a terrain mesh. */
+.life-snow-scene {
+  position: static;
+}
+.life-landings {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+.life-landing-page {
+  flex: 0 0 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+  scroll-snap-align: start;
+}
+.life-landing {
+  min-width: 0;
+  padding-top: 1rem;
+  border-top: 2px solid var(--text);
+}
+.life-landing-link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.65rem;
+  text-decoration: none;
+}
+.life-landing-number {
+  font: 0.6rem var(--font-mono);
+  color: var(--accent);
+}
+.life-landing-link h3 {
+  margin: 0;
+  font: 600 1.3rem/1.5 var(--font-reading);
+}
+.life-landing-link p {
+  grid-column: 1/-1;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.9;
+}
+.life-category-articles {
+  padding-left: 1.2rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 2;
+  max-height: 16rem;
+  overflow: auto;
+}
+.life-category-articles a {
+  text-decoration: none;
+}
+.life-category-empty {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.life-recent {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--text);
+}
+.life-recent h3 {
+  font-size: 0.85rem;
+  margin: 0 0 1rem;
+}
+.life-recent-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.life-recent-list a {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  align-items: baseline;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+.life-recent-list time {
+  font: 0.65rem var(--font-mono);
+  color: var(--muted);
+}
+.life-recent-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.life-recent-copy strong {
+  font: 600 1.1rem/1.5 var(--font-reading);
+}
+.life-recent-copy > span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.life-colophon {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin: 2rem 0 0;
+}
+/* Waystation directory and dated journal. */
+.station-scene {
+  display: grid;
+  grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.35fr);
+  gap: 4rem;
+}
+.station-stops {
+  display: flex;
+  flex-direction: column;
+}
+.station-stop {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.3rem 0;
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+}
+.station-stop-number {
+  font: 0.6rem var(--font-mono);
+  color: var(--accent);
+}
+.station-stop strong {
+  font: 500 1.2rem var(--font-reading);
+}
+.station-journal {
+  padding: 1.5rem;
+  border: 1px solid var(--text);
+}
+.station-journal-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.station-journal-heading h3 {
+  margin: 0;
+  font-size: 0.85rem;
+}
+.station-journal-heading a {
+  font-size: 0.65rem;
+  text-decoration: none;
+}
+.station-journal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.station-journal-list a {
+  position: relative;
+  display: block;
+  padding: 1.5rem 1.5rem 1.5rem 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+.station-journal-list time {
+  font: 0.6rem var(--font-mono);
+  color: var(--muted);
+}
+.station-journal-list h4 {
+  margin: 0.5rem 0;
+  font: 600 1.2rem/1.6 var(--font-reading);
+}
+.station-journal-list p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.9;
+  color: var(--muted);
+}
+.station-journal-list .station-arrow {
+  position: absolute;
+  top: 1.5rem;
+  right: 0;
+}
+.station-rest {
+  padding: 2rem 0;
+}
+.station-rest span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.station-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  margin-top: 3rem;
+  padding-top: 1rem;
+  font-size: 0.7rem;
+}
+.station-footer a {
+  text-decoration: none;
+}
+/* Keep star-map geometry, give its controls a clear editorial frame. */
+.snowline-study .journey-study-inner {
+  height: auto;
+  min-height: 0;
+}
+.snowline-study .study-heading-band {
+  display: block;
+  pointer-events: auto;
+}
+.snowline-study .study-atlas {
+  border-block: 1px solid var(--text);
+  padding-block: 0.75rem;
+}
+.snowline-study .study-atlas-stage {
+  position: relative;
+  height: 29rem;
+}
+.snowline-study .study-star-map {
+  position: relative;
+}
+.snowline-study .study-star-world {
+  height: 100%;
+}
+.snowline-study .study-atlas.is-focused .study-star-map {
+  width: 100%;
+  clip-path: none;
+}
+.snowline-study .study-atlas.is-focused .study-atlas-toolbar {
+  width: 100%;
+}
+.snowline-study .study-atlas-toolbar,
+.snowline-study .study-atlas-footer {
+  pointer-events: auto;
+}
+.snowline-study .study-atlas-footer {
+  flex-wrap: wrap;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+  gap: 1rem;
+}
+.snowline-study .study-topic-switch {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 100%;
+}
+.snowline-study .study-topic-switch select {
+  width: min(25rem, 60vw);
+  min-height: 44px;
+  border: 1px solid var(--line);
+  padding: 0.5rem;
+  background: var(--page);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.75rem;
+}
+.snowline-study .study-star-core::after {
+  border-radius: 0;
+}
+.snowline-study .study-star-tooltip {
+  border-radius: 0;
+  background: var(--surface);
+}
+.snowline-study .study-article-list {
+  max-height: 21rem;
+}
+.snowline-study {
+  --atlas-star: var(--accent);
+}
+:root[data-theme='dark'] .snowline-study {
+  --atlas-star: var(--accent);
+}
+/* Existing destination previews retain their accessible hover/focus/click behavior. */
+.snowline-home .journey-featured-destinations {
+  position: relative;
+  inset: auto;
+  pointer-events: auto;
+  margin-top: 2rem;
+}
+.snowline-home .featured-map {
+  position: static;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+.snowline-home .featured-pin {
+  position: static;
+  width: auto;
+  max-width: none;
+}
+.snowline-home .featured-link {
+  max-width: none;
+  border-top: 1px solid var(--line);
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  gap: 0.6rem;
+}
+.snowline-home .featured-node {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--line);
+}
+.snowline-home .featured-node::before,
+.snowline-home .featured-node svg,
+.snowline-home .featured-particle {
+  display: none;
+}
+.snowline-home .featured-label strong {
+  font-size: 0.85rem;
+}
+:root[data-theme='dark'] .expedition-masthead > strong {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: clamp(3rem, 10vw, 9rem);
+  letter-spacing: -0.08em;
+}
+:root[data-theme='dark'] .journey-navigation .is-active {
+  color: var(--text);
+  background: var(--accent-soft);
+  box-shadow: inset 0 -2px var(--accent);
+}
+:root[data-theme='dark'] .journey-navigation .is-active a:hover {
+  color: var(--text);
+}
+:root[data-theme='dark'] .journey-project-card,
+:root[data-theme='dark'] .station-journal {
+  background: var(--surface);
+}
+:root[data-theme='dark'] .journey-project-card {
+  border-color: var(--line);
+}
+@media (max-width: 64rem) {
+  .journey-panel-inner,
+  .journey-navigation {
+    width: calc(100% - 3rem);
+  }
+  .journey-hero-stage {
+    gap: 2rem;
+  }
+  .life-landing-page {
+    gap: 1rem;
+  }
+  .life-landing-link h3 {
+    font-size: 1.1rem;
+  }
+  .station-scene {
+    gap: 2rem;
+  }
+  .journey-ridge-routes a {
+    padding: 1rem 0.65rem;
+    gap: 0.5rem;
+  }
+}
+@media (max-width: 48rem) {
+  .journey-panel-inner,
+  .journey-navigation {
+    width: calc(100% - 2.5rem);
+  }
+  .journey-panel-inner {
+    padding: 2rem 0 3rem;
+  }
+  .journey-navigation a {
+    padding: 0.65rem 0.1rem;
+    min-height: 52px;
+  }
+  .journey-navigation a > span:last-child {
+    flex-direction: column;
+    gap: 0.25rem;
+    text-align: center;
+  }
+  .journey-navigation small {
+    font-size: 0.6rem;
+    line-height: 1.5;
+  }
+  .journey-chapter-marker > div {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+  }
+  .journey-chapter-marker strong,
+  .journey-chapter-marker small {
+    font-size: 0.5rem;
+  }
+  .expedition-masthead {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+  }
+  .expedition-masthead > span {
+    font-size: 0.43rem;
+    letter-spacing: 0;
+  }
+  .expedition-masthead > strong {
+    font-size: clamp(3rem, 13vw, 6rem);
+  }
+  .journey-hero-stage {
+    display: contents;
+  }
+  .journey-hero-inner {
+    display: flex;
+    flex-direction: column;
+  }
+  .journey-hero-inner > .journey-chapter-marker {
+    order: 0;
+  }
+  .expedition-masthead {
+    order: 1;
+  }
+  .journey-hero-copy {
+    order: 2;
+    display: contents;
+  }
+  .journey-hero-copy > .journey-eyebrow {
+    order: 2;
+  }
+  .journey-hero-copy > h1 {
+    order: 3;
+    font-size: 2rem;
+  }
+  .journey-intro {
+    order: 4;
+  }
+  .journey-motto {
+    order: 5;
+  }
+  .expedition-primary {
+    order: 6;
+    align-self: flex-start;
+  }
+  .journey-hero-links {
+    order: 7;
+  }
+  .journey-ridge-routes {
+    order: 8;
+    margin: 0 0 1.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .journey-ridge-routes a {
+    padding: 1rem 0.75rem;
+  }
+  .journey-ridge-routes a:nth-child(3) {
+    border-left: 0;
+  }
+  .journey-ridge-routes a:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
+  }
+  .journey-hero-art {
+    order: 9;
+  }
+  .journey-hero-art svg {
+    max-height: 240px;
+  }
+  .journey-featured {
+    order: 10;
+    margin-top: 2rem;
+  }
+  .journey-hero-inner > .journey-featured-destinations {
+    order: 11;
+  }
+  .snowline-home .featured-map {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .journey-technical-grid,
+  .station-scene {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .journey-chapter-heading h2 {
+    font-size: 2.65rem;
+  }
+  .journey-chapter-heading > p:last-child {
+    font-size: 0.85rem;
+  }
+  .journey-chapter-heading {
+    margin-bottom: 2rem;
+  }
+  .life-landing-page {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .life-landing-link {
+    gap: 0.4rem;
+  }
+  .life-category-articles {
+    max-height: 15rem;
+  }
+  .life-recent-list a {
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem;
+  }
+  .life-recent-list time {
+    grid-column: 1/-1;
+  }
+  .station-journal {
+    padding: 1rem;
+  }
+  .snowline-study .study-atlas-stage {
+    height: 24rem;
+  }
+  .snowline-study .study-atlas.is-focused .study-atlas-stage {
+    height: auto;
+    min-height: 29rem;
+    grid-template-columns: 1fr;
+  }
+  .snowline-study .study-atlas.is-focused .study-star-map {
+    display: none;
+  }
+  .snowline-study .study-atlas.is-focused .study-detail {
+    grid-column: 1;
+    position: relative;
+  }
+  .snowline-study .study-topic-switch {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .snowline-study .study-topic-switch select {
+    width: 100%;
+    max-width: 100%;
+  }
+  .snowline-study .study-star-caption {
+    font-size: 0.63rem;
+    max-width: 8rem;
+  }
+  .snowline-study .study-atlas-footer > p {
+    font-size: 0.7rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .snowline-home * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+.snowline-home .study-heading-band > .journey-chapter-marker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+:root[data-theme] .snowline-home .snowline-study {
+  --atlas-star: var(--accent);
+  --study-green: var(--accent);
+}
+.snowline-home .study-topic-panel {
+  min-width: 0;
+}
+.snowline-home .study-topic-title-row {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+.snowline-home .study-category-link {
+  grid-column: 1/-1;
+}
+.snowline-home .study-note-count {
+  border-radius: 0;
+}
+@media (max-width: 48rem) {
+  .snowline-home .study-atlas:not(.is-focused) .study-star-map {
+    width: 100%;
+  }
+  .snowline-home .study-atlas.is-focused .study-detail {
+    padding: 0;
+    height: auto;
+    overflow: visible;
+  }
+  .snowline-home .study-atlas.is-focused .study-atlas-stage {
+    min-height: 22rem;
+  }
+  .snowline-home .study-topic-panel {
+    min-height: 22rem;
+    padding-inline: 0;
+  }
+  .snowline-home .study-atlas.is-focused .study-atlas-footer > p {
+    display: block;
+  }
+}
+/* A small print registration field keeps each chapter in the expedition language. */
+.snowline-panel:not(.snowline-hero)::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  right: max(3rem, calc((100% - 80rem) / 2));
+  top: 5.5rem;
+  width: 10rem;
+  height: 6rem;
+  background-image: radial-gradient(var(--text) 0.7px, transparent 0.9px);
+  background-size: 5px 5px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+:root[data-theme='dark'] .snowline-panel:not(.snowline-hero)::after {
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 12px, var(--line) 12px 13px),
+    repeating-linear-gradient(90deg, transparent 0 24px, var(--line) 24px 25px);
+  background-size: auto;
+  opacity: 0.3;
+}
+@media (max-width: 48rem) {
+  .snowline-panel:not(.snowline-hero)::after {
+    right: 1.25rem;
+    top: 6rem;
+    width: 4rem;
+    height: 3rem;
+  }
+  .snowline-home .study-atlas.is-focused .study-atlas-stage {
+    grid-template-rows: auto;
+  }
+  .snowline-home .study-atlas.is-focused .study-detail {
+    grid-row: 1;
+  }
+}
+.journey-progress-value {
+  margin-left: 1rem;
+  font-variant-numeric: tabular-nums;
+}

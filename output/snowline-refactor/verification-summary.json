@@ -1,0 +1,207 @@
+{
+  "results": [
+    {
+      "check": "textbook selection",
+      "passed": true
+    },
+    {
+      "check": "textbook reset",
+      "passed": true
+    },
+    {
+      "check": "/ light 1440",
+      "passed": true,
+      "width": 1440,
+      "scroll": 1440,
+      "theme": "light"
+    },
+    {
+      "check": "/blog light 1440",
+      "passed": true,
+      "width": 1440,
+      "scroll": 1440,
+      "theme": "light"
+    },
+    {
+      "check": "/ light 390",
+      "passed": true,
+      "width": 390,
+      "scroll": 390,
+      "theme": "light"
+    },
+    {
+      "check": "/blog light 390",
+      "passed": true,
+      "width": 390,
+      "scroll": 390,
+      "theme": "light"
+    },
+    {
+      "check": "/ light 320",
+      "passed": true,
+      "width": 320,
+      "scroll": 320,
+      "theme": "light"
+    },
+    {
+      "check": "/blog light 320",
+      "passed": true,
+      "width": 320,
+      "scroll": 320,
+      "theme": "light"
+    },
+    {
+      "check": "/ dark 1440",
+      "passed": true,
+      "width": 1440,
+      "scroll": 1440,
+      "theme": "dark"
+    },
+    {
+      "check": "/blog dark 1440",
+      "passed": true,
+      "width": 1440,
+      "scroll": 1440,
+      "theme": "dark"
+    },
+    {
+      "check": "/ dark 390",
+      "passed": true,
+      "width": 390,
+      "scroll": 390,
+      "theme": "dark"
+    },
+    {
+      "check": "/blog dark 390",
+      "passed": true,
+      "width": 390,
+      "scroll": 390,
+      "theme": "dark"
+    },
+    {
+      "check": "/ dark 320",
+      "passed": true,
+      "width": 320,
+      "scroll": 320,
+      "theme": "dark"
+    },
+    {
+      "check": "/blog dark 320",
+      "passed": true,
+      "width": 320,
+      "scroll": 320,
+      "theme": "dark"
+    },
+    {
+      "check": "chapter technical-ridge",
+      "passed": true
+    },
+    {
+      "check": "chapter study-terrace",
+      "passed": true
+    },
+    {
+      "check": "chapter snowfield-traverse",
+      "passed": true
+    },
+    {
+      "check": "chapter night-camp",
+      "passed": true
+    },
+    {
+      "check": "desktop textbook",
+      "passed": true
+    },
+    {
+      "check": "search shortcut",
+      "passed": true
+    },
+    {
+      "check": "search escape",
+      "passed": true
+    },
+    {
+      "check": "legacy hash query",
+      "passed": true
+    },
+    {
+      "check": "route /en",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /de",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /en/blog",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /de/blog",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /articles",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /projects",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /profile",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /friends",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /about",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /tools",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /tools/pomodoro",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /tools/smith-chart",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /daily-ramblings",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "route /oppenheim-signal-and-system-note/dimension-of-s",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "check": "reduced motion selection",
+      "passed": true
+    },
+    {
+      "check": "reduced motion animation",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,24 @@
+﻿async (page) => {
+ page=await page.context().newPage();await page.emulateMedia({reducedMotion:'reduce'});await page.goto('http://127.0.0.1:4321/blog');
+ const results=[];
+ for(const width of [1440,1024,800,390]){
+  await page.setViewportSize({width,height:1000});
+  const checks=await page.evaluate(()=>{
+   const source=document.querySelector('.editorial-spread');const grid=source.parentElement;
+   const seed=source.firstElementChild;
+   const results=[];
+   for(let count=1;count<=6;count++){
+    const group=document.createElement('div');group.className='editorial-spread';group.dataset.count=String(count);
+    for(let i=0;i<count;i++){const card=seed.cloneNode(true);card.className='editorial-item editorial-item-'+i;group.append(card);}grid.append(group);
+    const bounds=group.getBoundingClientRect();const boxes=Array.from(group.children).map(e=>e.getBoundingClientRect());
+    const gap=parseFloat(getComputedStyle(group).gap);const near=(a,b)=>Math.abs(a-b)<1;
+    if(!near(Math.min(...boxes.map(r=>r.top)),bounds.top)||!near(Math.max(...boxes.map(r=>r.bottom)),bounds.bottom)||!near(Math.min(...boxes.map(r=>r.left)),bounds.left)||!near(Math.max(...boxes.map(r=>r.right)),bounds.right))throw Error('Outer bounds '+count);
+    for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){const a=boxes[i],b=boxes[j];if(Math.min(a.right,b.right)-Math.max(a.left,b.left)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>1)throw Error('Overlap '+count);}
+    // Any uncovered point must lie within a normal gutter, never a layout hole.
+    for(let x=bounds.left+2;x<bounds.right;x+=9)for(let y=bounds.top+2;y<bounds.bottom;y+=9){const d=Math.min(...boxes.map(r=>Math.hypot(Math.max(r.left-x,0,x-r.right),Math.max(r.top-y,0,y-r.bottom))));if(d>gap/Math.SQRT2+1)throw Error('Unexpected hole '+count+' '+d);}
+    results.push({count,aligned:true,noHoles:true,height:bounds.height,gap});group.remove();
+   }return results;
+  });results.push({width,checks});
+ }
+ return results;
+}

@@ -2,7 +2,17 @@
 import { localizedPath, type Locale } from '../../i18n/config';
 import { archiveStatistics } from '../../lib/archive-statistics';
 import ArchiveStatisticArt from './ArchiveStatisticArt.astro';
+import ArticleCoverImage from './ArticleCoverImage.astro';
+import type { ArticleCover } from '../../lib/article-cover';
+import {
+  resolveFolderCover,
+  folderThemeForScene,
+  type FolderGroup,
+  type FolderTheme,
+} from '../../lib/folder-cover';
+import FolderLandscape from './FolderLandscape.astro';
 import '../../styles/listing.css';
+import '../../styles/folder-covers.css';
 
 interface Card {
   href: string;
@@ -13,6 +23,8 @@ interface Card {
   tags?: string[];
   kind?: 'project' | 'collection' | 'article';
   standalone?: boolean;
+  cover?: ArticleCover;
+  coverGroup?: FolderTheme;
 }
 interface Props {
   title: string;
@@ -26,12 +38,14 @@ interface Props {
   parent?: { title: string; href: string };
   progress?: number;
   status?: string;
+  cover?: ArticleCover;
+  folderGroup?: FolderGroup;
 }
 
 const {
   title,
   description,
-  cards,
+  cards: sourceCards,
   emptyLabel,
   scene = 'ridge',
   kind = 'index',
@@ -39,7 +53,25 @@ const {
   parent,
   progress,
   status,
+  cover,
+  folderGroup,
 } = Astro.props;
+const coverGroup = scene === 'camp' ? 'camp' : (folderGroup ?? folderThemeForScene(scene));
+const isFolder = kind !== 'index';
+const heroCover = isFolder ? resolveFolderCover(cover, coverGroup) : undefined;
+const groupCaption = {
+  skill: 'TECHNICAL RIDGE',
+  study: 'KNOWLEDGE ATLAS',
+  life: 'SNOW MOUNTAIN RIFT',
+  camp: 'TRAIL WAYSTATION',
+}[coverGroup];
+const cards = sourceCards.map((card) =>
+  card.kind === 'article'
+    ? { ...card, cover: card.cover || '/media/articles/cover-placeholder.svg' }
+    : card.kind === 'project' || card.kind === 'collection'
+      ? { ...card, cover: resolveFolderCover(card.cover, card.coverGroup ?? coverGroup) }
+      : card,
+);
 const labels =
   locale === 'zh'
     ? {
@@ -56,7 +88,6 @@ const labels =
         entryGroup: '条目',
         contents: '本页目录',
         progress: '项目进度',
-        start: '从第一篇读起',
         overview: '概览',
         active: '进行中',
         completed: '已完成',
@@ -79,7 +110,6 @@ const labels =
           entryGroup: 'Einträge',
           contents: 'Inhalt',
           progress: 'Fortschritt',
-          start: 'Mit dem ersten Artikel beginnen',
           overview: 'Überblick',
           active: 'In Arbeit',
           completed: 'Abgeschlossen',
@@ -101,7 +131,6 @@ const labels =
           entryGroup: 'Entries',
           contents: 'On this page',
           progress: 'Project progress',
-          start: 'Start with the first article',
           overview: 'Overview',
           active: 'In progress',
           completed: 'Completed',
@@ -138,7 +167,7 @@ const statistics = archiveStatistics(kind, cards).map((statistic) => ({
 
 <main
   id="main-content"
-  class={`archive-page archive-${kind} archive-tone-${scene} shell`}
+  class={`archive-page archive-${kind} archive-tone-${scene}${isFolder ? ` archive-folder-group-${coverGroup}` : ''} shell`}
   data-pagefind-body
 >
   <nav class="archive-breadcrumb" aria-label={labels.overview}>
@@ -152,12 +181,29 @@ const statistics = archiveStatistics(kind, cards).map((statistic) => ({
     <span aria-hidden="true">/</span>
     <span aria-current="page">{title}</span>
   </nav>
-  <header class="archive-heading">
-    <div>
+  <header class:list={['archive-heading', { 'archive-folder-hero': isFolder }]}>
+    {heroCover && <FolderLandscape group={coverGroup} />}
+    <div class="archive-heading-copy">
       <p class="archive-kicker">{labels[kind]}</p>
       <h1 data-pagefind-meta="title">{title}</h1>
       {description && <p class="archive-description">{description}</p>}
+      {isFolder && (
+        <p class="archive-folder-marker" aria-hidden="true">
+          <span></span>
+          {coverGroup === 'camp' && locale === 'zh' ? '沿途随记 / ' : ''}
+          {groupCaption}
+        </p>
+      )}
     </div>
+    {heroCover && (
+      <figure class="archive-folder-cover">
+        <ArticleCoverImage image={heroCover} hero sizes="(max-width:640px) 85vw, 420px" />
+        <figcaption aria-hidden="true">
+          {groupCaption}
+          <span>{kind.toUpperCase()} / FIELD NOTES</span>
+        </figcaption>
+      </figure>
+    )}
     <div class="archive-statistics" role="list" aria-label={labels.statistics}>
       {statistics.map((statistic) => (
         <div
@@ -174,37 +220,41 @@ const statistics = archiveStatistics(kind, cards).map((statistic) => ({
         </div>
       ))}
     </div>
-  </header>
-  <div class="archive-layout">
-    <aside class="archive-rail">
-      {kind === 'project' && progress !== undefined && (
-        <div class="archive-project-state">
-          <div>
-            <span>{labels.progress}</span>
-            <strong>{progress}%</strong>
-          </div>
-          <progress value={progress} max="100" aria-label={labels.progress}>
-            {progress}%
-          </progress>
-          {statusLabel && <small>{statusLabel}</small>}
-        </div>
-      )}
-      <nav aria-label={labels.contents}>
-        <p class="archive-rail-title">{labels.contents}</p>
-        {groups.map((group) => (
-          <a href={`#archive-${group.type}`}>
-            <span>{group.title}</span>
-            <span>{group.cards.length}</span>
+    {isFolder && kind === 'project' && progress !== undefined && (
+      <div class="archive-folder-progress">
+        <span>{labels.progress}</span>
+        <progress value={progress} max="100" aria-label={labels.progress}>
+          {progress}%
+        </progress>
+        <strong>{progress}%</strong>
+        {statusLabel && <small>{statusLabel}</small>}
+      </div>
+    )}
+    {kind === 'collection' && cards.length > 0 && (
+      <nav class="archive-folder-chapters" aria-label={labels.contents}>
+        {cards.slice(0, 3).map((card, index) => (
+          <a href={card.href}>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            {card.title}
           </a>
         ))}
       </nav>
-      {kind === 'collection' && cards[0] && (
-        <a class="archive-start" href={cards[0].href}>
-          {labels.start}
-          <span aria-hidden="true">↗</span>
-        </a>
-      )}
-    </aside>
+    )}
+  </header>
+  <div class:list={['archive-layout', { 'archive-layout-wide': isFolder }]}>
+    {!isFolder && (
+      <aside class="archive-rail">
+        <nav aria-label={labels.contents}>
+          <p class="archive-rail-title">{labels.contents}</p>
+          {groups.map((group) => (
+            <a href={`#archive-${group.type}`}>
+              <span>{group.title}</span>
+              <span>{group.cards.length}</span>
+            </a>
+          ))}
+        </nav>
+      </aside>
+    )}
     <div class="archive-sections">
       {groups.length ? (
         groups.map((group) => (
@@ -219,11 +269,34 @@ const statistics = archiveStatistics(kind, cards).map((statistic) => ({
             <ol class="archive-entries">
               {group.cards.map((card, index) => (
                 <li>
-                  <a class="archive-entry" href={card.href}>
+                  <a
+                    class:list={[
+                      'archive-entry',
+                      { 'archive-entry-has-cover': card.kind === 'article' && Boolean(card.cover) },
+                      {
+                        'archive-folder-entry':
+                          card.kind === 'project' || card.kind === 'collection',
+                      },
+                      {
+                        'archive-folder-project': card.kind === 'project',
+                        'archive-folder-collection': card.kind === 'collection',
+                      },
+                    ]}
+                    data-cover-group={
+                      card.kind === 'project' || card.kind === 'collection'
+                        ? (card.coverGroup ?? coverGroup)
+                        : undefined
+                    }
+                    href={card.href}
+                    title={card.title}
+                  >
                     <span class="archive-number" aria-hidden="true">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <div class="archive-entry-copy">
+                      {card.kind === 'article' && card.cover && card.meta && (
+                        <span class="archive-entry-date">{card.meta}</span>
+                      )}
                       {card.eyebrow && group.type !== 'article' && (
                         <small class="archive-entry-state">{card.eyebrow}</small>
                       )}
@@ -239,9 +312,25 @@ const statistics = archiveStatistics(kind, cards).map((statistic) => ({
                       ) : null}
                     </div>
                     <span class="archive-entry-end">
-                      {card.meta && <span>{card.meta}</span>}
+                      {card.meta && !card.cover && <span>{card.meta}</span>}
                       <i aria-hidden="true">↗</i>
                     </span>
+                    {card.cover && (
+                      <span
+                        class={
+                          card.kind === 'article'
+                            ? 'archive-entry-cover'
+                            : 'archive-folder-entry-cover'
+                        }
+                      >
+                        <ArticleCoverImage
+                          image={card.cover}
+                          sizes={
+                            card.kind === 'article' ? undefined : '(max-width:640px) 38vw, 360px'
+                          }
+                        />
+                      </span>
+                    )}
                   </a>
                 </li>
               ))}

@@ -1,0 +1,420 @@
+.tg-page {
+  --gold: #b49a68;
+  --stone-1: #9d9e88;
+  --stone-2: #b3ad93;
+  --stone-3: #c7bca0;
+  --tg-title-accent: #a63f2f;
+  max-width: 1280px;
+  width: calc(100% - 6rem);
+  margin: 0 auto;
+}
+:root[data-theme='dark'] .tg-page {
+  --gold: #c3a772;
+  --stone-1: #777e6a;
+  --stone-2: #94987a;
+  --stone-3: #b0ae8c;
+  --tg-title-accent: #ff9279;
+}
+tools-gallery {
+  display: block;
+}
+.tg-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: center;
+  padding: 4rem 0 2.75rem;
+  gap: 2.5rem;
+}
+.tg-hero-copy {
+  min-width: 0;
+}
+.tg-eyebrow {
+  font:
+    0.625rem/1.8 ui-monospace,
+    monospace;
+  letter-spacing: 0.16em;
+  color: var(--tg-title-accent);
+  margin: 0 0 1rem;
+}
+.tg-hero h1 {
+  max-width: none;
+  color: var(--text);
+  font: 400 clamp(2.125rem, 3.7vw, 3.45rem)/1.48 var(--font-reading);
+  letter-spacing: -0.01em;
+  margin: 0 0 1.15rem;
+  overflow-wrap: anywhere;
+}
+.tg-hero-description {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 2;
+  color: var(--muted);
+}
+.tg-hero-art {
+  width: min(100%, 330px);
+  justify-self: center;
+  transform: rotate(-5deg);
+  color: var(--accent);
+  opacity: 0.8;
+}
+.tg-hero-art .tool-illustration {
+  height: 230px;
+}
+.tg-hero-art .art-caption {
+  display: none;
+}
+.tg-hero-art > span {
+  display: block;
+  transform: rotate(5deg);
+  margin-top: 0.5rem;
+  text-align: center;
+  font:
+    0.5rem ui-monospace,
+    monospace;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.tg-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.8rem 0 1.25rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+.tg-filters {
+  display: flex;
+  gap: 1.75rem;
+  flex-wrap: wrap;
+}
+.tg-filters button {
+  position: relative;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: var(--muted);
+  font: 0.76rem var(--font-ui);
+  min-height: 2.75rem;
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+.tg-filters button[aria-pressed='true'] {
+  color: var(--text);
+}
+.tg-filters button[aria-pressed='true']::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  width: 1rem;
+  background: var(--accent);
+}
+.tg-search {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: auto;
+  color: var(--muted);
+}
+.tg-search label {
+  display: grid;
+  place-items: center;
+}
+.tg-search input {
+  width: 9rem;
+  padding: 0.4rem 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font: 0.72rem var(--font-ui);
+  min-width: 0;
+}
+.tg-search input::placeholder {
+  color: var(--muted);
+}
+.tg-count {
+  border-left: 1px solid var(--line);
+  padding-left: 1.5rem;
+  color: var(--muted);
+  white-space: nowrap;
+  font-size: 0.65rem;
+}
+.tg-count [data-count] {
+  font:
+    0.7rem ui-monospace,
+    monospace;
+  color: var(--text);
+}
+.tg-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 2.75rem;
+  row-gap: 3.85rem;
+}
+.tg-card {
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+.tg-card[hidden],
+.tg-empty[hidden] {
+  display: none !important;
+}
+.tg-link {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+.tg-link:hover {
+  color: inherit;
+}
+.tg-art {
+  position: relative;
+  aspect-ratio: 1.2;
+  margin: 0 0 1.3rem;
+  background: transparent;
+  color: var(--text);
+}
+.tg-art::before {
+  content: '';
+  position: absolute;
+  width: 75%;
+  height: 60%;
+  left: 12.5%;
+  top: 10%;
+  background: radial-gradient(
+    ellipse,
+    color-mix(in srgb, var(--card-accent) 7%, transparent),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+.tg-page .tool-illustration {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.tg-art .tool-illustration {
+  position: absolute;
+  bottom: 0;
+}
+.tg-page .illustration-scene {
+  transform-origin: 150px 105px;
+  transition: transform 450ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.tg-link:hover .illustration-scene,
+.tg-link:focus-visible .illustration-scene {
+  transform: translateY(-8px) rotate(-2deg);
+}
+.tg-copy {
+  padding-left: 2rem;
+  position: relative;
+}
+.tg-number {
+  position: absolute;
+  left: 0;
+  top: 1.9rem;
+  color: var(--muted);
+  opacity: 0.6;
+  font:
+    0.6rem ui-monospace,
+    monospace;
+}
+.tg-category {
+  margin: 0 0 0.45rem;
+  font-size: 0.65rem;
+  color: var(--card-accent);
+}
+.tg-copy h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  font: 400 1.35rem/1.5 var(--font-reading);
+  margin: 0 0 0.45rem;
+  letter-spacing: 0.025em;
+  overflow-wrap: anywhere;
+}
+.tg-copy h2 > span {
+  font: 0.85rem var(--font-ui);
+  color: var(--card-accent);
+  opacity: 0;
+  transition: opacity 200ms;
+}
+.tg-link:hover h2 > span,
+.tg-link:focus-visible h2 > span {
+  opacity: 1;
+}
+.tg-description {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.9;
+  max-width: 26em;
+}
+.tg-empty {
+  padding: 5rem 0;
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.9rem;
+}
+.tg-ending {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  padding: 2.5rem 0 3.5rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.tg-ending > span:last-child {
+  font:
+    0.5rem ui-monospace,
+    monospace;
+  letter-spacing: 0.12em;
+  opacity: 0.65;
+}
+.tg-page .art-caption {
+  fill: var(--muted);
+  stroke: none;
+  font:
+    6.2px ui-monospace,
+    monospace;
+  letter-spacing: 0.7px;
+}
+.tg-page .art-clock {
+  fill: var(--text);
+  stroke: none;
+  font:
+    300 38px ui-monospace,
+    monospace;
+  letter-spacing: -2px;
+}
+.tg-page .art-clock.ghost {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 0.5;
+  opacity: 0.4;
+}
+.tg-page .accent-text {
+  fill: var(--card-accent);
+}
+.tg-page .art-label {
+  fill: var(--card-accent);
+  stroke: none;
+  font:
+    12px ui-monospace,
+    monospace;
+  letter-spacing: 1px;
+}
+.tg-page .art-time {
+  fill: var(--text);
+  stroke: none;
+  font:
+    300 26px ui-monospace,
+    monospace;
+  letter-spacing: -1.5px;
+}
+.tg-page .art-words {
+  fill: var(--text);
+  stroke: none;
+  font: 20px var(--font-reading);
+  letter-spacing: 2px;
+}
+@media (max-width: 1100px) {
+  .tg-page {
+    width: calc(100% - 4rem);
+  }
+  .tg-hero {
+    gap: 1.5rem;
+  }
+  .tg-hero-art {
+    max-width: 260px;
+  }
+  .tg-toolbar {
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+  }
+}
+@media (max-width: 1000px) {
+  .tg-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tg-count {
+    margin-left: auto;
+  }
+}
+@media (max-width: 700px) {
+  .tg-page {
+    width: calc(100% - 2.5rem);
+  }
+  .tg-hero {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 2.5rem 0 1.8rem;
+  }
+  .tg-hero h1 {
+    font-size: 2.125rem;
+  }
+  .tg-hero-description {
+    font-size: 0.8rem;
+  }
+  .tg-hero-art,
+  .tg-desktop-break {
+    display: none;
+  }
+  .tg-filters {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.35rem 0.75rem;
+  }
+  .tg-filters button {
+    font-size: 0.73rem;
+  }
+  .tg-search {
+    margin-left: 0;
+  }
+  .tg-search input {
+    width: 10rem;
+  }
+  .tg-count {
+    padding-left: 1rem;
+  }
+  .tg-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2.75rem;
+  }
+  .tg-art {
+    aspect-ratio: 1.4;
+    margin-bottom: 0.8rem;
+  }
+  .tg-copy {
+    padding-left: 2.15rem;
+  }
+  .tg-copy h2 {
+    font-size: 1.4rem;
+  }
+  .tg-copy h2 > span {
+    opacity: 0.6;
+  }
+  .tg-description {
+    font-size: 0.8rem;
+  }
+  .tg-ending {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tg-page .illustration-scene,
+  .tg-copy h2 > span {
+    transition: none;
+  }
+}

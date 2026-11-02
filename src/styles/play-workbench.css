@@ -1,0 +1,218 @@
+.tool-page.tool-page-play {
+  padding: 0;
+  overflow-y: auto;
+}
+play-workbench {
+  display: grid;
+  grid-template-rows: auto minmax(8rem, 1fr) auto;
+  height: 100%;
+  width: 100%;
+}
+.play-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem clamp(1rem, 2.5vw, 2.5rem);
+}
+.play-eyebrow {
+  margin: 0 0 0.35rem;
+  font:
+    0.6rem ui-monospace,
+    monospace;
+  letter-spacing: 0.16em;
+  color: var(--tool-coral);
+}
+.play-heading h1 {
+  margin: 0;
+  font: 500 clamp(1.1rem, 2vw, 1.6rem) var(--font-reading);
+}
+.play-description {
+  margin: 0.4rem 0 0;
+  font-size: 0.73rem;
+  color: var(--muted);
+}
+.play-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem 1.2rem;
+}
+.play-actions label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.play-actions input[type='range'] {
+  width: 5rem;
+}
+.play-actions input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+}
+.play-actions input[type='text'] {
+  width: 8rem;
+  padding: 0.4rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.75rem;
+  color: var(--text);
+}
+.play-actions input[data-seed] {
+  width: 6rem;
+  font-family: ui-monospace, monospace;
+}
+.play-actions select {
+  max-width: 8rem;
+  min-height: 2.75rem;
+  font-size: 0.75rem;
+}
+.play-actions option {
+  color: var(--text);
+  background: var(--surface);
+}
+.play-stage {
+  position: relative;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--surface);
+  margin-inline: clamp(0.75rem, 2.5vw, 2.5rem);
+}
+.play-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+.play-stage canvas:focus-visible {
+  outline: 1px solid var(--focus);
+  outline-offset: -3px;
+}
+.play-signature {
+  position: absolute;
+  bottom: 0.8rem;
+  right: 1rem;
+  pointer-events: none;
+  font:
+    0.55rem ui-monospace,
+    monospace;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+}
+.play-footer {
+  padding: 0.65rem clamp(1rem, 2.5vw, 2.5rem) max(0.65rem, env(safe-area-inset-bottom));
+}
+.play-footer p {
+  margin: 0.3rem 0;
+  font-size: 0.73rem;
+  color: var(--muted);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.play-footer [data-status] {
+  min-height: 1.6em;
+  color: var(--tool-coral);
+}
+.play-footer [data-metrics] {
+  min-height: 1.6em;
+  white-space: pre-line;
+  font:
+    0.75rem ui-monospace,
+    monospace;
+}
+.play-hint {
+  opacity: 0.8;
+}
+.play-reaction-prompt {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  pointer-events: none;
+}
+.play-reaction-prompt strong {
+  font: 400 clamp(1.5rem, 5vw, 3.5rem) var(--font-reading);
+  text-align: center;
+  padding: 1rem;
+}
+.play-reaction-prompt span {
+  color: var(--muted);
+  font:
+    0.8rem ui-monospace,
+    monospace;
+}
+play-workbench[data-reaction='go'] .play-stage {
+  background: var(--accent-soft);
+}
+play-workbench[data-reaction='go'] .play-reaction-prompt strong {
+  color: var(--accent-strong);
+}
+.tool-page-play .play-stage textarea {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  resize: none;
+  padding: clamp(1.5rem, 5vw, 4rem);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font: 400 clamp(1.15rem, 3vw, 2rem)/1.8 var(--font-reading);
+  color: var(--text);
+}
+.play-stage textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.65;
+}
+.play-stage progress {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  width: calc(100% - 2rem);
+  height: 0.3rem;
+  accent-color: var(--tool-coral);
+}
+.play-stage progress::-webkit-progress-bar {
+  background: var(--surface-subtle);
+}
+.play-stage progress::-webkit-progress-value {
+  background: var(--tool-coral);
+}
+.play-stage progress::-moz-progress-bar {
+  background: var(--tool-coral);
+}
+@media (max-width: 800px) {
+  .play-heading {
+    flex-wrap: wrap;
+    padding-block: 0.6rem;
+    gap: 0.5rem;
+  }
+  .play-actions {
+    justify-content: flex-start;
+    gap: 0.2rem 1rem;
+  }
+  .play-actions button {
+    min-height: 2.75rem;
+  }
+  .play-description {
+    font-size: 0.7rem;
+  }
+  .play-footer p {
+    font-size: 0.67rem;
+  }
+}
+@media (max-height: 500px) {
+  .tool-page.tool-page-play {
+    overflow-y: auto;
+  }
+  play-workbench {
+    min-height: 30rem;
+  }
+}

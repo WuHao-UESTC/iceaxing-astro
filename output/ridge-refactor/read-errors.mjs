@@ -1,0 +1,1 @@
+﻿import fs from 'node:fs';const s=fs.readFileSync('output/ridge-refactor/check.log','utf8').replace(/\x1b\[[0-9;]*m/g,'');for(const block of s.split(/(?=src\/)/))if(block.includes(' - error'))console.log(block.slice(0,850));

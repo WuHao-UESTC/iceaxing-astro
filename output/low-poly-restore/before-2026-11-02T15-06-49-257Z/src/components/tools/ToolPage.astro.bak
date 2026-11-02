@@ -1,0 +1,145 @@
+---
+import type { Locale } from '../../i18n/config';
+import { localizedPath } from '../../i18n/config';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/tools.css';
+import PomodoroTimer from '../islands/PomodoroTimer';
+import SmithChartTool from '../islands/SmithChartTool';
+import FireworksCanvas from './FireworksCanvas.astro';
+import ReverieCanvas from './ReverieCanvas.astro';
+import GuessSeconds from './GuessSeconds.astro';
+import PlayWorkbench from './PlayWorkbench.astro';
+import { isPlayTool, playTools, type PlayToolId } from '../../lib/tools/play-catalog';
+
+interface Props {
+  locale: Locale;
+  tool: 'pomodoro' | 'smith-chart' | 'fireworks' | 'reverie' | 'guess-seconds' | PlayToolId;
+}
+
+const { locale, tool } = Astro.props;
+const existingDetails = {
+  'guess-seconds': {
+    zh: {
+      title: '猜秒数',
+      description: '隐藏时钟，凭感觉停止计时，看看实际用时与你选择的目标秒数相差多少。',
+    },
+    en: {
+      title: 'Guess the Seconds',
+      description:
+        'Hide the clock, trust your sense of time, and see how close you get to your target.',
+    },
+    de: {
+      title: 'Sekunden schätzen',
+      description:
+        'Verstecke die Uhr und teste, wie genau dein Zeitgefühl deine gewählte Zielzeit trifft.',
+    },
+  },
+  reverie: {
+    zh: {
+      title: '随想',
+      description: '用 WASD 推动画笔，让惯性、随机运动与不同笔触在干净画布上留下随想。',
+    },
+    en: {
+      title: 'Reverie',
+      description:
+        'Steer an ink pen with WASD. Let momentum, random motion, and changing pens draw something unexpected.',
+    },
+    de: {
+      title: 'Gedankenspiel',
+      description:
+        'Lenke einen Stift mit WASD. Schwung, Zufallsbewegungen und wechselnde Stifte zeichnen deine Gedanken.',
+    },
+  },
+  fireworks: {
+    zh: { title: '放烟花', description: '点击空白夜空，让烟花升起，在你点击的位置绽放。' },
+    en: {
+      title: 'Fireworks',
+      description: 'Click the empty sky to launch a firework that bursts where you clicked.',
+    },
+    de: {
+      title: 'Feuerwerk',
+      description:
+        'Klicke in den leeren Himmel. Eine Rakete steigt auf und erblüht an dieser Stelle.',
+    },
+  },
+  pomodoro: {
+    zh: {
+      title: '在线番茄钟',
+      description: '可自定义专注、休息和循环次数，并在本地保存当前进度。',
+    },
+    en: {
+      title: 'Pomodoro Timer',
+      description: 'A customizable focus timer with local progress, alerts, and cycle tracking.',
+    },
+    de: {
+      title: 'Pomodoro-Timer',
+      description: 'Ein anpassbarer Fokus-Timer mit lokalem Fortschritt und Benachrichtigungen.',
+    },
+  },
+  'smith-chart': {
+    zh: { title: '在线史密斯圆图', description: '交互式阻抗、导纳、传输线和无源匹配计算工具。' },
+    en: {
+      title: 'Smith Chart',
+      description:
+        'Interactive impedance, admittance, transmission-line, and passive matching tool.',
+    },
+    de: {
+      title: 'Smith-Diagramm',
+      description: 'Interaktives Werkzeug für Impedanz, Admittanz, Leitungen und Anpassung.',
+    },
+  },
+};
+const details = isPlayTool(tool) ? playTools[tool][locale] : existingDetails[tool][locale];
+const path = `/tools/${tool}`;
+const alternatePaths = {
+  zh: localizedPath('zh', path),
+  en: localizedPath('en', path),
+  de: localizedPath('de', path),
+};
+---
+
+<BaseLayout
+  {locale}
+  title={`${details.title} · iceaxing`}
+  description={details.description}
+  {alternatePaths}
+  pagefindType="tool"
+  fullViewport
+>
+  <main
+    id="main-content"
+    class={`tool-page tool-page-${tool}${isPlayTool(tool) ? ' tool-page-play' : ''}`}
+    aria-label={details.title}
+    data-pagefind-ignore
+  >
+    {tool !== 'fireworks' && tool !== 'reverie' && !isPlayTool(tool) && (
+      <svg
+        class="tool-landscape"
+        viewBox="0 0 1440 800"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
+      >
+        <g fill="none" stroke="var(--expedition-red)" stroke-width="1">
+          {Array.from({ length: 16 }, (_, i) => (
+            <path
+              d={`M0 ${500 + i * 19}Q220 ${340 + i * 19} 390 ${430 + i * 16}T760 ${320 + i * 16}T1440 ${380 + i * 16}`}
+            />
+          ))}
+        </g>
+      </svg>
+    )}
+    {isPlayTool(tool) ? (
+      <PlayWorkbench {locale} {tool} />
+    ) : tool === 'guess-seconds' ? (
+      <GuessSeconds {locale} />
+    ) : tool === 'reverie' ? (
+      <ReverieCanvas {locale} />
+    ) : tool === 'fireworks' ? (
+      <FireworksCanvas {locale} />
+    ) : tool === 'pomodoro' ? (
+      <PomodoroTimer {locale} client:load />
+    ) : (
+      <SmithChartTool {locale} client:load />
+    )}
+  </main>
+</BaseLayout>

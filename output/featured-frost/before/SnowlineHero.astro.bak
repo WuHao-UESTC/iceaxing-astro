@@ -1,0 +1,181 @@
+﻿---
+import { Image } from 'astro:assets';
+import ExpeditionMountain from './ExpeditionMountain.astro';
+import type { HomeCard, HomeLabels } from './types';
+import { localizedPath, type Locale } from '../../i18n/config';
+import { getMessages } from '../../i18n/messages';
+interface Props {
+  locale: Locale;
+  labels: HomeLabels;
+  motto?: { text: string; source: string };
+  featured: HomeCard[];
+  profileHref: string;
+}
+const { locale, labels, motto, featured, profileHref } = Astro.props;
+const messages = getMessages(locale);
+const copy = {
+  zh: {
+    subtitle: '雪线之上 · 个人远征记录',
+    note: '循着好奇，向雪线之上。',
+    read: '继续阅读',
+    empty: '精选正在整理，先从文章或项目开始探索。',
+    hint: '向下浏览精选',
+    article: '文章',
+    project: '项目',
+    category: '分类',
+    collection: '合集',
+    planned: '计划中',
+    active: '进行中',
+    completed: '已完成',
+    archived: '已归档',
+  },
+  en: {
+    subtitle: 'ABOVE THE SNOWLINE · FIELD NOTES',
+    note: 'Follow curiosity. Above the snowline.',
+    read: 'Explore',
+    empty: 'Selections are taking shape. Explore the articles and projects.',
+    hint: 'Scroll to explore',
+    article: 'Article',
+    project: 'Project',
+    category: 'Category',
+    collection: 'Collection',
+    planned: 'Planned',
+    active: 'In progress',
+    completed: 'Completed',
+    archived: 'Archived',
+  },
+  de: {
+    subtitle: 'ÜBER DER SCHNEEGRENZE · NOTIZEN',
+    note: 'Der Neugier folgen. Weiter hinauf.',
+    read: 'Entdecken',
+    empty: 'Die Auswahl entsteht. Entdecke Artikel und Projekte.',
+    hint: 'Scrollen zum Entdecken',
+    article: 'Artikel',
+    project: 'Projekt',
+    category: 'Kategorie',
+    collection: 'Sammlung',
+    planned: 'Geplant',
+    active: 'In Arbeit',
+    completed: 'Abgeschlossen',
+    archived: 'Archiviert',
+  },
+}[locale];
+---
+
+<div class="journey-panel-inner editorial-cover">
+  <header class="editorial-masthead">
+    <div class="editorial-brand">
+      <p>{copy.subtitle}</p>
+      <h1 id="base-camp-title" tabindex="-1">
+        ICEAXING<span>.</span>
+      </h1>
+      <p class="editorial-intro">{labels.intro}</p>
+    </div>
+    <div class="editorial-mountain">
+      <ExpeditionMountain id="editorial-mountain" compact />
+    </div>
+  </header>
+  <section id="selected-notes" class="editorial-selection" aria-labelledby="selected-notes-title">
+    <header class="editorial-selection-header">
+      <h2 id="selected-notes-title" class="sr-only">
+        {labels.featured}
+      </h2>
+    </header>
+    <div
+      id="hero-featured-list"
+      class="editorial-scroll"
+      data-editorial-scroll
+      tabindex="0"
+      role="region"
+      aria-label={labels.featured}
+    >
+      <div class="editorial-grid">
+        {Array.from({ length: Math.ceil(featured.length / 3) }, (_, group) => (
+          <div
+            class:list={[
+              'editorial-spread',
+              {
+                'is-reversed': group % 2 === 1,
+                'has-tall': Boolean(featured[group * 3]?.coverImage),
+              },
+            ]}
+            data-count={Math.min(3, featured.length - group * 3)}
+          >
+            {featured.slice(group * 3, group * 3 + 3).map((card, slot) => {
+              const index = group * 3 + slot;
+              return (
+                <article
+                  class:list={[
+                    'editorial-item',
+                    `editorial-item-${slot}`,
+                    `editorial-ink-${index % 3}`,
+                    { 'has-cover': Boolean(card.coverImage) },
+                  ]}
+                  data-featured-id={`${card.kind}:${card.id}`}
+                >
+                  <a href={card.href} class="editorial-card">
+                    <div class="editorial-card-meta">
+                      <span>
+                        {String(index + 1).padStart(2, '0')} / {copy[card.kind ?? 'article']}
+                      </span>
+                      <span>{card.status ? copy[card.status] : card.meta}</span>
+                    </div>
+                    {card.coverImage && (
+                      <div class="editorial-card-image">
+                        <Image
+                          src={card.coverImage}
+                          alt=""
+                          widths={[320, 640]}
+                          sizes="(max-width:48rem) 80vw, 33vw"
+                          loading={index < 2 ? 'eager' : 'lazy'}
+                        />
+                      </div>
+                    )}
+                    <h3>{card.title}</h3>
+                    {card.description && <p>{card.description}</p>}
+                    {card.progress !== undefined && (
+                      <div class="editorial-progress">
+                        <span>{card.progress}%</span>
+                        <i style={`--progress:${card.progress}%`} />
+                      </div>
+                    )}
+                    {card.tags?.length ? (
+                      <div class="editorial-tags">
+                        {card.tags.slice(0, 3).map((tag) => (
+                          <span>{tag}</span>
+                        ))}
+                      </div>
+                    ) : null}
+                    <span class="editorial-read">
+                      {copy.read}
+                      <span aria-hidden="true">↗</span>
+                    </span>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+      {featured.length === 0 && <p class="editorial-empty">{copy.empty}</p>}
+    </div>
+  </section>
+  <footer class="editorial-colophon">
+    <div class="editorial-signature">
+      <p>{copy.note}</p>
+      {motto && (
+        <small>
+          {motto.text}
+          {motto.source && ` — ${motto.source}`}
+        </small>
+      )}
+    </div>
+    <nav aria-label={messages.nav.articles + ' / ' + messages.nav.projects}>
+      <a href={profileHref}>{labels.meet} ↗</a>
+      <a href={localizedPath(locale, '/articles')}>{messages.nav.articles} ↗</a>
+      <a href={localizedPath(locale, '/projects')}>{messages.nav.projects} ↗</a>
+      <a href={localizedPath(locale, '/rss.xml')}>RSS ↗</a>
+    </nav>
+    <span class="editorial-scroll-hint">{copy.hint} ↓</span>
+  </footer>
+</div>

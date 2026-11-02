@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>阅读起点 · 页面布局样稿</title>
+    <link rel="stylesheet" href="base.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="data.js" defer></script>
+    <script src="preview.js" defer></script>
+  </head>
+  <body data-plan="c" class="variant-c">
+    <div class="review-top shell">
+      <a href="index.html">← 五版比较</a>
+      <nav aria-label="设计方案">
+        <a href="a.html" data-plan-link>A 通栏书页</a><a href="b.html" data-plan-link>B 横向切换</a
+        ><a href="c.html" data-plan-link aria-current="page">C 阅读起点</a
+        ><a href="d.html" data-plan-link>D 沿途路径</a
+        ><a href="e.html" data-plan-link>E 筛选工作台</a>
+      </nav>
+      <button type="button" data-theme-toggle aria-label="切换明暗主题">
+        浅色模式 <span aria-hidden="true">◐</span>
+      </button>
+    </div>
+    <header class="sample-site-header shell">
+      <a href="index.html" class="wordmark">iceaxing.</a><span>学习笔记 / 技术栈 / 生活日常</span
+      ><span class="sample-tag">LAYOUT STUDIES / C</span>
+    </header>
+    <section class="review-intro shell" aria-label="方案说明">
+      <div>
+        <p class="review-eyebrow">C / 阅读起点</p>
+        <h2>先给一个入口，再展开目录</h2>
+        <p>
+          取消侧栏，把现有排序中的第一个项目、合集或章节提到开篇，其余内容继续向下展开。第一步更明确。
+        </p>
+        <small>默认沿用现有首项；以后可再决定是否需要手选起点。</small>
+      </div>
+      <div class="review-controls">
+        <label
+          >栏目<select data-group>
+            <option value="study">学习笔记 · 绿色</option>
+            <option value="skill">技术栈 · 冰蓝色</option>
+            <option value="life">生活日常 · 金色</option>
+            <option value="camp">碎碎念 · 紫色</option>
+          </select></label
+        ><label
+          >内容量<select data-density>
+            <option value="normal">常规内容</option>
+            <option value="dense">较多条目</option>
+            <option value="sparse">仅一篇文章</option>
+            <option value="empty">暂无内容</option>
+          </select></label
+        >
+        <nav class="level-switch" aria-label="页面层级">
+          <button data-level="category">分类</button><button data-level="project">项目</button
+          ><button data-level="collection">合集</button>
+        </nav>
+      </div>
+    </section>
+    <p class="sample-notice shell">
+      标题与部分内容取自现有项目；合集、扩展条目与专题归属用于布局演示，均未写入正式数据。
+    </p>
+    <div id="sample-root"></div>
+    <dialog id="entry-preview" aria-labelledby="entry-preview-title">
+      <button type="button" class="dialog-close" data-close-preview aria-label="关闭预览">×</button>
+      <p class="review-eyebrow">条目预览 / 仅用于样稿</p>
+      <h2 id="entry-preview-title"></h2>
+      <p data-preview-description></p>
+      <p class="preview-source"></p>
+    </dialog>
+    <footer class="review-footer shell">
+      <span>本地 HTML 设计样稿 · 正式页面尚未改动</span><a href="index.html">回到方案比较 ↑</a>
+    </footer>
+  </body>
+</html>

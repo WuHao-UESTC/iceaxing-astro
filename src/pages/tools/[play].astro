@@ -1,0 +1,12 @@
+---
+export const prerender = true;
+import ToolPage from '../../components/tools/ToolPage.astro';
+import { playIds, isPlayTool } from '../../lib/tools/play-catalog';
+export function getStaticPaths() {
+  return playIds.map((play) => ({ params: { play } }));
+}
+const tool = Astro.params.play;
+if (!tool || !isPlayTool(tool)) throw new Error(`Unsupported tool: ${tool}`);
+---
+
+<ToolPage locale="zh" {tool} />

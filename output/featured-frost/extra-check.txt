@@ -1,0 +1,16 @@
+﻿async (page) => {
+ page=await page.context().newPage();await page.setViewportSize({width:1440,height:900});
+ await page.emulateMedia({reducedMotion:'reduce'});await page.goto('http://127.0.0.1:4321/blog');
+ const film=page.locator('[data-editorial-scroll]');
+ const geometry=()=>film.evaluate(e=>Array.from(e.querySelector('.editorial-grid').querySelectorAll('.editorial-item')).map(x=>{const r=x.getBoundingClientRect();return [r.x,r.y,r.width,r.height]}));
+ const before=await geometry();
+ await film.evaluate(e=>{e.querySelectorAll('img').forEach(x=>x.remove());e.querySelector('h3').textContent='A deliberately long title to confirm that the fixed layout does not depend on the content of a card. '.repeat(5);});
+ const after=await geometry();if(JSON.stringify(before)!==JSON.stringify(after))throw Error('Layout depends on content');
+ const urls=['/blog','/en/blog','/de/blog'];const languages=[];
+ for(const url of urls){await page.goto('http://127.0.0.1:4321'+url);languages.push({url,overflow:await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)});}
+ await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('http://127.0.0.1:4321/blog');await page.mouse.move(0,0);
+ await film.locator('.editorial-card').first().focus();const a=await film.evaluate(e=>e.scrollTop);await page.waitForTimeout(2500);if(a!==await film.evaluate(e=>e.scrollTop))throw Error('Keyboard pause failed');
+ const images=await film.evaluate(e=>Array.from(e.querySelector('.editorial-grid').querySelectorAll('img')).map(i=>({src:i.currentSrc||i.src,position:getComputedStyle(i.parentElement).position,fit:getComputedStyle(i).objectFit})));
+ if(images.some(i=>i.position!=='absolute'||i.fit!=='cover'))throw Error('Cover is not a background');
+ return {fixedGeometry:true,keyboardPause:true,languages,coverCount:images.length};
+}

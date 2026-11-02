@@ -1,0 +1,166 @@
+---
+import type { Locale } from '../../i18n/config';
+import '../../styles/reverie.css';
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const copy = {
+  zh: {
+    title: '随想',
+    subtitle: '让惯性替你落笔',
+    move: '移动',
+    motion: '随机运动',
+    pen: '随机笔触',
+    pause: '暂停',
+    resume: '继续',
+    clear: '清空',
+    save: '保存图片',
+    saved: '图片已保存',
+    failed: '图片保存失败，请重试',
+    hint: 'WASD 施力 · 松手继续滑行 · U 效果持续 2 秒，可叠加 · I 换笔',
+    canvas: '随想画布。使用 WASD 方向键施力，U 叠加随机运动，I 更换笔触，空格暂停。',
+    waiting: '按下 WASD，开始第一笔',
+    running: '顺着惯性，留一点意外',
+    paused: '让这一笔，停一会儿',
+    fountain: '钢笔',
+    pencil: '铅笔',
+    marker: '记号笔',
+    highlighter: '荧光笔',
+    spin: '旋转',
+    surge: '加速',
+    zigzag: '折线',
+    wander: '游走',
+    up: '向上施力',
+    left: '向左施力',
+    down: '向下施力',
+    right: '向右施力',
+  },
+  en: {
+    title: 'Reverie',
+    subtitle: 'Let momentum leave its mark',
+    move: 'Steer',
+    motion: 'Random motion',
+    pen: 'Random pen',
+    pause: 'Pause',
+    resume: 'Resume',
+    clear: 'Clear',
+    save: 'Save image',
+    saved: 'Image saved',
+    failed: 'Could not save. Please try again.',
+    hint: 'WASD to steer · Release to coast · U stacks 2-second effects · I changes the pen',
+    canvas:
+      'Reverie canvas. WASD to steer, U to stack random motion, I to change pen, Space to pause.',
+    waiting: 'Press WASD to make the first mark',
+    running: 'Follow the momentum. Leave room for surprise.',
+    paused: 'Let this mark rest a moment',
+    fountain: 'Fountain pen',
+    pencil: 'Pencil',
+    marker: 'Marker',
+    highlighter: 'Highlighter',
+    spin: 'Spin',
+    surge: 'Surge',
+    zigzag: 'Zigzag',
+    wander: 'Wander',
+    up: 'Steer up',
+    left: 'Steer left',
+    down: 'Steer down',
+    right: 'Steer right',
+  },
+  de: {
+    title: 'Gedankenspiel',
+    subtitle: 'Lass den Schwung zeichnen',
+    move: 'Lenken',
+    motion: 'Zufallsbewegung',
+    pen: 'Zufallsstift',
+    pause: 'Pause',
+    resume: 'Weiter',
+    clear: 'Leeren',
+    save: 'Bild speichern',
+    saved: 'Bild gespeichert',
+    failed: 'Speichern fehlgeschlagen. Bitte erneut versuchen.',
+    hint: 'WASD zum Lenken · Loslassen zum Gleiten · U stapelt 2-Sekunden-Effekte · I wechselt den Stift',
+    canvas:
+      'Zeichenfläche. WASD zum Lenken, U für Zufallsbewegung, I für einen neuen Stift, Leertaste für Pause.',
+    waiting: 'Drücke WASD für den ersten Strich',
+    running: 'Folge dem Schwung und lass dich überraschen.',
+    paused: 'Eine kleine Zeichenpause',
+    fountain: 'Füller',
+    pencil: 'Bleistift',
+    marker: 'Marker',
+    highlighter: 'Textmarker',
+    spin: 'Drehung',
+    surge: 'Beschleunigung',
+    zigzag: 'Zickzack',
+    wander: 'Schweifen',
+    up: 'Nach oben lenken',
+    left: 'Nach links lenken',
+    down: 'Nach unten lenken',
+    right: 'Nach rechts lenken',
+  },
+}[locale];
+---
+
+<reverie-canvas data-copy={JSON.stringify(copy)}>
+  <header class="reverie-toolbar">
+    <div class="reverie-heading">
+      <h1>{copy.title}</h1>
+      <span>{copy.subtitle}</span>
+    </div>
+    <div class="reverie-actions">
+      <button type="button" data-action="motion" class="reverie-button">
+        <kbd>U</kbd> {copy.motion}
+      </button>
+      <button type="button" data-action="pen" class="reverie-button">
+        <kbd>I</kbd> {copy.pen}
+      </button>
+      <span class="reverie-separator" aria-hidden="true"></span>
+      <button type="button" data-action="pause" class="reverie-button" aria-pressed="false">
+        {copy.pause}
+      </button>
+      <button type="button" data-action="clear" class="reverie-button">
+        {copy.clear}
+      </button>
+      <button type="button" data-action="save" class="reverie-button">
+        {copy.save} <span aria-hidden="true">↗</span>
+      </button>
+    </div>
+  </header>
+  <div class="reverie-stage">
+    <canvas class="reverie-paper" tabindex="0" aria-label={copy.canvas}>
+      {copy.canvas}
+    </canvas>
+    <div class="reverie-brush" aria-hidden="true"></div>
+    <span class="reverie-watermark" aria-hidden="true">
+      {copy.title} / REVERIE
+    </span>
+  </div>
+  <footer class="reverie-footer">
+    <div class="reverie-state">
+      <span class="reverie-swatch" aria-hidden="true"></span>
+      <span data-pen-label>{copy.fountain} · 2.4 px</span>
+      <span data-state>{copy.waiting}</span>
+    </div>
+    <div class="reverie-effects" aria-label={copy.motion}></div>
+    <p class="reverie-hint">{copy.hint}</p>
+    <div class="reverie-pad" role="group" aria-label={copy.move}>
+      <button type="button" data-direction="w" aria-label={copy.up}>
+        ↑
+      </button>
+      <button type="button" data-direction="a" aria-label={copy.left}>
+        ←
+      </button>
+      <button type="button" data-direction="s" aria-label={copy.down}>
+        ↓
+      </button>
+      <button type="button" data-direction="d" aria-label={copy.right}>
+        →
+      </button>
+    </div>
+    <span class="sr-only" data-announcement role="status" aria-live="polite"></span>
+  </footer>
+</reverie-canvas>
+
+<script>
+  import '../../scripts/reverie';
+</script>

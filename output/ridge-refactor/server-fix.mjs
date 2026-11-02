@@ -1,0 +1,5 @@
+﻿import fs from 'node:fs';const r=p=>fs.readFileSync(p,'utf8'),w=(p,s)=>fs.writeFileSync(p,s);
+let p='src/lib/featured-server.ts',s=r(p).replace("  'src/content/collections/',\n];","  'src/content/collections/',\n] as const;").replace('parseDocument(match ? match[1] : raw)','parseDocument(match ? match[1]! : raw)').replace("locale[0].toUpperCase()","locale.charAt(0).toUpperCase()").replace("const slug = article ? file.split('/')[4] : path.posix.basename(file).replace(/\\.ya?ml$/, '');","const slug = article ? (file.split('/')[4] ?? '') : path.posix.basename(file).replace(/\\.ya?ml$/, '');\n  if(!slug || (article && !locales.includes(locale as typeof locales[number])))throw new Error('内容路径无效。');");w(p,s);
+p='src/components/islands/FeaturedManager.tsx';s=r(p).replace("i.featuredOrder === 1_000_000 ? 0 : i.featuredOrder","i.featuredOrder");w(p,s);
+// Retain the order field in its existing properties group.
+p='src/styles/ridge-editorial.css';s=r(p);s=s.replace(/\.featured-manager \{[\s\S]*?\n\}/g,'');w(p,s);

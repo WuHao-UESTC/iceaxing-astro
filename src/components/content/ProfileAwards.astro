@@ -15,6 +15,7 @@ const labels = {
     view: '查看证书',
     gallery: '获奖证书画廊',
     count: '页',
+    close: '关闭大图',
   },
   en: {
     previous: 'Previous certificates',
@@ -23,6 +24,7 @@ const labels = {
     view: 'View certificate',
     gallery: 'Award certificates',
     count: 'page',
+    close: 'Close enlarged certificate',
   },
   de: {
     previous: 'Vorherige Nachweise',
@@ -31,115 +33,113 @@ const labels = {
     view: 'Nachweis ansehen',
     gallery: 'Auszeichnungen',
     count: 'Seite',
+    close: 'Großansicht schließen',
   },
 }[locale];
 const pageCount = Math.ceil(honors.length / 3);
 ---
 
 <profile-award-gallery aria-label={labels.gallery}>
-  <div class="profile-gallery-controls" hidden>
-    <button type="button" data-gallery-previous aria-label={labels.previous}>
-      ←
-    </button>
-    <span class="profile-gallery-counter" aria-live="polite" aria-atomic="true">
-      <span data-gallery-current>1</span> / {pageCount} <span class="sr-only">{labels.count}</span>
-    </span>
-    <button type="button" data-gallery-next aria-label={labels.next}>
-      →
-    </button>
-  </div>
-  <ul class="profile-certificate-grid" tabindex="0" aria-label={labels.gallery}>
-    {honors.map((item) => (
-      <li>
-        <figure class="profile-certificate">
-          <div class="profile-certificate-media">
-            <div
-              class="profile-certificate-placeholder"
-              aria-hidden={Boolean(item.certificateImage)}
-            >
-              <span aria-hidden="true">◇</span>
-              <span>{labels.missing}</span>
-            </div>
-            {item.certificateImage && (
-              <a
-                href={item.certificateImage}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${labels.view}: ${item.title}`}
+  <div class="profile-gallery-stage">
+    <div class="profile-gallery-controls" hidden>
+      <button type="button" data-gallery-previous aria-label={labels.previous}>
+        <svg
+          viewBox="0 0 32 32"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"
+        >
+          <path d="M25 16H7m8-8-8 8 8 8" />
+        </svg>
+      </button>
+      <button type="button" data-gallery-next aria-label={labels.next}>
+        <svg
+          viewBox="0 0 32 32"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"
+        >
+          <path d="M7 16h18m-8-8 8 8-8 8" />
+        </svg>
+      </button>
+    </div>
+    <ul class="profile-certificate-grid" tabindex="0" aria-label={labels.gallery}>
+      {honors.map((item) => (
+        <li>
+          <figure class="profile-certificate">
+            <div class="profile-certificate-media">
+              <div
+                class="profile-certificate-placeholder"
+                aria-hidden={Boolean(item.certificateImage)}
               >
-                <img
-                  src={item.certificateImage}
-                  alt={item.title}
-                  width="320"
-                  height="220"
-                  loading="lazy"
-                  decoding="async"
-                  data-profile-image
-                />
-              </a>
-            )}
-            {(item.period || item.level) && (
-              <div class="profile-certificate-badge">
-                {item.period && <span>{item.period}</span>}
-                {item.level && <span>{item.level}</span>}
+                <span aria-hidden="true">◇</span>
+                <span>{labels.missing}</span>
               </div>
-            )}
-          </div>
-          <figcaption>
-            <h3>{item.title}</h3>
-            {item.description && <p class="profile-description">{item.description}</p>}
-            {item.url && (
-              <a
-                class="profile-text-link"
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {labels.view}
-                <span aria-hidden="true">↗</span>
-              </a>
-            )}
-          </figcaption>
-        </figure>
-      </li>
-    ))}
-  </ul>
+              {item.certificateImage && (
+                <a
+                  href={item.certificateImage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${labels.view}: ${item.title}`}
+                  data-certificate-open
+                >
+                  <img
+                    src={item.certificateImage}
+                    alt={item.title}
+                    width="320"
+                    height="220"
+                    loading="lazy"
+                    decoding="async"
+                    data-profile-image
+                  />
+                </a>
+              )}
+              {(item.period || item.level) && (
+                <div class="profile-certificate-badge">
+                  {item.period && <span>{item.period}</span>}
+                  {item.level && <span>{item.level}</span>}
+                </div>
+              )}
+            </div>
+            <figcaption class="profile-certificate-caption">
+              <h3>{item.title}</h3>
+            </figcaption>
+          </figure>
+          {(item.description || item.url) && (
+            <div class="profile-certificate-details">
+              {item.description && <p class="profile-description">{item.description}</p>}
+              {item.url && (
+                <a
+                  class="profile-text-link"
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {labels.view}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              )}
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+  <span class="profile-gallery-counter" aria-live="polite" aria-atomic="true" hidden>
+    <span data-gallery-current>1</span> / <span data-gallery-total>{pageCount}</span>{' '}
+    <span class="sr-only">{labels.count}</span>
+  </span>
+  <dialog class="profile-certificate-lightbox" aria-label={labels.view}>
+    <div class="profile-lightbox-shade" aria-hidden="true"></div>
+    <button class="profile-lightbox-target" type="button" aria-label={labels.close}>
+      <img class="profile-lightbox-image" alt="" />
+    </button>
+  </dialog>
 </profile-award-gallery>
 
 <script>
-  class ProfileAwardGallery extends HTMLElement {
-    connectedCallback() {
-      if (this.dataset.ready) return;
-      this.dataset.ready = 'true';
-      const grid = this.querySelector<HTMLUListElement>('.profile-certificate-grid');
-      const controls = this.querySelector<HTMLElement>('.profile-gallery-controls');
-      const counter = this.querySelector<HTMLElement>('[data-gallery-current]');
-      const previous = this.querySelector<HTMLButtonElement>('[data-gallery-previous]');
-      const next = this.querySelector<HTMLButtonElement>('[data-gallery-next]');
-      if (!grid || !controls || !counter || !previous || !next) return;
-      const cards = [...grid.children] as HTMLElement[];
-      const pageCount = Math.ceil(cards.length / 3);
-      let page = 0;
-      const show = (index: number) => {
-        page = (index + pageCount) % pageCount;
-        // Move keyboard focus out of a card before hiding it.
-        if (grid.contains(document.activeElement) && document.activeElement !== grid) grid.focus();
-        cards.forEach((card, i) => (card.hidden = Math.floor(i / 3) !== page));
-        counter.textContent = String(page + 1);
-        grid.scrollLeft = 0;
-      };
-      previous.onclick = () => show(page - 1);
-      next.onclick = () => show(page + 1);
-      grid.onkeydown = (event) => {
-        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
-        event.preventDefault();
-        show(page + (event.key === 'ArrowRight' ? 1 : -1));
-      };
-      controls.hidden = pageCount <= 1;
-      show(0);
-    }
-  }
-  if (!customElements.get('profile-award-gallery')) {
-    customElements.define('profile-award-gallery', ProfileAwardGallery);
-  }
+  import { registerProfileGallery } from '../../scripts/profile-gallery';
+  registerProfileGallery();
 </script>

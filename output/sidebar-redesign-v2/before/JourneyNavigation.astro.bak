@@ -1,0 +1,127 @@
+﻿---
+import type { HomeLabels } from './types';
+import { localizedPath, type Locale } from '../../i18n/config';
+import { getMessages } from '../../i18n/messages';
+import ThemeToggle from '../ThemeToggle.astro';
+interface Props {
+  labels: HomeLabels;
+  locale: Locale;
+}
+const { labels, locale } = Astro.props;
+const messages = getMessages(locale);
+const globalLinks = [
+  { label: messages.nav.ramblings, path: '/daily-ramblings' },
+  { label: messages.nav.tools, path: '/tools' },
+  { label: messages.nav.about, path: '/about' },
+  { label: messages.nav.friends, path: '/friends' },
+  { label: 'RSS', path: '/rss.xml' },
+];
+const primaryLinks = [
+  { label: messages.nav.articles, path: '/articles' },
+  { label: messages.nav.projects, path: '/projects' },
+  { label: messages.nav.profile, path: '/profile' },
+];
+const chapters = [
+  'base-camp',
+  'technical-ridge',
+  'study-terrace',
+  'snowfield-traverse',
+  'night-camp',
+];
+---
+
+<nav
+  class="journey-navigation"
+  aria-label={messages.nav.primary}
+  data-journey-nav
+  data-pagefind-ignore
+>
+  <div class="ridge-nav-heading">
+    <a
+      class="ridge-brand"
+      href={localizedPath(locale, '/blog')}
+      aria-label={`${messages.meta.title} — ${messages.nav.home}`}
+    >
+      ICEAXING<span aria-hidden="true">.</span>
+    </a>
+    <small>THE ASCENT / 01—05</small>
+  </div>
+  <div class="ridge-primary">
+    <div class="ridge-primary-links">
+      {primaryLinks.map((link, index) => (
+        <a href={localizedPath(locale, link.path)}>
+          <small aria-hidden="true">0{index + 1}</small>
+          <span>{link.label}</span>
+        </a>
+      ))}
+    </div>
+    <div class="ridge-tools">
+      <button
+        class="ridge-search"
+        type="button"
+        data-search-open
+        aria-label={messages.nav.search}
+        aria-haspopup="dialog"
+        aria-keyshortcuts="Control+k Meta+k /"
+        title={`${messages.nav.search} (Ctrl / ⌘ K)`}
+      >
+        <span aria-hidden="true">⌕</span>
+        <span>{messages.nav.search}</span>
+      </button>
+      <ThemeToggle label={messages.common.switchTheme} />
+    </div>
+  </div>
+  <div class="ridge-route">
+    <svg class="ridge-nav-line" preserveAspectRatio="none" fill="none" aria-hidden="true">
+      <path d="M30 55C72 85 8 140 40 175S81 249 47 295S8 375 37 415S81 495 50 535" pathLength="1" />
+      <path
+        class="ridge-nav-progress"
+        d="M30 55C72 85 8 140 40 175S81 249 47 295S8 375 37 415S81 495 50 535"
+        pathLength="1"
+      />
+    </svg>
+    <ol aria-label={labels.route}>
+      {chapters.map((id, index) => (
+        <li class={index === 0 ? 'is-active' : undefined}>
+          <a href={`#${id}`} data-journey-link={id}>
+            <span class="ridge-node" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <span class="ridge-node-label">{labels.chapters[index]}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+  <span class="ridge-current-label" data-ridge-current>
+    {labels.chapters[0]}
+  </span>
+  <button
+    class="ridge-expand"
+    type="button"
+    data-ridge-expand
+    aria-expanded="false"
+    aria-label={labels.route}
+  >
+    ☰
+  </button>
+  <div class="ridge-utilities">
+    <div class="ridge-global-links">
+      {globalLinks.map((link) => (
+        <a href={localizedPath(locale, link.path)}>{link.label}</a>
+      ))}
+    </div>
+    <div class="ridge-languages" role="group" aria-label={messages.common.language}>
+      {(['zh', 'en', 'de'] as const).map((language) => (
+        <a
+          href={localizedPath(language, '/blog')}
+          data-sidebar-language
+          lang={language === 'zh' ? 'zh-CN' : language}
+          aria-current={locale === language ? 'page' : undefined}
+        >
+          {language === 'zh' ? '中文' : language.toUpperCase()}
+        </a>
+      ))}
+    </div>
+  </div>
+</nav>

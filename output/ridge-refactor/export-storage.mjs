@@ -1,0 +1,1 @@
+﻿import fs from 'node:fs';const p='src/lib/content-tree/server.ts';let s=fs.readFileSync(p,'utf8');for(const name of ['githubRepo','pathPrefix'])s=s.replace(`function ${name}(`,`export function ${name}(`);s=s.replace('async function githubJson<','export async function githubJson<');fs.writeFileSync(p,s);

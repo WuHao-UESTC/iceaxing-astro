@@ -1,0 +1,325 @@
+{
+  "styles": 15,
+  "chapters": 75,
+  "chapterScreenshots": 150,
+  "readerScreenshots": 15,
+  "contactSheets": 15,
+  "desktopWidth": 1440,
+  "mobileWidth": 390,
+  "chapterChecks": [
+    {
+      "name": "01-voxel",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "02-specimen",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "03-comic",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "04-riso",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "05-engraving",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "06-deco",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "07-bauhaus",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "08-swiss",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "09-cyanotype",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "10-papercut",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "11-stainedglass",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "12-clay",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "13-pixel",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "14-ukiyoe",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    },
+    {
+      "name": "15-terminal",
+      "checks": [
+        "five desktop chapters",
+        "books, life groups, timeline, search, reading",
+        "five mobile chapters",
+        "reduced motion"
+      ],
+      "ok": true
+    }
+  ],
+  "finalInteractions": [
+    {
+      "name": "01-voxel",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "02-specimen",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "03-comic",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "04-riso",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "05-engraving",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "06-deco",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "07-bauhaus",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "08-swiss",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "09-cyanotype",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "10-papercut",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "11-stainedglass",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "12-clay",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "13-pixel",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "14-ukiyoe",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    },
+    {
+      "name": "15-terminal",
+      "ok": true,
+      "checks": "desktop/mobile primary actions, featured switch/read, keyboard chapter, browser back, direct chapter URL"
+    }
+  ],
+  "finalMobile": [
+    {
+      "name": "01-voxel",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "02-specimen",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "03-comic",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "04-riso",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "05-engraving",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "06-deco",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "07-bauhaus",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "08-swiss",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "09-cyanotype",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "10-papercut",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "11-stainedglass",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "12-clay",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "13-pixel",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "14-ukiyoe",
+      "ok": true,
+      "chapters": 5
+    },
+    {
+      "name": "15-terminal",
+      "ok": true,
+      "chapters": 5
+    }
+  ],
+  "gallery": {
+    "cards": 15,
+    "images": 15,
+    "mobileFits": true,
+    "sources": 15,
+    "ok": true
+  },
+  "localLinks": 203,
+  "errors": [],
+  "formalSiteModified": false
+}

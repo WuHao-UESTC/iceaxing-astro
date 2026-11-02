@@ -14,12 +14,12 @@
   position: relative;
   display: grid;
   place-items: center;
-  aspect-ratio: 1;
   width: 7rem;
-  margin-top: 0.35rem;
-  padding: 0.35rem;
+  align-self: stretch;
+  min-height: 0;
+  overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--people-accent) 40%, var(--line));
-  border-radius: 50%;
+  border-radius: 0.2rem;
   background: var(--surface-subtle);
 }
 .profile-avatar > span {
@@ -28,11 +28,11 @@
 }
 .profile-avatar img {
   position: absolute;
-  inset: 0.35rem;
-  width: calc(100% - 0.7rem);
-  height: calc(100% - 0.7rem);
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: inherit;
 }
 .profile-avatar img[hidden] {
   display: none;
@@ -319,6 +319,10 @@
   --archive-muted: #dedee2;
   --archive-surface: #121212;
 }
+:root[data-theme='dark'] .profile-project-archive a[data-image-tone='dark'] {
+  --archive-glass: linear-gradient(145deg, rgb(0 0 0 / 18%), rgb(0 0 0 / 40%));
+  --archive-image-opacity: 0.9;
+}
 .profile-page .profile-project-archive li {
   margin: 0;
   min-width: 0;
@@ -412,34 +416,71 @@
 profile-award-gallery {
   display: block;
   min-width: 0;
+  --gallery-image-height: 240px;
+}
+.profile-gallery-stage {
+  position: relative;
+  min-width: 0;
+  padding-inline: 3.1rem;
+}
+.profile-gallery-stage:has(.profile-gallery-controls[hidden]) {
+  padding-inline: 0;
 }
 .profile-gallery-controls {
+  position: absolute;
+  inset: 0;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.7rem;
-  margin-bottom: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-top: calc(var(--gallery-image-height) / 2 - 1.3rem);
+  pointer-events: none;
 }
 .profile-gallery-controls[hidden] {
   display: none;
 }
 .profile-gallery-controls button {
-  width: 2.1rem;
-  height: 1.9rem;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
   padding: 0;
-  border: 1px solid var(--line);
-  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 25%,
+    color-mix(in srgb, var(--people-accent) 13%, transparent),
+    transparent 85%
+  );
   color: var(--people-accent);
   cursor: pointer;
   font: 1rem var(--font-ui);
+  pointer-events: auto;
+  transition:
+    background 180ms ease,
+    opacity 180ms ease;
 }
-.profile-gallery-controls button:hover {
-  border-color: var(--people-accent);
+.profile-gallery-controls button:not(:disabled):hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--people-accent) 15%, transparent);
+}
+.profile-gallery-controls button svg {
+  width: 1.65rem;
+  height: 1.65rem;
+}
+.profile-gallery-controls button:disabled {
+  opacity: 0.23;
+  cursor: default;
 }
 .profile-gallery-counter {
+  display: block;
+  margin-top: 0.8rem;
+  text-align: center;
   color: var(--muted);
   font-size: 0.7rem;
   font-variant-numeric: tabular-nums;
+}
+.profile-gallery-counter[hidden] {
+  display: none;
 }
 .profile-page .profile-certificate-grid {
   display: grid;
@@ -459,12 +500,14 @@ profile-award-gallery {
   display: none;
 }
 .profile-page .profile-certificate {
-  margin: 0;
+  position: relative;
+  width: min(100%, 320px);
+  margin: 0 auto;
 }
 .profile-certificate-media {
   position: relative;
   width: min(100%, 320px);
-  height: 220px;
+  height: var(--gallery-image-height);
   margin-inline: auto;
 }
 .profile-certificate-placeholder {
@@ -487,6 +530,8 @@ profile-award-gallery {
 .profile-certificate-media > a {
   position: absolute;
   inset: 0;
+  padding: 0.7rem;
+  cursor: zoom-in;
 }
 .profile-page .profile-certificate-media img {
   width: 100%;
@@ -516,15 +561,131 @@ profile-award-gallery {
   line-height: 1.7;
   pointer-events: none;
 }
-.profile-certificate figcaption {
-  padding-top: 0.9rem;
+.profile-certificate .profile-certificate-caption {
+  position: absolute;
+  z-index: 2;
+  inset-inline: 0;
+  bottom: 0;
+  display: grid;
+  align-content: end;
+  padding: 1.6rem 0.7rem 0.7rem;
+  margin: 0;
   text-align: center;
+  isolation: isolate;
+  pointer-events: none;
 }
-.profile-certificate figcaption h3 {
+.profile-certificate-caption::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, transparent, rgb(12 16 17 / 60%) 45%, rgb(12 16 17 / 88%));
+  -webkit-backdrop-filter: blur(9px);
+  backdrop-filter: blur(9px);
+  mask-image: linear-gradient(to bottom, transparent, #000 45%);
+}
+.profile-certificate .profile-certificate-caption h3 {
   font-size: 0.92rem;
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 35%);
+}
+.profile-certificate-details {
+  text-align: center;
 }
 .profile-certificate .profile-text-link {
   justify-content: center;
+}
+profile-award-gallery[data-ready] .profile-certificate-grid {
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 1.2rem;
+  padding-bottom: 0;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  overflow-anchor: none;
+}
+profile-award-gallery[data-ready] .profile-certificate-grid::-webkit-scrollbar {
+  display: none;
+}
+profile-award-gallery[data-animating] .profile-certificate-grid {
+  scroll-snap-type: none;
+  pointer-events: none;
+}
+profile-award-gallery[data-ready] .profile-certificate-grid > li {
+  flex: 0 0 calc((100% - (var(--gallery-per-page, 3) - 1) * 1.2rem) / var(--gallery-per-page, 3));
+  scroll-snap-align: start;
+}
+profile-award-gallery[data-ready] .profile-certificate-grid > [data-gallery-spacer] {
+  visibility: hidden;
+}
+profile-award-gallery[data-ready] .profile-certificate figcaption {
+  box-sizing: border-box;
+  min-height: var(--gallery-caption-height, 0px);
+}
+.profile-certificate-lightbox {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.profile-certificate-lightbox::backdrop {
+  background: transparent;
+}
+.profile-lightbox-shade {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 78%);
+  backdrop-filter: blur(8px);
+}
+.profile-lightbox-target {
+  position: absolute;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-out;
+  transform-origin: top left;
+  will-change: transform;
+}
+.profile-page .profile-lightbox-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  object-fit: contain;
+}
+.profile-certificate-grid:focus-visible {
+  outline: 2px solid var(--people-accent);
+  outline-offset: 5px;
+}
+@media (max-width: 40rem) {
+  profile-award-gallery {
+    --gallery-image-height: 260px;
+  }
+  .profile-gallery-stage {
+    padding-inline: 2.5rem;
+  }
+  .profile-gallery-controls button {
+    width: 2.1rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .profile-gallery-controls button {
+    transition: none;
+  }
 }
 .profile-section:has(#profile-education) .profile-description {
   font-family: var(--font-reading);

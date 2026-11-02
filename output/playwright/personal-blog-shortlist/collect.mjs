@@ -1,0 +1,6 @@
+import fs from 'node:fs/promises';
+const repos=['antfu/antfu.me','MaggieAppleton/maggieappleton.com-V3','ncase/blog','Innei/Shiro','L33Z22L11/blog-v3','taniarascia/taniarascia.com','danabramov/overreacted.io','josh-collinsworth/joco-sveltekit','Wattenberger/Wattenberger-2019','djyde/randy-blog','octref/matsu.io','Eltrac/Obsidian-Blog','daverupert/daverupert.com','cassidoo/cassidoo.github.io','shuding/shud.in','cosZone/astro-koharu','saicaca/fuwari','xaoxuu/hexo-theme-stellar','jktrn/astro-erudite'];
+const results=[];
+for(let start=0;start<repos.length;start+=4){await Promise.allSettled(repos.slice(start,start+4).map(async repo=>{try{const r=await fetch('https://api.github.com/repos/'+repo,{headers:{'User-Agent':'Iceaxing-design-research'},signal:AbortSignal.timeout(20000)});if(!r.ok){results.push({repo,status:r.status});return;}const d=await r.json();results.push({repo:d.full_name,url:d.html_url,description:d.description,homepage:d.homepage,archived:d.archived,updated:d.pushed_at,branch:d.default_branch,license:d.license?.spdx_id,language:d.language});}catch(e){results.push({repo,error:String(e)});}}));}
+await fs.writeFile(new URL('./repos.json',import.meta.url),JSON.stringify(results,null,2));
+console.log(JSON.stringify(results));

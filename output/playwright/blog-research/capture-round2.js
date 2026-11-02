@@ -1,0 +1,5 @@
+async(page)=>{
+ const sources=[['deco','https://www.vam.ac.uk/articles/an-introduction-to-art-deco'],['bauhaus','https://www.bauhauskooperation.com/'],['swiss','https://www.swissted.com/'],['cyanotype','https://www.metmuseum.org/art/collection/search/291498'],['paper','https://kellianderson.com/']];
+ const results=[];
+ for(const[id,url]of sources){const p=await page.context().newPage(),r={id,url};try{await p.setViewportSize({width:1440,height:1000});await p.goto(url,{waitUntil:'domcontentloaded',timeout:30000});await p.waitForTimeout(1800);r.evidence=await p.evaluate(()=>({title:document.title,headings:[...document.querySelectorAll('h1,h2,h3')].slice(0,12).map(e=>e.textContent.trim()),text:document.body.innerText.slice(0,4500),images:[...document.images].filter(i=>i.complete&&i.naturalWidth>100).slice(0,10).map(i=>({alt:i.alt,url:i.currentSrc}))}));await p.screenshot({path:`E:/repo_iceaxing-astro/iceaxing-astro/output/playwright/style-round2/${id}.png`,fullPage:false,animations:'disabled',timeout:12000});r.screenshot=true;}catch(e){r.error=String(e);}results.push(r);await p.close();}return results;
+}

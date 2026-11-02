@@ -1,0 +1,430 @@
+- generic [active] [ref=f6e1]:
+  - link "Skip to content" [ref=f6e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f6e3]:
+    - generic [ref=f6e4]:
+      - link "iceaxing — 首页" [ref=f6e5] [cursor=pointer]:
+        - /url: /blog
+        - text: iceaxing.
+      - navigation "主导航" [ref=f6e6]:
+        - list [ref=f6e7]:
+          - listitem [ref=f6e8]:
+            - link "技术栈" [ref=f6e9] [cursor=pointer]:
+              - /url: /blog#technical-ridge
+          - listitem [ref=f6e10]:
+            - link "学习笔记" [ref=f6e11] [cursor=pointer]:
+              - /url: /blog#study-terrace
+          - listitem [ref=f6e12]:
+            - link "生活日常" [ref=f6e13] [cursor=pointer]:
+              - /url: /blog#snowfield-traverse
+          - listitem [ref=f6e14]:
+            - link "碎碎念" [ref=f6e15] [cursor=pointer]:
+              - /url: /daily-ramblings
+          - listitem [ref=f6e16]:
+            - link "工具" [ref=f6e17] [cursor=pointer]:
+              - /url: /tools
+          - listitem [ref=f6e18]:
+            - link "关于" [ref=f6e19] [cursor=pointer]:
+              - /url: /about
+          - listitem [ref=f6e20]:
+            - link "个人档案" [ref=f6e21] [cursor=pointer]:
+              - /url: /profile
+          - listitem [ref=f6e22]:
+            - link "友链" [ref=f6e23] [cursor=pointer]:
+              - /url: /friends
+      - generic [ref=f6e24]:
+        - button "搜索" [ref=f6e25] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f6e26]: ⌕
+        - group [ref=f6e27]:
+          - generic "语言" [ref=f6e28] [cursor=pointer]: ZH
+        - button "切换明暗模式" [ref=f6e29] [cursor=pointer]
+  - main [ref=f6e32]:
+    - navigation "海拔路线" [ref=f6e33]:
+      - list [ref=f6e34]:
+        - listitem [ref=f6e35]:
+          - link "01 封面" [ref=f6e36] [cursor=pointer]:
+            - /url: "#base-camp"
+            - generic [ref=f6e37]:
+              - generic [ref=f6e38]: "01"
+              - generic [ref=f6e39]: 封面
+        - listitem [ref=f6e40]:
+          - link "02 技术栈" [ref=f6e41] [cursor=pointer]:
+            - /url: "#technical-ridge"
+            - generic [ref=f6e42]:
+              - generic [ref=f6e43]: "02"
+              - generic [ref=f6e44]: 技术栈
+        - listitem [ref=f6e45]:
+          - link "03 学习笔记" [ref=f6e46] [cursor=pointer]:
+            - /url: "#study-terrace"
+            - generic [ref=f6e47]:
+              - generic [ref=f6e48]: "03"
+              - generic [ref=f6e49]: 学习笔记
+        - listitem [ref=f6e50]:
+          - link "04 生活日常" [ref=f6e51] [cursor=pointer]:
+            - /url: "#snowfield-traverse"
+            - generic [ref=f6e52]:
+              - generic [ref=f6e53]: "04"
+              - generic [ref=f6e54]: 生活日常
+        - listitem [ref=f6e55]:
+          - link "05 沿途随记" [ref=f6e56] [cursor=pointer]:
+            - /url: "#night-camp"
+            - generic [ref=f6e57]:
+              - generic [ref=f6e58]: "05"
+              - generic [ref=f6e59]: 沿途随记
+    - region [ref=f6e60]:
+      - generic [ref=f6e61]:
+        - generic [aria-hidden] [ref=f6e62]:
+          - generic [ref=f6e63]: "01"
+          - generic [ref=f6e64]:
+            - strong [ref=f6e65]: EXPEDITION / 01
+            - generic [ref=f6e66]: BASE CAMP
+        - generic [ref=f6e67]:
+          - generic [ref=f6e68]: ABOVE THE SNOWLINE
+          - strong [ref=f6e69]: ICEAXING.
+          - generic [ref=f6e70]: 雪线之上 · 个人远征记录
+        - generic [ref=f6e71]:
+          - generic [ref=f6e72]:
+            - paragraph [ref=f6e73]: PERSONAL FIELD NOTES / ABOVE THE SNOWLINE
+            - heading "循着好奇，向雪线之上。" [level=1] [ref=f6e74]
+            - paragraph [ref=f6e75]: 关于技术、项目与生活的个人博客。
+            - figure "— Astro 重构原则" [ref=f6e76]:
+              - blockquote [ref=f6e77]: 为阅读而构建，而不是为框架而构建。
+            - link "开始探索" [ref=f6e79] [cursor=pointer]:
+              - /url: "#technical-ridge"
+              - text: 开始探索
+              - generic [aria-hidden] [ref=f6e80]: ↗
+            - generic [ref=f6e81]:
+              - link "认识我" [ref=f6e82] [cursor=pointer]:
+                - /url: /profile
+                - text: 认识我↗
+              - navigation "文章 / 项目" [ref=f6e83]:
+                - link "文章" [ref=f6e84] [cursor=pointer]:
+                  - /url: /articles
+                  - text: 文章↗
+                - link "项目" [ref=f6e85] [cursor=pointer]:
+                  - /url: /projects
+                  - text: 项目↗
+            - region [ref=f6e86]:
+              - generic [ref=f6e87]:
+                - generic [ref=f6e88]:
+                  - paragraph [ref=f6e89]: SELECTED NOTES
+                  - heading "精选文章" [level=2] [ref=f6e90]
+                - link "继续向上" [ref=f6e91] [cursor=pointer]:
+                  - /url: "#technical-ridge"
+                  - text: 继续向上↓
+              - link "2026年10月23日 为什么‘s’的量纲是1/s？" [ref=f6e93] [cursor=pointer]:
+                - /url: /oppenheim-signal-and-system-note/dimension-of-s
+                - generic [ref=f6e94]: 2026年10月23日
+                - strong [ref=f6e95]: 为什么‘s’的量纲是1/s？
+                - paragraph
+                - generic [aria-hidden] [ref=f6e96]: ↗
+          - figure [aria-hidden] [ref=f6e98]:
+            - generic [ref=f6e99]:
+              - generic [ref=f6e100]: ICEAXING / FIELD OBSERVATIONS
+              - generic [ref=f6e101]: ABOVE THE SNOWLINE
+            - img [ref=f6e102]:
+              - generic [ref=f6e142]:
+                - generic [ref=f6e143]: FIG. 01 — A PERSONAL EXPEDITION
+                - generic [ref=f6e144]: KEEP EXPLORING ↗
+                - generic [ref=f6e145]: SNOWLINE
+            - generic [ref=f6e146]:
+              - generic [ref=f6e147]: 循着好奇，向雪线之上。
+              - generic [ref=f6e148]: EXPEDITION / ICEAXING
+        - generic [ref=f6e149]:
+          - generic [ref=f6e150]: 按向下方向键查看详情，按回车打开条目。
+          - navigation "精选文章" [ref=f6e151]:
+            - link "01 碎碎念 分类" [ref=f6e153] [cursor=pointer]:
+              - /url: /daily-ramblings
+              - generic [ref=f6e154]: "01"
+              - generic [ref=f6e156]:
+                - strong [ref=f6e157]: 碎碎念
+                - generic [ref=f6e158]: 分类
+              - generic [aria-hidden] [ref=f6e159]: ↗
+            - link "02 2026年集创赛作品合集 项目 / Analog IC" [ref=f6e161] [cursor=pointer]:
+              - /url: /analog-ic/2026-cicc
+              - generic [ref=f6e162]: "02"
+              - generic [ref=f6e164]:
+                - strong [ref=f6e165]: 2026年集创赛作品合集
+                - generic [ref=f6e166]: 项目 / Analog IC
+              - generic [aria-hidden] [ref=f6e167]: ↗
+            - link "03 二级运放搭建全流程 项目 / Analog IC" [ref=f6e169] [cursor=pointer]:
+              - /url: /analog-ic/two-stage-ota
+              - generic [ref=f6e170]: "03"
+              - generic [ref=f6e172]:
+                - strong [ref=f6e173]: 二级运放搭建全流程
+                - generic [ref=f6e174]: 项目 / Analog IC
+              - generic [aria-hidden] [ref=f6e175]: ↗
+        - navigation "海拔路线" [ref=f6e176]:
+          - link "02 技术栈" [ref=f6e177] [cursor=pointer]:
+            - /url: "#technical-ridge"
+            - generic [ref=f6e178]: "02"
+            - strong [ref=f6e179]: 技术栈
+            - generic [aria-hidden] [ref=f6e180]: ↗
+          - link "03 学习笔记" [ref=f6e181] [cursor=pointer]:
+            - /url: "#study-terrace"
+            - generic [ref=f6e182]: "03"
+            - strong [ref=f6e183]: 学习笔记
+            - generic [aria-hidden] [ref=f6e184]: ↗
+          - link "04 生活日常" [ref=f6e185] [cursor=pointer]:
+            - /url: "#snowfield-traverse"
+            - generic [ref=f6e186]: "04"
+            - strong [ref=f6e187]: 生活日常
+            - generic [aria-hidden] [ref=f6e188]: ↗
+          - link "05 沿途随记" [ref=f6e189] [cursor=pointer]:
+            - /url: "#night-camp"
+            - generic [ref=f6e190]: "05"
+            - strong [ref=f6e191]: 沿途随记
+            - generic [aria-hidden] [ref=f6e192]: ↗
+    - region [ref=f6e193]:
+      - generic [ref=f6e194]:
+        - generic [aria-hidden] [ref=f6e195]:
+          - generic [ref=f6e196]: "02"
+          - generic [ref=f6e197]:
+            - strong [ref=f6e198]: EXPEDITION / 02
+            - generic [ref=f6e199]: TECHNICAL RIDGE
+        - generic [ref=f6e200]:
+          - paragraph [ref=f6e201]: TOOLS / SYSTEMS / CRAFT
+          - heading "技术栈" [level=2] [ref=f6e202]
+          - paragraph [ref=f6e203]: 从原理出发，把想法一步步做成现实。
+        - generic [ref=f6e204]:
+          - region [ref=f6e205]:
+            - heading "STACK INDEX" [level=3] [ref=f6e207]
+            - navigation "技术栈" [ref=f6e208]:
+              - link "01 Analog IC 模拟IC学习——学习笔记，心得，教程与小项目" [ref=f6e209] [cursor=pointer]:
+                - /url: /analog-ic
+                - generic [ref=f6e210]: "01"
+                - generic [ref=f6e211]:
+                  - heading "Analog IC" [level=4] [ref=f6e212]
+                  - paragraph [ref=f6e213]: 模拟IC学习——学习笔记，心得，教程与小项目
+                - generic [aria-hidden] [ref=f6e214]: ↗
+          - region [ref=f6e215]:
+            - heading "项目进展" [level=3] [ref=f6e217]
+            - generic [ref=f6e218]:
+              - link [ref=f6e219] [cursor=pointer]:
+                - /url: /analog-ic/2026-cicc
+                - generic [ref=f6e220]:
+                  - text: COMPLETED
+                  - heading "2026年集创赛作品合集" [level=4] [ref=f6e221]
+                - paragraph [ref=f6e222]: 2026年集创赛作品：用于光电流检测的模拟前端（研究生组）。本人完成FDA,PGA,TIA,比较器的相关设计。虽然没能取得一个理想的奖项，但是也收获颇丰。这里展示一些设计的思路与笔记。
+                - generic "100%" [ref=f6e223]
+              - link [ref=f6e225] [cursor=pointer]:
+                - /url: /analog-ic/two-stage-ota
+                - generic [ref=f6e226]:
+                  - text: COMPLETED
+                  - heading "二级运放搭建全流程" [level=4] [ref=f6e227]
+                - paragraph [ref=f6e228]: 从0到1，第一次搭建出一个能用的二级运放对于我而言是很不容易的，希望这一篇文章可以帮助到更多刚刚IC入门的小白
+                - generic "100%" [ref=f6e229]
+    - region [ref=f6e231]:
+      - generic [ref=f6e232]:
+        - generic [ref=f6e233]:
+          - generic [aria-hidden] [ref=f6e234]:
+            - generic [ref=f6e235]: "03"
+            - generic [ref=f6e236]:
+              - strong [ref=f6e237]: EXPEDITION / 03
+              - generic [ref=f6e238]: KNOWLEDGE ATLAS
+          - generic [ref=f6e239]:
+            - paragraph [ref=f6e240]: READ / WONDER / CONNECT
+            - heading "学习笔记" [level=2] [ref=f6e241]
+            - paragraph [ref=f6e242]: 把读过的书、推过的公式与想明白的问题，慢慢整理成路。
+        - generic [ref=f6e243]:
+          - paragraph [ref=f6e245]:
+            - text: "08"
+            - generic [ref=f6e247]: 颗已点亮
+            - generic [ref=f6e248]: /
+            - generic [ref=f6e249]: ATLAS / 03
+          - generic [ref=f6e250]:
+            - navigation "教材星图":
+              - generic:
+                - link "数字时代的滤波器设计 · 3 篇笔记" [ref=f6e251] [cursor=pointer]:
+                  - /url: /filter-design-in-digital-world-note
+                  - generic:
+                    - generic: "01"
+                    - generic: 数字时代的滤波器设计
+                  - tooltip "数字时代的滤波器设计 3 篇笔记":
+                    - text: 数字时代的滤波器设计
+                    - generic: 3 篇笔记
+                - link "海特-工程电磁场 · 0 篇笔记" [ref=f6e252] [cursor=pointer]:
+                  - /url: /hayt-engineering-electromagnetics-note
+                  - generic:
+                    - generic: "02"
+                    - generic: 海特-工程电磁场
+                  - tooltip "海特-工程电磁场 0 篇笔记":
+                    - text: 海特-工程电磁场
+                    - generic: 0 篇笔记
+                - link "刘恩科-半导体物理学 · 0 篇笔记" [ref=f6e253] [cursor=pointer]:
+                  - /url: /liuenke-semiconductance-note
+                  - generic:
+                    - generic: "03"
+                    - generic: 刘恩科-半导体物理学
+                  - tooltip "刘恩科-半导体物理学 0 篇笔记":
+                    - text: 刘恩科-半导体物理学
+                    - generic: 0 篇笔记
+                - link "奥本海姆-信号与系统 · 1 篇笔记" [ref=f6e254] [cursor=pointer]:
+                  - /url: /oppenheim-signal-and-system-note
+                  - generic:
+                    - generic: "04"
+                    - generic: 奥本海姆-信号与系统
+                  - tooltip "奥本海姆-信号与系统 1 篇笔记":
+                    - text: 奥本海姆-信号与系统
+                    - generic: 1 篇笔记
+                - link "奎克-半导体制造技术 · 1 篇笔记" [ref=f6e255] [cursor=pointer]:
+                  - /url: /quirk-semiconductor-manufacturing-technology-note
+                  - generic:
+                    - generic: "05"
+                    - generic: 奎克-半导体制造技术
+                  - tooltip "奎克-半导体制造技术 1 篇笔记":
+                    - text: 奎克-半导体制造技术
+                    - generic: 1 篇笔记
+                - link "Rabaey-数字集成电路设计 · 1 篇笔记" [ref=f6e256] [cursor=pointer]:
+                  - /url: /rabaey-digital-ic-note
+                  - generic:
+                    - generic: "06"
+                    - generic: Rabaey-数字集成电路设计
+                  - tooltip "Rabaey-数字集成电路设计 1 篇笔记":
+                    - text: Rabaey-数字集成电路设计
+                    - generic: 1 篇笔记
+                - link "拉扎维-模拟CMOS集成电路设计 · 2 篇笔记" [ref=f6e257] [cursor=pointer]:
+                  - /url: /razavi-cmos-analog-note
+                  - generic:
+                    - generic: "07"
+                    - generic: 拉扎维-模拟CMOS集成电路设计
+                  - tooltip "拉扎维-模拟CMOS集成电路设计 2 篇笔记":
+                    - text: 拉扎维-模拟CMOS集成电路设计
+                    - generic: 2 篇笔记
+                - link "拉扎维-射频微电子 · 0 篇笔记" [ref=f6e258] [cursor=pointer]:
+                  - /url: /razavi-rf-microelectronics-note
+                  - generic:
+                    - generic: "08"
+                    - generic: 拉扎维-射频微电子
+                  - tooltip "拉扎维-射频微电子 0 篇笔记":
+                    - text: 拉扎维-射频微电子
+                    - generic: 0 篇笔记
+              - paragraph: 选择一颗星，开始探索
+          - generic [ref=f6e259]:
+            - paragraph [ref=f6e260]: 每一颗亮星，都是一段求知的旅程。选择一本教材，展开它的笔记。
+            - generic [ref=f6e261]:
+              - generic [ref=f6e262]: 切换教材
+              - combobox "切换教材" [ref=f6e263]:
+                - option "全部教材" [selected]
+                - option "数字时代的滤波器设计"
+                - option "海特-工程电磁场"
+                - option "刘恩科-半导体物理学"
+                - option "奥本海姆-信号与系统"
+                - option "奎克-半导体制造技术"
+                - option "Rabaey-数字集成电路设计"
+                - option "拉扎维-模拟CMOS集成电路设计"
+                - option "拉扎维-射频微电子"
+          - paragraph [ref=f6e264]
+    - region [ref=f6e265]:
+      - generic [ref=f6e266]:
+        - generic [aria-hidden] [ref=f6e267]:
+          - generic [ref=f6e268]: "04"
+          - generic [ref=f6e269]:
+            - strong [ref=f6e270]: EXPEDITION / 04
+            - generic [ref=f6e271]: SNOWFIELD JOURNAL
+        - generic [ref=f6e272]:
+          - paragraph [ref=f6e273]: BOOKS / JOURNEYS / ORDINARY DAYS
+          - heading "生活日常" [level=2] [ref=f6e274]
+          - paragraph [ref=f6e275]: 在阅读、远行与寻常日子里，收集世界的细节。
+        - navigation "日常收藏" [ref=f6e277]:
+          - generic [ref=f6e278]:
+            - generic [ref=f6e279]:
+              - link [ref=f6e280] [cursor=pointer]:
+                - /url: /annual-summaries
+                - generic [aria-hidden] [ref=f6e281]: "01"
+                - heading "年度总结" [level=3] [ref=f6e282]
+                - generic [aria-hidden] [ref=f6e283]: ↗
+              - paragraph [ref=f6e284]: 暂无文章
+            - generic [ref=f6e285]:
+              - link [ref=f6e286] [cursor=pointer]:
+                - /url: /journey
+                - generic [aria-hidden] [ref=f6e287]: "02"
+                - heading "旅行手记" [level=3] [ref=f6e288]
+                - generic [aria-hidden] [ref=f6e289]: ↗
+              - paragraph [ref=f6e290]: 暂无文章
+            - generic [ref=f6e291]:
+              - link [ref=f6e292] [cursor=pointer]:
+                - /url: /photo-book
+                - generic [aria-hidden] [ref=f6e293]: "03"
+                - heading "相册" [level=3] [ref=f6e294]
+                - generic [aria-hidden] [ref=f6e295]: ↗
+              - paragraph [ref=f6e296]: 暂无文章
+            - generic [ref=f6e297]:
+              - link [ref=f6e298] [cursor=pointer]:
+                - /url: /reading
+                - generic [aria-hidden] [ref=f6e299]: "04"
+                - heading "阅读" [level=3] [ref=f6e300]
+                - paragraph [ref=f6e301]: 给生命一点难得的养分
+                - generic [aria-hidden] [ref=f6e302]: ↗
+              - paragraph [ref=f6e303]: 暂无文章
+        - region [ref=f6e304]:
+          - heading "最近，过得怎样" [level=3] [ref=f6e305]
+          - paragraph [ref=f6e306]: 留一点空白，给正在发生的生活。
+        - paragraph [ref=f6e307]: 记录，是为了记得。
+    - region [ref=f6e308]:
+      - generic [ref=f6e309]:
+        - generic [aria-hidden] [ref=f6e310]:
+          - generic [ref=f6e311]: "05"
+          - generic [ref=f6e312]:
+            - strong [ref=f6e313]: EXPEDITION / 05
+            - generic [ref=f6e314]: TRAIL WAYSTATION
+        - generic [ref=f6e315]:
+          - paragraph [ref=f6e316]: MOMENTS / PEOPLE / PLACES
+          - heading "沿途随记" [level=2] [ref=f6e317]
+          - paragraph [ref=f6e318]: 记下偶然的念头，也留住一路相遇的人。
+        - generic [ref=f6e319]:
+          - navigation "此间与同行" [ref=f6e320]:
+            - link [ref=f6e321] [cursor=pointer]:
+              - /url: /log
+              - generic [aria-hidden] [ref=f6e322]: "01"
+              - strong [ref=f6e323]: 日志
+              - generic [aria-hidden] [ref=f6e324]: ↗
+            - link [ref=f6e325] [cursor=pointer]:
+              - /url: /about
+              - generic [aria-hidden] [ref=f6e326]: "02"
+              - strong [ref=f6e327]: 关于
+              - generic [aria-hidden] [ref=f6e328]: ↗
+            - link [ref=f6e329] [cursor=pointer]:
+              - /url: /profile
+              - generic [aria-hidden] [ref=f6e330]: "03"
+              - strong [ref=f6e331]: 个人档案
+              - generic [aria-hidden] [ref=f6e332]: ↗
+            - link [ref=f6e333] [cursor=pointer]:
+              - /url: /friends
+              - generic [aria-hidden] [ref=f6e334]: "04"
+              - strong [ref=f6e335]: 友链
+              - generic [aria-hidden] [ref=f6e336]: ↗
+          - region [ref=f6e337]:
+            - generic [ref=f6e338]:
+              - heading "碎碎念" [level=3] [ref=f6e339]
+              - link "翻看全部随记" [ref=f6e340] [cursor=pointer]:
+                - /url: /daily-ramblings
+                - text: 翻看全部随记↗
+            - region "碎碎念" [ref=f6e341]:
+              - list [ref=f6e342]:
+                - listitem [ref=f6e343]:
+                  - link [ref=f6e344] [cursor=pointer]:
+                    - /url: /daily-ramblings/ramble-happiness-at-fingertip
+                    - time [ref=f6e345]: 2026年10月27日
+                    - heading "指缝间漏出来的幸福" [level=4] [ref=f6e346]
+                    - paragraph [ref=f6e347]: 有的时候，我感觉我在做任何事情时，都过于追求完整的体系。明明收获了许多，却总是为失去的那一点而着急……
+                    - generic [aria-hidden] [ref=f6e348]: ↗
+        - generic [ref=f6e349]:
+          - generic [ref=f6e350]: 短暂停靠，再继续出发。
+          - link "回到山脚" [ref=f6e351] [cursor=pointer]:
+            - /url: "#base-camp"
+            - text: 回到山脚↑
+  - contentinfo [ref=f6e352]:
+    - generic [ref=f6e353]:
+      - paragraph [ref=f6e354]: © 2026 iceaxing. 保留所有权利。
+      - navigation "Footer" [ref=f6e355]:
+        - link "RSS" [ref=f6e356] [cursor=pointer]:
+          - /url: /rss.xml
+        - link "友链" [ref=f6e357] [cursor=pointer]:
+          - /url: /friends
+        - generic [ref=f6e358]: Built with Astro.
+  - generic [ref=f6e361]:
+    - button "Menu" [ref=f6e362]
+    - button "Inspect" [ref=f6e368]
+    - button "Audit" [ref=f6e372]
+    - button "Settings" [ref=f6e377]

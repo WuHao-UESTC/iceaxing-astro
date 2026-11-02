@@ -1,11 +1,13 @@
 ---
-import { Image } from 'astro:assets';
 import type { RenderResult } from 'astro:content';
 import type { ArticleEntry, LogEntry } from '../../lib/content';
 import { formatDate } from '../../lib/content';
 import { localizedPath, type Locale } from '../../i18n/config';
 import Comments from './Comments.astro';
+import SubscribeForm from '../SubscribeForm.astro';
 import TableOfContents from './TableOfContents.astro';
+import ArticleCoverImage from './ArticleCoverImage.astro';
+import { getArticleCover } from '../../lib/article-cover-assets';
 import '../../styles/reading.css';
 
 interface Link {
@@ -106,6 +108,7 @@ const readingTime =
       : `About ${minutes} min`;
 const parent = breadcrumbs.at(-1);
 const indexHref = parent?.href ?? localizedPath(locale, kind === 'log' ? '/log' : '/articles');
+const cover = kind === 'article' ? getArticleCover(entry) : entry.data.coverImage;
 ---
 
 <main
@@ -128,67 +131,64 @@ const indexHref = parent?.href ?? localizedPath(locale, kind === 'log' ? '/log' 
   </nav>
 
   <article class="reader-article" aria-labelledby="reader-title">
-    <header class="reader-header" id="reader-top">
-      <p class="reader-kicker">
-        <span>{kind === 'log' ? labels.log : labels.note}</span>
-        <span>{entry.data.publishedAt.getFullYear()} / ICEAXING</span>
-      </p>
-      <h1 id="reader-title" data-pagefind-meta="title">
-        {entry.data.title}
-      </h1>
-      {entry.data.excerpt && (
-        <p class="reader-deck" data-pagefind-meta="description">
-          {entry.data.excerpt}
+    <header
+      class:list={['reader-header', { 'reader-header-with-cover': Boolean(cover) }]}
+      id="reader-top"
+    >
+      {cover && <ArticleCoverImage image={cover} class="reader-hero-image" hero />}
+      <div class="reader-title-content">
+        <p class="reader-kicker">
+          <span>{kind === 'log' ? labels.log : labels.note}</span>
+          <span>{entry.data.publishedAt.getFullYear()} / ICEAXING</span>
         </p>
-      )}
-      <dl class="reader-meta">
-        <div>
-          <dt>{labels.author}</dt>
-          <dd>{entry.data.authorName}</dd>
-        </div>
-        <div>
-          <dt>{labels.published}</dt>
-          <dd>
-            <time datetime={entry.data.publishedAt.toISOString()}>
-              {formatDate(entry.data.publishedAt, locale)}
-            </time>
-          </dd>
-        </div>
-        {entry.data.updatedAt && (
+        <h1 id="reader-title" data-pagefind-meta="title">
+          {entry.data.title}
+        </h1>
+        {entry.data.excerpt && (
+          <p class="reader-deck" data-pagefind-meta="description">
+            {entry.data.excerpt}
+          </p>
+        )}
+        <dl class="reader-meta">
           <div>
-            <dt>{labels.updated}</dt>
+            <dt>{labels.author}</dt>
+            <dd>{entry.data.authorName}</dd>
+          </div>
+          <div>
+            <dt>{labels.published}</dt>
             <dd>
-              <time datetime={entry.data.updatedAt.toISOString()}>
-                {formatDate(entry.data.updatedAt, locale)}
+              <time datetime={entry.data.publishedAt.toISOString()}>
+                {formatDate(entry.data.publishedAt, locale)}
               </time>
             </dd>
           </div>
+          {entry.data.updatedAt && (
+            <div>
+              <dt>{labels.updated}</dt>
+              <dd>
+                <time datetime={entry.data.updatedAt.toISOString()}>
+                  {formatDate(entry.data.updatedAt, locale)}
+                </time>
+              </dd>
+            </div>
+          )}
+          <div class="reader-time">
+            <dt>{labels.duration}</dt>
+            <dd>{readingTime}</dd>
+          </div>
+        </dl>
+        {entry.data.tags.length > 0 && (
+          <ul class="reader-tags" aria-label={labels.tags}>
+            {entry.data.tags.map((tag) => (
+              <li data-pagefind-filter={`tag:${tag}`}>#{tag}</li>
+            ))}
+          </ul>
         )}
-        <div class="reader-time">
-          <dt>{labels.duration}</dt>
-          <dd>{readingTime}</dd>
-        </div>
-      </dl>
-      {entry.data.tags.length > 0 && (
-        <ul class="reader-tags" aria-label={labels.tags}>
-          {entry.data.tags.map((tag) => (
-            <li data-pagefind-filter={`tag:${tag}`}>#{tag}</li>
-          ))}
-        </ul>
-      )}
+      </div>
     </header>
 
     <div class="reader-layout">
       <div class="reader-main">
-        {entry.data.coverImage && (
-          <Image
-            class="reader-cover"
-            src={entry.data.coverImage}
-            alt=""
-            widths={[640, 960, 1280]}
-            sizes="(max-width: 900px) calc(100vw - 2rem), 720px"
-          />
-        )}
         <div class="reader-body article-body prose" data-reader-body>
           <Content />
         </div>
@@ -220,6 +220,7 @@ const indexHref = parent?.href ?? localizedPath(locale, kind === 'log' ? '/log' 
           </div>
         </footer>
         <Comments {locale} {scene} thread={`${kind}:${entry.data.contentId}:${locale}`} />
+        {kind === 'article' && <SubscribeForm {locale} />}
       </div>
 
       <aside class="reader-aside" data-pagefind-ignore>
@@ -235,10 +236,12 @@ const indexHref = parent?.href ?? localizedPath(locale, kind === 'log' ? '/log' 
           </progress>
         </div>
         <TableOfContents {headings} label={labels.contents} />
-        <a class="reader-subscribe" href={`#subscribe-${locale}`}>
-          <span>{labels.subscribe}</span>
-          <span aria-hidden="true">↘</span>
-        </a>
+        {kind === 'article' && (
+          <a class="reader-subscribe" href={`#subscribe-${locale}`}>
+            <span>{labels.subscribe}</span>
+            <span aria-hidden="true">↘</span>
+          </a>
+        )}
       </aside>
     </div>
   </article>

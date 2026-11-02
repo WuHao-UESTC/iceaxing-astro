@@ -1,0 +1,172 @@
+[
+  {
+    "repo": "antfu/antfu.me",
+    "url": "https://github.com/antfu/antfu.me",
+    "description": "My personal website",
+    "homepage": "https://antfu.me",
+    "archived": false,
+    "updated": "2026-10-19T01:16:37Z",
+    "branch": "main",
+    "license": "MIT",
+    "language": "Markdown"
+  },
+  {
+    "repo": "ncase/blog",
+    "url": "https://github.com/ncase/blog",
+    "description": "This is my bloooggggggggg",
+    "homepage": "https://blog.ncase.me/",
+    "archived": false,
+    "updated": "2026-02-17T15:03:13Z",
+    "branch": "main",
+    "license": "CC0-1.0",
+    "language": "JavaScript"
+  },
+  {
+    "repo": "Innei/Shiro",
+    "url": "https://github.com/Innei/Shiro",
+    "description": "📜 A minimalist personal website embodying the purity of paper and freshness of snow.",
+    "homepage": "https://innei.in",
+    "archived": false,
+    "updated": "2026-11-01T23:26:41Z",
+    "branch": "main",
+    "license": "NOASSERTION",
+    "language": "TypeScript"
+  },
+  {
+    "repo": "MaggieAppleton/maggieappleton.com-V3",
+    "url": "https://github.com/MaggieAppleton/maggieappleton.com-V3",
+    "description": "My digital garden built with Astro and MDX. Featuring loosely opinionated notes, half-formed ideas, and content that is always growing.",
+    "homepage": "https://maggieappleton.com",
+    "archived": false,
+    "updated": "2026-10-22T12:49:15Z",
+    "branch": "main",
+    "language": "Astro"
+  },
+  {
+    "repo": "danabramov/overreacted.io",
+    "status": 404
+  },
+  {
+    "repo": "josh-collinsworth/joco-sveltekit",
+    "url": "https://github.com/josh-collinsworth/joco-sveltekit",
+    "description": "The home of my static SvelteKit site.",
+    "homepage": "https://joshcollinsworth.com",
+    "archived": false,
+    "updated": "2026-10-18T15:27:55Z",
+    "branch": "main",
+    "language": "Svelte"
+  },
+  {
+    "repo": "taniarascia/taniarascia.com",
+    "url": "https://github.com/taniarascia/taniarascia.com",
+    "description": "💾 ‎  Personal website running on Gatsby, React, and Node.js.",
+    "homepage": "https://www.taniarascia.com",
+    "archived": false,
+    "updated": "2026-08-18T02:33:34Z",
+    "branch": "master",
+    "license": "MIT",
+    "language": "JavaScript"
+  },
+  {
+    "repo": "L33Z22L11/blog-v3",
+    "url": "https://github.com/L33Z22L11/blog-v3",
+    "description": "My blog, powered by Nuxt 4 & Nuxt Content v3. 纸鹿摸鱼处，分享技术与生活。",
+    "homepage": "https://blog.zhilu.site",
+    "archived": false,
+    "updated": "2026-11-01T17:24:52Z",
+    "branch": "main",
+    "license": "MIT",
+    "language": "Markdown"
+  },
+  {
+    "repo": "Eltrac/Obsidian-Blog",
+    "status": 404
+  },
+  {
+    "repo": "djyde/randy-blog",
+    "status": 404
+  },
+  {
+    "repo": "octref/matsu.io",
+    "status": 404
+  },
+  {
+    "repo": "Wattenberger/Wattenberger-2019",
+    "url": "https://github.com/Wattenberger/Wattenberger-2019",
+    "description": null,
+    "homepage": null,
+    "archived": false,
+    "updated": "2025-12-23T22:20:46Z",
+    "branch": "master",
+    "language": "JavaScript"
+  },
+  {
+    "repo": "daverupert/daverupert.com",
+    "status": 404
+  },
+  {
+    "repo": "cassidoo/cassidoo.github.io",
+    "url": "https://github.com/cassidoo/cassidoo.github.io",
+    "description": "Cassidy's Blog",
+    "homepage": "cassidoo.github.io",
+    "archived": false,
+    "updated": "2017-01-12T19:36:09Z",
+    "branch": "master",
+    "license": "MIT",
+    "language": "CSS"
+  },
+  {
+    "repo": "shuding/shud.in",
+    "url": "https://github.com/shuding/shud.in",
+    "description": "My personal website",
+    "homepage": "https://shud.in",
+    "archived": false,
+    "updated": "2026-10-30T14:18:08Z",
+    "branch": "main",
+    "language": "MDX"
+  },
+  {
+    "repo": "cosZone/astro-koharu",
+    "url": "https://github.com/cosZone/astro-koharu",
+    "description": "astro-koharu 是一个萌系/二次元/粉蓝配色的 astro 主题博客，灵感来自 Hexo 的 Shoka 主题，加了很多自己的小巧思，性能优越。",
+    "homepage": "https://blog.cosine.ren/",
+    "archived": false,
+    "updated": "2026-10-09T16:07:56Z",
+    "branch": "main",
+    "license": "AGPL-3.0",
+    "language": "TypeScript"
+  },
+  {
+    "repo": "xaoxuu/hexo-theme-stellar",
+    "url": "https://github.com/xaoxuu/hexo-theme-stellar",
+    "description": "基于 Hexo 的全能个人知识库，开箱即用，内置海量标签和动态数据组件。可用于个人博客、项目文档、知识库、专栏、笔记等。",
+    "homepage": "https://xaoxuu.com/wiki/stellar/",
+    "archived": false,
+    "updated": "2026-10-19T07:07:57Z",
+    "branch": "main",
+    "license": "MIT",
+    "language": "JavaScript"
+  },
+  {
+    "repo": "saicaca/fuwari",
+    "url": "https://github.com/saicaca/fuwari",
+    "description": "✨A static blog template built with Astro. ",
+    "homepage": "https://fuwari.vercel.app",
+    "archived": false,
+    "updated": "2026-03-10T20:47:36Z",
+    "branch": "main",
+    "license": "MIT",
+    "language": "Astro"
+  },
+  {
+    "repo": "jktrn/astro-erudite",
+    "url": "https://github.com/jktrn/astro-erudite",
+    "description": "An opinionated, unstyled static blogging template built with Astro and native CSS.",
+    "homepage": "https://astro-erudite.vercel.app",
+    "archived": false,
+    "updated": "2026-10-19T19:27:36Z",
+    "branch": "main",
+    "license": "MIT",
+    "language": "Astro"
+  }
+]

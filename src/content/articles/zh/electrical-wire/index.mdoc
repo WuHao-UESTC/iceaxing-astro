@@ -13,3 +13,273 @@ order: 0
 seo: {}
 category: rabaey-digital-ic-note
 ---
+## 互联参数：电阻，电容与电感
+
+对于继承电路语境下的导线，通常我们不能将其考虑为理想的。因此，用电阻，电容与电感来构建导线的模型。这三个参数会造成的影响如下：
+
+1. 传播延时
+1. 能耗与功率
+1. 噪声特性
+
+{% articleImage
+   src="../../../../assets/article-images/60a3b5d4e624d59cfa71610c111596b81fb49b2a39070876dc4f1c7bc08fe6ae.webp"
+   width=811
+   height=533 /%}
+
+在特定的情况下，如导线电阻率极低，且道线之间的间距比较大，则模型可以只保留电容参数，**且所有电容全部简化为接地电容**
+
+### 电容
+
+一条导线上所寄生的电容可以分为三个部分
+
+- 微带线模型下（即不考虑导线与和其互联的导线之间的电容）：平行板电容和边缘场电容
+- 考虑导线之间的相互影响：导线间电容（在多层互联结构中占据主导）
+
+#### 平行板电容与边缘场电容
+
+{% columns gap="medium" %}
+{% column %}
+{% articleImage
+   src="../../../../assets/article-images/a4f1b54f9f9cab45fed14744e5f8f637a4678e1084e99406b6c1e250af2a052a.webp"
+   width=778
+   height=552 /%}
+{% /column %}
+
+{% column %}
+{% articleImage
+   src="../../../../assets/article-images/5c604f9b0d292a13ae5ed526f4045bf9f86b601213bcd233ba850d77670741de.webp"
+   width=401
+   height=345 /%}
+{% /column %}
+{% /columns %}
+
+总电容可以通过平行板电容加上边缘场电容得到，可以将一个导线建模成两个完全独立的部分，一部分长方体导线只提供平行板电容，而另一部分圆柱形导线只提供边缘场电容
+
+{% articleImage
+   src="../../../../assets/article-images/8e3ddc813ac4f3841ffaa21a7c3c5f79058293482cbc5bbad05f0147191174c7.webp"
+   width=569
+   height=312 /%}
+
+计算得到导线的总电容：
+
+{% math
+   expression="c_{\\text {wire }}=c_{p p}+c_{\\text {fringe }}=\\frac{w \\varepsilon_{d i}}{t_{d i}}+\\frac{2 \\pi \\varepsilon_{d i}}{\\log \\left(2 t_{d i} / H+1\\right)}" /%}
+
+其中的w是对于平行班电容宽度的近似，其表达式为：{% inlineMath expression="w=W-H / 2" /%}
+
+#### 导线间电容
+
+在小尺寸，多层互联的情况下，导线间电容开始成为主导
+
+{% articleImage
+   src="../../../../assets/article-images/16e107fb9ef5b6e567802ee025e614d638aa6691eec43b7e3a62925fb3d64344.webp"
+   width=1555
+   height=863 /%}
+
+#### 导线电容的计算方法：查表计算
+
+{% articleImage
+   src="../../../../assets/article-images/4ba431afbb13909b807b6e942555cadff2e363d52b6d23f562dbaae1929e11aa.webp"
+   width=1759
+   height=1176 /%}
+
+计算过程中需要注意的点\
+
+1. 明确导线的宽(W)，长(L)，高(H)的概念，带入正确的值
+1. 计算边缘电容时应当考虑导线具有两个侧面，电容乘以2
+1. 注意平面电容/边缘电容与互连电容在表格中给出的数据的单位不一致
+
+### 电阻
+
+#### 导线电阻的计算方式
+
+#### 值得注意的一些电阻类型
+
+#### 趋肤效应
+
+### 电感
+
+#### 两种计算导线中电感大小的方法
+
+#### 关于电磁波传播的速度
+
+## 导线模型
+
+### 集总模型
+
+集总模型是相对于分布参数模型来说的：分布参数对导线逐段进行参数的表征，而集总模型则将咯咯咯不同部分集总成单个电路元件
+
+使用的条件：一个寄生元件占据支配地位或者寄生元件之间的相互作用比较小
+
+优点：在数学上用常微分方程就能够表征电路行为（相对的，分布参数需要用微分方程进行表征）
+
+{% articleImage
+   src="../../../../assets/article-images/38a97e3cdedff7fa10346e932ab5d569ef348bee3a993707a4a1bf06050aea47.webp"
+   width=1595
+   height=400 /%}
+
+研究分布电源线常用集总模型。电源线上的电阻与电容都是噪声源，会引起线上的压降与振荡
+
+### 集总RC模型
+
+#### 研究集总RC模型的原因
+
+虽然说用集总模型来表征一根实际导线会引入较大的误差，但是由于一下的原因，仍然具有研究的价值
+
+- 分布rc模型不存在收敛解，可以先用集总RC模型进行大致的模拟
+- 用RC模型分析瞬态响应是高效且方便的
+
+#### 利用Elmore方法分析RC网络
+
+{% articleImage
+   src="../../../../assets/article-images/15c9af245e17e1230ca5cc631d05fd90d0a46f7ed69ae093041e9d9df2c62514.webp"
+   width=747
+   height=677 /%}
+
+几个重要的概念说明：
+
+{% columns gap="medium" %}
+{% column %}
+路径电阻：就是从一个节点到另一个节点的路径上经过的电阻
+
+{% math expression="R_{44}=R_1+R_3+R_4" /%}
+
+{% articleImage
+   src="../../../../assets/article-images/4ad1b51ec0f768ef3c8e417e58db6c8a9a2f6831620ef32e960e484d9868db11.webp"
+   width=1333
+   height=1185 /%}
+{% /column %}
+
+{% column %}
+共享路径电阻：由根节点到节点i与k的路径上，二者共享的电阻
+
+{% math
+   expression="R_{i k}=\\sum R_j \\Rightarrow\\left(R_j \\in[\\text { path }(s \\rightarrow i) \\cap \\text { path }(s \\rightarrow k)]\\right)" /%}
+
+{% articleImage
+   src="../../../../assets/article-images/b394c30c699163af5ac3a3ef44011dfbb493caa2ef6097eae2a114c62c0e9920.webp"
+   width=1333
+   height=1209 /%}
+{% /column %}
+{% /columns %}
+
+基于以上概念，计算从s到i的延时：{% inlineMath expression="\\tau_{D i}=\\sum_{k=1}^N C_k R_{i k}" /%}
+
+通俗地理解就是，两节点之间总的延时= {% inlineMath expression="\\Sigma" /%} 需要充电的电容*到其路径与主路径
+
+{% articleImage
+   src="../../../../assets/article-images/2a0afd40c76d6d500e55655fc7c8b97c3663eae1e6abf38cc84b5710095bc66e.webp"
+   width=1142
+   height=1035 /%}
+
+分别计算所有需要被充电的电容提供的延迟
+
+{% math
+   expression="\\begin{aligned}\n\n&C_1: R_1 \\Rightarrow \\tau_1=R_1 C_1\\\\\n\n&C_2: R_1 \\Rightarrow \\tau_2=R_1 C_2\\\\\n\n&C_3: R_1+R_3 \\Rightarrow \\tau_3=\\left(R_1+R_3\\right) C_3\\\\\n\n&C_4: R_1+R_3 \\Rightarrow \\tau_4=\\left(R_1+R_3\\right) C_4\\\\\n\n&C_i: R_1+R_3+R_i \\Rightarrow \\tau_i=\\left(R_1+R_3+R_i\\right) C_i\\\\\n\n\\end{aligned}" /%}
+
+得到总延迟：
+
+{% math
+   expression="\\begin{aligned}\n\n\\tau & =\\tau_1+\\tau_2+\\tau_3+\\tau_4+\\tau_i \\\\\n\n& =R_1\\left(C_1+C_2\\right)+\\left(R_1+R_3\\right)\\left(C_3+C_4\\right)+\\left(R_1+R_3+R_i\\right) C_i\n\n\\end{aligned}" /%}
+
+#### 电阻-电容导线的时间常数
+
+考虑一条导线的通用RC模型
+
+{% articleImage
+   src="../../../../assets/article-images/2322ab3fd2ca08ea93b5c6ca5ffa9d4453a8d40054b5d0a21cc7fa34fc273f1a.webp"
+   width=1216
+   height=358 /%}
+
+用相同的方法可以得到：{% inlineMath expression="\\tau_i=C_1 R_1+C_2\\left(R_1+R_2\\right)+\\cdots+C_i\\left(R_1+R_2+\\cdots+R_i\\right)" /%}
+
+如果进一步，将这根导线切分成相同的N段，假设整根导线的电阻为R，电容为C，单位长度的电阻为r，电容为c，导线的总长度为L，可以得到：
+
+{% math
+   expression="\\begin{aligned}\n\\tau_{D N} & =\\left(\\frac{L}{N} r \\cdot \\frac{L}{N} c\\right)+\\left(2 \\frac{L}{N} r \\cdot \\frac{L}{N} c\\right)+\\cdots+\\left(N \\cdot \\frac{L}{N} r \\cdot \\frac{L}{N} c\\right) \\\\\n& =\\left(\\frac{L}{N}\\right)^2(r c+2 r c+\\cdots+N r c) \\\\\n& =\\left(\\frac{L}{N}\\right)^2 \\cdot \\frac{(1+N) \\cdot N}{2} \\cdot r c\n\\end{aligned}" /%}
+
+由于N非常的大，可以进一步简化
+
+{% math expression="\\tau_{D N} \\approx \\frac{L^2}{2} r c" /%}
+
+这个式子揭示了两点：
+
+- 导线的延时与其长度成平方关系
+- 采用Elmore方法计算延时是保守的估计，会比实际的延时更小（正常计算应当是RC）
+
+### 分布rc模型
+
+在分布rc模型中，用r,c分别表示单位长度的电容与电阻
+
+{% articleImage
+   src="../../../../assets/article-images/3be4e8ea311616267ebb273f2ef35859ca93ed7dcbf1f996e0d798be6fe4937a.webp"
+   width=1388
+   height=759 /%}
+
+用偏微分方程描述：
+
+{% math
+   expression="c \\Delta L \\frac{\\partial V_i}{\\partial t}=\\frac{\\left(V_{i+1}-V_i\\right)+\\left(V_{i-1}-V_i\\right)}{r \\Delta L}" /%}
+
+当 {% inlineMath expression="\\delta L \\rightarrow 0" /%} ，得到 传播方程
+
+{% math
+   expression="r c \\frac{\\partial V}{\\partial t}=\\frac{\\partial^2 V}{\\partial x^2}" /%}
+
+直观感受：电压在分布rc传输线上的传播过程，随着距离迅速恶化
+
+{% articleImage
+   src="../../../../assets/article-images/e64adbe47ed823cf0aeaafd8ba83200956237f4104d65c920a152469c8828a32.webp"
+   width=1158
+   height=757 /%}
+
+### 何时考虑RC延时与rc延时？
+
+简单来说：在电路分析中，原则上两种延时都可以选择，但是需要根据实际情况选择合适的模型进行分析——RC延时与rc延时不是同时存在的两种延时，是同一事物在不同精度下不同的表示
+
+- RC模型简单，但是精度更“粗”
+- rc模型稍复杂，但是更细致
+
+定量的角度，可以通过一些参考点来判断
+
+{% articleImage
+   src="../../../../assets/article-images/2e94eead268ab90d38099be49efc355e763fd80f344696d3ea00c54767ccf927.webp"
+   width=1196
+   height=432 /%}
+
+根据二者的精度关系，我们可以很容易地理解这样一点：当导线的延时有压过其他电路的延时的时候（即导线的延时变得关键），我们考虑分布模型，其他的时候考虑集总模型就够了
+
+两种导线延时变得关键的情况：
+
+1. 导线的延时大于驱动器的延时——用临界长度判定
+
+   {% math
+      expression="\\begin{aligned}\n& 0.38 R C=\\text { tpgate } \\\\\n\\Rightarrow & 0.38 r c L_{\\text {crit }}^2=t_{\\text {pgate }} \\\\\n\\Rightarrow & L_{\\text {crit }}=\\sqrt{\\frac{t_{\\text {pgate }}}{0.38 r c}}\n\\end{aligned}" /%}
+
+   当导线的长度大于该关键长度时，需要考虑分布rc模型
+
+1. 导线的延时大于信号的上升沿或下降沿
+
+   {% math expression="\\text { trise }=R C" /%}
+
+   当 {% inlineMath expression="t_{rise}" /%}小于这个临界点的时候，需要考虑分布rc模型
+
+### 一个有意思的例子：同时使用rc延时与RC延时——判断谁为主导
+
+对于一个具有输出阻抗的非理想信号源，当其驱动一段导线时
+
+{% articleImage
+   src="../../../../assets/article-images/f283a64a92760a321db4557a734b50e71cc301af8cf8aa183d5757122c2595db.webp"
+   width=643
+   height=412 /%}
+
+输出阻抗{% inlineMath expression="R_s" /%}产生的延时显然应当使用RC延时，而在这里，传输线则选择rc延时计算
+
+{% math
+   expression="\\tau_D=R_s C_w+\\frac{R_w C_w}{2}=R_s C_w+0.5 r_w c_w L^2" /%}
+
+{% math expression="t_p=0.69 R_s C_w+0.38 R_w C_w" /%}
+
+这样，通过比较延时中的两项的大小，我们可以判断在这个电路中的延迟特性主要是由哪一级在控制
+
+### 传输线

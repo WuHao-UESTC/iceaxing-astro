@@ -1,0 +1,211 @@
+- generic [ref=f1e1]:
+  - main [ref=f1e3]:
+    - complementary [ref=f1e4]:
+      - generic [ref=f1e5]:
+        - link "打开网站首页" [ref=f1e6] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f1e7]:
+          - generic [ref=f1e8]:
+            - strong [ref=f1e9]: 内容工作区
+            - combobox "选择内容分组" [ref=f1e10] [cursor=pointer]:
+              - option "技术栈" [selected]
+              - option "生活日常"
+              - option "学习笔记"
+              - option "日志与页面"
+              - option "未归属内容"
+          - generic [ref=f1e11]: 本地文件
+      - generic [ref=f1e12]:
+        - paragraph [ref=f1e13]: THE RIDGE
+        - heading "技术栈" [level=1] [ref=f1e14]
+        - text: 从原理走向实践
+      - generic [ref=f1e15]:
+        - generic [ref=f1e16]:
+          - generic [ref=f1e17]: 搜索内容树
+          - searchbox "搜索内容树" [ref=f1e18]
+        - button "刷新内容树" [ref=f1e19] [cursor=pointer]: ↻
+        - button "新建分类" [ref=f1e20] [cursor=pointer]: ＋
+      - generic [ref=f1e21]:
+        - generic [ref=f1e22]: 技术栈
+        - generic [ref=f1e44]: 3 个文件夹 · 0 篇内容
+      - navigation "分组内容树" [ref=f1e23]:
+        - generic [ref=f1e46]:
+          - button "展开 Analog IC" [ref=f1e47] [cursor=pointer]:
+            - generic [aria-hidden] [ref=f1e48]: ▸
+          - button "Analog IC" [ref=f1e49] [cursor=pointer]
+          - generic [ref=f1e52]: 已发布
+          - group [ref=f1e53]:
+            - generic "管理文件夹 Analog IC" [ref=f1e54] [cursor=pointer]: •••
+      - generic [ref=f1e25]:
+        - group [ref=f1e26]:
+          - generic "Obsidian 同步" [ref=f1e27] [cursor=pointer]:
+            - text: Obsidian 同步
+            - generic [aria-hidden] [ref=f1e28]: ↗
+        - paragraph [ref=f1e29]: 每一次整理，都是向前一步。
+        - link "评论管理" [ref=f1e30] [cursor=pointer]:
+          - /url: /keystatic/comments
+        - generic [ref=f1e31]: 其他内容
+        - combobox "其他内容" [ref=f1e32] [cursor=pointer]:
+          - option "选择原有管理入口…" [disabled] [selected]
+          - option "Keystatic 总览"
+          - option "首页精选 · 统一排序"
+          - option "日志 · 中文"
+          - option "日志 · English"
+          - option "日志 · Deutsch"
+          - option "页面 · 中文"
+          - option "页面 · English"
+          - option "页面 · Deutsch"
+          - option "友链"
+          - option "格言"
+          - option "站点设置"
+    - separator "调整文件树宽度" [ref=f1e33]
+    - generic [ref=f1e34]:
+      - generic [ref=f1e35]:
+        - button "收起文件树" [expanded] [ref=f1e36] [cursor=pointer]
+        - button "专注写作" [ref=f1e37] [cursor=pointer]
+        - generic [ref=f1e38]:
+          - strong [ref=f1e39]: Keystatic 编辑器
+          - generic [ref=f1e40]: 选择左侧节点以编辑内容或属性
+        - button "切换浅色" [ref=f1e41] [cursor=pointer]: ☼
+        - button "刷新预览" [ref=f1e55] [cursor=pointer]
+        - button "返回内容编辑" [active] [ref=f1e56] [cursor=pointer]
+      - generic [ref=f1e58]:
+        - generic [ref=f1e59]:
+          - paragraph [ref=f1e60]: EDITORIAL / CURATION
+          - heading "首页精选" [level=1] [ref=f1e61]
+          - paragraph [ref=f1e62]: 文章、项目、分类与合集统一编排。拖动条目或使用上下按钮调整精选顺序。
+        - generic [ref=f1e63]:
+          - generic [ref=f1e64]:
+            - text: 查找内容
+            - searchbox "查找内容" [ref=f1e65]
+          - generic [ref=f1e66]:
+            - checkbox "显示未精选内容" [ref=f1e67]
+            - text: 显示未精选内容
+          - generic [ref=f1e68]: 0 项精选
+          - button "保存精选" [disabled] [ref=f1e69]
+          - button "重新加载" [ref=f1e70] [cursor=pointer]
+        - alert [ref=f1e71]: Unexpected token '<', "<title>Err"... is not valid JSON
+        - status
+        - list "统一精选列表"
+        - paragraph [ref=f1e72]: 暂无匹配精选，可打开“显示未精选内容”添加。
+  - generic [ref=f1e75]:
+    - generic [ref=f1e76]:
+      - checkbox "Use dark theme" [ref=f1e77]
+      - generic [ref=f1e78] [cursor=pointer]: Use dark theme
+    - banner [ref=f1e88]:
+      - generic [ref=f1e89]:
+        - heading "Error" [level=2] [ref=f1e90]
+        - heading "An error occurred." [level=1] [ref=f1e91]
+    - generic [ref=f1e102]:
+      - text: "[PARSE_ERROR] Expected"
+      - code [ref=f1e103]: ","
+      - text: or
+      - code [ref=f1e104]: "}"
+      - text: but found
+      - code [ref=f1e105]: )
+      - text: "-"
+      - code [ref=f1e106]: ","
+      - text: or
+      - code [ref=f1e107]: "}"
+      - text: expected in src/lib/featured-server.ts at 9121..9122 - Opened here in src/lib/featured-server.ts at 8680..8681
+    - generic [ref=f1e108]:
+      - generic [ref=f1e109]:
+        - heading "lib/featured-server.ts:84:647" [level=2] [ref=f1e110]
+        - button "Open in editor" [ref=f1e112]
+      - code [ref=f1e118]:
+        - generic [ref=f1e119]: "import { createHash } from 'node:crypto';"
+        - generic [ref=f1e120]: "import { readFile, readdir, writeFile, rename, unlink } from 'node:fs/promises';"
+        - generic [ref=f1e121]: import path from 'node:path';
+        - generic [ref=f1e122]: "import { parseDocument } from 'yaml';"
+        - generic [ref=f1e123]: import keystaticConfig from '../../keystatic.config';
+        - generic [ref=f1e124]: "import { githubJson, githubRepo, pathPrefix, workspaceContentReader } from './content-tree/server';"
+        - generic [ref=f1e125]: "import { publicationIsPublic } from './publication';"
+        - generic [ref=f1e126]: "import { defaultFeaturedOrder, compareFeatured } from './featured';"
+        - generic [ref=f1e127]: "import type { FeaturedItem, FeaturedPayload, FeaturedEdit, FeaturedKind } from './featured-types';"
+        - generic [ref=f1e128]: import routeManifest from '../generated/route-manifest.json';
+        - generic [ref=f1e130]: "type Options={token?:string;branch?:string|null};"
+        - generic [ref=f1e131]: "type Source={path:string;raw:string;data:Record<string,unknown>;item:FeaturedItem};"
+        - generic [ref=f1e132]: const roots=['src/content/articles/','src/content/categories/','src/content/projects/','src/content/collections/'];
+        - generic [ref=f1e133]: const locales=['zh','en','de'] as const;
+        - generic [ref=f1e134]: const hash=(value:string)=>createHash('sha256').update(value).digest('hex');
+        - generic [ref=f1e135]: "export class FeaturedConflict extends Error {}"
+        - generic [ref=f1e136]: "export function parseFeaturedSource(raw:string,file:string){"
+        - generic [ref=f1e137]: const match=file.endsWith('.mdoc')?raw.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/):null;
+        - generic [ref=f1e138]: "if(file.endsWith('.mdoc')&&!match)throw new Error(`内容缺少 frontmatter：${file}`);"
+        - generic [ref=f1e139]: "const document=parseDocument(match?match[1]:raw);if(document.errors.length)throw new Error(`内容格式错误：${file}`);"
+        - generic [ref=f1e140]: "return {document,match,data:document.toJS() as Record<string,unknown>};"
+        - generic [ref=f1e141]: "}"
+        - generic [ref=f1e142]: "export function rewriteFeatured(raw:string,file:string,edit:Pick<FeaturedEdit,'featured'|'featuredOrder'>){"
+        - generic [ref=f1e143]: "const {document,match}=parseFeaturedSource(raw,file);document.set('featured',edit.featured);document.set('featuredOrder',edit.featuredOrder);"
+        - generic [ref=f1e144]: "const yaml=document.toString().trimEnd();return match?`---\\n${yaml}\\n---${raw.slice(match[0].length- (match[0].endsWith('\\r\\n')?2:match[0].endsWith('\\n')?1:0))}`:yaml+'\\n';"
+        - generic [ref=f1e145]: "}"
+        - generic [ref=f1e146]: const text=(v:unknown)=>typeof v==='string'?v:'';
+        - generic [ref=f1e147]: "const record=(v:unknown)=>v&&typeof v==='object'?v as Record<string,unknown>:{};"
+        - generic [ref=f1e148]: "function sourceFor(file:string,raw:string):Source{"
+        - generic [ref=f1e149]: "const {data}=parseFeaturedSource(raw,file);const article=file.startsWith(roots[0]);"
+        - generic [ref=f1e150]: const kind:FeaturedKind=article?'article':file.startsWith(roots[1])?'category':file.startsWith(roots[2])?'project':'collection';
+        - generic [ref=f1e151]: const id=text(data[article?'contentId':kind==='category'?'categoryId':kind==='project'?'projectId':'collectionId']);
+        - generic [ref=f1e152]: "if(!id)throw new Error(`内容缺少稳定 ID：${file}`);"
+        - generic [ref=f1e153]: const locale=article?file.split('/')[3] as 'zh'|'en'|'de':'all';
+        - generic [ref=f1e154]: const title=article?text(data.title):text(record(record(data.labels).zh).title)||id;
+        - generic [ref=f1e155]: "const collection=article?`articles${locale[0].toUpperCase()+locale.slice(1)}`:kind==='category'?'categories':kind==='project'?'projects':'series';"
+        - generic [ref=f1e156]: const slug=article?file.split('/')[4]:path.posix.basename(file).replace(/\.ya?ml$/,'');
+        - generic [ref=f1e157]: const status=text(data[article?'status':'publicationStatus'])||(article?'draft':'published');
+        - generic [ref=f1e158]: "return {path:file,raw,data,item:{key:`${kind}:${locale}:${slug}`,id,kind,title,locale,collection,slug,featured:data.featured===true,featuredOrder:typeof data.featuredOrder==='number'?data.featuredOrder:defaultFeaturedOrder,status,isPublic:publicationIsPublic(status,text(data.publishedAt)),warning:'',preview:null}};"
+        - generic [ref=f1e159]: "}"
+        - generic [ref=f1e160]: "async function localFiles(){"
+        - generic [ref=f1e161]: "const output:{path:string;raw:string}[]=[];"
+        - generic [ref=f1e162]: "async function walk(dir:string){let entries;try{entries=await readdir(dir,{withFileTypes:true});}catch(e){if((e as NodeJS.ErrnoException).code==='ENOENT')return;throw e;}"
+        - generic [ref=f1e163]: "for(const entry of entries){if(entry.isSymbolicLink())continue;const file=path.posix.join(dir,entry.name);if(entry.isDirectory())await walk(file);else if((dir.startsWith(roots[0])&&entry.name==='index.mdoc')||(!dir.startsWith(roots[0])&&/\\.ya?ml$/.test(entry.name)))output.push({path:file,raw:await readFile(file,'utf8')});}}"
+        - generic [ref=f1e164]: for(const root of roots)await walk(root);return output;
+        - generic [ref=f1e165]: "}"
+        - generic [ref=f1e166]: "async function githubFiles(options:Options){"
+        - generic [ref=f1e167]: "const {branch}=await workspaceContentReader(options);if(!options.token||!branch)throw new Error('请先登录并选择分支。');"
+        - generic [ref=f1e168]: "const repo=githubRepo();const api=`https://api.github.com/repos/${encodeURIComponent(repo.owner)}/${encodeURIComponent(repo.name)}`;"
+        - generic [ref=f1e169]: "const ref=await githubJson<{object:{sha:string}}>(`${api}/git/ref/heads/${branch.split('/').map(encodeURIComponent).join('/')}`,options.token);"
+        - generic [ref=f1e170]: "const tree=await githubJson<{truncated:boolean;tree:{path:string;type:string;sha:string}[]}>(`${api}/git/trees/${ref.object.sha}?recursive=1`,options.token);"
+        - generic [ref=f1e171]: if(tree.truncated)throw new Error('仓库目录被截断，无法安全加载精选。');
+        - generic [ref=f1e172]: const prefix=pathPrefix();const candidates=tree.tree.filter(e=>e.type==='blob'&&e.path.startsWith(prefix)&&roots.some(root=>e.path.slice(prefix.length).startsWith(root))&&(/\/index\.mdoc$/.test(e.path)||/\.ya?ml$/.test(e.path)));
+        - generic [ref=f1e173]: "const files: {path:string;raw:string}[]=[];"
+        - generic [ref=f1e174]: // Bound parallel blob reads on larger repositories.
+        - generic [ref=f1e175]: "for(let i=0;i<candidates.length;i+=8){files.push(...await Promise.all(candidates.slice(i,i+8).map(async e=>{const blob=await githubJson<{content:string;encoding:string}>(`${api}/git/blobs/${e.sha}`,options.token!);if(blob.encoding!=='base64')throw new Error('不支持的 GitHub 内容编码。');return {path:e.path.slice(prefix.length),raw:Buffer.from(blob.content,'base64').toString('utf8')};})));}"
+        - generic [ref=f1e176]: "return {files,branch,head:ref.object.sha};"
+        - generic [ref=f1e177]: "}"
+        - generic [ref=f1e178]: "async function load(options:Options){"
+        - generic [ref=f1e179]: if(keystaticConfig.storage.kind==='cloud')throw new Error('精选工作区暂不支持 Cloud 存储。');
+        - generic [ref=f1e180]: if(keystaticConfig.storage.kind==='local'&&!import.meta.env.DEV)throw new Error('本地精选管理只在开发服务器开放。');
+        - generic [ref=f1e181]: "const remote=keystaticConfig.storage.kind==='github'?await githubFiles(options):{files:await localFiles(),branch:null,head:''};"
+        - generic [ref=f1e182]: const sources=remote.files.sort((a,b)=>a.path.localeCompare(b.path)).map(f=>sourceFor(f.path,f.raw));
+        - generic [ref=f1e183]: const folderById=new Map(sources.filter(s=>s.item.kind!=='article').map(s=>[s.item.id,s]));
+        - generic [ref=f1e184]: "function visible(source:Source,seen=new Set<string>()):boolean{if(!source.item.isPublic||seen.has(source.path))return false;seen.add(source.path);for(const field of ['category','project','collection']){const id=text(source.data[field]);if(id){const parent=folderById.get(id);if(!parent||!visible(parent,new Set(seen)))return false;}}return true;}"
+        - generic [ref=f1e185]: "for(const source of sources){source.item.isPublic=visible(source);const available=source.item.locale==='all'?locales.filter(l=>text(record(record(source.data.labels)[l]).title)): [source.item.locale];"
+        - generic [ref=f1e186]: source.item.warning=!source.item.isPublic?'未公开或上级未公开，不在前台展示':available.length<3&&source.item.locale==='all'?'部分语言缺少标题':'';
+        - generic [ref=f1e187]: source.item.preview=routeManifest.find(route=>route.contentId===source.item.id&&route.kind===source.item.kind&&route.locale===(source.item.locale==='all'?'zh':source.item.locale))?.pathname??null;
+        - generic [ref=f1e188]: "}"
+        - generic [ref=f1e189]: const revision=hash(remote.head+'\n'+sources.map(s=>s.path+':'+hash(s.raw)).join('\n'));
+        - generic [ref=f1e190]: "const payload:FeaturedPayload={items:sources.map(s=>s.item).sort(compareFeatured),revision,branch:remote.branch,storageKind:keystaticConfig.storage.kind as 'local'|'github'};"
+        - generic [ref=f1e191]: "return {sources,payload,head:remote.head};"
+        - generic [ref=f1e192]: "}"
+        - generic [ref=f1e193]: "export async function loadFeatured(options:Options){return (await load(options)).payload;}"
+        - generic [ref=f1e194]: let localQueue:Promise<unknown>=Promise.resolve();
+        - generic [ref=f1e195]: "export async function saveFeatured(options:Options&{revision:string;items:FeaturedEdit[]}){"
+        - generic [ref=f1e196]: "const perform=async()=>{"
+        - generic [ref=f1e197]: "const {sources,payload,head}=await load(options);if(payload.revision!==options.revision)throw new FeaturedConflict('内容已被修改，请重新加载后再排序。未覆盖已有改动。');"
+        - generic [ref=f1e198]: if(!Array.isArray(options.items)||options.items.length>sources.length)throw new Error('精选数据无效。');
+        - generic [ref=f1e199]: "const byKey=new Map(sources.map(s=>[s.item.key,s]));const seen=new Set<string>();const changes:{source:Source;raw:string}[]=[];"
+        - generic [ref=f1e200]: "for(const edit of options.items){const source=byKey.get(edit.key);if(!source||seen.has(edit.key)||typeof edit.featured!=='boolean'||!Number.isSafeInteger(edit.featuredOrder)||edit.featuredOrder<0||edit.featuredOrder>1_000_000_000)throw new Error('精选条目或排序无效。');seen.add(edit.key);if(edit.featured!==source.item.featured||edit.featuredOrder!==source.item.featuredOrder)changes.push({source,raw:rewriteFeatured(source.raw,source.path,edit)});}"
+        - generic [ref=f1e201]: "if(changes.length&&payload.storageKind==='github'){"
+        - generic [ref=f1e202]: "const repo=githubRepo();const response=await fetch('https://api.github.com/graphql',{method:'POST',headers:{Authorization:`Bearer ${options.token}`,'Content-Type':'application/json'},body:JSON.stringify({query:'mutation SaveFeatured($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input:$input) { ref { target { oid } } } }',variables:{input:{branch:{repositoryNameWithOwner:`${repo.owner}/${repo.name}`,branchName:payload.branch},expectedHeadOid:head,message:{headline:'Update homepage editorial selection'},fileChanges:{additions:changes.map(c=>({path:pathPrefix()+c.source.path,contents:Buffer.from(c.raw).toString('base64')}))}}})});"
+        - generic [ref=f1e203]: ^
+        - generic [ref=f1e204]: "const result=await response.json() as {errors?:{message:string}[]};if(!response.ok||result.errors?.length)throw new FeaturedConflict(result.errors?.map(e=>e.message).join('；')||'提交失败，请重新加载后重试。');"
+        - generic [ref=f1e205]: "}else if(changes.length){"
+        - generic [ref=f1e206]: const written:typeof changes=[];
+        - generic [ref=f1e207]: "try{for(const change of changes){if(await readFile(change.source.path,'utf8')!==change.source.raw)throw new FeaturedConflict('条目刚刚被修改，请重新加载。');const tmp=change.source.path+'.featured-tmp';try{await writeFile(tmp,change.raw,'utf8');await rename(tmp,change.source.path);}finally{await unlink(tmp).catch(()=>{});}written.push(change);}}"
+        - generic [ref=f1e208]: "catch(error){for(const change of written.reverse()){if(await readFile(change.source.path,'utf8')===change.raw)await writeFile(change.source.path,change.source.raw,'utf8');}throw error;}"
+        - generic [ref=f1e209]: "}"
+        - generic [ref=f1e210]: return loadFeatured(options);
+        - generic [ref=f1e211]: "};"
+        - generic [ref=f1e212]: "if(keystaticConfig.storage.kind!=='local')return perform();const pending=localQueue.then(perform,perform);localQueue=pending.catch(()=>{});return pending;"
+        - generic [ref=f1e213]: "}"
+    - generic [ref=f1e216]:
+      - heading "Stack Trace" [level=2] [ref=f1e217]
+      - generic [ref=f1e218] [cursor=pointer]

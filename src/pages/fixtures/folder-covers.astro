@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ListingPage from '../../components/content/ListingPage.astro';
+import diagram from '../../assets/content/covers/analog-ic/coverImage.jpg';
+import type { FolderGroup } from '../../lib/folder-cover';
+
+export const prerender = false;
+if (!import.meta.env.DEV) return new Response(null, { status: 404 });
+
+const groupParam = Astro.url.searchParams.get('group');
+const group: FolderGroup = groupParam === 'skill' || groupParam === 'life' ? groupParam : 'study';
+const kindParam = Astro.url.searchParams.get('kind');
+const kind = kindParam === 'project' || kindParam === 'collection' ? kindParam : 'category';
+const scene = { skill: 'ridge', study: 'study', life: 'field' }[group] as
+  'ridge' | 'study' | 'field';
+const fixtureScene = Astro.url.searchParams.get('scene') === 'camp' ? 'camp' : scene;
+const articleCards = [
+  { title: '第一章：从基础概念开始', href: '/articles' },
+  { title: '第二章：建立分析方法', href: '/articles' },
+  { title: '第三章：整理实践与结论', href: '/articles' },
+].map((card) => ({
+  ...card,
+  kind: 'article' as const,
+  standalone: true,
+  description: '开发环境布局校验条目，不属于正式内容。',
+  meta: '2026-11-01',
+}));
+const folderCards =
+  kind === 'collection'
+    ? []
+    : ['布局验证一', '布局验证二'].map((title) => ({
+        title,
+        href: '/articles',
+        description: '用于验证封面、标题、状态与响应式排版。',
+        kind: kind === 'category' ? ('project' as const) : ('collection' as const),
+        eyebrow: kind === 'category' ? '进行中 · 65%' : undefined,
+        coverGroup: fixtureScene === 'camp' ? ('camp' as const) : group,
+      }));
+---
+
+<BaseLayout locale="zh" title="封面布局校验" description="仅开发环境可访问的封面布局验证页" noindex>
+  <ListingPage
+    locale="zh"
+    title="封面布局校验"
+    description="验证分类、项目与合集的真实组件，以及横竖不同图片在浅深色主题中的表现。"
+    emptyLabel="暂无内容"
+    {kind}
+    scene={fixtureScene}
+    folderGroup={group}
+    cover={Astro.url.searchParams.get('material') === 'diagram' ? diagram : undefined}
+    cards={[...folderCards, ...articleCards]}
+    progress={kind === 'project' ? 65 : undefined}
+    status={kind === 'project' ? 'active' : undefined}
+  />
+</BaseLayout>

@@ -1,0 +1,1 @@
+﻿import fs from 'node:fs';const p='src/components/HomePage.astro';let s=fs.readFileSync(p,'utf8').replace("import '../styles/home.css';","import '../styles/home.css';\nimport '../styles/ridge-editorial.css';");fs.writeFileSync(p,s);

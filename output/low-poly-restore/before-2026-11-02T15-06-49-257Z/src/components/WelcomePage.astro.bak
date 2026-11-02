@@ -1,0 +1,223 @@
+---
+import { getCollection } from 'astro:content';
+import { htmlLanguage, localizedPath, locales, type Locale } from '../i18n/config';
+import { getMessages } from '../i18n/messages';
+import { welcomeMessages } from '../i18n/welcome';
+import { isPublicContent, routeFor } from '../lib/content';
+import ThemeToggle from './ThemeToggle.astro';
+import ExpeditionMountain from './home/ExpeditionMountain.astro';
+import '../styles/welcome.css';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const messages = getMessages(locale);
+const copy = welcomeMessages[locale];
+const pages = await getCollection('pages');
+const profile = pages.find(
+  (entry) =>
+    entry.data.locale === locale &&
+    entry.data.pageKind === 'profile' &&
+    isPublicContent(entry.data),
+);
+const displayName = profile?.data.profile?.displayName || 'Iceaxing';
+const fallbackProfile = pages.find(
+  (entry) =>
+    entry.data.locale === 'zh' && entry.data.pageKind === 'profile' && isPublicContent(entry.data),
+);
+const avatar =
+  profile?.data.profile?.avatar || fallbackProfile?.data.profile?.avatar || '/favicon.svg';
+const profileHref = profile
+  ? (routeFor(profile.data.contentId, locale, 'page') ?? localizedPath(locale, '/profile'))
+  : localizedPath(locale, '/profile');
+const blogHref = localizedPath(locale, '/blog');
+---
+
+<script is:inline define:vars={{ blogHref }}>
+  // Preserve bookmarks to chapters that used to live on the root homepage.
+  const chapters = [
+    '#base-camp',
+    '#technical-ridge',
+    '#study-terrace',
+    '#snowfield-traverse',
+    '#night-camp',
+    '#selected-notes',
+    '#hero-featured-list',
+  ];
+  function openLegacyChapter() {
+    if (chapters.includes(location.hash))
+      location.replace(blogHref + location.search + location.hash);
+  }
+  openLegacyChapter();
+  window.addEventListener('hashchange', openLegacyChapter);
+</script>
+
+<main
+  class="welcome"
+  id="main-content"
+  data-welcome
+  data-route=""
+  data-pagefind-body
+  data-no-page-motion
+  tabindex="-1"
+>
+  <div class="welcome-shell">
+    <header class="welcome-header" data-pagefind-ignore>
+      <div class="welcome-brand">
+        <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="m3 30 11-17 7 9 7-15 10 23H3Z" stroke="currentColor" stroke-width="1.2" />
+          <path d="m14 13 3 17h-8Zm14-6 2 23H18Z" fill="currentColor" opacity=".13" />
+          <path d="m25 14 3-7 4 9-4-2-2 2" stroke="currentColor" stroke-width="1.1" />
+        </svg>
+        <div class="wordmark">
+          ICEAXING<small>A PERSONAL EXPEDITION</small>
+        </div>
+      </div>
+      <div class="welcome-actions">
+        <span class="coordinates">CHENGDU / CHINA</span>
+        <nav aria-label={messages.common.language}>
+          {locales.map((item) => (
+            <a
+              href={localizedPath(item)}
+              lang={htmlLanguage[item]}
+              aria-current={locale === item ? 'page' : undefined}
+            >
+              {item.toUpperCase()}
+            </a>
+          ))}
+        </nav>
+        <ThemeToggle label={messages.common.switchTheme} />
+      </div>
+    </header>
+
+    <div class="welcome-stage">
+      <section class="welcome-copy" aria-labelledby="welcome-title">
+        <div class="host reveal">
+          <img src={avatar} alt={displayName} width="34" height="34" />
+          <span>
+            {copy.greeting} <strong>{displayName} / Iceaxing</strong>
+          </span>
+          <span class="dot" aria-hidden="true"></span>
+          <span>{copy.welcome}</span>
+        </div>
+        <div class="welcome-intro reveal">
+          <p class="welcome-overline">EVERY JOURNEY BEGINS WITH A HELLO</p>
+          <h1 id="welcome-title">
+            {locale === 'zh' ? (
+              <>
+                很高兴，
+                <br />
+                在雪线之上遇见你。
+              </>
+            ) : (
+              copy.title
+            )}
+          </h1>
+          <p class="lede">
+            {copy.introduction.map((line) => (
+              <span>{line}</span>
+            ))}
+          </p>
+        </div>
+        <div class="divider reveal" aria-hidden="true">
+          {copy.start}
+        </div>
+        <div class="choices">
+          <a class="choice resume reveal" data-choice="resume" href={profileHref}>
+            <span class="choice-top">
+              <svg class="choice-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <path d="M5 6h24l6 6v23H5V6Z" fill="currentColor" opacity=".08" />
+                <path d="M5 6h24l6 6v23H5V6Zm24 0v7h6" stroke="currentColor" />
+                <path d="m10 23 4-8 4 8-4 3-4-3Z" fill="currentColor" opacity=".5" />
+                <path d="M23 18h7m-7 5h7M10 30h20" stroke="currentColor" />
+              </svg>
+              <span class="choice-id">01 / ABOUT ME</span>
+            </span>
+            <h2>{copy.resume}</h2>
+            <p>
+              {copy.resumeDescription.map((line, index) => (
+                <>
+                  {index > 0 && <br />}
+                  {line}
+                </>
+              ))}
+            </p>
+            <span class="choice-bottom">
+              <span>MEET THE PERSON</span>
+              <span class="choice-arrow" aria-hidden="true">
+                ↗
+              </span>
+            </span>
+          </a>
+          <a class="choice blog reveal" data-choice="blog" href={blogHref}>
+            <span class="choice-top">
+              <svg class="choice-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                <path
+                  d="m3 9 11-3 12 4 11-3v26l-11 3-12-4-11 3V9Z"
+                  fill="currentColor"
+                  opacity=".08"
+                />
+                <path
+                  d="m3 9 11-3 12 4 11-3v26l-11 3-12-4-11 3V9Zm11-3v26m12-22v26"
+                  stroke="currentColor"
+                />
+                <path d="m7 26 8-8 7 6 11-9" stroke="currentColor" stroke-dasharray="2 3" />
+                <path d="m29 15 4-3 2 5-6-2Z" fill="currentColor" />
+              </svg>
+              <span class="choice-id">02 / FIELD NOTES</span>
+            </span>
+            <h2>{copy.blog}</h2>
+            <p>
+              {copy.blogDescription.map((line, index) => (
+                <>
+                  {index > 0 && <br />}
+                  {line}
+                </>
+              ))}
+            </p>
+            <span class="choice-bottom">
+              <span>EXPLORE THE JOURNAL</span>
+              <span class="choice-arrow" aria-hidden="true">
+                ↗
+              </span>
+            </span>
+          </a>
+        </div>
+        <p class="footnote reveal">{copy.invitation}</p>
+      </section>
+
+      <aside class="welcome-illustration">
+        <ExpeditionMountain id="welcome-mountain" />
+      </aside>
+    </div>
+    <footer class="welcome-footer" data-pagefind-ignore>
+      <div>
+        <span class="footer-line"></span>
+        {copy.baseCamp}
+        <br />
+        <small>{copy.curiosity}</small>
+      </div>
+      <div class="right">
+        TWO PATHS. ONE CURIOUS MIND.
+        <br />
+        <small>ICEAXING · PERSONAL SPACE</small>
+      </div>
+    </footer>
+  </div>
+</main>
+<script>
+  const welcome = document.querySelector<HTMLElement>('[data-welcome]');
+  if (welcome) {
+    const update = () => {
+      const focused = document.activeElement?.closest<HTMLElement>('[data-choice]');
+      const hovered = welcome.querySelector<HTMLElement>('[data-choice]:hover');
+      welcome.dataset.route = (focused ?? hovered)?.dataset.choice ?? '';
+    };
+    welcome.querySelectorAll('[data-choice]').forEach((link) => {
+      ['pointerenter', 'pointerleave', 'focus', 'blur'].forEach((event) =>
+        link.addEventListener(event, () => requestAnimationFrame(update)),
+      );
+    });
+  }
+</script>

@@ -99,7 +99,8 @@ const coverImage = (publicPath: string) =>
     label: '封面图',
     directory: 'src/assets/content/covers',
     publicPath,
-    description: '建议使用 AVIF/WebP/JPEG；替代文本在正文或卡片语境中维护。',
+    description:
+      '建议使用 AVIF/WebP/JPEG。文章未设置封面时自动使用正文第一张图片；两者均无图时使用文字布局。分类、项目与合集未设置封面时使用所属分组的默认地景图。',
   });
 
 const seo = fields.object(
@@ -173,7 +174,13 @@ const commonContentFields = (locale: Locale) => ({
     defaultValue: 'iceaxing',
     validation: { isRequired: true },
   }),
-  featured: fields.checkbox({ label: '首页精选', defaultValue: false }),
+  featured: fields.checkbox({ label: '是否精选', defaultValue: false }),
+  featuredOrder: fields.integer({
+    label: '精选顺序',
+    description: '数值越小越靠前；也可在工作区精选列表中统一调整。',
+    defaultValue: 1000000,
+    validation: { min: 0 },
+  }),
   order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
   coverImage: coverImage('../../../../assets/content/covers/'),
   seo,
@@ -190,10 +197,16 @@ const articleCollection = (locale: Locale) =>
     schema: {
       ...commonContentFields(locale),
       featured: fields.checkbox({
-        label: '首页列表精选',
+        label: '是否精选',
         description:
-          '显示在首页左侧的精选文章列表，仅展示已公开文章，按发布时间从新到旧最多显示 8 篇。',
+          '加入首页统一精选，与项目、分类和合集共同按精选顺序展示；仅公开内容出现在前台。',
         defaultValue: false,
+      }),
+      featuredOrder: fields.integer({
+        label: '精选顺序',
+        description: '数值越小越靠前；与工作区精选列表共用。',
+        defaultValue: 1000000,
+        validation: { min: 0 },
       }),
       category: relationshipWithContext(
         {
@@ -369,9 +382,15 @@ export default config({
         tags,
         ...folderPublication(),
         featured: fields.checkbox({
-          label: '首页卡片精选',
-          description: '显示在首页右侧的精选入口卡片区。',
+          label: '是否精选',
+          description: '加入首页统一精选，与文章、项目、分类和合集共同排序。',
           defaultValue: false,
+        }),
+        featuredOrder: fields.integer({
+          label: '精选顺序',
+          description: '数值越小越靠前；与工作区精选列表共用。',
+          defaultValue: 1000000,
+          validation: { min: 0 },
         }),
         order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
         createdAt: fields.datetime({
@@ -404,9 +423,15 @@ export default config({
         tags,
         ...folderPublication(),
         featured: fields.checkbox({
-          label: '首页卡片精选',
-          description: '显示在首页右侧的精选入口卡片区。',
+          label: '是否精选',
+          description: '加入首页统一精选，与文章、项目、分类和合集共同排序。',
           defaultValue: false,
+        }),
+        featuredOrder: fields.integer({
+          label: '精选顺序',
+          description: '数值越小越靠前；与工作区精选列表共用。',
+          defaultValue: 1000000,
+          validation: { min: 0 },
         }),
         order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
         createdAt: fields.datetime({
@@ -449,9 +474,15 @@ export default config({
         tags,
         ...folderPublication(),
         featured: fields.checkbox({
-          label: '首页卡片精选',
-          description: '显示在首页右侧的精选入口卡片区。',
+          label: '是否精选',
+          description: '加入首页统一精选，与文章、项目、分类和合集共同排序。',
           defaultValue: false,
+        }),
+        featuredOrder: fields.integer({
+          label: '精选顺序',
+          description: '数值越小越靠前；与工作区精选列表共用。',
+          defaultValue: 1000000,
+          validation: { min: 0 },
         }),
         order: fields.integer({ label: '排序', defaultValue: 0, validation: { min: 0 } }),
         coverImage: coverImage('../../assets/content/covers/'),

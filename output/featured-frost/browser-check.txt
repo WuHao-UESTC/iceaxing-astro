@@ -1,0 +1,29 @@
+﻿async (page) => {
+ page = await page.context().newPage(); const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.setViewportSize({width:1440,height:900});
+ await page.goto('http://127.0.0.1:4321/blog');
+ await page.evaluate(()=>{sessionStorage.clear();document.documentElement.dataset.theme='light'});
+ await page.reload();await page.mouse.move(0,0);await page.waitForTimeout(3000);
+ const film=page.locator('[data-editorial-scroll]');
+ const first=await film.evaluate(e=>e.scrollTop);await page.waitForTimeout(1000);const next=await film.evaluate(e=>e.scrollTop);
+ if(next-first<15)throw Error('Auto motion did not advance');
+ await film.evaluate(e=>e.scrollTop=e.querySelector('.editorial-grid').getBoundingClientRect().height-10);
+ await page.waitForTimeout(1000);
+ const seam=await film.evaluate(e=>e.scrollTop);if(seam>60)throw Error('Loop seam failed: '+seam);
+ await film.hover();const paused=await film.evaluate(e=>e.scrollTop);await page.waitForTimeout(400);if(await film.evaluate(e=>e.scrollTop)!==paused)throw Error('Hover pause failed');
+ await film.evaluate(e=>e.scrollTop=0);
+ await page.screenshot({path:'output/playwright/featured-frost-light-1440.png'});
+ const results=[];
+ for(const theme of ['light','dark'])for(const width of [1440,768,390,320]){
+  await page.setViewportSize({width,height:900});await page.evaluate(t=>document.documentElement.dataset.theme=t,theme);await page.waitForTimeout(200);
+  const data=await film.evaluate(e=>({copies:e.querySelectorAll('[data-editorial-copy]').length,overflow:document.documentElement.scrollWidth>innerWidth,links:e.querySelectorAll('.editorial-grid:not([data-editorial-copy]) a').length}));
+  if(data.overflow)throw Error('Horizontal overflow '+width);if(width<=768 && data.copies)throw Error('Mobile copies');results.push({theme,width,...data});
+  if(width===390 || width===1440)await page.screenshot({path:`output/playwright/featured-frost-${theme}-${width}.png`});
+ }
+ await page.setViewportSize({width:1440,height:900});await page.emulateMedia({reducedMotion:'reduce'});await page.waitForTimeout(200);if(await page.locator('[data-editorial-copy]').count())throw Error('Reduced motion copies');
+ await page.emulateMedia({reducedMotion:'no-preference'});await film.hover();await page.mouse.wheel(0,200);await page.waitForTimeout(200);if(await page.locator('[data-editorial-copy]').count())throw Error('Manual mode copies');
+ if(errors.length)throw Error(errors.join('\n'));
+ return {motion:{first,next,seam},results,reducedMotion:true,manual:true,errors};
+}
+
+

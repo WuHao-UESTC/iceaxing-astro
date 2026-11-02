@@ -1,0 +1,98 @@
+---
+import type { FolderTheme } from '../../lib/folder-cover';
+interface Props {
+  group: FolderTheme;
+}
+const { group } = Astro.props;
+---
+
+<svg
+  class={`archive-folder-landscape landscape-${group}`}
+  viewBox="0 0 1000 340"
+  fill="none"
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+>
+  <g class="folder-terrain" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.25">
+    <path
+      fill="currentColor"
+      fill-opacity="0.05"
+      d="M0 300 120 75 250 270 390 150 530 310 650 45 785 270 910 115 1000 290v50H0Z"
+    />
+    <path
+      fill="currentColor"
+      fill-opacity="0.07"
+      d="m120 75 40 247 90-52Zm270 75 35 178 105-18ZM650 45l40 280 95-55Zm260 70 20 217 70-42Z"
+    />
+    <path d="m0 300 160 22 230-172 35 178 225-283 40 280 220-210 20 217" />
+  </g>
+  {group === 'study' && (
+    <>
+      <path
+        stroke="currentColor"
+        stroke-opacity="0.25"
+        stroke-width="0.8"
+        d="m40 90 130 35 90-76 122 82 153-74 100 81 139-52 151 105M170 125l93 111 119-105 155 113 98-106 113 127 177-74"
+      />
+      <g fill="currentColor" opacity="0.55">
+        <circle cx="40" cy="90" r="2" />
+        <circle cx="170" cy="125" r="4" />
+        <circle cx="260" cy="49" r="2" />
+        <circle cx="382" cy="131" r="3" />
+        <circle cx="535" cy="57" r="3" />
+        <circle cx="635" cy="138" r="4" />
+        <circle cx="774" cy="86" r="2" />
+        <circle cx="925" cy="191" r="3" />
+      </g>
+    </>
+  )}
+  {group === 'skill' && (
+    <g stroke="currentColor" stroke-opacity="0.2" stroke-width="0.8">
+      <path d="M100 35v60h150v60h180m0-50 90 50-90 50Zm90 50h210v-60h160M250 155v110h330v-60h150v110M100 280v-80h90" />
+      <g fill="currentColor">
+        <circle cx="100" cy="35" r="3" />
+        <circle cx="100" cy="280" r="3" />
+        <circle cx="250" cy="95" r="3" />
+        <circle cx="730" cy="95" r="3" />
+      </g>
+    </g>
+  )}
+  {group === 'life' && (
+    <g stroke="currentColor" stroke-opacity="0.3" stroke-width="0.7">
+      <path
+        fill="currentColor"
+        fill-opacity="0.08"
+        d="M30 20 180 5 140 95 75 135 5 90Zm290 45 100-40 90 65-55 55-115-30Zm350-30 105-20 65 75-115 30-65-40ZM180 265l125-60 85 85-60 45-145-15Zm390 30 95-120 95 65-35 75-120 25Z"
+      />
+      <path d="m75 135 65-40 40-90m160 110 80-90 35 120m205-65 115-65-50 105M180 265l150 70-25-130m265 90 95-120 60 140" />
+    </g>
+  )}
+  {group === 'camp' && (
+    <g class="folder-waystation" stroke="currentColor" stroke-width="0.8">
+      <g fill="currentColor" fill-opacity="0.06" stroke-opacity="0.22">
+        <path d="M0 45 95 15 70 105 105 150 55 230 125 300 0 340Z" />
+        <path d="m95 15-25 90-70 45m70-45 35 45-50 80-55 25m55-25 70 70-125 40" />
+        <path d="m0 325 210-45 120 35 165-22 145 47H0Zm690 15 115-60 105 35 90-60v85Z" />
+      </g>
+      <path
+        class="folder-trail"
+        d="M120 285 280 260 390 280 535 245 640 267 780 225 930 245"
+        stroke-opacity="0.42"
+        stroke-dasharray="3 7"
+      />
+      <g fill="currentColor" stroke="none" opacity="0.55">
+        <circle cx="280" cy="260" r="3" />
+        <circle cx="535" cy="245" r="3" />
+        <circle cx="780" cy="225" r="3" />
+      </g>
+      <g stroke-opacity="0.3">
+        <path d="M280 260v-25h22m233 10v-25h22m223 5v-25h22" />
+        <path d="M655 55h8m-4-4v8m212 44h8m-4-4v8M450 30h6m-3-3v6" />
+      </g>
+      <g transform="translate(905 275)" fill="currentColor" stroke-opacity="0.35">
+        <path d="m-30 30 20-42 35 10 20 35-42 7Z" fill-opacity="0.06" />
+        <path d="m-30 30 20-42 13 52Zm40-4 6-20 7 24Z" fill-opacity="0.12" />
+      </g>
+    </g>
+  )}
+</svg>

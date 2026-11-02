@@ -1,0 +1,61 @@
+- main [ref=f3e3]:
+  - complementary [ref=f3e4]:
+    - generic [ref=f3e5]:
+      - link "打开网站首页" [ref=f3e6] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f3e7]:
+        - generic [ref=f3e8]:
+          - strong [ref=f3e9]: 内容工作区
+          - combobox "选择内容分组" [ref=f3e10] [cursor=pointer]:
+            - option "技术栈" [selected]
+            - option "生活日常"
+            - option "学习笔记"
+            - option "日志与页面"
+            - option "未归属内容"
+        - generic [ref=f3e11]: 本地文件
+    - generic [ref=f3e12]:
+      - paragraph [ref=f3e13]: THE RIDGE
+      - heading "技术栈" [level=1] [ref=f3e14]
+      - text: 从原理走向实践
+    - generic [ref=f3e15]:
+      - generic [ref=f3e16]:
+        - generic [ref=f3e17]: 搜索内容树
+        - searchbox "搜索内容树" [ref=f3e18]
+      - button "刷新内容树" [ref=f3e19] [cursor=pointer]: ↻
+      - button "新建分类" [ref=f3e20] [cursor=pointer]: ＋
+    - generic [ref=f3e21]: 技术栈
+    - navigation "分组内容树" [ref=f3e23]:
+      - generic [ref=f3e24]: 正在读取内容树…
+    - generic [ref=f3e25]:
+      - group [ref=f3e26]:
+        - generic "Obsidian 同步" [ref=f3e27] [cursor=pointer]:
+          - text: Obsidian 同步
+          - generic [aria-hidden] [ref=f3e28]: ↗
+      - paragraph [ref=f3e29]: 每一次整理，都是向前一步。
+      - link "评论管理" [ref=f3e30] [cursor=pointer]:
+        - /url: /keystatic/comments
+      - generic [ref=f3e31]: 其他内容
+      - combobox "其他内容" [ref=f3e32] [cursor=pointer]:
+        - option "选择原有管理入口…" [disabled] [selected]
+        - option "Keystatic 总览"
+        - option "首页精选 · 统一排序"
+        - option "日志 · 中文"
+        - option "日志 · English"
+        - option "日志 · Deutsch"
+        - option "页面 · 中文"
+        - option "页面 · English"
+        - option "页面 · Deutsch"
+        - option "友链"
+        - option "格言"
+        - option "站点设置"
+  - separator "调整文件树宽度" [ref=f3e33]
+  - generic [ref=f3e34]:
+    - generic [ref=f3e35]:
+      - button "收起文件树" [expanded] [ref=f3e36] [cursor=pointer]
+      - button "专注写作" [ref=f3e37] [cursor=pointer]
+      - generic [ref=f3e38]:
+        - strong [ref=f3e39]: Keystatic 编辑器
+        - generic [ref=f3e40]: 选择左侧节点以编辑内容或属性
+      - button "切换浅色" [ref=f3e41] [cursor=pointer]: ☼
+      - button "首页精选 · 编排" [ref=f3e42] [cursor=pointer]
+    - iframe [ref=f3e43]

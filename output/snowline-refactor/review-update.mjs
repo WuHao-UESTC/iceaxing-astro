@@ -1,0 +1,2 @@
+﻿import fs from 'node:fs';
+const p='output/snowline-refactor/browser-review.js';let s=fs.readFileSync(p,'utf8');s=s.replace('await page.screenshot(',"await page.waitForTimeout(750);\n await page.screenshot(");s=s.replace("results.push({check:'desktop textbook'", "results.push({check:'desktop textbook'");s=s.replace('console.log(JSON.stringify({results,errors}));','return {results,errors};');fs.writeFileSync(p,s);
