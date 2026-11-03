@@ -166,6 +166,8 @@ category: quirk-semiconductor-manufacturing-technology-note
 
 ### 浅槽隔离（STI）
 
+为什么要进行STI：制作硅片上有源区之间的隔离区
+
 三个基本步骤：槽刻蚀，氧化物填充，氧化物平坦化
 
 #### 槽刻蚀
@@ -192,6 +194,21 @@ category: quirk-semiconductor-manufacturing-technology-note
    width=1263
    height=450 /%}
 
+#### STI氧化物填充
+
+1. 扩散区：沟槽衬垫氧化硅
+   1. 作用：改善硅与沟槽衬垫氧化物之间的截面特性
+   1. 流程：清洗，高温扩散设备中生长氧化物
+   1. 氮化物掩蔽层的作用：阻止氧分子向有源区的扩散
+1. 扩散区/薄膜区：沟槽CVD氧化物填充
+   1. 扩散区：低压化学气相淀积炉
+   1. 薄膜去：氧化物化学气相淀积设备
+
+{% articleImage
+   src="../../../../assets/article-images/80ad05d5c6b799b0a97f899b80ae9e4e50fa9bfabbfe811e69cac9fbd7847f12.webp"
+   width=1196
+   height=481 /%}
+
 #### 氧化层抛光——氮化物去除
 
 SOG：填充间隙实现平坦化
@@ -211,3 +228,99 @@ CMP（抛光）：当前采用的最优化小的平坦化技术
    src="../../../../assets/article-images/489e5ebf8c437384f0b737a4853d2fe7260c69c885f415701f729ac2b27cb18e.webp"
    width=1169
    height=391 /%}
+
+### 多晶硅栅结构工艺
+
+1. 扩散区：栅氧化层生长（20埃米到50埃米）
+1. 扩散区：多晶硅淀积（5000埃米）
+   1. 低压气相淀积炉，生长多晶硅。通入硅烷，分解后即可以产生多晶硅淀积
+   1. 完成之后立即进行多晶硅掺杂
+1. 光刻区：第四层掩膜，多晶硅栅
+   1. 采用深紫外光进行多晶硅栅的刻印
+   1. 多晶硅和光刻胶之间采用ARC减少不必要的反射
+   1. 质量检测：CD，DI，套准精度检测（OL）等
+
+{% articleImage
+   src="../../../../assets/article-images/17ba66a940da27ee40d1a0f1c8a0e5c669d3605cb40f5252d647ed7a903a04ff.webp"
+   width=1647
+   height=701 /%}
+
+### 轻掺杂漏注入工艺（LDD）
+
+为什么要引入这个工艺：为了应对沟道长度 不断减小造成的源漏穿通的风险
+
+两次离子注入定义晶体管的源漏区：第一次是轻注入（LDD），第二次是中高浓度的注入
+
+轻掺杂注入使用的物质及其原因：
+
+- As或者BF2等质量比较大的离子——使得硅片上表面形成非晶态
+- 非静态有助于维持浅结，浅结可以减少漏电流效应
+
+#### {% inlineMath expression="n^-" /%} 轻掺杂漏注入
+
+一句话描述：露出p阱，进行n型注入
+
+1. 光刻区：第六层掩膜，{% inlineMath expression="n^-" /%}LDD注入
+1. 注入区：As注入，能量，剂量，结深都比之前p/n阱注入 更小
+
+{% articleImage
+   src="../../../../assets/article-images/5ce0083d2c70cb78a735039707eaf2ac7b5ce9b7ce12973f3bb027bb6eca2338.webp"
+   width=1759
+   height=656 /%}
+
+#### {% inlineMath expression="p^-" /%} 轻掺杂漏注入
+
+一句话描述：露出n阱，进行p型注入
+
+步骤与{% inlineMath expression="n^-" /%}轻掺杂注入相同，此次在光刻区产生第7层掩膜
+
+{% articleImage
+   src="../../../../assets/article-images/4cd992a946d655fc2f5b1a454fa4eb570149d6a4600cb4dfd269e9549a7f7c20.webp"
+   width=1575
+   height=635 /%}
+
+### 侧墙的形成
+
+根本目的：形成一圈围绕栅氧的侧墙，防止后续的大剂量注入造成的源漏穿通\
+
+1. 薄膜区：淀积二氧化硅。利用化学气相淀积，淀积大约1000埃米的二氧化硅（即为形成侧墙的二氧化硅）
+
+1. 刻蚀区：二氧化硅反刻。干法离子刻蚀机除掉大部分的二氧化硅，因在栅氧的侧面留下侧墙
+
+{% articleImage
+   src="../../../../assets/article-images/8512898b68f67e76642898977a8d189458e7b1825df174d4470f3fddd34cba08.webp"
+   width=1553
+   height=594 /%}
+
+### 源/漏注入工艺
+
+基本流程：掩膜，注入，退货
+
+#### {% inlineMath expression="n^+" /%}源/漏注入
+
+1. 光刻区：第七层掩膜，定义需要进行n注入的区域
+1. 注入区：{% inlineMath expression="n^+" /%}源。漏注入
+   1. 用大于LDD的能量注入
+   1. 侧墙阻止注入的例子进入沟道区
+
+{% articleImage
+   src="../../../../assets/article-images/5fcc2ae11247ff59f022ab8b6db80258d6799f3f2cf06f19ae604305a740b343.webp"
+   width=1719
+   height=637 /%}
+
+#### {% inlineMath expression="p^+" /%}源/漏注入
+
+基本流程与n注入相同，在光刻区形成第八层掩膜
+
+在注入完成之后额外进行一次退火的操作
+
+3. 扩散区：退火。
+   1. 在快速退火装置(RTP)中退火，可达到1000C的温度并持续数秒
+   1. 组织结构扩展，控制源/漏区扩散
+
+{% articleImage
+   src="../../../../assets/article-images/a0ab363d7dd3bbcd68c805bf1f06127b4d61f9a3b655a02dcbc21c5d00835efb.webp"
+   width=1700
+   height=635 /%}
+
+### 接触孔的形成
